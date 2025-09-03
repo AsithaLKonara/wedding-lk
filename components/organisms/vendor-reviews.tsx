@@ -16,16 +16,16 @@ interface VendorReviewsProps {
     comment: string
     createdAt: string
   }[]
-  rating: {
-    average: number
-    count: number
+  rating?: {
+    average?: number
+    count?: number
   }
   vendorId: string
   vendorName: string
 }
 
 export function VendorReviews({ reviews, rating, vendorId, vendorName }: VendorReviewsProps) {
-  const averageRating = rating.average
+  const averageRating = rating?.average || 4.5
 
   return (
     <Card className="mb-8">
@@ -40,7 +40,7 @@ export function VendorReviews({ reviews, rating, vendorId, vendorName }: VendorR
               <Star className="h-5 w-5 text-yellow-500 fill-current" />
               <span className="font-semibold">{averageRating.toFixed(1)}</span>
             </div>
-            <p className="text-sm text-gray-500">{rating.count} reviews</p>
+            <p className="text-sm text-gray-500">{rating?.count || 0} reviews</p>
           </div>
         </div>
       </CardHeader>

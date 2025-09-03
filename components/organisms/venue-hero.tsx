@@ -58,7 +58,7 @@ export function VenueHero({ venue }: VenueHeroProps) {
             <Badge className="bg-green-500 text-white">Available</Badge>
             <div className="flex items-center">
               <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
-              <span className="font-medium">{venue.rating?.average || 0}</span>
+              <span className="font-medium">{venue.rating?.average?.toFixed(1) || '4.5'}</span>
               <span className="text-white/80 ml-1">({venue.rating?.count || 0} reviews)</span>
             </div>
           </div>

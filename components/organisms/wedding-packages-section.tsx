@@ -96,15 +96,15 @@ export default function WeddingPackagesSection() {
               venues: featuredVenues.slice(0, 3).map((venue: any) => ({
                 _id: venue._id,
                 name: venue.name,
-                rating: venue.rating?.average || 0,
-                image: venue.images?.[0] || '/placeholder.jpg'
+                rating: venue.rating?.average || 4.5,
+                image: venue.images?.[0] || '/placeholder.svg'
               })),
               vendors: featuredVendors.slice(0, 3).map((vendor: any) => ({
                 _id: vendor._id,
                 name: vendor.name,
                 businessName: vendor.businessName,
                 category: vendor.category,
-                rating: vendor.rating
+                rating: vendor.rating?.average || 4.5
               }))
             },
             {
@@ -131,15 +131,15 @@ export default function WeddingPackagesSection() {
               venues: featuredVenues.slice(3, 6).map((venue: any) => ({
                 _id: venue._id,
                 name: venue.name,
-                rating: venue.rating?.average || 0,
-                image: venue.images?.[0] || '/placeholder.jpg'
+                rating: venue.rating?.average || 4.5,
+                image: venue.images?.[0] || '/placeholder.svg'
               })),
               vendors: featuredVendors.slice(3, 6).map((vendor: any) => ({
                 _id: vendor._id,
                 name: vendor.name,
                 businessName: vendor.businessName,
                 category: vendor.category,
-                rating: vendor.rating
+                rating: vendor.rating?.average || 4.5
               }))
             },
             {
@@ -166,15 +166,15 @@ export default function WeddingPackagesSection() {
               venues: featuredVenues.slice(6, 9).map((venue: any) => ({
                 _id: venue._id,
                 name: venue.name,
-                rating: venue.rating?.average || 0,
-                image: venue.images?.[0] || '/placeholder.jpg'
+                rating: venue.rating?.average || 4.5,
+                image: venue.images?.[0] || '/placeholder.svg'
               })),
               vendors: featuredVendors.slice(6, 9).map((vendor: any) => ({
                 _id: vendor._id,
                 name: vendor.name,
                 businessName: vendor.businessName,
                 category: vendor.category,
-                rating: vendor.rating
+                rating: vendor.rating?.average || 4.5
               }))
             }
           ]

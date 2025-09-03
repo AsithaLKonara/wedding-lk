@@ -184,7 +184,7 @@ export async function GET(request: NextRequest) {
     ])
 
     let averageRating = 0
-    let ratingDistribution = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+    const ratingDistribution = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
 
     if (ratingStats.length > 0) {
       const stats = ratingStats[0]

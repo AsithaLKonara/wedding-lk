@@ -48,24 +48,29 @@ export async function connectDB() {
     const uri = MONGODB_URI || 'mongodb://localhost:27017/weddinglk';
     
     const opts = {
-      bufferCommands: true,
-      maxPoolSize: 10, // Reduced for Docker environment
-      minPoolSize: 2, // Reduced for Docker environment
-      serverSelectionTimeoutMS: 30000, // Increased timeout for Docker
-      socketTimeoutMS: 60000,
+      bufferCommands: false, // Disable buffering to prevent timeout issues
+      maxPoolSize: 1, // Minimal pool for Vercel serverless
+      minPoolSize: 0, // No minimum pool for serverless
+      serverSelectionTimeoutMS: 10000, // Increased timeout for MongoDB Atlas
+      socketTimeoutMS: 30000, // Socket timeout
       family: 4, // Use IPv4
       autoIndex: false,
-      maxIdleTimeMS: 30000, // Reduced for Docker
+      maxIdleTimeMS: 30000, // Increased idle time
       retryWrites: true,
       retryReads: true,
-      connectTimeoutMS: 30000, // Increased for Docker
+      connectTimeoutMS: 30000, // Increased connection timeout for Atlas
       heartbeatFrequencyMS: 10000,
-      maxConnecting: 3, // Reduced for Docker
-      // Docker-specific options
+      maxConnecting: 1, // Minimal for serverless
+      // MongoDB Atlas specific options
       directConnection: false,
       // Retry logic
       retryDelay: 1000,
       maxRetries: 5,
+      // Buffer timeout settings
+      bufferMaxEntries: 0, // Disable buffering
+      // Additional Atlas options
+      compressors: ['zlib'],
+      zlibCompressionLevel: 6,
     };
 
     console.log(`🔌 Attempting to connect to MongoDB: ${uri.replace(/\/\/.*@/, '//***@')}`);

@@ -19,9 +19,9 @@ interface VenueReviewsProps {
     comment: string
     createdAt: string
   }[]
-  rating: {
-    average: number
-    count: number
+  rating?: {
+    average?: number
+    count?: number
   }
   venueId: string
   venueName: string
@@ -35,7 +35,7 @@ export function VenueReviews({ reviews, rating, venueId, venueName }: VenueRevie
   const [helpfulReviews, setHelpfulReviews] = useState<Set<string>>(new Set())
 
   const getAverageRating = () => {
-    return rating.average
+    return rating?.average || 4.5
   }
 
   const getRatingDistribution = () => {
@@ -152,7 +152,7 @@ export function VenueReviews({ reviews, rating, venueId, venueName }: VenueRevie
               <Star className="h-5 w-5 text-yellow-500 fill-current" />
               <span className="font-semibold">{averageRating.toFixed(1)}</span>
             </div>
-            <p className="text-sm text-gray-500">{rating.count} reviews</p>
+            <p className="text-sm text-gray-500">{rating?.count || 0} reviews</p>
           </div>
         </div>
       </CardHeader>
@@ -169,7 +169,7 @@ export function VenueReviews({ reviews, rating, venueId, venueName }: VenueRevie
                     <div
                       className="bg-yellow-500 h-2 rounded-full"
                       style={{
-                        width: `${(ratingDistribution[stars as keyof typeof ratingDistribution] / rating.count) * 100}%`
+                        width: `${(ratingDistribution[stars as keyof typeof ratingDistribution] / (rating?.count || 1)) * 100}%`
                       }}
                     />
                   </div>

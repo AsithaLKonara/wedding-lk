@@ -388,7 +388,7 @@ export default function VenueBoostManager() {
                         <div className="flex items-center space-x-3">
                           <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
                             <img 
-                              src={boost.venue.images[0] || '/placeholder.jpg'} 
+                              src={boost.venue.images[0] || '/placeholder.svg'} 
                               alt={boost.venue.name}
                               className="w-full h-full object-cover rounded-lg"
                             />

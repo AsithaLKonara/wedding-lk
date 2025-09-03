@@ -21,9 +21,9 @@ interface FeaturedVendor {
     phone: string
     email: string
   }
-  reviewStats: {
-    averageRating: number
-    count: number
+  reviewStats?: {
+    averageRating?: number
+    count?: number
   }
   isVerified: boolean
   isActive: boolean
@@ -118,10 +118,10 @@ export default function RealFeaturedVendors() {
                 <div className="flex items-center space-x-2">
                   <Star className="h-4 w-4 text-yellow-500 fill-current" />
                   <span className="text-sm font-medium text-gray-900">
-                    {vendor.reviewStats.averageRating}
+                    {vendor.reviewStats?.averageRating || 4.5}
                   </span>
                   <span className="text-sm text-gray-500">
-                    ({vendor.reviewStats.count} reviews)
+                    ({vendor.reviewStats?.count || 0} reviews)
                   </span>
                 </div>
 

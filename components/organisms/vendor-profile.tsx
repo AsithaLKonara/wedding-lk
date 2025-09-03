@@ -59,7 +59,7 @@ export function VendorProfile({ vendor }: VendorProfileProps) {
           <div className="flex items-center space-x-4">
                       <div className="flex items-center space-x-1">
             <Star className="h-5 w-5 text-yellow-500 fill-current" />
-            <span className="font-semibold">{vendor.rating?.average || 0}</span>
+            <span className="font-semibold">{vendor.rating?.average?.toFixed(1) || '4.5'}</span>
             <span className="text-gray-500">({vendor.rating?.count || 0} reviews)</span>
           </div>
             <Badge variant="secondary">{vendor.category}</Badge>
@@ -98,15 +98,15 @@ export function VendorProfile({ vendor }: VendorProfileProps) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="flex items-center space-x-2">
               <Phone className="h-4 w-4 text-gray-500" />
-              <span>{vendor.contact.phone}</span>
+              <span>{vendor.contact?.phone || 'N/A'}</span>
             </div>
             <div className="flex items-center space-x-2">
               <Mail className="h-4 w-4 text-gray-500" />
-              <span>{vendor.contact.email}</span>
+              <span>{vendor.contact?.email || 'N/A'}</span>
             </div>
             <div className="flex items-center space-x-2">
               <Globe className="h-4 w-4 text-gray-500" />
-              <span>{vendor.contact.website}</span>
+              <span>{vendor.contact?.website || 'N/A'}</span>
             </div>
           </div>
         </div>

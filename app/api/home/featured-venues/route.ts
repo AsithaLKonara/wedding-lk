@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
           capacity: 300,
           pricing: { basePrice: 50000 },
           rating: { average: 4.8 },
-          images: ['/placeholder.jpg'],
+          images: ['/placeholder.svg'],
           amenities: ['parking', 'catering', 'decoration']
         },
         {
@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
           capacity: 150,
           pricing: { basePrice: 35000 },
           rating: { average: 4.6 },
-          images: ['/placeholder.jpg'],
+          images: ['/placeholder.svg'],
           amenities: ['parking', 'decoration']
         }
       ]
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
         capacity: 300,
         pricing: { basePrice: 50000 },
         rating: { average: 4.8 },
-        images: ['/placeholder.jpg'],
+        images: ['/placeholder.svg'],
         amenities: ['parking', 'catering', 'decoration']
       },
       {
@@ -91,7 +91,7 @@ export async function GET(request: NextRequest) {
         capacity: 150,
         pricing: { basePrice: 35000 },
         rating: { average: 4.6 },
-        images: ['/placeholder.jpg'],
+        images: ['/placeholder.svg'],
         amenities: ['parking', 'decoration']
       }
     ]

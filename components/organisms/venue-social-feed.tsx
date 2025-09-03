@@ -4,9 +4,7 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-// Temporarily disabled Avatar import due to bundling issue
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Bookmark, Heart, MessageCircle, Share2, Loader2, Image as ImageIcon, Calendar, MapPin } from "lucide-react"
+import { Bookmark, Heart, MessageCircle, Share2, Loader2, Calendar, MapPin } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
 import Image from "next/image"
@@ -15,84 +13,64 @@ interface VenueSocialFeedProps {
   venueId: string
 }
 
-interface VendorData {
-  _id: string
-  name: string
-  owner?: {
-    name: string
-    avatar?: string
-  }
-}
-
 interface Post {
   id: string
-  user: {
-    name: string
-    avatar: string
-    verified?: boolean
-  }
   content: string
   images?: string[]
-  likes: number
-  comments: number
-  shares: number
-  date: string
-  location?: string
   tags?: string[]
-  isLiked?: boolean
-  isBookmarked?: boolean
+  author: {
+    type: 'user' | 'vendor' | 'venue'
+    id: string
+    name: string
+    avatar?: string
+    verified?: boolean
+  }
+  location?: {
+    name: string
+    address?: string
+    city?: string
+    state?: string
+    country?: string
+  }
+  engagement: {
+    likes: number
+    comments: number
+    shares: number
+    views: number
+  }
+  createdAt: string
+  formattedDate: string
+  userInteractions?: {
+    isLiked?: boolean
+    isBookmarked?: boolean
+  }
 }
 
 export default function VenueSocialFeed({ venueId }: VenueSocialFeedProps) {
   const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState<string | null>(null)
-  const [vendors, setVendors] = useState<VendorData[]>([])
+  const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
 
-  // Fetch vendors data from API
+  // Fetch posts from API
   useEffect(() => {
-    const fetchVendors = async () => {
+    const fetchPosts = async () => {
       try {
-        const response = await fetch('/api/vendors/with-avatars')
+        const response = await fetch('/api/posts?limit=5&filter=recent')
         if (response.ok) {
           const data = await response.json()
-          setVendors(data.vendors || [])
+          setPosts(data.data || [])
         }
       } catch (error) {
-        console.error('Error fetching vendors:', error)
+        console.error('Error fetching posts:', error)
       } finally {
         setLoading(false)
       }
     }
 
-    fetchVendors()
+    fetchPosts()
   }, [])
-
-  // Generate posts from vendor data
-  useEffect(() => {
-    if (vendors.length > 0) {
-      const generatedPosts: Post[] = vendors.slice(0, 3).map((vendor, index) => ({
-        id: vendor._id,
-        user: {
-          name: vendor.owner?.name || vendor.name,
-          avatar: vendor.owner?.avatar || getDefaultAvatar(vendor.owner?.name || vendor.name),
-          verified: true,
-        },
-        content: `Just had our dream wedding at this amazing venue! The staff was incredible and everything was perfect. Highly recommend! 💕 #WeddingDay #DreamVenue`,
-        images: ["/placeholder.svg?height=300&width=400"],
-        likes: 156 + index * 20,
-        comments: 23 + index * 5,
-        shares: 8 + index * 2,
-        date: `${index + 1} ${index === 0 ? 'day' : 'week'}${index === 0 ? '' : 's'} ago`,
-        location: "Wedding Venue",
-        tags: ["#WeddingDay", "#DreamVenue", "#PerfectDay"],
-        isLiked: false,
-        isBookmarked: false,
-      }))
-      setPosts(generatedPosts)
-    }
-  }, [vendors])
 
   // Generate default avatar for users
   const getDefaultAvatar = (name: string): string => {
@@ -106,25 +84,39 @@ export default function VenueSocialFeed({ venueId }: VenueSocialFeedProps) {
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=random&color=fff&size=200`
   }
 
-  const [posts, setPosts] = useState<Post[]>([])
-
   const handleLike = async (postId: string) => {
     setIsLoading(postId)
     try {
-      await new Promise(resolve => setTimeout(resolve, 500))
-      
-      setPosts(prevPosts => 
-        prevPosts.map(post => 
-          post.id === postId 
-            ? { ...post, isLiked: !post.isLiked, likes: post.isLiked ? post.likes - 1 : post.likes + 1 }
-            : post
-        )
-      )
-      
-      toast({ 
-        title: "Like updated!", 
-        variant: "default" 
+      const response = await fetch(`/api/posts/${postId}/interactions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'like',
+          userId: 'current-user-id', // TODO: Get from auth context
+        }),
       })
+
+      if (response.ok) {
+        const data = await response.json()
+        setPosts(prevPosts => 
+          prevPosts.map(post => 
+            post.id === postId 
+              ? { 
+                  ...post, 
+                  engagement: data.data.engagement,
+                  userInteractions: data.data.userInteractions
+                }
+              : post
+          )
+        )
+        
+        toast({ 
+          title: "Like updated!", 
+          variant: "default" 
+        })
+      }
     } catch (error) {
       toast({ 
         title: "Failed to update like", 
@@ -138,20 +130,35 @@ export default function VenueSocialFeed({ venueId }: VenueSocialFeedProps) {
   const handleBookmark = async (postId: string) => {
     setIsLoading(postId)
     try {
-      await new Promise(resolve => setTimeout(resolve, 500))
-      
-      setPosts(prevPosts => 
-        prevPosts.map(post => 
-          post.id === postId 
-            ? { ...post, isBookmarked: !post.isBookmarked }
-            : post
-        )
-      )
-      
-      toast({ 
-        title: "Bookmark updated!", 
-        variant: "default" 
+      const response = await fetch(`/api/posts/${postId}/interactions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'bookmark',
+          userId: 'current-user-id', // TODO: Get from auth context
+        }),
       })
+
+      if (response.ok) {
+        const data = await response.json()
+        setPosts(prevPosts => 
+          prevPosts.map(post => 
+            post.id === postId 
+              ? { 
+                  ...post, 
+                  userInteractions: data.data.userInteractions
+                }
+              : post
+          )
+        )
+        
+        toast({ 
+          title: "Bookmark updated!", 
+          variant: "default" 
+        })
+      }
     } catch (error) {
       toast({ 
         title: "Failed to update bookmark", 
@@ -165,20 +172,35 @@ export default function VenueSocialFeed({ venueId }: VenueSocialFeedProps) {
   const handleShare = async (postId: string) => {
     setIsLoading(postId)
     try {
-      await new Promise(resolve => setTimeout(resolve, 500))
-      
-      setPosts(prevPosts => 
-        prevPosts.map(post => 
-          post.id === postId 
-            ? { ...post, shares: post.shares + 1 }
-            : post
-        )
-      )
-      
-      toast({ 
-        title: "Post shared!", 
-        variant: "default" 
+      const response = await fetch(`/api/posts/${postId}/interactions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'share',
+          userId: 'current-user-id', // TODO: Get from auth context
+        }),
       })
+
+      if (response.ok) {
+        const data = await response.json()
+        setPosts(prevPosts => 
+          prevPosts.map(post => 
+            post.id === postId 
+              ? { 
+                  ...post, 
+                  engagement: data.data.engagement
+                }
+              : post
+          )
+        )
+        
+        toast({ 
+          title: "Post shared!", 
+          variant: "default" 
+        })
+      }
     } catch (error) {
       toast({ 
         title: "Failed to share post", 
@@ -229,14 +251,24 @@ export default function VenueSocialFeed({ venueId }: VenueSocialFeedProps) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 dark:bg-gray-700 dark:text-gray-300">
-                    {post.user.name.split(' ').map(n => n[0]).join('')}
+                    {post.author.avatar ? (
+                      <Image
+                        src={post.author.avatar}
+                        alt={post.author.name}
+                        width={48}
+                        height={48}
+                        className="rounded-full object-cover"
+                      />
+                    ) : (
+                      post.author.name.split(' ').map(n => n[0]).join('')
+                    )}
                   </div>
                   <div>
                     <div className="flex items-center space-x-2">
                       <h4 className="font-semibold text-gray-900 dark:text-white">
-                        {post.user.name}
+                        {post.author.name}
                       </h4>
-                      {post.user.verified && (
+                      {post.author.verified && (
                         <Badge variant="secondary" className="text-xs">
                           Verified
                         </Badge>
@@ -244,11 +276,11 @@ export default function VenueSocialFeed({ venueId }: VenueSocialFeedProps) {
                     </div>
                     <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
                       <Calendar className="h-3 w-3" />
-                      <span>{post.date}</span>
+                      <span>{post.formattedDate}</span>
                       {post.location && (
                         <>
                           <MapPin className="h-3 w-3" />
-                          <span>{post.location}</span>
+                          <span>{post.location.name}</span>
                         </>
                       )}
                     </div>
@@ -294,10 +326,10 @@ export default function VenueSocialFeed({ venueId }: VenueSocialFeedProps) {
                     size="sm"
                     onClick={() => handleLike(post.id)}
                     disabled={isLoading === post.id}
-                    className={`flex items-center space-x-2 ${post.isLiked ? 'text-rose-500' : 'text-gray-500'}`}
+                    className={`flex items-center space-x-2 ${post.userInteractions?.isLiked ? 'text-rose-500' : 'text-gray-500'}`}
                   >
-                    <Heart className={`h-4 w-4 ${post.isLiked ? 'fill-current' : ''}`} />
-                    <span>{post.likes}</span>
+                    <Heart className={`h-4 w-4 ${post.userInteractions?.isLiked ? 'fill-current' : ''}`} />
+                    <span>{post.engagement.likes}</span>
                   </Button>
 
                   <Button
@@ -306,7 +338,7 @@ export default function VenueSocialFeed({ venueId }: VenueSocialFeedProps) {
                     className="flex items-center space-x-2 text-gray-500"
                   >
                     <MessageCircle className="h-4 w-4" />
-                    <span>{post.comments}</span>
+                    <span>{post.engagement.comments}</span>
                   </Button>
 
                   <Button
@@ -317,7 +349,7 @@ export default function VenueSocialFeed({ venueId }: VenueSocialFeedProps) {
                     className="flex items-center space-x-2 text-gray-500"
                   >
                     <Share2 className="h-4 w-4" />
-                    <span>{post.shares}</span>
+                    <span>{post.engagement.shares}</span>
                   </Button>
                 </div>
 
@@ -326,9 +358,9 @@ export default function VenueSocialFeed({ venueId }: VenueSocialFeedProps) {
                   size="sm"
                   onClick={() => handleBookmark(post.id)}
                   disabled={isLoading === post.id}
-                  className={`${post.isBookmarked ? 'text-blue-500' : 'text-gray-500'}`}
+                  className={`${post.userInteractions?.isBookmarked ? 'text-blue-500' : 'text-gray-500'}`}
                 >
-                  <Bookmark className={`h-4 w-4 ${post.isBookmarked ? 'fill-current' : ''}`} />
+                  <Bookmark className={`h-4 w-4 ${post.userInteractions?.isBookmarked ? 'fill-current' : ''}`} />
                 </Button>
               </div>
             </CardContent>

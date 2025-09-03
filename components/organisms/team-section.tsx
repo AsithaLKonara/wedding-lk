@@ -7,69 +7,14 @@ import { Button } from "@/components/ui/button"
 
 const teamMembers = [
   {
-    name: "Arjun Mendis",
-    role: "Co-Founder & CEO",
-    bio: "Former tech lead at Dialog Axiata with a passion for Sri Lankan culture and technology innovation.",
+    name: "Asitha L Konara",
+    role: "Founder & CEO",
+    bio: "Visionary entrepreneur and technology innovator passionate about revolutionizing wedding planning in Sri Lanka. With extensive experience in software development and a deep understanding of Sri Lankan culture, Asitha founded Wedding.lk to create a comprehensive platform that connects couples with the best vendors and venues across the island.",
     image: "/placeholder.svg?height=300&width=300",
     social: {
-      linkedin: "#",
-      twitter: "#",
-      email: "arjun@weddingplatform.lk",
-    },
-  },
-  {
-    name: "Kavitha Rajapaksa",
-    role: "Co-Founder & COO",
-    bio: "Wedding planner turned entrepreneur, bringing 8+ years of event management experience.",
-    image: "/placeholder.svg?height=300&width=300",
-    social: {
-      linkedin: "#",
-      twitter: "#",
-      email: "kavitha@weddingplatform.lk",
-    },
-  },
-  {
-    name: "Dinesh Wickramasinghe",
-    role: "Head of Technology",
-    bio: "Full-stack developer passionate about creating seamless user experiences for couples.",
-    image: "/placeholder.svg?height=300&width=300",
-    social: {
-      linkedin: "#",
-      twitter: "#",
-      email: "dinesh@weddingplatform.lk",
-    },
-  },
-  {
-    name: "Malini Perera",
-    role: "Head of Vendor Relations",
-    bio: "Building strong partnerships with vendors across all 9 provinces of Sri Lanka.",
-    image: "/placeholder.svg?height=300&width=300",
-    social: {
-      linkedin: "#",
-      twitter: "#",
-      email: "malini@weddingplatform.lk",
-    },
-  },
-  {
-    name: "Chaminda Silva",
-    role: "Cultural Specialist",
-    bio: "Preserving and promoting traditional Sri Lankan wedding customs in the digital age.",
-    image: "/placeholder.svg?height=300&width=300",
-    social: {
-      linkedin: "#",
-      twitter: "#",
-      email: "chaminda@weddingplatform.lk",
-    },
-  },
-  {
-    name: "Sanduni Fernando",
-    role: "Customer Success Manager",
-    bio: "Ensuring every couple has an amazing experience from planning to their special day.",
-    image: "/placeholder.svg?height=300&width=300",
-    social: {
-      linkedin: "#",
-      twitter: "#",
-      email: "sanduni@weddingplatform.lk",
+      linkedin: "https://linkedin.com/in/asithalkonara",
+      twitter: "https://twitter.com/asithalkonara",
+      email: "asitha@wedding.lk",
     },
   },
 ]
@@ -91,15 +36,14 @@ export function TeamSection() {
           </div>
 
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-            The People Behind Your Perfect Day
+            Meet Our Founder
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Our diverse team combines technology expertise, cultural knowledge, and wedding industry experience to serve
-            couples across Sri Lanka.
+            The visionary behind Wedding.lk, dedicated to transforming how couples plan their perfect day across Sri Lanka.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="flex justify-center max-w-7xl mx-auto">
           {teamMembers.map((member, index) => (
             <motion.div
               key={member.name}
@@ -109,7 +53,7 @@ export function TeamSection() {
               viewport={{ once: true }}
               className="group"
             >
-              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 dark:border-gray-700/20 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:-translate-y-2">
+              <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 border border-white/20 dark:border-gray-700/20 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:-translate-y-2 max-w-md">
                 {/* Profile Image */}
                 <div className="relative mb-6">
                   <div className="absolute -inset-2 bg-gradient-to-r from-pink-500/20 to-purple-500/20 rounded-full blur-lg group-hover:blur-xl transition-all duration-300" />
@@ -138,22 +82,31 @@ export function TeamSection() {
                     size="sm"
                     variant="outline"
                     className="w-10 h-10 p-0 rounded-full border-gray-300 dark:border-gray-600 hover:border-pink-500 hover:bg-pink-50 dark:hover:bg-pink-900/20 transition-all duration-300"
+                    asChild
                   >
-                    <Linkedin className="w-4 h-4" />
+                    <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer">
+                      <Linkedin className="w-4 h-4" />
+                    </a>
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     className="w-10 h-10 p-0 rounded-full border-gray-300 dark:border-gray-600 hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-300"
+                    asChild
                   >
-                    <Twitter className="w-4 h-4" />
+                    <a href={member.social.twitter} target="_blank" rel="noopener noreferrer">
+                      <Twitter className="w-4 h-4" />
+                    </a>
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     className="w-10 h-10 p-0 rounded-full border-gray-300 dark:border-gray-600 hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-300"
+                    asChild
                   >
-                    <Mail className="w-4 h-4" />
+                    <a href={`mailto:${member.social.email}`}>
+                      <Mail className="w-4 h-4" />
+                    </a>
                   </Button>
                 </div>
               </div>

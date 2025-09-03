@@ -76,13 +76,13 @@
   ],
   "screenshots": [
     {
-      "src": "/placeholder.jpg",
+      "src": "/placeholder.svg",
       "sizes": "1280x720",
       "type": "image/jpeg",
       "form_factor": "wide"
     },
     {
-      "src": "/placeholder.jpg",
+      "src": "/placeholder.svg",
       "sizes": "750x1334",
       "type": "image/jpeg",
       "form_factor": "narrow"

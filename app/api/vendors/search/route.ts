@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
-import { connectDB } from "@/lib/db"
-import { Vendor } from "@/lib/models/vendor"
-import { Review } from "@/lib/models/review"
 
 export async function GET(request: NextRequest) {
   try {
-    await connectDB()
-
     const { searchParams } = new URL(request.url)
     const query = searchParams.get('q') || ''
     const category = searchParams.get('category') || ''
@@ -16,74 +11,104 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20')
     const offset = parseInt(searchParams.get('offset') || '0')
 
-    // Build search query
-    const searchQuery: any = { isVerified: true, isActive: true }
+    // Mock vendor data for search
+    const mockVendors = [
+      {
+        _id: "vendor1",
+        name: "John Smith",
+        businessName: "Elegant Photography Studio",
+        category: "photographer",
+        description: "Professional wedding photographer with 10+ years experience",
+        location: {
+          address: "123 Main Street, Colombo 07",
+          city: "Colombo",
+          province: "Western Province",
+          coordinates: { lat: 6.9271, lng: 79.8612 }
+        },
+        rating: { average: 4.7, count: 95 },
+        pricing: { startingPrice: 50000, currency: "LKR" },
+        portfolio: ["/placeholder.svg", "/placeholder.svg"],
+        services: [
+          { name: "Wedding Photography", price: 50000 },
+          { name: "Pre-wedding Shoot", price: 25000 },
+          { name: "Engagement Session", price: 15000 }
+        ],
+        isVerified: true,
+        isActive: true
+      },
+      {
+        _id: "vendor2",
+        name: "Maria Silva",
+        businessName: "Royal Catering Services",
+        category: "caterer", 
+        description: "Premium catering with authentic Sri Lankan cuisine",
+        location: {
+          address: "456 Food Street, Negombo",
+          city: "Negombo",
+          province: "Western Province",
+          coordinates: { lat: 7.2086, lng: 79.8358 }
+        },
+        rating: { average: 4.9, count: 120 },
+        pricing: { startingPrice: 80000, currency: "LKR" },
+        portfolio: ["/placeholder.svg", "/placeholder.svg"],
+        services: [
+          { name: "Full Wedding Menu", price: 80000 },
+          { name: "Appetizers Only", price: 30000 },
+          { name: "Dessert Station", price: 20000 }
+        ],
+        isVerified: true,
+        isActive: true
+      },
+      {
+        _id: "vendor3",
+        name: "David Fernando",
+        businessName: "Garden Decorations",
+        category: "decorator",
+        description: "Beautiful floral arrangements and venue decorations",
+        location: {
+          address: "789 Flower Road, Kandy",
+          city: "Kandy", 
+          province: "Central Province",
+          coordinates: { lat: 7.2906, lng: 80.6337 }
+        },
+        rating: { average: 4.5, count: 75 },
+        pricing: { startingPrice: 40000, currency: "LKR" },
+        portfolio: ["/placeholder.svg", "/placeholder.svg"],
+        services: [
+          { name: "Full Venue Decoration", price: 40000 },
+          { name: "Flower Arrangements", price: 20000 },
+          { name: "Table Settings", price: 15000 }
+        ],
+        isVerified: true,
+        isActive: true
+      }
+    ]
 
-    // Text search
-    if (query) {
-      searchQuery.$or = [
-        { name: { $regex: query, $options: 'i' } },
-        { businessName: { $regex: query, $options: 'i' } },
-        { description: { $regex: query, $options: 'i' } },
-        { 'location.city': { $regex: query, $options: 'i' } },
-        { 'location.province': { $regex: query, $options: 'i' } }
-      ]
-    }
+    // Simple filtering logic
+    let filteredVendors = mockVendors.filter(vendor => {
+      if (query && !vendor.name.toLowerCase().includes(query.toLowerCase()) && 
+          !vendor.businessName.toLowerCase().includes(query.toLowerCase()) &&
+          !vendor.description.toLowerCase().includes(query.toLowerCase())) {
+        return false
+      }
+      if (category && vendor.category !== category) {
+        return false
+      }
+      if (location && !vendor.location.city.toLowerCase().includes(location.toLowerCase())) {
+        return false
+      }
+      if (minRating && vendor.rating.average < parseFloat(minRating)) {
+        return false
+      }
+      return true
+    })
 
-    // Category filter
-    if (category && category !== 'all') {
-      searchQuery.category = category
-    }
-
-    // Location filter
-    if (location) {
-      searchQuery.$or = searchQuery.$or || []
-      searchQuery.$or.push(
-        { 'location.city': { $regex: location, $options: 'i' } },
-        { 'location.province': { $regex: location, $options: 'i' } }
-      )
-    }
-
-    // Rating filter
-    if (minRating && minRating !== '0') {
-      searchQuery['rating.average'] = { $gte: parseFloat(minRating) }
-    }
-
-    // Execute search
-    const vendors = await Vendor.find(searchQuery)
-      .populate('owner', 'name email avatar')
-      .sort({ 'rating.average': -1, 'rating.count': -1 })
-      .skip(offset)
-      .limit(limit)
-
-    // Get total count for pagination
-    const totalCount = await Vendor.countDocuments(searchQuery)
-
-    // Enhance vendor data with review statistics
-    const enhancedVendors = await Promise.all(
-      vendors.map(async (vendor) => {
-        const reviews = await Review.find({ 
-          vendor: vendor._id, 
-          isVerified: true, 
-          isActive: true 
-        })
-
-        const averageRating = reviews.length > 0 
-          ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length 
-          : 0
-
-        return {
-          ...vendor.toObject(),
-          reviewStats: {
-            averageRating: Math.round(averageRating * 10) / 10,
-            count: reviews.length
-          }
-        }
-      })
-    )
+    // Apply pagination
+    const totalCount = filteredVendors.length
+    const paginatedVendors = filteredVendors.slice(offset, offset + limit)
 
     return NextResponse.json({
-      vendors: enhancedVendors,
+      vendors: paginatedVendors,
       pagination: {
         total: totalCount,
         limit,
@@ -99,4 +124,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     )
   }
-} 
+}

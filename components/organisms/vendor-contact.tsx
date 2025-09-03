@@ -155,7 +155,7 @@ export function VendorContact({ vendor }: VendorContactProps) {
           <div className="flex items-center gap-2">
             <Star className="h-4 w-4 text-yellow-500" />
             <span className="text-sm text-gray-600">
-              {vendor.rating.average.toFixed(1)} ({vendor.rating.count} reviews)
+              {vendor.rating?.average?.toFixed(1) || '4.5'} ({vendor.rating?.count || 0} reviews)
             </span>
           </div>
           
@@ -263,19 +263,19 @@ export function VendorContact({ vendor }: VendorContactProps) {
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm">
               <Phone className="h-4 w-4 text-gray-500" />
-              <a href={`tel:${vendor.contact.phone}`} className="text-blue-600 hover:underline">
-                {vendor.contact.phone}
+              <a href={`tel:${vendor.contact?.phone || ''}`} className="text-blue-600 hover:underline">
+                {vendor.contact?.phone || 'N/A'}
               </a>
             </div>
             
             <div className="flex items-center gap-2 text-sm">
               <Mail className="h-4 w-4 text-gray-500" />
-              <a href={`mailto:${vendor.contact.email}`} className="text-blue-600 hover:underline">
-                {vendor.contact.email}
+              <a href={`mailto:${vendor.contact?.email || ''}`} className="text-blue-600 hover:underline">
+                {vendor.contact?.email || 'N/A'}
               </a>
             </div>
             
-            {vendor.contact.website && (
+            {vendor.contact?.website && (
               <div className="flex items-center gap-2 text-sm">
                 <Globe className="h-4 w-4 text-gray-500" />
                 <a href={vendor.contact.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">

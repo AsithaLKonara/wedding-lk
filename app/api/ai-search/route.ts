@@ -13,6 +13,42 @@ export async function GET(request: NextRequest) {
       );
     }
     
+    return await processAISearch(query);
+    
+  } catch (error) {
+    console.error('❌ Error in AI search:', error);
+    return NextResponse.json(
+      { error: 'AI search failed' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { query } = body;
+    
+    if (!query) {
+      return NextResponse.json(
+        { error: 'Query is required in request body' },
+        { status: 400 }
+      );
+    }
+    
+    return await processAISearch(query);
+    
+  } catch (error) {
+    console.error('❌ Error in AI search:', error);
+    return NextResponse.json(
+      { error: 'AI search failed' },
+      { status: 500 }
+    );
+  }
+}
+
+async function processAISearch(query: string) {
+  try {
     console.log('🤖 Processing AI search with optimized service...');
     const startTime = Date.now();
     

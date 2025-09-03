@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Heart, Share2, Download, Eye, Calendar, MapPin, X } from "lucide-react"
+import { Heart, Share2, Download, Eye, Calendar, MapPin, X, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
@@ -23,6 +23,7 @@ interface Photo {
   isLiked: boolean
   tags: string[]
   description: string
+  postId?: string
 }
 
 interface PhotoGridProps {
@@ -30,115 +31,43 @@ interface PhotoGridProps {
   venue: string
 }
 
-// Mock data for photos
-const mockPhotos: Photo[] = [
-  {
-    id: "1",
-    url: "/placeholder.svg?height=400&width=300",
-    title: "Traditional Kandyan Wedding Ceremony",
-    category: "ceremonies",
-    venue: "cinnamon-grand",
-    venueId: "cinnamon-grand",
-    photographer: "Amara Photography",
-    photographerAvatar: "/placeholder.svg?height=40&width=40",
-    date: "2024-01-15",
-    likes: 234,
-    views: 1250,
-    isLiked: false,
-    tags: ["traditional", "kandyan", "ceremony"],
-    description: "Beautiful traditional Kandyan wedding ceremony with authentic cultural elements",
-  },
-  {
-    id: "2",
-    url: "/placeholder.svg?height=500&width=400",
-    title: "Modern Reception Decoration",
-    category: "decorations",
-    venue: "shangri-la",
-    venueId: "shangri-la",
-    photographer: "Lens & Light Studio",
-    photographerAvatar: "/placeholder.svg?height=40&width=40",
-    date: "2024-01-20",
-    likes: 189,
-    views: 890,
-    isLiked: true,
-    tags: ["modern", "reception", "decoration"],
-    description: "Elegant modern reception setup with contemporary floral arrangements",
-  },
-  {
-    id: "3",
-    url: "/placeholder.svg?height=600&width=400",
-    title: "Couple Portrait Session",
-    category: "couples",
-    venue: "galle-face",
-    venueId: "galle-face",
-    photographer: "Moments by Malith",
-    photographerAvatar: "/placeholder.svg?height=40&width=40",
-    date: "2024-02-01",
-    likes: 156,
-    views: 670,
-    isLiked: false,
-    tags: ["couples", "portrait", "romantic"],
-    description: "Romantic couple portrait session at sunset with ocean backdrop",
-  },
-  {
-    id: "4",
-    url: "/placeholder.svg?height=400&width=350",
-    title: "Venue Architecture",
-    category: "venues",
-    venue: "kingsbury",
-    venueId: "kingsbury",
-    photographer: "Architecture Focus",
-    photographerAvatar: "/placeholder.svg?height=40&width=40",
-    date: "2024-02-05",
-    likes: 98,
-    views: 445,
-    isLiked: false,
-    tags: ["venue", "architecture", "interior"],
-    description: "Stunning venue architecture showcasing elegant interior design",
-  },
-  {
-    id: "5",
-    url: "/placeholder.svg?height=450&width=300",
-    title: "Traditional Dance Performance",
-    category: "traditional",
-    venue: "heritance-kandalama",
-    venueId: "heritance-kandalama",
-    photographer: "Cultural Captures",
-    photographerAvatar: "/placeholder.svg?height=40&width=40",
-    date: "2024-02-10",
-    likes: 267,
-    views: 1100,
-    isLiked: true,
-    tags: ["traditional", "dance", "cultural"],
-    description: "Captivating traditional dance performance during wedding ceremony",
-  },
-  {
-    id: "6",
-    url: "/placeholder.svg?height=550&width=400",
-    title: "Reception Celebration",
-    category: "receptions",
-    venue: "taj-samudra",
-    venueId: "taj-samudra",
-    photographer: "Celebration Studios",
-    photographerAvatar: "/placeholder.svg?height=40&width=40",
-    date: "2024-02-15",
-    likes: 312,
-    views: 1450,
-    isLiked: false,
-    tags: ["reception", "celebration", "party"],
-    description: "Joyful reception celebration with family and friends",
-  },
-]
+
 
 export function PhotoGrid({ category, venue }: PhotoGridProps) {
-  const [photos, setPhotos] = useState<Photo[]>(mockPhotos)
+  const [photos, setPhotos] = useState<Photo[]>([])
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
-  // Filter photos based on category and venue
+  // Fetch photos from API
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      try {
+        setLoading(true)
+        const params = new URLSearchParams({
+          category,
+          venue,
+          limit: '50'
+        })
+        
+        const response = await fetch(`/api/gallery?${params}`)
+        if (response.ok) {
+          const data = await response.json()
+          setPhotos(data.data || [])
+        }
+      } catch (error) {
+        console.error('Error fetching gallery photos:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPhotos()
+  }, [category, venue])
+
+  // Filter photos based on category and venue (client-side filtering for additional precision)
   const filteredPhotos = photos.filter((photo) => {
     const categoryMatch = category === "all" || photo.category === category
-    const venueMatch = venue === "all" || photo.venue === venue
+    const venueMatch = venue === "all" || photo.venue.toLowerCase().includes(venue.toLowerCase())
     return categoryMatch && venueMatch
   })
 
@@ -156,6 +85,15 @@ export function PhotoGrid({ category, venue }: PhotoGridProps) {
     setSelectedPhoto(photo)
     // Increment view count
     setPhotos((prev) => prev.map((p) => (p.id === photo.id ? { ...p, views: p.views + 1 } : p)))
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="h-8 w-8 animate-spin text-rose-500" />
+        <span className="ml-2 text-gray-600">Loading gallery photos...</span>
+      </div>
+    )
   }
 
   return (

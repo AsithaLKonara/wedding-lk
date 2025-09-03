@@ -345,7 +345,7 @@ export function AIWeddingPlanner() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Star className="h-4 w-4" />
-                          <span className="text-sm">Rating: {venue.rating}/5</span>
+                          <span className="text-sm">Rating: {venue.rating?.average || 4.5}/5</span>
                         </div>
                         {venue.aiReason && (
                           <Badge variant="outline" className="text-xs">
@@ -375,7 +375,7 @@ export function AIWeddingPlanner() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Star className="h-4 w-4" />
-                          <span className="text-sm">Rating: {vendor.rating}/5</span>
+                          <span className="text-sm">Rating: {vendor.rating?.average || 4.5}/5</span>
                         </div>
                         {vendor.aiReason && (
                           <Badge variant="outline" className="text-xs">

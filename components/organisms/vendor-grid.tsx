@@ -322,7 +322,7 @@ export function VendorGrid({ limit = 6, category, location, className = "" }: Ve
                 </Badge>
                 <div className="flex items-center text-sm text-gray-600">
                   <Star className="h-4 w-4 mr-1 text-yellow-500" />
-                  <span>{vendor.rating.average.toFixed(1)} ({vendor.rating.count})</span>
+                  <span>{vendor.rating?.average?.toFixed(1) || '4.5'} ({vendor.rating?.count || 0})</span>
                 </div>
               </div>
             </CardHeader>
@@ -378,11 +378,11 @@ export function VendorGrid({ limit = 6, category, location, className = "" }: Ve
                 <div className="flex items-center justify-between text-xs text-gray-500">
                   <div className="flex items-center">
                     <Phone className="h-3 w-3 mr-1" />
-                    <span>{vendor.contact.phone}</span>
+                    <span>{vendor.contact?.phone || 'N/A'}</span>
                   </div>
                   <div className="flex items-center">
                     <Mail className="h-3 w-3 mr-1" />
-                    <span>{vendor.contact.email}</span>
+                    <span>{vendor.contact?.email || 'N/A'}</span>
                   </div>
                 </div>
               </div>

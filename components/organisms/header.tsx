@@ -8,7 +8,8 @@ import { ThemeToggle } from "@/components/molecules/theme-toggle"
 import { NavigationMenu } from "@/components/molecules/navigation-menu"
 import { MobileMenu } from "@/components/molecules/mobile-menu"
 import { Logo } from "@/components/atoms/logo"
-import { Menu, X, Bell } from "lucide-react"
+import { NotificationDropdown } from "@/components/organisms/notification-dropdown"
+import { Menu, X } from "lucide-react"
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -31,9 +32,7 @@ export function Header() {
           <div className="flex items-center space-x-3">
             <ThemeToggle />
 
-            <Button variant="ghost" size="sm" className="hidden md:flex">
-              <Bell className="h-4 w-4" />
-            </Button>
+            <NotificationDropdown />
 
             <div className="hidden md:flex items-center space-x-2">
               <Button variant="ghost" asChild>

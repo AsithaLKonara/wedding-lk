@@ -75,6 +75,10 @@ export interface IUser extends Document {
   loginAttempts: number;
   lockedUntil?: Date;
   
+  // Password Reset
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
+  
   // Timestamps
   createdAt: Date;
   updatedAt: Date;
@@ -290,6 +294,14 @@ const UserSchema: Schema = new Schema(
       default: 0,
     },
     lockedUntil: {
+      type: Date,
+    },
+    
+    // Password Reset
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
       type: Date,
     },
   },

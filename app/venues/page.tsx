@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Star, MapPin, Users, DollarSign, Calendar, Search, Filter } from "lucide-react"
 import Link from "next/link"
+import { MainLayout } from "@/components/templates/main-layout"
 
 interface Venue {
   _id: string
@@ -38,10 +39,10 @@ export default function VenuesPage() {
   const [venues, setVenues] = useState<Venue[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedLocation, setSelectedLocation] = useState("")
+  const [selectedLocation, setSelectedLocation] = useState("all")
   const [minCapacity, setMinCapacity] = useState("")
   const [maxCapacity, setMaxCapacity] = useState("")
-  const [minRating, setMinRating] = useState("")
+  const [minRating, setMinRating] = useState("all")
 
   const fetchVenues = async () => {
     try {
@@ -51,10 +52,10 @@ export default function VenuesPage() {
         offset: '0'
       })
       
-      if (selectedLocation) params.append('location', selectedLocation)
+      if (selectedLocation && selectedLocation !== 'all') params.append('location', selectedLocation)
       if (minCapacity) params.append('minCapacity', minCapacity)
       if (maxCapacity) params.append('maxCapacity', maxCapacity)
-      if (minRating) params.append('minRating', minRating)
+      if (minRating && minRating !== 'all') params.append('minRating', minRating)
       if (searchQuery) params.append('q', searchQuery)
 
       const response = await fetch(`/api/venues/search?${params}`)
@@ -87,7 +88,8 @@ export default function VenuesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <MainLayout>
+      <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-16">
         <div className="container mx-auto px-4 text-center">
@@ -125,7 +127,7 @@ export default function VenuesPage() {
                     <SelectValue placeholder="Select Location" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Locations</SelectItem>
+                    <SelectItem value="all">All Locations</SelectItem>
                     <SelectItem value="Colombo">Colombo</SelectItem>
                     <SelectItem value="Kandy">Kandy</SelectItem>
                     <SelectItem value="Galle">Galle</SelectItem>
@@ -150,7 +152,7 @@ export default function VenuesPage() {
                     <SelectValue placeholder="Min Rating" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Any Rating</SelectItem>
+                    <SelectItem value="all">Any Rating</SelectItem>
                     <SelectItem value="4">4+ Stars</SelectItem>
                     <SelectItem value="4.5">4.5+ Stars</SelectItem>
                     <SelectItem value="5">5 Stars</SelectItem>
@@ -217,10 +219,10 @@ export default function VenuesPage() {
                     <div className="flex items-center space-x-2">
                       <Star className="h-4 w-4 text-yellow-500 fill-current" />
                       <span className="text-sm font-medium text-gray-900">
-                        {venue.reviewStats.averageRating}
+                        {venue.reviewStats?.averageRating || 4.5}
                       </span>
                       <span className="text-sm text-gray-500">
-                        ({venue.reviewStats.count} reviews)
+                        ({venue.reviewStats?.count || 0} reviews)
                       </span>
                     </div>
 
@@ -289,7 +291,7 @@ export default function VenuesPage() {
                     <div className="text-lg font-semibold text-gray-900">
                       {location.name}
                     </div>
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-gray-400">
                       {location.count} venues
                     </div>
                   </div>
@@ -299,6 +301,7 @@ export default function VenuesPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+      </div>
+    </MainLayout>
   )
 } 

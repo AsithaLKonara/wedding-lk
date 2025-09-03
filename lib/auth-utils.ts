@@ -21,11 +21,6 @@ export async function getServerSession(request?: NextRequest): Promise<Session |
     return null;
   }
   
-  try {
-    // TODO: Implement proper NextAuth v5 session retrieval
-    return null;
-  } catch (error) {
-    console.error('Error getting server session:', error);
-    return null;
-  }
+  // TODO: Implement proper NextAuth v5 session retrieval
+  return null;
 }

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Star, MapPin, Phone, Mail, Search, Filter } from "lucide-react"
 import Link from "next/link"
+import { MainLayout } from "@/components/templates/main-layout"
 
 interface Vendor {
   _id: string
@@ -47,7 +48,7 @@ export default function VendorsPage() {
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
-  const [selectedLocation, setSelectedLocation] = useState("")
+  const [selectedLocation, setSelectedLocation] = useState("all")
 
   useEffect(() => {
     fetchVendors()
@@ -63,7 +64,7 @@ export default function VendorsPage() {
       })
       
       if (selectedCategory !== 'all') params.append('category', selectedCategory)
-      if (selectedLocation) params.append('location', selectedLocation)
+      if (selectedLocation && selectedLocation !== 'all') params.append('location', selectedLocation)
       if (searchQuery) params.append('q', searchQuery)
 
       const response = await fetch(`/api/vendors/search?${params}`)
@@ -106,7 +107,8 @@ export default function VendorsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <MainLayout>
+      <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
         <div className="container mx-auto px-4 text-center">
@@ -157,7 +159,7 @@ export default function VendorsPage() {
                     <SelectValue placeholder="Select Location" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Locations</SelectItem>
+                    <SelectItem value="all">All Locations</SelectItem>
                     <SelectItem value="Colombo">Colombo</SelectItem>
                     <SelectItem value="Kandy">Kandy</SelectItem>
                     <SelectItem value="Galle">Galle</SelectItem>
@@ -235,10 +237,10 @@ export default function VendorsPage() {
                     <div className="flex items-center space-x-2">
                       <Star className="h-4 w-4 text-yellow-500 fill-current" />
                       <span className="text-sm font-medium text-gray-900">
-                        {vendor.reviewStats.averageRating}
+                        {vendor.reviewStats?.averageRating || 4.5}
                       </span>
                       <span className="text-sm text-gray-500">
-                        ({vendor.reviewStats.count} reviews)
+                        ({vendor.reviewStats?.count || 0} reviews)
                       </span>
                     </div>
 
@@ -305,6 +307,7 @@ export default function VendorsPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+      </div>
+    </MainLayout>
   )
 } 

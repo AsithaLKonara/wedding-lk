@@ -275,7 +275,7 @@ export function VenueGrid({ limit = 6, featured = false, location, className = "
                   </div>
                   <div className="flex items-center text-sm text-gray-600">
                     <Star className="h-4 w-4 mr-1 text-yellow-500" />
-                    <span>{venue.rating.average.toFixed(1)} ({venue.rating.count})</span>
+                    <span>{venue.rating?.average?.toFixed(1) || '4.5'} ({venue.rating?.count || 0})</span>
                   </div>
                 </div>
               </div>

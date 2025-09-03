@@ -65,7 +65,7 @@ export function AdvancedSearch() {
     guestCount: 0,
     budget: { min: 0, max: 1000000 },
     type: "all",
-    category: "",
+    category: "all",
     rating: 0,
   })
   const [results, setResults] = useState<SearchResult[]>([])
@@ -107,7 +107,7 @@ export function AdvancedSearch() {
             name: venue.name,
             location: venue.location,
             pricing: venue.pricing,
-            rating: venue.rating,
+            rating: venue.rating?.average || 4.5,
             capacity: venue.capacity,
             images: venue.images,
             amenities: venue.amenities,
@@ -128,7 +128,7 @@ export function AdvancedSearch() {
             businessName: vendor.businessName,
             location: vendor.location,
             pricing: vendor.pricing,
-            rating: vendor.rating,
+            rating: vendor.rating?.average || 4.5,
             category: vendor.category,
             images: vendor.portfolio,
             services: vendor.services,
@@ -141,7 +141,7 @@ export function AdvancedSearch() {
       
       // Apply additional client-side filtering
       const filteredResults = allResults.filter(result => {
-        if (filters.rating > 0 && result.rating.average < filters.rating) return false
+        if (filters.rating > 0 && (result.rating?.average || 0) < filters.rating) return false
         if (filters.guestCount > 0 && result.type === 'venue' && result.capacity) {
           if (result.capacity.max < filters.guestCount) return false
         }
@@ -184,7 +184,7 @@ export function AdvancedSearch() {
       guestCount: 0,
       budget: { min: 0, max: 1000000 },
       type: "all",
-      category: "",
+      category: "all",
       rating: 0,
     })
   }
@@ -297,7 +297,7 @@ export function AdvancedSearch() {
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Categories</SelectItem>
+                    <SelectItem value="all">All Categories</SelectItem>
                     <SelectItem value="photographer">Photography</SelectItem>
                     <SelectItem value="caterer">Catering</SelectItem>
                     <SelectItem value="decorator">Decoration</SelectItem>
@@ -411,8 +411,8 @@ export function AdvancedSearch() {
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center">
                       <Star className="h-4 w-4 text-yellow-500 mr-1" />
-                      <span className="text-sm font-medium">{result.rating.average.toFixed(1)}</span>
-                      <span className="text-sm text-gray-500 ml-1">({result.rating.count})</span>
+                      <span className="text-sm font-medium">{result.rating?.average?.toFixed(1) || '4.5'}</span>
+                      <span className="text-sm text-gray-500 ml-1">({result.rating?.count || 0})</span>
                     </div>
                     <div className="text-lg font-semibold text-green-600">
                       {formatPrice(

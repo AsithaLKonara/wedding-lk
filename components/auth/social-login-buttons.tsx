@@ -23,8 +23,8 @@ interface SocialLoginButtonsProps {
 
 export function SocialLoginButtons({ 
   redirectTo = '/dashboard',
-  onSuccess,
-  onError,
+  onSuccess, 
+  onError, 
   showDescription = true
 }: SocialLoginButtonsProps) {
   const [loading, setLoading] = useState<string | null>(null);
@@ -121,7 +121,7 @@ export function SocialLoginButtons({
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl font-bold">Welcome to WeddingLK</CardTitle>
-        {showDescription && (
+      {showDescription && (
           <CardDescription>
             Sign in with your social account to get started
           </CardDescription>
@@ -139,9 +139,9 @@ export function SocialLoginButtons({
           {socialProviders.map((provider) => {
             const Icon = provider.icon;
             const isLoading = loading === provider.id;
-            
-            return (
-              <Button
+          
+          return (
+                <Button
                 key={provider.id}
                 variant="outline"
                 className={`w-full ${provider.color} ${provider.textColor} border-0`}
@@ -154,10 +154,10 @@ export function SocialLoginButtons({
                   <Icon className="mr-2 h-4 w-4" />
                 )}
                 {isLoading ? 'Signing in...' : `Continue with ${provider.name}`}
-              </Button>
-            );
-          })}
-        </div>
+                </Button>
+          );
+        })}
+      </div>
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
@@ -168,7 +168,7 @@ export function SocialLoginButtons({
               Or continue with email
             </span>
           </div>
-        </div>
+      </div>
 
         <div className="text-center text-sm text-muted-foreground">
           By signing in, you agree to our{' '}
@@ -180,9 +180,9 @@ export function SocialLoginButtons({
             Privacy Policy
           </a>
         </div>
-      </CardContent>
-    </Card>
+          </CardContent>
+        </Card>
   );
-}
+} 
 
 export default SocialLoginButtons;

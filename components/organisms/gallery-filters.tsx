@@ -1,9 +1,10 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { Filter, X } from "lucide-react"
+import { Filter, X, Loader2 } from "lucide-react"
 import { motion } from "framer-motion"
 
 interface GalleryFiltersProps {
@@ -13,28 +14,16 @@ interface GalleryFiltersProps {
   onVenueChange: (venue: string) => void
 }
 
-const categories = [
-  { id: "all", label: "All Photos", count: 1250 },
-  { id: "ceremonies", label: "Ceremonies", count: 320 },
-  { id: "receptions", label: "Receptions", count: 280 },
-  { id: "decorations", label: "Decorations", count: 195 },
-  { id: "venues", label: "Venues", count: 165 },
-  { id: "couples", label: "Couples", count: 145 },
-  { id: "traditional", label: "Traditional", count: 125 },
-  { id: "modern", label: "Modern", count: 95 },
-]
+interface Category {
+  id: string
+  label: string
+  count: number
+}
 
-const venues = [
-  { id: "all", label: "All Venues" },
-  { id: "cinnamon-grand", label: "Cinnamon Grand Colombo" },
-  { id: "galle-face", label: "Galle Face Hotel" },
-  { id: "kingsbury", label: "The Kingsbury" },
-  { id: "hilton-colombo", label: "Hilton Colombo" },
-  { id: "taj-samudra", label: "Taj Samudra" },
-  { id: "shangri-la", label: "Shangri-La Colombo" },
-  { id: "jetwing-blue", label: "Jetwing Blue Negombo" },
-  { id: "heritance-kandalama", label: "Heritance Kandalama" },
-]
+interface Venue {
+  id: string
+  label: string
+}
 
 export function GalleryFilters({
   selectedCategory,
@@ -42,6 +31,29 @@ export function GalleryFilters({
   onCategoryChange,
   onVenueChange,
 }: GalleryFiltersProps) {
+  const [categories, setCategories] = useState<Category[]>([])
+  const [venues, setVenues] = useState<Venue[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('/api/gallery/stats')
+        if (response.ok) {
+          const data = await response.json()
+          setCategories(data.data.categories || [])
+          setVenues(data.data.venues || [])
+        }
+      } catch (error) {
+        console.error('Error fetching gallery stats:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchStats()
+  }, [])
+
   const activeFilters = []
   if (selectedCategory !== "all") {
     const category = categories.find((c) => c.id === selectedCategory)
@@ -60,6 +72,17 @@ export function GalleryFilters({
   const clearAllFilters = () => {
     onCategoryChange("all")
     onVenueChange("all")
+  }
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-center py-8">
+          <Loader2 className="h-6 w-6 animate-spin text-rose-500" />
+          <span className="ml-2 text-gray-600">Loading filters...</span>
+        </div>
+      </div>
+    )
   }
 
   return (
