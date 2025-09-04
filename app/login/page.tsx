@@ -36,7 +36,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('🔐 LOGIN FORM SUBMITTED');
+    console.log('🔐 LOGIN FORM SUBMITTED (Hardcoded Auth)');
     console.log('📧 Form data:', {
       email: formData.email,
       passwordLength: formData.password.length,
@@ -47,6 +47,46 @@ export default function LoginPage() {
     setError('') // Clear previous errors
 
     try {
+      // TEMPORARY: Use hardcoded authentication instead of NextAuth
+      console.log('🚀 Using hardcoded authentication system...');
+      
+      const response = await fetch('/api/simple-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          email: formData.email, 
+          password: formData.password 
+        }),
+      });
+
+      const data = await response.json();
+      console.log('📋 Auth response:', data);
+
+      if (response.ok && data.success) {
+        console.log('✅ Login successful, redirecting...');
+        // Redirect based on user role
+        switch (data.user.role) {
+          case 'admin':
+            router.push('/dashboard/admin');
+            break;
+          case 'user':
+            router.push('/dashboard/user');
+            break;
+          case 'vendor':
+            router.push('/dashboard/vendor');
+            break;
+          case 'wedding_planner':
+            router.push('/dashboard/planner');
+            break;
+          default:
+            router.push('/dashboard');
+        }
+      } else {
+        console.error('❌ Login error:', data.error || data.message);
+        setError(data.message || data.error || 'Login failed');
+      }
+
+      /* TEMPORARILY DISABLED: NextAuth Database Authentication
       console.log('🚀 Calling signIn with credentials...');
       const result = await signIn('credentials', {
         email: formData.email,
@@ -76,6 +116,8 @@ export default function LoginPage() {
         console.log('⚠️ Unexpected result:', result);
         setError('Login failed: Unexpected response');
       }
+      */
+
     } catch (error) {
       console.error('💥 CRITICAL LOGIN ERROR:', error);
       console.error('📊 Error details:', {
@@ -92,9 +134,16 @@ export default function LoginPage() {
   const handleSocialLogin = async (provider: string) => {
     setIsLoading(true)
     try {
+      // TEMPORARILY DISABLED: Social login requires NextAuth
+      console.log(`🚫 Social login (${provider}) temporarily disabled - using hardcoded auth`);
+      setError(`Social login (${provider}) is temporarily disabled. Please use email/password login.`);
+      
+      /* TEMPORARILY DISABLED: NextAuth Social Authentication
       await signIn(provider, { callbackUrl: '/dashboard' })
+      */
     } catch (error) {
       console.error('Social login error:', error)
+      setError(`Social login failed: ${error.message}`);
     } finally {
       setIsLoading(false)
     }
@@ -116,6 +165,19 @@ export default function LoginPage() {
               </div>
               <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
               <CardDescription>Sign in to your Wedding.lk account</CardDescription>
+              
+              {/* Temporary Authentication Notice */}
+              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                <p className="text-sm text-blue-700">
+                  <strong>Demo Mode:</strong> Using test credentials for development.
+                  <br />
+                  <span className="text-xs text-blue-600">
+                    Try: admin1@wedding.lk / admin123 (Admin)
+                    <br />
+                    user1@example.com / user123 (User)
+                  </span>
+                </p>
+              </div>
             </CardHeader>
             <CardContent className="space-y-6">
               {error && (
@@ -204,9 +266,10 @@ export default function LoginPage() {
               <div className="grid grid-cols-2 gap-4">
                 <Button 
                   variant="outline" 
-                  className="w-full" 
+                  className="w-full opacity-50" 
                   onClick={() => handleSocialLogin('google')}
-                  disabled={isLoading}
+                  disabled={true}
+                  title="Temporarily disabled - use email/password login"
                 >
                   <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                     <path
@@ -230,9 +293,10 @@ export default function LoginPage() {
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="w-full"
+                  className="w-full opacity-50"
                   onClick={() => handleSocialLogin('facebook')}
-                  disabled={isLoading}
+                  disabled={true}
+                  title="Temporarily disabled - use email/password login"
                 >
                   <svg className="mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
