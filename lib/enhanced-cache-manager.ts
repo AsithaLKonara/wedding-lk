@@ -92,13 +92,8 @@ export class EnhancedCacheManager {
   }
 
   private setupEventListeners(): void {
-    this.redis.on('error', (err) => {
-      console.error('Enhanced Cache Redis error:', err);
-    });
-
-    this.redis.on('connect', () => {
-      console.log('✅ Enhanced Cache Redis connected');
-    });
+    // DISABLED: Redis event listeners - using local cache instead
+    console.log('⚠️ Enhanced Cache Redis event listeners disabled - using local cache service');
   }
 
   // Get data from cache with multi-layer fallback
