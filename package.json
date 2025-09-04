@@ -30,6 +30,8 @@
     "seed": "node scripts/seed-database.js",
     "seed:comprehensive": "node scripts/comprehensive-seed.mjs",
     "seed:basic": "node scripts/seed-basic-data.mjs",
+    "init:local-db": "node scripts/init-local-database.js",
+    "test:local-auth": "node scripts/test-local-auth.js",
     "test:simple": "echo 'No tests configured yet'",
     "test:coverage": "jest --coverage",
     "docker:build": "./scripts/docker-build.sh",

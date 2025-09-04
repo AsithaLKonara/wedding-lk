@@ -1,18 +1,20 @@
 [
   {
     "id": "venue-1",
-    "name": "Grand Ballroom",
-    "description": "Elegant ballroom with crystal chandeliers and marble floors.",
-    "capacity": 200,
-    "price": 200000,
+    "name": "Grand Ballroom Hotel",
+    "description": "Elegant ballroom with crystal chandeliers, marble floors, and modern amenities. Perfect for grand weddings.",
     "location": {
       "address": "123 Grand Avenue, Colombo 07",
       "city": "Colombo",
-      "province": "Western",
+      "province": "Western Province",
       "coordinates": {
-        "lat": 6.9271,
-        "lng": 79.8612
+        "latitude": 6.9271,
+        "longitude": 79.8612
       }
+    },
+    "capacity": {
+      "min": 100,
+      "max": 300
     },
     "amenities": [
       "Air Conditioning",
@@ -20,35 +22,83 @@
       "Catering Kitchen",
       "Sound System",
       "Lighting",
-      "Restrooms"
+      "Restrooms",
+      "Bridal Suite",
+      "Garden"
     ],
+    "pricing": {
+      "startingPrice": 250000,
+      "currency": "LKR"
+    },
+    "rating": {
+      "average": 4.7,
+      "count": 25
+    },
+    "owner": "venue-1",
+    "isVerified": true,
+    "isActive": true,
     "images": [
       "/images/grand-ballroom-1.jpg",
       "/images/grand-ballroom-2.jpg"
     ],
-    "isAvailable": true,
-    "rating": {
-      "average": 4.6,
-      "count": 15
-    },
-    "vendor": "vendor-business-1",
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "updatedAt": "2024-01-01T00:00:00.000Z"
+    "packages": [
+      {
+        "name": "Basic Venue Package",
+        "description": "Venue rental with basic amenities",
+        "price": 250000,
+        "includes": [
+          "Venue rental",
+          "Basic sound system",
+          "Lighting",
+          "Parking"
+        ]
+      },
+      {
+        "name": "Premium Venue Package",
+        "description": "Venue rental with premium amenities",
+        "price": 350000,
+        "includes": [
+          "Venue rental",
+          "Premium sound system",
+          "Professional lighting",
+          "Parking",
+          "Bridal suite"
+        ]
+      },
+      {
+        "name": "Luxury Venue Package",
+        "description": "Complete venue package with all amenities",
+        "price": 450000,
+        "includes": [
+          "Venue rental",
+          "Premium sound system",
+          "Professional lighting",
+          "Parking",
+          "Bridal suite",
+          "Garden access",
+          "Catering kitchen"
+        ]
+      }
+    ],
+    "createdAt": "2025-09-04T02:17:06.400Z",
+    "updatedAt": "2025-09-04T02:17:06.400Z"
   },
   {
     "id": "venue-2",
-    "name": "Garden Pavilion",
-    "description": "Beautiful outdoor venue surrounded by lush gardens.",
-    "capacity": 150,
-    "price": 180000,
+    "name": "Garden Paradise Resort",
+    "description": "Beautiful outdoor venue surrounded by lush gardens and tropical plants. Perfect for nature lovers.",
     "location": {
       "address": "456 Garden Road, Kandy",
       "city": "Kandy",
-      "province": "Central",
+      "province": "Central Province",
       "coordinates": {
-        "lat": 7.2906,
-        "lng": 80.6337
+        "latitude": 7.2906,
+        "longitude": 80.6337
       }
+    },
+    "capacity": {
+      "min": 50,
+      "max": 200
     },
     "amenities": [
       "Garden Setting",
@@ -56,19 +106,121 @@
       "Catering Kitchen",
       "Sound System",
       "Lighting",
-      "Restrooms"
+      "Restrooms",
+      "Natural Scenery"
     ],
-    "images": [
-      "/images/garden-pavilion-1.jpg",
-      "/images/garden-pavilion-2.jpg"
-    ],
-    "isAvailable": true,
-    "rating": {
-      "average": 4.4,
-      "count": 12
+    "pricing": {
+      "startingPrice": 180000,
+      "currency": "LKR"
     },
-    "vendor": "vendor-business-1",
-    "createdAt": "2024-01-01T00:00:00.000Z",
-    "updatedAt": "2024-01-01T00:00:00.000Z"
+    "rating": {
+      "average": 4.5,
+      "count": 18
+    },
+    "owner": "venue-2",
+    "isVerified": true,
+    "isActive": true,
+    "images": [
+      "/images/garden-paradise-1.jpg",
+      "/images/garden-paradise-2.jpg"
+    ],
+    "packages": [
+      {
+        "name": "Garden Basic Package",
+        "description": "Garden venue with basic amenities",
+        "price": 180000,
+        "includes": [
+          "Garden venue",
+          "Basic sound system",
+          "Lighting",
+          "Parking"
+        ]
+      },
+      {
+        "name": "Garden Premium Package",
+        "description": "Garden venue with premium amenities",
+        "price": 250000,
+        "includes": [
+          "Garden venue",
+          "Premium sound system",
+          "Professional lighting",
+          "Parking",
+          "Catering kitchen"
+        ]
+      }
+    ],
+    "createdAt": "2025-09-04T02:17:06.400Z",
+    "updatedAt": "2025-09-04T02:17:06.400Z"
+  },
+  {
+    "id": "venue-3",
+    "name": "Seaside Wedding Villa",
+    "description": "Stunning beachfront venue with ocean views and tropical ambiance. Perfect for destination weddings.",
+    "location": {
+      "address": "789 Beach Road, Galle",
+      "city": "Galle",
+      "province": "Southern Province",
+      "coordinates": {
+        "latitude": 6.0329,
+        "longitude": 80.2169
+      }
+    },
+    "capacity": {
+      "min": 30,
+      "max": 150
+    },
+    "amenities": [
+      "Beachfront",
+      "Parking",
+      "Catering Kitchen",
+      "Sound System",
+      "Lighting",
+      "Restrooms",
+      "Ocean View",
+      "Tropical Garden"
+    ],
+    "pricing": {
+      "startingPrice": 200000,
+      "currency": "LKR"
+    },
+    "rating": {
+      "average": 4.8,
+      "count": 22
+    },
+    "owner": "venue-3",
+    "isVerified": true,
+    "isActive": true,
+    "images": [
+      "/images/seaside-villa-1.jpg",
+      "/images/seaside-villa-2.jpg"
+    ],
+    "packages": [
+      {
+        "name": "Beach Basic Package",
+        "description": "Beachfront venue with basic amenities",
+        "price": 200000,
+        "includes": [
+          "Beachfront venue",
+          "Basic sound system",
+          "Lighting",
+          "Parking"
+        ]
+      },
+      {
+        "name": "Beach Premium Package",
+        "description": "Beachfront venue with premium amenities",
+        "price": 300000,
+        "includes": [
+          "Beachfront venue",
+          "Premium sound system",
+          "Professional lighting",
+          "Parking",
+          "Catering kitchen",
+          "Ocean view setup"
+        ]
+      }
+    ],
+    "createdAt": "2025-09-04T02:17:06.400Z",
+    "updatedAt": "2025-09-04T02:17:06.400Z"
   }
 ]

@@ -11,7 +11,7 @@
     "status": "completed",
     "estimatedHours": 8,
     "actualHours": 6,
-    "notes": "Client approved the Grand Ballroom",
+    "notes": "Client approved the Grand Ballroom Hotel",
     "createdAt": "2024-01-01T00:00:00.000Z",
     "updatedAt": "2024-01-01T00:00:00.000Z"
   },
@@ -28,6 +28,22 @@
     "estimatedHours": 4,
     "actualHours": 2,
     "notes": "Waiting for client feedback on menu options",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "task-3",
+    "title": "Photography Booking",
+    "description": "Book wedding photographer",
+    "client": "user-2",
+    "planner": "planner-1",
+    "category": "photography",
+    "priority": "high",
+    "dueDate": "2024-03-20T00:00:00.000Z",
+    "status": "pending",
+    "estimatedHours": 3,
+    "actualHours": 0,
+    "notes": "Need to compare packages and prices",
     "createdAt": "2024-01-01T00:00:00.000Z",
     "updatedAt": "2024-01-01T00:00:00.000Z"
   }

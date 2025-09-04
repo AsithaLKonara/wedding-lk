@@ -38,10 +38,9 @@ export class EnhancedCacheManager {
   private layers: Map<string, CacheLayer> = new Map();
 
   private constructor() {
-    this.redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379', {
-      maxRetriesPerRequest: 3,
-      lazyConnect: true,
-    });
+    // DISABLED: Redis connection - using local cache instead
+    console.log('⚠️ Redis connection disabled - using local cache service');
+    this.redis = null as any; // Disable Redis
 
     this.stats = {
       hits: 0,

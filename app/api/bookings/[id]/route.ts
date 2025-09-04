@@ -5,29 +5,29 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   try {
     const { id } = params;
     
-    console.log('📊 Fetching vendor by ID:', id);
+    console.log('📊 Fetching booking by ID:', id);
 
-    const vendor = LocalDatabase.readById('vendors', id);
+    const booking = LocalDatabase.readById('bookings', id);
 
-    if (!vendor) {
+    if (!booking) {
       return NextResponse.json({
         success: false,
-        error: 'Vendor not found'
+        error: 'Booking not found'
       }, { status: 404 });
     }
 
-    console.log('✅ Vendor found:', vendor.businessName);
+    console.log('✅ Booking found:', booking.id);
 
     return NextResponse.json({
       success: true,
-      vendor
+      booking
     });
 
   } catch (error) {
-    console.error('❌ Error fetching vendor:', error);
+    console.error('❌ Error fetching booking:', error);
     return NextResponse.json({
       success: false,
-      error: 'Failed to fetch vendor',
+      error: 'Failed to fetch booking',
       message: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
@@ -38,30 +38,30 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     const { id } = params;
     const updates = await request.json();
     
-    console.log('📝 Updating vendor:', id);
+    console.log('📝 Updating booking:', id);
 
-    const updatedVendor = LocalDatabase.update('vendors', id, updates);
+    const updatedBooking = LocalDatabase.update('bookings', id, updates);
 
-    if (!updatedVendor) {
+    if (!updatedBooking) {
       return NextResponse.json({
         success: false,
-        error: 'Vendor not found or update failed'
+        error: 'Booking not found or update failed'
       }, { status: 404 });
     }
 
-    console.log('✅ Vendor updated successfully:', updatedVendor.businessName);
+    console.log('✅ Booking updated successfully:', updatedBooking.id);
 
     return NextResponse.json({
       success: true,
-      vendor: updatedVendor,
-      message: 'Vendor updated successfully'
+      booking: updatedBooking,
+      message: 'Booking updated successfully'
     });
 
   } catch (error) {
-    console.error('❌ Error updating vendor:', error);
+    console.error('❌ Error updating booking:', error);
     return NextResponse.json({
       success: false,
-      error: 'Failed to update vendor',
+      error: 'Failed to update booking',
       message: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
@@ -71,29 +71,29 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
   try {
     const { id } = params;
     
-    console.log('🗑️ Deleting vendor:', id);
+    console.log('🗑️ Deleting booking:', id);
 
-    const deleted = LocalDatabase.delete('vendors', id);
+    const deleted = LocalDatabase.delete('bookings', id);
 
     if (!deleted) {
       return NextResponse.json({
         success: false,
-        error: 'Vendor not found or deletion failed'
+        error: 'Booking not found or deletion failed'
       }, { status: 404 });
     }
 
-    console.log('✅ Vendor deleted successfully');
+    console.log('✅ Booking deleted successfully');
 
     return NextResponse.json({
       success: true,
-      message: 'Vendor deleted successfully'
+      message: 'Booking deleted successfully'
     });
 
   } catch (error) {
-    console.error('❌ Error deleting vendor:', error);
+    console.error('❌ Error deleting booking:', error);
     return NextResponse.json({
       success: false,
-      error: 'Failed to delete vendor',
+      error: 'Failed to delete booking',
       message: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }

@@ -3,14 +3,14 @@
     "id": "payment-1",
     "booking": "booking-1",
     "client": "user-1",
-    "vendor": "vendor-business-1",
-    "amount": 150000,
+    "vendor": "vendor-1",
+    "amount": 125000,
     "currency": "LKR",
     "status": "completed",
     "paymentMethod": "credit_card",
     "transactionId": "TXN000001",
     "paymentDate": "2024-01-15T00:00:00.000Z",
-    "notes": "Full payment for venue booking",
+    "notes": "Full payment for photography package",
     "createdAt": "2024-01-15T00:00:00.000Z",
     "updatedAt": "2024-01-15T00:00:00.000Z"
   },
@@ -18,7 +18,7 @@
     "id": "payment-2",
     "booking": "booking-2",
     "client": "user-2",
-    "vendor": "vendor-business-2",
+    "vendor": "vendor-2",
     "amount": 60000,
     "currency": "LKR",
     "status": "completed",
@@ -28,5 +28,20 @@
     "notes": "50% advance payment for catering",
     "createdAt": "2024-01-20T00:00:00.000Z",
     "updatedAt": "2024-01-20T00:00:00.000Z"
+  },
+  {
+    "id": "payment-3",
+    "booking": "booking-3",
+    "client": "user-3",
+    "vendor": "vendor-3",
+    "amount": 95000,
+    "currency": "LKR",
+    "status": "completed",
+    "paymentMethod": "credit_card",
+    "transactionId": "TXN000003",
+    "paymentDate": "2024-01-25T00:00:00.000Z",
+    "notes": "Full payment for music package",
+    "createdAt": "2024-01-25T00:00:00.000Z",
+    "updatedAt": "2024-01-25T00:00:00.000Z"
   }
 ]

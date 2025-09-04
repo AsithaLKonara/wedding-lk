@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/db';
-import { User } from '@/lib/models/user';
-import bcrypt from 'bcryptjs';
+import LocalAuthService from '@/lib/local-auth-service';
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,6 +11,8 @@ export async function POST(request: NextRequest) {
       role,
       location
     } = await request.json();
+
+    console.log('🔐 Registration attempt:', { email, role, hasLocation: !!location });
 
     // Validate required fields
     if (!name || !email || !password || !phone || !role || !location) {
@@ -39,61 +39,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Connect to database
-    await connectDB();
-
-    // Check if user already exists
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
-    if (existingUser) {
-      return NextResponse.json(
-        { error: 'User with this email already exists' },
-        { status: 400 }
-      );
-    }
-
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Create new user
-    const newUser = new User({
+    // Create new user using local database
+    const newUser = await LocalAuthService.createUser({
       name,
-      email: email.toLowerCase(),
-      password: hashedPassword,
+      email,
+      password,
       phone,
       role,
-      location: {
-        country: location.country || 'Sri Lanka',
-        state: location.state,
-        city: location.city,
-        zipCode: location.zipCode || '',
-      },
-      preferences: {
-        language: 'en',
-        currency: 'LKR',
-        timezone: 'Asia/Colombo',
-        notifications: {
-          email: true,
-          sms: false,
-          push: true,
-        },
-        marketing: {
-          email: false,
-          sms: false,
-          push: false,
-        },
-      },
-      isEmailVerified: false,
-      isPhoneVerified: false,
-      isIdentityVerified: false,
-      status: role === 'user' ? 'active' : 'pending_verification',
-      isVerified: role === 'user',
-      isActive: true,
-      loginCount: 0,
-      loginAttempts: 0,
+      location
     });
 
-    await newUser.save();
+    if (!newUser) {
+      return NextResponse.json(
+        { error: 'Failed to create user' },
+        { status: 500 }
+      );
+    }
 
     console.log(`✅ New user registered: ${email} with role: ${role}`);
 
@@ -105,7 +66,7 @@ export async function POST(request: NextRequest) {
       { 
         message: 'User registered successfully',
         user: {
-          id: newUser._id,
+          id: newUser.id,
           name: newUser.name,
           email: newUser.email,
           role: newUser.role,
@@ -115,8 +76,17 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Registration error:', error);
+    
+    // Handle specific errors
+    if (error.message === 'User with this email already exists') {
+      return NextResponse.json(
+        { error: 'User with this email already exists' },
+        { status: 400 }
+      );
+    }
+    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

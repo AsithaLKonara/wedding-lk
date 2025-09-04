@@ -2,13 +2,13 @@
   {
     "id": "review-1",
     "client": "user-1",
-    "vendor": "vendor-business-1",
+    "vendor": "vendor-1",
     "venue": "venue-1",
     "booking": "booking-1",
     "rating": 5,
-    "review": "Excellent service! The Royal Wedding Hall provided outstanding venue services for our wedding. Highly recommended!",
+    "review": "Absolutely amazing photography service! The team captured every precious moment beautifully. Highly professional and creative. Worth every penny!",
     "isVerified": true,
-    "helpful": 8,
+    "helpful": 12,
     "images": [
       "/images/review-1-1.jpg"
     ],
@@ -18,17 +18,33 @@
   {
     "id": "review-2",
     "client": "user-2",
-    "vendor": "vendor-business-2",
+    "vendor": "vendor-2",
     "venue": "venue-2",
     "booking": "booking-2",
     "rating": 4,
-    "review": "Great food and service. The Spice Garden Catering team was professional and the food was delicious.",
+    "review": "Great food and excellent service. The Spice Garden team was very professional and the food was delicious. The venue was beautiful too.",
     "isVerified": true,
-    "helpful": 5,
+    "helpful": 8,
     "images": [
       "/images/review-2-1.jpg"
     ],
     "createdAt": "2024-01-21T00:00:00.000Z",
     "updatedAt": "2024-01-21T00:00:00.000Z"
+  },
+  {
+    "id": "review-3",
+    "client": "user-3",
+    "vendor": "vendor-3",
+    "venue": "venue-3",
+    "booking": "booking-3",
+    "rating": 5,
+    "review": "Fantastic music and entertainment! The Harmony band made our wedding unforgettable. Great mix of traditional and modern music. Highly recommended!",
+    "isVerified": true,
+    "helpful": 15,
+    "images": [
+      "/images/review-3-1.jpg"
+    ],
+    "createdAt": "2024-01-26T00:00:00.000Z",
+    "updatedAt": "2024-01-26T00:00:00.000Z"
   }
 ]

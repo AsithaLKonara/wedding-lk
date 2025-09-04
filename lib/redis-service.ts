@@ -1,21 +1,18 @@
-import Redis from 'ioredis';
+// DISABLED: Redis service - using local cache instead
+console.log('⚠️ Redis service disabled - using local cache service');
 
-// Redis configuration
-const REDIS_URL = process.env.REDIS_URL || 'redis://redis:6379';
-const REDIS_TTL = parseInt(process.env.CACHE_TTL || '300'); // 5 minutes default
-
-// Redis client with production optimizations
-export const redis = new Redis(REDIS_URL, {
-  // Connection settings
-  maxRetriesPerRequest: 3,
-  lazyConnect: true,
-  
-  // Performance optimizations
-  enableOfflineQueue: false,
-  
-  // Cluster settings (if using Redis cluster)
-  enableReadyCheck: true,
-});
+// Mock Redis client for compatibility
+export const redis = {
+  get: async () => null,
+  set: async () => 'OK',
+  del: async () => 1,
+  exists: async () => 0,
+  expire: async () => 1,
+  flushall: async () => 'OK',
+  on: () => {},
+  disconnect: () => {},
+  quit: () => Promise.resolve('OK')
+} as any;
 
 // Connection event handlers
 redis.on('connect', () => {
