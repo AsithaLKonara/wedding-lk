@@ -1,86 +1,76 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/db';
-import Post from '@/lib/models/post';
-import { User } from '@/lib/models/user';
-import { Vendor } from '@/lib/models/vendor';
-import { Venue } from '@/lib/models/venue';
+import { LocalDatabase } from '@/lib/local-database';
 
 export async function GET(request: NextRequest) {
   try {
-    await connectDB();
-
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
     const filter = searchParams.get('filter') || 'all';
     const authorType = searchParams.get('authorType') || 'all';
-    const skip = (page - 1) * limit;
 
-    // Build query
-    const query: any = { 
-      status: 'active', 
-      isActive: true 
-    };
+    console.log('📊 Fetching posts from local database...');
+
+    // Get all posts from local database
+    let posts = LocalDatabase.read('posts') || [];
 
     // Apply filters
     if (authorType !== 'all') {
-      query['author.type'] = authorType;
+      posts = posts.filter((post: any) => post.author?.type === authorType);
     }
 
-    // Build sort criteria
-    let sortCriteria: any = { createdAt: -1 };
-    
+    // Apply status filter
+    posts = posts.filter((post: any) => post.status === 'active' && post.isActive === true);
+
+    // Sort posts
     switch (filter) {
       case 'trending':
-        sortCriteria = { 
-          'engagement.likes': -1, 
-          'engagement.comments': -1, 
-          createdAt: -1 
-        };
+        posts.sort((a: any, b: any) => {
+          const aEngagement = (a.engagement?.likes || 0) + (a.engagement?.comments || 0);
+          const bEngagement = (b.engagement?.likes || 0) + (b.engagement?.comments || 0);
+          return bEngagement - aEngagement;
+        });
         break;
       case 'recent':
-        sortCriteria = { createdAt: -1 };
+        posts.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         break;
       case 'liked':
-        sortCriteria = { 'engagement.likes': -1, createdAt: -1 };
+        posts.sort((a: any, b: any) => (b.engagement?.likes || 0) - (a.engagement?.likes || 0));
         break;
       default:
-        sortCriteria = { createdAt: -1 };
+        posts.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     }
 
-    // Get posts with pagination
-    const posts = await Post.find(query)
-      .sort(sortCriteria)
-      .skip(skip)
-      .limit(limit)
-      .lean();
-
-    // Get total count
-    const total = await Post.countDocuments(query);
+    // Apply pagination
+    const total = posts.length;
+    const skip = (page - 1) * limit;
+    const paginatedPosts = posts.slice(skip, skip + limit);
 
     // Format posts for frontend
-    const formattedPosts = posts.map(post => ({
-      id: post._id.toString(),
+    const formattedPosts = paginatedPosts.map((post: any) => ({
+      id: post.id,
       content: post.content,
       images: post.images || [],
       tags: post.tags || [],
       author: {
-        type: post.author.type,
-        id: post.author.id.toString(),
-        name: post.author.name,
-        avatar: post.author.avatar,
-        verified: post.author.verified || false,
+        type: post.author?.type || 'user',
+        id: post.author?.id || post.id,
+        name: post.author?.name || 'Unknown',
+        avatar: post.author?.avatar || null,
+        verified: post.author?.verified || false,
       },
       location: post.location,
       engagement: {
-        likes: post.engagement.likes,
-        comments: post.engagement.comments,
-        shares: post.engagement.shares,
-        views: post.engagement.views,
+        likes: post.engagement?.likes || 0,
+        comments: post.engagement?.comments || 0,
+        shares: post.engagement?.shares || 0,
+        views: post.engagement?.views || 0,
       },
       createdAt: post.createdAt,
       formattedDate: getFormattedDate(post.createdAt),
     }));
+
+    console.log(`✅ Found ${formattedPosts.length} posts`);
 
     return NextResponse.json({
       success: true,
@@ -106,8 +96,6 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    await connectDB();
-
     const body = await request.json();
     const { 
       content, 
@@ -126,17 +114,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate author exists
+    // Get author from local database
     let author;
     switch (authorType) {
       case 'user':
-        author = await User.findById(authorId);
+        author = LocalDatabase.readById('users', authorId);
         break;
       case 'vendor':
-        author = await Vendor.findById(authorId);
+        author = LocalDatabase.readById('vendors', authorId);
         break;
       case 'venue':
-        author = await Venue.findById(authorId);
+        author = LocalDatabase.readById('venues', authorId);
         break;
       default:
         return NextResponse.json(
@@ -153,7 +141,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create new post
-    const newPost = new Post({
+    const newPost = {
       content,
       images: images || [],
       tags: tags || [],
@@ -179,30 +167,39 @@ export async function POST(request: NextRequest) {
       status: 'active',
       isActive: true,
       isVerified: false,
-    });
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
 
-    await newPost.save();
+    const createdPost = LocalDatabase.create('posts', newPost);
+
+    if (!createdPost) {
+      return NextResponse.json(
+        { error: 'Failed to create post' },
+        { status: 500 }
+      );
+    }
 
     console.log(`✅ New post created by ${authorType}: ${authorId}`);
 
     return NextResponse.json({
       success: true,
       data: {
-        id: newPost._id.toString(),
-        content: newPost.content,
-        images: newPost.images,
-        tags: newPost.tags,
+        id: createdPost.id,
+        content: createdPost.content,
+        images: createdPost.images,
+        tags: createdPost.tags,
         author: {
-          type: newPost.author.type,
-          id: newPost.author.id.toString(),
-          name: newPost.author.name,
-          avatar: newPost.author.avatar,
-          verified: newPost.author.verified,
+          type: createdPost.author.type,
+          id: createdPost.author.id,
+          name: createdPost.author.name,
+          avatar: createdPost.author.avatar,
+          verified: createdPost.author.verified,
         },
-        location: newPost.location,
-        engagement: newPost.engagement,
-        createdAt: newPost.createdAt,
-        formattedDate: getFormattedDate(newPost.createdAt),
+        location: createdPost.location,
+        engagement: createdPost.engagement,
+        createdAt: createdPost.createdAt,
+        formattedDate: getFormattedDate(createdPost.createdAt),
       },
     }, { status: 201 });
 
