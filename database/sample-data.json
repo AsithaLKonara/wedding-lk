@@ -1,0 +1,548 @@
+{
+  "users": [
+    {
+      "id": "admin-1",
+      "name": "Admin 1",
+      "email": "admin1@wedding.lk",
+      "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8Kz8KzK",
+      "role": "admin",
+      "isVerified": true,
+      "isActive": true,
+      "phone": "+94 77 123 4567",
+      "address": "Admin Address 1, Colombo, Sri Lanka",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": true,
+        "smsUpdates": false
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "admin-2",
+      "name": "Admin 2",
+      "email": "admin2@wedding.lk",
+      "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8Kz8KzK",
+      "role": "admin",
+      "isVerified": true,
+      "isActive": true,
+      "phone": "+94 77 123 4568",
+      "address": "Admin Address 2, Colombo, Sri Lanka",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": true,
+        "smsUpdates": false
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "admin-3",
+      "name": "Admin 3",
+      "email": "admin3@wedding.lk",
+      "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8Kz8KzK",
+      "role": "admin",
+      "isVerified": true,
+      "isActive": true,
+      "phone": "+94 77 123 4569",
+      "address": "Admin Address 3, Colombo, Sri Lanka",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": true,
+        "smsUpdates": false
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "user-1",
+      "name": "User 1",
+      "email": "user1@example.com",
+      "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8Kz8KzK",
+      "role": "user",
+      "isVerified": true,
+      "isActive": true,
+      "phone": "+94 77 111 1111",
+      "address": "User Address 1, Colombo, Sri Lanka",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": true,
+        "smsUpdates": false
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "user-2",
+      "name": "User 2",
+      "email": "user2@example.com",
+      "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8Kz8KzK",
+      "role": "user",
+      "isVerified": true,
+      "isActive": true,
+      "phone": "+94 77 111 1112",
+      "address": "User Address 2, Colombo, Sri Lanka",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": true,
+        "smsUpdates": false
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "user-3",
+      "name": "User 3",
+      "email": "user3@example.com",
+      "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8Kz8KzK",
+      "role": "user",
+      "isVerified": true,
+      "isActive": true,
+      "phone": "+94 77 111 1113",
+      "address": "User Address 3, Colombo, Sri Lanka",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": true,
+        "smsUpdates": false
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "vendor-1",
+      "name": "Vendor 1",
+      "email": "vendor1@example.com",
+      "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8Kz8KzK",
+      "role": "vendor",
+      "isVerified": true,
+      "isActive": true,
+      "phone": "+94 77 222 2221",
+      "address": "Vendor Address 1, Colombo, Sri Lanka",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": true,
+        "smsUpdates": false
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "vendor-2",
+      "name": "Vendor 2",
+      "email": "vendor2@example.com",
+      "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8Kz8KzK",
+      "role": "vendor",
+      "isVerified": true,
+      "isActive": true,
+      "phone": "+94 77 222 2222",
+      "address": "Vendor Address 2, Colombo, Sri Lanka",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": true,
+        "smsUpdates": false
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "vendor-3",
+      "name": "Vendor 3",
+      "email": "vendor3@example.com",
+      "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8Kz8KzK",
+      "role": "vendor",
+      "isVerified": true,
+      "isActive": true,
+      "phone": "+94 77 222 2223",
+      "address": "Vendor Address 3, Colombo, Sri Lanka",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": true,
+        "smsUpdates": false
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "planner-1",
+      "name": "Planner 1",
+      "email": "planner1@example.com",
+      "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8Kz8KzK",
+      "role": "wedding_planner",
+      "isVerified": true,
+      "isActive": true,
+      "phone": "+94 77 333 3331",
+      "address": "Planner Address 1, Colombo, Sri Lanka",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": true,
+        "smsUpdates": false
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "planner-2",
+      "name": "Planner 2",
+      "email": "planner2@example.com",
+      "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8Kz8KzK",
+      "role": "wedding_planner",
+      "isVerified": true,
+      "isActive": true,
+      "phone": "+94 77 333 3332",
+      "address": "Planner Address 2, Colombo, Sri Lanka",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": true,
+        "smsUpdates": false
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "planner-3",
+      "name": "Planner 3",
+      "email": "planner3@example.com",
+      "password": "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4J/8Kz8KzK",
+      "role": "wedding_planner",
+      "isVerified": true,
+      "isActive": true,
+      "phone": "+94 77 333 3333",
+      "address": "Planner Address 3, Colombo, Sri Lanka",
+      "preferences": {
+        "notifications": true,
+        "emailUpdates": true,
+        "smsUpdates": false
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "vendors": [
+    {
+      "id": "vendor-business-1",
+      "businessName": "Royal Wedding Hall",
+      "ownerName": "John Smith",
+      "email": "royal@wedding.lk",
+      "phone": "+94 77 444 4441",
+      "category": "venue",
+      "description": "Luxurious wedding hall with modern amenities and beautiful architecture.",
+      "location": {
+        "address": "123 Royal Street, Colombo 07",
+        "city": "Colombo",
+        "province": "Western",
+        "coordinates": {
+          "lat": 6.9271,
+          "lng": 79.8612
+        }
+      },
+      "services": [
+        {
+          "name": "Basic Venue Package",
+          "description": "Standard venue rental with basic amenities",
+          "price": 150000,
+          "isActive": true
+        },
+        {
+          "name": "Premium Venue Package",
+          "description": "Premium venue with full amenities and decoration",
+          "price": 250000,
+          "isActive": true
+        }
+      ],
+      "rating": {
+        "average": 4.5,
+        "count": 25
+      },
+      "isVerified": true,
+      "isActive": true,
+      "images": ["/images/royal-hall-1.jpg", "/images/royal-hall-2.jpg"],
+      "socialMedia": {
+        "website": "https://royalweddinghall.lk",
+        "facebook": "https://facebook.com/royalweddinghall",
+        "instagram": "https://instagram.com/royalweddinghall"
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "vendor-business-2",
+      "businessName": "Spice Garden Catering",
+      "ownerName": "Maria Silva",
+      "email": "spice@catering.lk",
+      "phone": "+94 77 444 4442",
+      "category": "catering",
+      "description": "Authentic Sri Lankan cuisine with international options for your special day.",
+      "location": {
+        "address": "456 Spice Lane, Kandy",
+        "city": "Kandy",
+        "province": "Central",
+        "coordinates": {
+          "lat": 7.2906,
+          "lng": 80.6337
+        }
+      },
+      "services": [
+        {
+          "name": "Basic Catering Package",
+          "description": "Traditional Sri Lankan buffet for 100 guests",
+          "price": 80000,
+          "isActive": true
+        },
+        {
+          "name": "Premium Catering Package",
+          "description": "Multi-cuisine buffet with live cooking stations",
+          "price": 120000,
+          "isActive": true
+        }
+      ],
+      "rating": {
+        "average": 4.8,
+        "count": 18
+      },
+      "isVerified": true,
+      "isActive": true,
+      "images": ["/images/spice-garden-1.jpg", "/images/spice-garden-2.jpg"],
+      "socialMedia": {
+        "website": "https://spicegarden.lk",
+        "facebook": "https://facebook.com/spicegarden",
+        "instagram": "https://instagram.com/spicegarden"
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "vendor-business-3",
+      "businessName": "Golden Moments Photography",
+      "ownerName": "David Kumar",
+      "email": "golden@photography.lk",
+      "phone": "+94 77 444 4443",
+      "category": "photography",
+      "description": "Professional wedding photography capturing your precious moments.",
+      "location": {
+        "address": "789 Photo Street, Galle",
+        "city": "Galle",
+        "province": "Southern",
+        "coordinates": {
+          "lat": 6.0329,
+          "lng": 80.2169
+        }
+      },
+      "services": [
+        {
+          "name": "Basic Photography Package",
+          "description": "6 hours coverage with 300 edited photos",
+          "price": 60000,
+          "isActive": true
+        },
+        {
+          "name": "Premium Photography Package",
+          "description": "Full day coverage with 500 edited photos and album",
+          "price": 100000,
+          "isActive": true
+        }
+      ],
+      "rating": {
+        "average": 4.7,
+        "count": 32
+      },
+      "isVerified": true,
+      "isActive": true,
+      "images": ["/images/golden-moments-1.jpg", "/images/golden-moments-2.jpg"],
+      "socialMedia": {
+        "website": "https://goldenmoments.lk",
+        "facebook": "https://facebook.com/goldenmoments",
+        "instagram": "https://instagram.com/goldenmoments"
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "venues": [
+    {
+      "id": "venue-1",
+      "name": "Grand Ballroom",
+      "description": "Elegant ballroom with crystal chandeliers and marble floors.",
+      "capacity": 200,
+      "price": 200000,
+      "location": {
+        "address": "123 Grand Avenue, Colombo 07",
+        "city": "Colombo",
+        "province": "Western",
+        "coordinates": {
+          "lat": 6.9271,
+          "lng": 79.8612
+        }
+      },
+      "amenities": ["Air Conditioning", "Parking", "Catering Kitchen", "Sound System", "Lighting", "Restrooms"],
+      "images": ["/images/grand-ballroom-1.jpg", "/images/grand-ballroom-2.jpg"],
+      "isAvailable": true,
+      "rating": {
+        "average": 4.6,
+        "count": 15
+      },
+      "vendor": "vendor-business-1",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "venue-2",
+      "name": "Garden Pavilion",
+      "description": "Beautiful outdoor venue surrounded by lush gardens.",
+      "capacity": 150,
+      "price": 180000,
+      "location": {
+        "address": "456 Garden Road, Kandy",
+        "city": "Kandy",
+        "province": "Central",
+        "coordinates": {
+          "lat": 7.2906,
+          "lng": 80.6337
+        }
+      },
+      "amenities": ["Garden Setting", "Parking", "Catering Kitchen", "Sound System", "Lighting", "Restrooms"],
+      "images": ["/images/garden-pavilion-1.jpg", "/images/garden-pavilion-2.jpg"],
+      "isAvailable": true,
+      "rating": {
+        "average": 4.4,
+        "count": 12
+      },
+      "vendor": "vendor-business-1",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "bookings": [
+    {
+      "id": "booking-1",
+      "client": "user-1",
+      "vendor": "vendor-business-1",
+      "venue": "venue-1",
+      "service": "Basic Venue Package",
+      "date": "2024-06-15T00:00:00.000Z",
+      "startTime": "10:00",
+      "endTime": "18:00",
+      "guestCount": 120,
+      "totalAmount": 150000,
+      "status": "confirmed",
+      "paymentStatus": "completed",
+      "specialRequirements": "Vegetarian menu required",
+      "notes": "Anniversary celebration",
+      "createdAt": "2024-01-15T00:00:00.000Z",
+      "updatedAt": "2024-01-15T00:00:00.000Z"
+    },
+    {
+      "id": "booking-2",
+      "client": "user-2",
+      "vendor": "vendor-business-2",
+      "venue": "venue-2",
+      "service": "Premium Catering Package",
+      "date": "2024-07-20T00:00:00.000Z",
+      "startTime": "12:00",
+      "endTime": "20:00",
+      "guestCount": 80,
+      "totalAmount": 120000,
+      "status": "pending",
+      "paymentStatus": "partial",
+      "specialRequirements": "Halal food required",
+      "notes": "Wedding reception",
+      "createdAt": "2024-01-20T00:00:00.000Z",
+      "updatedAt": "2024-01-20T00:00:00.000Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Venue Selection",
+      "description": "Research and select wedding venue",
+      "client": "user-1",
+      "planner": "planner-1",
+      "category": "venue",
+      "priority": "high",
+      "dueDate": "2024-03-15T00:00:00.000Z",
+      "status": "completed",
+      "estimatedHours": 8,
+      "actualHours": 6,
+      "notes": "Client approved the Grand Ballroom",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "task-2",
+      "title": "Catering Menu Finalization",
+      "description": "Finalize wedding menu with caterer",
+      "client": "user-1",
+      "planner": "planner-1",
+      "category": "catering",
+      "priority": "medium",
+      "dueDate": "2024-04-01T00:00:00.000Z",
+      "status": "in_progress",
+      "estimatedHours": 4,
+      "actualHours": 2,
+      "notes": "Waiting for client feedback on menu options",
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "payments": [
+    {
+      "id": "payment-1",
+      "booking": "booking-1",
+      "client": "user-1",
+      "vendor": "vendor-business-1",
+      "amount": 150000,
+      "currency": "LKR",
+      "status": "completed",
+      "paymentMethod": "credit_card",
+      "transactionId": "TXN000001",
+      "paymentDate": "2024-01-15T00:00:00.000Z",
+      "notes": "Full payment for venue booking",
+      "createdAt": "2024-01-15T00:00:00.000Z",
+      "updatedAt": "2024-01-15T00:00:00.000Z"
+    },
+    {
+      "id": "payment-2",
+      "booking": "booking-2",
+      "client": "user-2",
+      "vendor": "vendor-business-2",
+      "amount": 60000,
+      "currency": "LKR",
+      "status": "completed",
+      "paymentMethod": "bank_transfer",
+      "transactionId": "TXN000002",
+      "paymentDate": "2024-01-20T00:00:00.000Z",
+      "notes": "50% advance payment for catering",
+      "createdAt": "2024-01-20T00:00:00.000Z",
+      "updatedAt": "2024-01-20T00:00:00.000Z"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "review-1",
+      "client": "user-1",
+      "vendor": "vendor-business-1",
+      "venue": "venue-1",
+      "booking": "booking-1",
+      "rating": 5,
+      "review": "Excellent service! The Royal Wedding Hall provided outstanding venue services for our wedding. Highly recommended!",
+      "isVerified": true,
+      "helpful": 8,
+      "images": ["/images/review-1-1.jpg"],
+      "createdAt": "2024-01-16T00:00:00.000Z",
+      "updatedAt": "2024-01-16T00:00:00.000Z"
+    },
+    {
+      "id": "review-2",
+      "client": "user-2",
+      "vendor": "vendor-business-2",
+      "venue": "venue-2",
+      "booking": "booking-2",
+      "rating": 4,
+      "review": "Great food and service. The Spice Garden Catering team was professional and the food was delicious.",
+      "isVerified": true,
+      "helpful": 5,
+      "images": ["/images/review-2-1.jpg"],
+      "createdAt": "2024-01-21T00:00:00.000Z",
+      "updatedAt": "2024-01-21T00:00:00.000Z"
+    }
+  ]
+}

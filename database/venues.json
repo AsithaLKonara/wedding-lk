@@ -1,0 +1,74 @@
+[
+  {
+    "id": "venue-1",
+    "name": "Grand Ballroom",
+    "description": "Elegant ballroom with crystal chandeliers and marble floors.",
+    "capacity": 200,
+    "price": 200000,
+    "location": {
+      "address": "123 Grand Avenue, Colombo 07",
+      "city": "Colombo",
+      "province": "Western",
+      "coordinates": {
+        "lat": 6.9271,
+        "lng": 79.8612
+      }
+    },
+    "amenities": [
+      "Air Conditioning",
+      "Parking",
+      "Catering Kitchen",
+      "Sound System",
+      "Lighting",
+      "Restrooms"
+    ],
+    "images": [
+      "/images/grand-ballroom-1.jpg",
+      "/images/grand-ballroom-2.jpg"
+    ],
+    "isAvailable": true,
+    "rating": {
+      "average": 4.6,
+      "count": 15
+    },
+    "vendor": "vendor-business-1",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "venue-2",
+    "name": "Garden Pavilion",
+    "description": "Beautiful outdoor venue surrounded by lush gardens.",
+    "capacity": 150,
+    "price": 180000,
+    "location": {
+      "address": "456 Garden Road, Kandy",
+      "city": "Kandy",
+      "province": "Central",
+      "coordinates": {
+        "lat": 7.2906,
+        "lng": 80.6337
+      }
+    },
+    "amenities": [
+      "Garden Setting",
+      "Parking",
+      "Catering Kitchen",
+      "Sound System",
+      "Lighting",
+      "Restrooms"
+    ],
+    "images": [
+      "/images/garden-pavilion-1.jpg",
+      "/images/garden-pavilion-2.jpg"
+    ],
+    "isAvailable": true,
+    "rating": {
+      "average": 4.4,
+      "count": 12
+    },
+    "vendor": "vendor-business-1",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  }
+]

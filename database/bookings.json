@@ -1,0 +1,38 @@
+[
+  {
+    "id": "booking-1",
+    "client": "user-1",
+    "vendor": "vendor-business-1",
+    "venue": "venue-1",
+    "service": "Basic Venue Package",
+    "date": "2024-06-15T00:00:00.000Z",
+    "startTime": "10:00",
+    "endTime": "18:00",
+    "guestCount": 120,
+    "totalAmount": 150000,
+    "status": "confirmed",
+    "paymentStatus": "completed",
+    "specialRequirements": "Vegetarian menu required",
+    "notes": "Anniversary celebration",
+    "createdAt": "2024-01-15T00:00:00.000Z",
+    "updatedAt": "2024-01-15T00:00:00.000Z"
+  },
+  {
+    "id": "booking-2",
+    "client": "user-2",
+    "vendor": "vendor-business-2",
+    "venue": "venue-2",
+    "service": "Premium Catering Package",
+    "date": "2024-07-20T00:00:00.000Z",
+    "startTime": "12:00",
+    "endTime": "20:00",
+    "guestCount": 80,
+    "totalAmount": 120000,
+    "status": "pending",
+    "paymentStatus": "partial",
+    "specialRequirements": "Halal food required",
+    "notes": "Wedding reception",
+    "createdAt": "2024-01-20T00:00:00.000Z",
+    "updatedAt": "2024-01-20T00:00:00.000Z"
+  }
+]

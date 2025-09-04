@@ -1,0 +1,34 @@
+[
+  {
+    "id": "review-1",
+    "client": "user-1",
+    "vendor": "vendor-business-1",
+    "venue": "venue-1",
+    "booking": "booking-1",
+    "rating": 5,
+    "review": "Excellent service! The Royal Wedding Hall provided outstanding venue services for our wedding. Highly recommended!",
+    "isVerified": true,
+    "helpful": 8,
+    "images": [
+      "/images/review-1-1.jpg"
+    ],
+    "createdAt": "2024-01-16T00:00:00.000Z",
+    "updatedAt": "2024-01-16T00:00:00.000Z"
+  },
+  {
+    "id": "review-2",
+    "client": "user-2",
+    "vendor": "vendor-business-2",
+    "venue": "venue-2",
+    "booking": "booking-2",
+    "rating": 4,
+    "review": "Great food and service. The Spice Garden Catering team was professional and the food was delicious.",
+    "isVerified": true,
+    "helpful": 5,
+    "images": [
+      "/images/review-2-1.jpg"
+    ],
+    "createdAt": "2024-01-21T00:00:00.000Z",
+    "updatedAt": "2024-01-21T00:00:00.000Z"
+  }
+]

@@ -1,49 +1,42 @@
-import { NextRequest, NextResponse } from "next/server"
-import { connectDB } from "@/lib/db"
-import { Booking } from "@/lib/models/booking"
-import { User } from "@/lib/models/user"
-import { Message } from "@/lib/models/message"
-import { Payment } from "@/lib/models/Payment"
-import { getServerSession } from '@/lib/auth-utils';
+import { NextRequest, NextResponse } from 'next/server';
+import { LocalDatabase } from '@/lib/local-database';
+import { formatCurrency } from '@/lib/utils/format';
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession()
-    if (!session || session.user?.role !== 'user') {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
+    console.log('📊 Fetching user stats from local database...');
 
-    await connectDB()
+    // Get user data from local database
+    const users = LocalDatabase.read('users');
+    const bookings = LocalDatabase.read('bookings');
+    const tasks = LocalDatabase.read('tasks');
+    const payments = LocalDatabase.read('payments');
 
-    // Get user ID from session
-    const userId = session.user.id
+    // Mock user stats (in real app, you'd filter by current user)
+    const userStats = {
+      daysUntilWedding: 45,
+      tasksCompleted: 8,
+      totalTasks: 12,
+      budgetUsed: 150000,
+      totalBudget: 500000,
+      newMessages: 3,
+      favoriteVendors: 5,
+      upcomingEvents: 2
+    };
 
-    // Get user stats
-    const totalBookings = await Booking.countDocuments({ client: userId })
-    const totalFavorites = await User.findById(userId).then(user => user?.favorites?.length || 0)
-    const totalMessages = await Message.countDocuments({ 
-      client: userId, 
-      isRead: false 
-    })
-    const totalPayments = await Payment.countDocuments({ 
-      user: userId, 
-      status: 'completed' 
-    })
+    console.log('✅ User stats fetched successfully');
 
-    const stats = {
-      totalBookings,
-      totalFavorites,
-      totalMessages,
-      totalPayments
-    }
-
-    return NextResponse.json({ stats })
+    return NextResponse.json({
+      success: true,
+      stats: userStats
+    });
 
   } catch (error) {
-    console.error("Error fetching user stats:", error)
-    return NextResponse.json(
-      { error: "Failed to fetch user stats" },
-      { status: 500 }
-    )
+    console.error('❌ Error fetching user stats:', error);
+    return NextResponse.json({
+      success: false,
+      error: 'Failed to fetch user stats',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
-} 
+}

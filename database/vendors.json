@@ -1,0 +1,149 @@
+[
+  {
+    "id": "vendor-business-1",
+    "businessName": "Royal Wedding Hall",
+    "ownerName": "John Smith",
+    "email": "royal@wedding.lk",
+    "phone": "+94 77 444 4441",
+    "category": "venue",
+    "description": "Luxurious wedding hall with modern amenities and beautiful architecture.",
+    "location": {
+      "address": "123 Royal Street, Colombo 07",
+      "city": "Colombo",
+      "province": "Western",
+      "coordinates": {
+        "lat": 6.9271,
+        "lng": 79.8612
+      }
+    },
+    "services": [
+      {
+        "name": "Basic Venue Package",
+        "description": "Standard venue rental with basic amenities",
+        "price": 150000,
+        "isActive": true
+      },
+      {
+        "name": "Premium Venue Package",
+        "description": "Premium venue with full amenities and decoration",
+        "price": 250000,
+        "isActive": true
+      }
+    ],
+    "rating": {
+      "average": 4.5,
+      "count": 25
+    },
+    "isVerified": true,
+    "isActive": true,
+    "images": [
+      "/images/royal-hall-1.jpg",
+      "/images/royal-hall-2.jpg"
+    ],
+    "socialMedia": {
+      "website": "https://royalweddinghall.lk",
+      "facebook": "https://facebook.com/royalweddinghall",
+      "instagram": "https://instagram.com/royalweddinghall"
+    },
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "vendor-business-2",
+    "businessName": "Spice Garden Catering",
+    "ownerName": "Maria Silva",
+    "email": "spice@catering.lk",
+    "phone": "+94 77 444 4442",
+    "category": "catering",
+    "description": "Authentic Sri Lankan cuisine with international options for your special day.",
+    "location": {
+      "address": "456 Spice Lane, Kandy",
+      "city": "Kandy",
+      "province": "Central",
+      "coordinates": {
+        "lat": 7.2906,
+        "lng": 80.6337
+      }
+    },
+    "services": [
+      {
+        "name": "Basic Catering Package",
+        "description": "Traditional Sri Lankan buffet for 100 guests",
+        "price": 80000,
+        "isActive": true
+      },
+      {
+        "name": "Premium Catering Package",
+        "description": "Multi-cuisine buffet with live cooking stations",
+        "price": 120000,
+        "isActive": true
+      }
+    ],
+    "rating": {
+      "average": 4.8,
+      "count": 18
+    },
+    "isVerified": true,
+    "isActive": true,
+    "images": [
+      "/images/spice-garden-1.jpg",
+      "/images/spice-garden-2.jpg"
+    ],
+    "socialMedia": {
+      "website": "https://spicegarden.lk",
+      "facebook": "https://facebook.com/spicegarden",
+      "instagram": "https://instagram.com/spicegarden"
+    },
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "vendor-business-3",
+    "businessName": "Golden Moments Photography",
+    "ownerName": "David Kumar",
+    "email": "golden@photography.lk",
+    "phone": "+94 77 444 4443",
+    "category": "photography",
+    "description": "Professional wedding photography capturing your precious moments.",
+    "location": {
+      "address": "789 Photo Street, Galle",
+      "city": "Galle",
+      "province": "Southern",
+      "coordinates": {
+        "lat": 6.0329,
+        "lng": 80.2169
+      }
+    },
+    "services": [
+      {
+        "name": "Basic Photography Package",
+        "description": "6 hours coverage with 300 edited photos",
+        "price": 60000,
+        "isActive": true
+      },
+      {
+        "name": "Premium Photography Package",
+        "description": "Full day coverage with 500 edited photos and album",
+        "price": 100000,
+        "isActive": true
+      }
+    ],
+    "rating": {
+      "average": 4.7,
+      "count": 32
+    },
+    "isVerified": true,
+    "isActive": true,
+    "images": [
+      "/images/golden-moments-1.jpg",
+      "/images/golden-moments-2.jpg"
+    ],
+    "socialMedia": {
+      "website": "https://goldenmoments.lk",
+      "facebook": "https://facebook.com/goldenmoments",
+      "instagram": "https://instagram.com/goldenmoments"
+    },
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  }
+]

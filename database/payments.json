@@ -1,0 +1,32 @@
+[
+  {
+    "id": "payment-1",
+    "booking": "booking-1",
+    "client": "user-1",
+    "vendor": "vendor-business-1",
+    "amount": 150000,
+    "currency": "LKR",
+    "status": "completed",
+    "paymentMethod": "credit_card",
+    "transactionId": "TXN000001",
+    "paymentDate": "2024-01-15T00:00:00.000Z",
+    "notes": "Full payment for venue booking",
+    "createdAt": "2024-01-15T00:00:00.000Z",
+    "updatedAt": "2024-01-15T00:00:00.000Z"
+  },
+  {
+    "id": "payment-2",
+    "booking": "booking-2",
+    "client": "user-2",
+    "vendor": "vendor-business-2",
+    "amount": 60000,
+    "currency": "LKR",
+    "status": "completed",
+    "paymentMethod": "bank_transfer",
+    "transactionId": "TXN000002",
+    "paymentDate": "2024-01-20T00:00:00.000Z",
+    "notes": "50% advance payment for catering",
+    "createdAt": "2024-01-20T00:00:00.000Z",
+    "updatedAt": "2024-01-20T00:00:00.000Z"
+  }
+]

@@ -129,6 +129,7 @@ export default function LoginPage() {
     } finally {
       setIsLoading(false)
     }
+    
   }
 
   const handleSocialLogin = async (provider: string) => {
