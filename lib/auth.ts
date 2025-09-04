@@ -1,80 +1,85 @@
-// import type { NextAuthOptions } from "next-auth"
+import { NextAuthOptions } from "next-auth"
+import { MongoDBAdapter } from "@auth/mongodb-adapter"
+import { MongoClient } from "mongodb"
 import CredentialsProvider from "next-auth/providers/credentials"
+import GoogleProvider from "next-auth/providers/google"
+import FacebookProvider from "next-auth/providers/facebook"
+import { compare } from "bcryptjs"
+import { connectDB } from "./db"
+import { User } from "./models/user"
 
-// Extend the built-in session types
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string
-      name?: string | null
-      email?: string | null
-      image?: string | null
-      role?: string
-      twoFactorPending?: boolean
-    }
-  }
-  
-  interface User {
-    id: string
-    email: string
-    name?: string
-    role?: string
-    twoFactorPending?: boolean
-  }
-}
+const client = new MongoClient(process.env.MONGODB_URI!)
+const clientPromise = client.connect()
 
-declare module "next-auth/jwt" {
-  interface JWT {
-    role?: string
-    twoFactorPending?: boolean
-  }
-}
-
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
     CredentialsProvider({
       name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        password: { label: "Password", type: "password" }
       },
-            async authorize(credentials) {
-        // For development, allow any email/password
-        if (credentials?.email && credentials?.password) {
-          return {
-            id: "1",
-            email: credentials.email as string,
-            name: "Demo User",
-            role: "user",
-          }
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          return null
         }
-        return null
-      },
+
+        try {
+          await connectDB()
+          
+          const user = await User.findOne({ email: credentials.email })
+          if (!user) {
+            return null
+          }
+
+          const isPasswordValid = await compare(credentials.password, user.password)
+          if (!isPasswordValid) {
+            return null
+          }
+
+          return {
+            id: user._id.toString(),
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            image: user.image,
+          }
+        } catch (error) {
+          console.error("Auth error:", error)
+          return null
+        }
+      }
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID!,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
     }),
   ],
   session: {
     strategy: "jwt",
   },
-  pages: {
-    signIn: "/login",
-  },
   callbacks: {
-    async jwt({ token, user, account }: { token: any; user: any; account: any }) {
-      if (user && "role" in user) {
-        token.role = (user as any).role
-      }
-      if (user && "twoFactorPending" in user) {
-        token.twoFactorPending = (user as any).twoFactorPending
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role
       }
       return token
     },
-    async session({ session, token }: { session: any; token: any }) {
-      if (token && session.user) {
+    async session({ session, token }) {
+      if (token) {
         session.user.id = token.sub!
-        if (token.role) session.user.role = token.role as string
-        if (token.twoFactorPending) session.user.twoFactorPending = token.twoFactorPending
+        session.user.role = token.role as string
       }
       return session
     },
+  },
+  pages: {
+    signIn: "/login",
+    error: "/auth/error",
   },
 }

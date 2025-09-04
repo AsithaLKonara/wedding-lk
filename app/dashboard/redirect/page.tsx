@@ -21,6 +21,7 @@ export default function DashboardRedirect() {
     const userRole = (session.user as any)?.role || 'user'
     
     console.log('🎯 Dashboard redirect - User role:', userRole)
+    console.log('🎯 Session data:', session)
     
     switch (userRole) {
       case 'admin':
@@ -32,9 +33,6 @@ export default function DashboardRedirect() {
       case 'wedding_planner':
         router.push('/dashboard/planner')
         break
-      case 'maintainer':
-        router.push('/dashboard/maintainer')
-        break
       case 'user':
       default:
         router.push('/dashboard/user')
@@ -43,10 +41,11 @@ export default function DashboardRedirect() {
   }, [session, status, router])
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center">
-        <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-rose-500" />
-        <p className="text-gray-600">Redirecting to your dashboard...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">Redirecting to your dashboard...</h2>
+        <p className="text-gray-600">Please wait while we set up your personalized experience</p>
       </div>
     </div>
   )

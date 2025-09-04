@@ -22,10 +22,11 @@ export default function DashboardPage() {
   }, [session, status, router])
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center">
-        <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-rose-500" />
-        <p className="text-gray-600">Loading dashboard...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">Loading your dashboard...</h2>
+        <p className="text-gray-600">Please wait while we prepare your personalized experience</p>
       </div>
     </div>
   )

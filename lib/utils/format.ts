@@ -1,77 +1,156 @@
-export function formatCurrency(amount: number, currency = "LKR"): string {
-  if (currency === "LKR") {
-    return `LKR ${amount.toLocaleString("en-US")}`
-  }
-
-  return new Intl.NumberFormat("en-US", {
+/**
+ * Format currency in LKR (Sri Lankan Rupees)
+ */
+export const formatCurrency = (amount: number): string => {
+  return new Intl.NumberFormat("en-LK", {
     style: "currency",
-    currency: currency,
+    currency: "LKR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(amount)
 }
 
-export function formatDate(date: string | Date, format: "short" | "long" | "relative" = "short"): string {
-  const dateObj = typeof date === "string" ? new Date(date) : date
+/**
+ * Format large numbers with K, M, B suffixes
+ */
+export const formatNumber = (num: number): string => {
+  if (num >= 1000000000) {
+    return (num / 1000000000).toFixed(1) + "B"
+  }
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + "M"
+  }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + "K"
+  }
+  return num.toString()
+}
 
-  switch (format) {
-    case "short": {
-      return dateObj.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      })
-    }
-    case "long": {
-      return dateObj.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        weekday: "long",
-      })
-    }
-    case "relative": {
-      const now = new Date()
-      const diffTime = Math.abs(now.getTime() - dateObj.getTime())
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+/**
+ * Format percentage
+ */
+export const formatPercentage = (value: number, total: number): string => {
+  if (total === 0) return "0%"
+  return Math.round((value / total) * 100) + "%"
+}
 
-      if (diffDays === 0) return "Today"
-      if (diffDays === 1) return "Tomorrow"
-      if (diffDays < 7) return `In ${diffDays} days`
-      if (diffDays < 30) return `In ${Math.ceil(diffDays / 7)} weeks`
-      return `In ${Math.ceil(diffDays / 30)} months`
-    }
+/**
+ * Format date for display
+ */
+export const formatDate = (date: Date | string): string => {
+  const d = new Date(date)
+  return d.toLocaleDateString("en-LK", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  })
+}
+
+/**
+ * Format date and time
+ */
+export const formatDateTime = (date: Date | string): string => {
+  const d = new Date(date)
+  return d.toLocaleString("en-LK", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  })
+}
+
+/**
+ * Calculate days until date
+ */
+export const daysUntil = (date: Date | string): number => {
+  const target = new Date(date)
+  const today = new Date()
+  const diffTime = target.getTime() - today.getTime()
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+  return diffDays
+}
+
+/**
+ * Get relative time (e.g., "2 hours ago")
+ */
+export const getRelativeTime = (date: Date | string): string => {
+  const now = new Date()
+  const target = new Date(date)
+  const diffMs = now.getTime() - target.getTime()
+  const diffMins = Math.floor(diffMs / 60000)
+  const diffHours = Math.floor(diffMins / 60)
+  const diffDays = Math.floor(diffHours / 24)
+
+  if (diffMins < 1) return "Just now"
+  if (diffMins < 60) return `${diffMins}m ago`
+  if (diffHours < 24) return `${diffHours}h ago`
+  if (diffDays < 7) return `${diffDays}d ago`
+  return formatDate(target)
+}
+
+/**
+ * Get role display name
+ */
+export const getRoleDisplayName = (role: string): string => {
+  switch (role) {
+    case "admin":
+      return "Administrator"
+    case "vendor":
+      return "Vendor"
+    case "wedding_planner":
+      return "Wedding Planner"
+    case "user":
+      return "User"
     default:
-      return dateObj.toLocaleDateString()
+      return "User"
   }
 }
 
-export function formatPhoneNumber(phone: string): string {
-  // Remove all non-digit characters
-  const cleaned = phone.replace(/\D/g, "")
-
-  // Sri Lankan phone number formatting
-  if (cleaned.startsWith("94")) {
-    // International format
-    return `+${cleaned.slice(0, 2)} ${cleaned.slice(2, 4)} ${cleaned.slice(4, 7)} ${cleaned.slice(7)}`
-  } else if (cleaned.startsWith("0")) {
-    // Local format
-    return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 6)} ${cleaned.slice(6)}`
+/**
+ * Get role color theme
+ */
+export const getRoleTheme = (role: string) => {
+  switch (role) {
+    case "admin":
+      return {
+        primary: "red",
+        primaryHex: "#dc2626",
+        bg: "bg-red-50",
+        text: "text-red-600",
+        border: "border-red-200",
+      }
+    case "vendor":
+      return {
+        primary: "blue",
+        primaryHex: "#2563eb",
+        bg: "bg-blue-50",
+        text: "text-blue-600",
+        border: "border-blue-200",
+      }
+    case "wedding_planner":
+      return {
+        primary: "green",
+        primaryHex: "#16a34a",
+        bg: "bg-green-50",
+        text: "text-green-600",
+        border: "border-green-200",
+      }
+    case "user":
+      return {
+        primary: "purple",
+        primaryHex: "#9333ea",
+        bg: "bg-purple-50",
+        text: "text-purple-600",
+        border: "border-purple-200",
+      }
+    default:
+      return {
+        primary: "gray",
+        primaryHex: "#6b7280",
+        bg: "bg-gray-50",
+        text: "text-gray-600",
+        border: "border-gray-200",
+      }
   }
-
-  return phone
-}
-
-export function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w ]+/g, "")
-    .replace(/ +/g, "-")
-}
-
-export function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text
-  return text.slice(0, maxLength).trim() + "..."
-}
-
-export function generateId(): string {
-  return Math.random().toString(36).substring(2) + Date.now().toString(36)
 }

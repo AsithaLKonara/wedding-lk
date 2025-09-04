@@ -166,18 +166,7 @@ export default function LoginPage() {
               <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
               <CardDescription>Sign in to your Wedding.lk account</CardDescription>
               
-              {/* Temporary Authentication Notice */}
-              <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
-                <p className="text-sm text-blue-700">
-                  <strong>Demo Mode:</strong> Using test credentials for development.
-                  <br />
-                  <span className="text-xs text-blue-600">
-                    Try: admin1@wedding.lk / admin123 (Admin)
-                    <br />
-                    user1@example.com / user123 (User)
-                  </span>
-                </p>
-              </div>
+              
             </CardHeader>
             <CardContent className="space-y-6">
               {error && (
