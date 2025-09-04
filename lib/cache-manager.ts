@@ -1,32 +1,13 @@
-import Redis from 'ioredis';
+// DISABLED: Redis cache manager - using local cache instead
+console.log('⚠️ Redis cache manager disabled - using local cache service');
 
 class CacheManager {
-  private redis: Redis;
   private isConnected: boolean = false;
 
   constructor() {
-    this.redis = new Redis({
-      host: process.env.REDIS_HOST || 'redis',
-      port: parseInt(process.env.REDIS_PORT || '6379'),
-      password: process.env.REDIS_PASSWORD,
-      maxRetriesPerRequest: 3,
-      lazyConnect: true,
-    });
-
-    this.redis.on('connect', () => {
-      console.log('✅ Redis connected successfully');
-      this.isConnected = true;
-    });
-
-    this.redis.on('error', (err) => {
-      console.error('❌ Redis connection error:', err);
-      this.isConnected = false;
-    });
-
-    this.redis.on('disconnect', () => {
-      console.log('⚠️ Redis disconnected');
-      this.isConnected = false;
-    });
+    // DISABLED: Redis connection - using local cache instead
+    console.log('⚠️ Redis cache manager disabled - using local cache service');
+    this.isConnected = true; // Mock as connected
   }
 
   async get(key: string): Promise<any> {

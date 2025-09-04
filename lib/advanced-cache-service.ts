@@ -1,7 +1,8 @@
 // Advanced Caching Service for WeddingLK
 // Provides intelligent caching strategies for slow API endpoints
 
-import { Redis } from 'ioredis';
+// DISABLED: Redis advanced cache service - using local cache instead
+console.log('⚠️ Redis advanced cache service disabled - using local cache service');
 
 export interface CacheConfig {
   ttl: number; // Time to live in seconds
@@ -19,7 +20,6 @@ export interface CacheResult<T> {
 }
 
 export class AdvancedCacheService {
-  private redis: Redis;
   private defaultConfig: CacheConfig = {
     ttl: 300, // 5 minutes
     staleWhileRevalidate: 600, // 10 minutes
@@ -28,19 +28,8 @@ export class AdvancedCacheService {
   };
 
   constructor() {
-    this.redis = new Redis(process.env.REDIS_URL || 'redis://redis:6379', {
-      maxRetriesPerRequest: 3,
-      lazyConnect: true,
-      keepAlive: 30000,
-    });
-
-    this.redis.on('error', (err) => {
-      console.error('Redis connection error:', err);
-    });
-
-    this.redis.on('connect', () => {
-      console.log('✅ Redis connected for advanced caching');
-    });
+    // DISABLED: Redis connection - using local cache instead
+    console.log('⚠️ Redis advanced cache service disabled - using local cache service');
   }
 
   // Generate cache key with namespace
