@@ -515,6 +515,121 @@ async function seedPosts() {
   console.log(`✅ Created ${posts.length} posts`);
 }
 
+async function seedBookings() {
+  console.log('🌱 Seeding bookings...');
+  
+  const users = await User.find({ role: 'user' }).limit(20);
+  const venues = await Venue.find().limit(15);
+  const vendors = await Vendor.find().limit(10);
+  
+  const bookings = [];
+  
+  for (let i = 1; i <= 30; i++) {
+    const user = users[i % users.length];
+    const venue = venues[i % venues.length];
+    const vendor = vendors[i % vendors.length];
+    
+    const eventDate = new Date();
+    eventDate.setDate(eventDate.getDate() + Math.floor(Math.random() * 180) + 30); // 30-210 days from now
+    
+    const startTime = `${Math.floor(Math.random() * 8) + 10}:00`; // 10 AM to 6 PM
+    const endTime = `${Math.floor(Math.random() * 6) + 18}:00`; // 6 PM to 12 AM
+    
+    const guestCount = Math.floor(Math.random() * 100) + 20; // 20-120 guests
+    const basePrice = Math.floor(Math.random() * 200000) + 50000; // 50k-250k LKR
+    
+    bookings.push({
+      client: user._id,
+      venue: venue._id,
+      vendor: vendor._id,
+      date: eventDate,
+      startTime: startTime,
+      endTime: endTime,
+      guestCount: guestCount,
+      totalAmount: basePrice,
+      status: ['pending', 'confirmed', 'completed', 'cancelled'][Math.floor(Math.random() * 4)],
+      specialRequirements: i % 3 === 0 ? `Special requirements for booking ${i}: ${['Vegetarian menu', 'Live music', 'Photography', 'Decorations'][Math.floor(Math.random() * 4)]}` : undefined,
+      paymentStatus: ['pending', 'partial', 'completed'][Math.floor(Math.random() * 3)],
+      createdAt: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000), // Random date in last 30 days
+    });
+  }
+  
+  // Create Booking model
+  const BookingSchema = new mongoose.Schema({
+    client: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    venue: { type: mongoose.Schema.Types.ObjectId, ref: 'Venue', required: true },
+    vendor: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', required: true },
+    date: { type: Date, required: true },
+    startTime: { type: String, required: true },
+    endTime: { type: String, required: true },
+    guestCount: { type: Number, required: true },
+    totalAmount: { type: Number, required: true },
+    status: { type: String, enum: ['pending', 'confirmed', 'completed', 'cancelled'], default: 'pending' },
+    specialRequirements: { type: String },
+    paymentStatus: { type: String, enum: ['pending', 'partial', 'completed'], default: 'pending' },
+  }, { timestamps: true });
+  
+  const Booking = mongoose.models.Booking || mongoose.model('Booking', BookingSchema);
+  await Booking.insertMany(bookings);
+  console.log(`✅ Created ${bookings.length} bookings`);
+}
+
+async function seedReviews() {
+  console.log('🌱 Seeding reviews...');
+  
+  const bookings = await mongoose.models.Booking?.find({ status: 'completed' }).limit(20);
+  if (!bookings || bookings.length === 0) {
+    console.log('⚠️ No completed bookings found, skipping reviews');
+    return;
+  }
+  
+  const reviews = [];
+  const reviewTexts = [
+    "Absolutely amazing venue! The staff was incredible and everything was perfect.",
+    "Great service and beautiful location. Highly recommend for weddings!",
+    "Professional team and excellent facilities. Made our day special.",
+    "Outstanding venue with top-notch service. Worth every penny!",
+    "Beautiful setting and wonderful staff. Couldn't have asked for better.",
+    "Perfect venue for our wedding. Everything went smoothly.",
+    "Excellent service and beautiful ambiance. Highly recommended!",
+    "Fantastic experience from start to finish. Great value for money.",
+    "Lovely venue with professional staff. Made our event memorable.",
+    "Outstanding service and beautiful location. Perfect for special occasions."
+  ];
+  
+  for (let i = 0; i < Math.min(bookings.length, 15); i++) {
+    const booking = bookings[i];
+    
+    reviews.push({
+      client: booking.client,
+      venue: booking.venue,
+      vendor: booking.vendor,
+      booking: booking._id,
+      rating: Math.floor(Math.random() * 2) + 4, // 4-5 stars
+      review: reviewTexts[Math.floor(Math.random() * reviewTexts.length)],
+      isVerified: Math.random() > 0.2, // 80% verified
+      helpful: Math.floor(Math.random() * 10),
+      createdAt: new Date(booking.date.getTime() + Math.random() * 7 * 24 * 60 * 60 * 1000), // Within a week after event
+    });
+  }
+  
+  // Create Review model
+  const ReviewSchema = new mongoose.Schema({
+    client: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    venue: { type: mongoose.Schema.Types.ObjectId, ref: 'Venue' },
+    vendor: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor' },
+    booking: { type: mongoose.Schema.Types.ObjectId, ref: 'Booking' },
+    rating: { type: Number, required: true, min: 1, max: 5 },
+    review: { type: String, required: true },
+    isVerified: { type: Boolean, default: false },
+    helpful: { type: Number, default: 0 },
+  }, { timestamps: true });
+  
+  const Review = mongoose.models.Review || mongoose.model('Review', ReviewSchema);
+  await Review.insertMany(reviews);
+  console.log(`✅ Created ${reviews.length} reviews`);
+}
+
 async function seedData() {
   try {
     await connectDB();
@@ -527,6 +642,8 @@ async function seedData() {
     await Vendor.deleteMany({});
     await Venue.deleteMany({});
     await Post.deleteMany({});
+    await mongoose.models.Booking?.deleteMany({});
+    await mongoose.models.Review?.deleteMany({});
     console.log('🗑️ Cleared existing data');
     
     // Seed new data
@@ -534,6 +651,8 @@ async function seedData() {
     await seedVendors();
     await seedVenues();
     await seedPosts();
+    await seedBookings();
+    await seedReviews();
     
     console.log('🎉 Seed data created successfully!');
     console.log('📊 Summary:');
@@ -542,6 +661,8 @@ async function seedData() {
     console.log('   - 50 Vendors');
     console.log('   - 50 Venues');
     console.log('   - 35 Posts');
+    console.log('   - 30 Bookings');
+    console.log('   - 15 Reviews');
     
   } catch (error) {
     console.error('❌ Seed error:', error);

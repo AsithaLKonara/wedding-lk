@@ -8,6 +8,10 @@ import { Payment } from "@/lib/models/Payment"
 import { Review } from "@/lib/models/review"
 import { getServerSession } from '@/lib/auth-utils';
 
+// Cache for analytics data (5 minutes)
+const analyticsCache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession()
@@ -15,10 +19,22 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    await connectDB()
-
     const { searchParams } = new URL(request.url)
     const period = searchParams.get('period') || '30' // days
+    const forceRefresh = searchParams.get('refresh') === 'true'
+
+    // Check cache first
+    const cacheKey = `analytics_${period}_${session.user.id}`
+    if (!forceRefresh && analyticsCache.has(cacheKey)) {
+      const cached = analyticsCache.get(cacheKey)
+      if (Date.now() - cached.timestamp < CACHE_DURATION) {
+        console.log('📊 Returning cached analytics data')
+        return NextResponse.json({ analytics: cached.data })
+      }
+    }
+
+    console.log('📊 Fetching fresh analytics data for period:', period)
+    await connectDB()
 
     // Calculate date range
     const endDate = new Date()
@@ -186,12 +202,39 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    // Cache the results
+    analyticsCache.set(cacheKey, {
+      data: analytics,
+      timestamp: Date.now()
+    })
+
+    // Clean old cache entries
+    for (const [key, value] of analyticsCache.entries()) {
+      if (Date.now() - value.timestamp > CACHE_DURATION) {
+        analyticsCache.delete(key)
+      }
+    }
+
+    console.log('📊 Analytics data fetched and cached successfully')
     return NextResponse.json({ analytics })
 
   } catch (error) {
-    console.error("Error fetching admin analytics:", error)
+    console.error("❌ Error fetching admin analytics:", error)
+    
+    // Return cached data if available during error
+    const cacheKey = `analytics_${period}_${session?.user?.id}`
+    if (analyticsCache.has(cacheKey)) {
+      console.log('📊 Returning cached data due to error')
+      const cached = analyticsCache.get(cacheKey)
+      return NextResponse.json({ analytics: cached.data })
+    }
+    
     return NextResponse.json(
-      { error: "Failed to fetch analytics" },
+      { 
+        error: "Failed to fetch analytics",
+        message: error.message,
+        timestamp: new Date().toISOString()
+      },
       { status: 500 }
     )
   }

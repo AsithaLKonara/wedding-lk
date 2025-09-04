@@ -192,4 +192,137 @@ export function validateCancellation(
     errors,
     warnings: warnings.length > 0 ? warnings : undefined,
   };
+}
+
+// Advanced booking validation with pricing
+export interface PricingInfo {
+  basePrice: number;
+  guestCount: number;
+  date: string;
+  duration: number; // hours
+  peakSeason: boolean;
+  weekend: boolean;
+}
+
+export function calculateBookingPrice(pricing: PricingInfo): {
+  basePrice: number;
+  guestSurcharge: number;
+  peakSeasonMultiplier: number;
+  weekendMultiplier: number;
+  durationMultiplier: number;
+  totalPrice: number;
+  breakdown: {
+    base: number;
+    guestSurcharge: number;
+    peakSeason: number;
+    weekend: number;
+    duration: number;
+    total: number;
+  };
+} {
+  const { basePrice, guestCount, date, duration, peakSeason, weekend } = pricing;
+  
+  // Guest count surcharge (after 50 guests)
+  const guestSurcharge = guestCount > 50 ? (guestCount - 50) * 500 : 0;
+  
+  // Peak season multiplier (December to March)
+  const eventDate = new Date(date);
+  const month = eventDate.getMonth();
+  const isPeakSeason = month >= 11 || month <= 2; // Dec, Jan, Feb, Mar
+  const peakSeasonMultiplier = isPeakSeason ? 1.5 : 1.0;
+  
+  // Weekend multiplier
+  const dayOfWeek = eventDate.getDay();
+  const isWeekend = dayOfWeek === 0 || dayOfWeek === 6; // Sunday or Saturday
+  const weekendMultiplier = isWeekend ? 1.3 : 1.0;
+  
+  // Duration multiplier (after 8 hours)
+  const durationMultiplier = duration > 8 ? 1.2 : 1.0;
+  
+  // Calculate total
+  const base = basePrice;
+  const guestSurchargeAmount = guestSurcharge;
+  const peakSeasonAmount = base * (peakSeasonMultiplier - 1);
+  const weekendAmount = base * (weekendMultiplier - 1);
+  const durationAmount = base * (durationMultiplier - 1);
+  
+  const totalPrice = base + guestSurchargeAmount + peakSeasonAmount + weekendAmount + durationAmount;
+  
+  return {
+    basePrice,
+    guestSurcharge,
+    peakSeasonMultiplier,
+    weekendMultiplier,
+    durationMultiplier,
+    totalPrice,
+    breakdown: {
+      base,
+      guestSurcharge: guestSurchargeAmount,
+      peakSeason: peakSeasonAmount,
+      weekend: weekendAmount,
+      duration: durationAmount,
+      total: totalPrice
+    }
+  };
+}
+
+// Availability checker
+export function checkVenueAvailability(
+  venueId: string,
+  date: string,
+  startTime: string,
+  endTime: string,
+  existingBookings: any[]
+): { available: boolean; conflicts: any[] } {
+  const conflicts = existingBookings.filter(booking => {
+    if (booking.venueId !== venueId || booking.date !== date) {
+      return false;
+    }
+    
+    const bookingStart = booking.startTime;
+    const bookingEnd = booking.endTime;
+    
+    // Check for time overlap
+    return (
+      (startTime < bookingEnd && endTime > bookingStart) ||
+      (startTime === bookingStart && endTime === bookingEnd)
+    );
+  });
+  
+  return {
+    available: conflicts.length === 0,
+    conflicts
+  };
+}
+
+// Booking capacity validator
+export function validateBookingCapacity(
+  venueCapacity: number,
+  guestCount: number,
+  vendorCount: number = 0
+): ValidationResult {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  
+  const totalOccupancy = guestCount + vendorCount;
+  
+  if (totalOccupancy > venueCapacity) {
+    errors.push(`Total occupancy (${totalOccupancy}) exceeds venue capacity (${venueCapacity})`);
+  }
+  
+  // Safety margin warning
+  if (totalOccupancy > venueCapacity * 0.9) {
+    warnings.push('Venue is at 90% capacity - consider alternative arrangements');
+  }
+  
+  // Minimum occupancy check
+  if (guestCount < 10) {
+    warnings.push('Very low guest count - some venues may have minimum requirements');
+  }
+  
+  return {
+    isValid: errors.length === 0,
+    errors,
+    warnings: warnings.length > 0 ? warnings : undefined,
+  };
 } 
