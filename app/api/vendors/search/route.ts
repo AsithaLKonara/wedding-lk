@@ -1,82 +1,85 @@
-import { NextRequest, NextResponse } from "next/server"
-import { connectDB } from "@/lib/db"
-import { Vendor } from "@/lib/models/vendor"
+import { NextRequest, NextResponse } from 'next/server';
+import { connectDB } from '@/lib/db';
+import { Vendor } from '@/lib/models/vendor';
 
 export async function GET(request: NextRequest) {
   try {
-    await connectDB()
+    const { searchParams } = new URL(request.url);
+    const limit = parseInt(searchParams.get('limit') || '20');
+    const offset = parseInt(searchParams.get('offset') || '0');
+    const search = searchParams.get('search') || '';
+    const location = searchParams.get('location') || '';
+    const category = searchParams.get('category') || '';
+    const minPrice = searchParams.get('minPrice');
+    const maxPrice = searchParams.get('maxPrice');
+    const rating = searchParams.get('rating');
+    const verified = searchParams.get('verified');
 
-    const { searchParams } = new URL(request.url)
-    const query = searchParams.get('q') || ''
-    const category = searchParams.get('category') || ''
-    const location = searchParams.get('location') || ''
-    const minRating = searchParams.get('minRating') || '0'
-    const maxPrice = searchParams.get('maxPrice') || ''
-    const limit = parseInt(searchParams.get('limit') || '20')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    await connectDB();
 
-    console.log('🔍 Searching vendors in MongoDB Atlas...')
-
-    // Build MongoDB query
-    const mongoQuery: any = { isActive: true }
+    let query: any = {};
 
     // Text search
-    if (query) {
-      mongoQuery.$or = [
-        { businessName: { $regex: query, $options: 'i' } },
-        { description: { $regex: query, $options: 'i' } },
-        { category: { $regex: query, $options: 'i' } }
-      ]
-    }
-
-    // Category filter
-    if (category) {
-      mongoQuery.category = category
+    if (search) {
+      query.$or = [
+        { businessName: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { location: { $regex: search, $options: 'i' } },
+        { services: { $in: [new RegExp(search, 'i')] } }
+      ];
     }
 
     // Location filter
     if (location) {
-      mongoQuery['location.city'] = { $regex: location, $options: 'i' }
+      query.location = { $regex: location, $options: 'i' };
+    }
+
+    // Category filter
+    if (category) {
+      query.category = category;
+    }
+
+    // Price range filter
+    if (minPrice || maxPrice) {
+      query.price = {};
+      if (minPrice) query.price.$gte = parseInt(minPrice);
+      if (maxPrice) query.price.$lte = parseInt(maxPrice);
     }
 
     // Rating filter
-    if (minRating) {
-      mongoQuery['rating.average'] = { $gte: parseFloat(minRating) }
+    if (rating) {
+      query['rating.average'] = { $gte: parseFloat(rating) };
     }
 
-    // Price filter
-    if (maxPrice) {
-      mongoQuery['pricing.startingPrice'] = { $lte: parseInt(maxPrice) }
+    // Verified filter
+    if (verified === 'true') {
+      query.verificationStatus = 'verified';
     }
 
-    // Execute search with pagination
-    const [vendors, totalCount] = await Promise.all([
-      Vendor.find(mongoQuery)
-        .select('businessName category description location rating pricing portfolio services isVerified')
-        .sort({ 'rating.average': -1, createdAt: -1 })
-        .skip(offset)
-        .limit(limit)
-        .lean(),
-      Vendor.countDocuments(mongoQuery)
-    ])
+    const vendors = await Vendor.find(query)
+      .sort({ 'rating.average': -1, createdAt: -1 })
+      .limit(limit)
+      .skip(offset)
+      .lean();
 
-    console.log(`✅ Found ${vendors.length} vendors matching search criteria`)
+    const total = await Vendor.countDocuments(query);
 
     return NextResponse.json({
+      success: true,
       vendors,
       pagination: {
-        total: totalCount,
+        total,
         limit,
         offset,
-        hasMore: offset + limit < totalCount
+        hasMore: offset + limit < total
       }
-    })
+    });
 
   } catch (error) {
-    console.error("Error searching vendors:", error)
-    return NextResponse.json(
-      { error: "Failed to search vendors" },
-      { status: 500 }
-    )
+    console.error('Error searching vendors:', error);
+    return NextResponse.json({
+      success: false,
+      error: 'Failed to search vendors'
+    }, { status: 500 });
   }
 }

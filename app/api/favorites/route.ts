@@ -1,68 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
-import { getServerSession } from '@/lib/auth-utils';
-import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
+import { Favorite } from '@/lib/models/favorite';
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession();
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId');
+    const type = searchParams.get('type'); // 'venue' or 'vendor'
+
+    // If no userId provided, return empty array for now
+    if (!userId) {
+      return NextResponse.json({
+        success: true,
+        favorites: [],
+        message: 'No user ID provided'
+      });
     }
 
     await connectDB();
 
-    const user = await User.findOne({ email: session.user.email });
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    let query: any = { userId };
+    if (type) {
+      query.type = type;
     }
 
-    console.log('📊 Fetching user favorites from MongoDB Atlas...');
-
-    // Get user's favorites from their profile
-    const userFavorites = user.favorites || {
-      venues: [],
-      vendors: [],
-      packages: []
-    };
-
-    // Fetch detailed data for each favorite
-    const [favoriteVenues, favoriteVendors] = await Promise.all([
-      Venue.find({ 
-        _id: { $in: userFavorites.venues },
-        isActive: true 
-      }).lean(),
-      Vendor.find({ 
-        _id: { $in: userFavorites.vendors },
-        isActive: true 
-      }).lean()
-    ]);
-
-    const favorites = {
-      venues: favoriteVenues.map(venue => ({
-        _id: venue._id,
-        name: venue.name,
-        location: venue.location,
-        pricing: venue.pricing,
-        rating: venue.rating,
-        images: venue.images,
-        type: 'venue'
-      })),
-      vendors: favoriteVendors.map(vendor => ({
-        _id: vendor._id,
-        name: vendor.businessName,
-        category: vendor.category,
-        location: vendor.location,
-        pricing: vendor.pricing,
-        rating: vendor.rating,
-        portfolio: vendor.portfolio,
-        type: 'vendor'
-      })),
-      packages: userFavorites.packages // For now, packages are stored as IDs
-    };
-
-    console.log('✅ User favorites fetched successfully');
+    const favorites = await Favorite.find(query)
+      .populate('itemId')
+      .sort({ createdAt: -1 })
+      .lean();
 
     return NextResponse.json({
       success: true,
@@ -70,134 +35,93 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('❌ Error fetching favorites:', error);
+    console.error('Error fetching favorites:', error);
     return NextResponse.json({
       success: false,
-      error: 'Failed to fetch favorites',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to fetch favorites'
     }, { status: 500 });
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession();
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const { userId, itemId, type } = await request.json();
+
+    if (!userId || !itemId || !type) {
+      return NextResponse.json({
+        success: false,
+        error: 'Missing required fields'
+      }, { status: 400 });
     }
 
     await connectDB();
 
-    const user = await User.findOne({ email: session.user.email });
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-
-    const { itemId, itemType } = await request.json();
-    
-    console.log('📝 Adding item to favorites...', { itemId, itemType });
-
-    // Validate item type
-    if (!['venue', 'vendor', 'package'].includes(itemType)) {
+    // Check if already favorited
+    const existingFavorite = await Favorite.findOne({ userId, itemId, type });
+    if (existingFavorite) {
       return NextResponse.json({
         success: false,
-        error: 'Invalid item type. Must be venue, vendor, or package'
+        error: 'Item already in favorites'
       }, { status: 400 });
     }
 
-    // Initialize favorites if not exists
-    if (!user.favorites) {
-      user.favorites = {
-        venues: [],
-        vendors: [],
-        packages: []
-      };
-    }
+    const favorite = new Favorite({
+      userId,
+      itemId,
+      type
+    });
 
-    // Add item to appropriate favorites array
-    const favoritesArray = user.favorites[`${itemType}s` as keyof typeof user.favorites] as string[];
-    
-    if (!favoritesArray.includes(itemId)) {
-      favoritesArray.push(itemId);
-      await user.save();
-      console.log('✅ Item added to favorites');
-    }
+    await favorite.save();
 
     return NextResponse.json({
       success: true,
-      message: 'Item added to favorites successfully'
+      favorite
     });
 
   } catch (error) {
-    console.error('❌ Error adding to favorites:', error);
+    console.error('Error adding favorite:', error);
     return NextResponse.json({
       success: false,
-      error: 'Failed to add to favorites',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to add favorite'
     }, { status: 500 });
   }
 }
 
 export async function DELETE(request: NextRequest) {
   try {
-    const session = await getServerSession();
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId');
+    const itemId = searchParams.get('itemId');
+    const type = searchParams.get('type');
+
+    if (!userId || !itemId || !type) {
+      return NextResponse.json({
+        success: false,
+        error: 'Missing required parameters'
+      }, { status: 400 });
     }
 
     await connectDB();
 
-    const user = await User.findOne({ email: session.user.email });
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
+    const favorite = await Favorite.findOneAndDelete({ userId, itemId, type });
 
-    const { searchParams } = new URL(request.url);
-    const itemId = searchParams.get('itemId');
-    const itemType = searchParams.get('itemType');
-    
-    console.log('📝 Removing item from favorites...', { itemId, itemType });
-
-    // Validate item type
-    if (!['venue', 'vendor', 'package'].includes(itemType || '')) {
+    if (!favorite) {
       return NextResponse.json({
         success: false,
-        error: 'Invalid item type. Must be venue, vendor, or package'
-      }, { status: 400 });
-    }
-
-    // Initialize favorites if not exists
-    if (!user.favorites) {
-      user.favorites = {
-        venues: [],
-        vendors: [],
-        packages: []
-      };
-    }
-
-    // Remove item from appropriate favorites array
-    const favoritesArray = user.favorites[`${itemType}s` as keyof typeof user.favorites] as string[];
-    const index = favoritesArray.indexOf(itemId || '');
-    
-    if (index > -1) {
-      favoritesArray.splice(index, 1);
-      await user.save();
-      console.log('✅ Item removed from favorites');
+        error: 'Favorite not found'
+      }, { status: 404 });
     }
 
     return NextResponse.json({
       success: true,
-      message: 'Item removed from favorites successfully'
+      message: 'Favorite removed successfully'
     });
 
   } catch (error) {
-    console.error('❌ Error removing from favorites:', error);
+    console.error('Error removing favorite:', error);
     return NextResponse.json({
       success: false,
-      error: 'Failed to remove from favorites',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to remove favorite'
     }, { status: 500 });
   }
 }

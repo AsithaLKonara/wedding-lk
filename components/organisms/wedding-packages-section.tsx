@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { WeddingPackageCard } from "@/components/molecules/wedding-package-card"
 import { Button } from "@/components/ui/button"
-import { Sparkles, Crown, Star, Award } from "lucide-react"
+import { Sparkles, Crown, Star, Award, Heart } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 

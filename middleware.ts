@@ -122,5 +122,5 @@ export const config = {
     '/dashboard/:path*',
     '/api/dashboard/:path*',
     '/api/auth/:path*'
-  ],
+  ]
 };
