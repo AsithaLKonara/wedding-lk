@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { connectDB } from "@/lib/db"
-import { Payment } from "@/lib/models/Payment"
+import { Payment } from "@/lib/models"
 import { getServerSession } from '@/lib/auth-utils';
 
 export async function GET(request: NextRequest) {

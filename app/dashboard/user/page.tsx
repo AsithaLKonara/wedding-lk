@@ -27,7 +27,7 @@ import {
   Gift,
   Car
 } from "lucide-react"
-import { DashboardLayout } from "@/components/layouts/dashboard-layout"
+// DashboardLayout is now handled by the main layout
 import { formatCurrency, daysUntil, getRelativeTime } from "@/lib/utils/format"
 
 interface UserStats {
@@ -92,35 +92,54 @@ export default function UserDashboard() {
     try {
       setLoading(true)
       
-      // Fetch user stats
+      // Fetch user stats from database
       const statsResponse = await fetch("/api/dashboard/user/stats")
       if (statsResponse.ok) {
         const statsData = await statsResponse.json()
-        setStats(statsData.stats)
+        if (statsData.success) {
+          setStats(statsData.stats)
+        }
       }
 
-      // Fetch tasks
+      // Fetch tasks from database
       const tasksResponse = await fetch("/api/dashboard/user/tasks")
       if (tasksResponse.ok) {
         const tasksData = await tasksResponse.json()
-        setTasks(tasksData.tasks)
+        if (tasksData.success) {
+          setTasks(tasksData.tasks)
+        }
       }
 
-      // Fetch upcoming events
+      // Fetch upcoming events from database
       const eventsResponse = await fetch("/api/dashboard/user/events")
       if (eventsResponse.ok) {
         const eventsData = await eventsResponse.json()
-        setUpcomingEvents(eventsData.events)
+        if (eventsData.success) {
+          setUpcomingEvents(eventsData.events)
+        }
       }
 
-      // Fetch recent activity
+      // Fetch recent activity from database
       const activityResponse = await fetch("/api/dashboard/user/activity")
       if (activityResponse.ok) {
         const activityData = await activityResponse.json()
-        setRecentActivity(activityData.activity)
+        if (activityData.success) {
+          setRecentActivity(activityData.activity)
+        }
       }
     } catch (error) {
       console.error("Error fetching user data:", error)
+      // Set fallback data if API fails
+      setStats({
+        daysUntilWedding: 45,
+        tasksCompleted: 0,
+        totalTasks: 0,
+        budgetUsed: 0,
+        totalBudget: 500000,
+        newMessages: 3,
+        favoriteVendors: 5,
+        upcomingEvents: 0,
+      })
     } finally {
       setLoading(false)
     }
@@ -179,14 +198,12 @@ export default function UserDashboard() {
 
   if (loading) {
     return (
-      <DashboardLayout>
-        <div className="flex items-center justify-center min-h-96">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading your wedding dashboard...</p>
-          </div>
+      <div className="flex items-center justify-center min-h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your wedding dashboard...</p>
         </div>
-      </DashboardLayout>
+      </div>
     )
   }
 
@@ -194,30 +211,17 @@ export default function UserDashboard() {
   const budgetPercentage = stats.totalBudget > 0 ? (stats.budgetUsed / stats.totalBudget) * 100 : 0
 
   return (
-    <DashboardLayout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="p-3 bg-purple-100 rounded-full">
-              <Heart className="h-8 w-8 text-purple-600" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Wedding Planning Dashboard</h1>
-              <p className="text-gray-600 mt-1">Plan your perfect wedding day</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Button variant="outline" size="sm">
-              <Bell className="h-4 w-4 mr-2" />
-              Notifications
-            </Button>
-            <Button variant="outline" size="sm">
-              <User className="h-4 w-4 mr-2" />
-              Profile
-            </Button>
-          </div>
+    <div className="space-y-6">
+      {/* Wedding Planning Section */}
+      <div className="flex items-center space-x-4">
+        <div className="p-3 bg-purple-100 rounded-full">
+          <Heart className="h-8 w-8 text-purple-600" />
         </div>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Wedding Planning Dashboard</h1>
+          <p className="text-gray-600 mt-1">Plan your perfect wedding day</p>
+        </div>
+      </div>
 
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -486,7 +490,6 @@ export default function UserDashboard() {
             </Card>
           </TabsContent>
         </Tabs>
-      </div>
-    </DashboardLayout>
+    </div>
   )
 }

@@ -5,7 +5,7 @@ import { User } from "@/lib/models/user"
 import { Vendor } from "@/lib/models/vendor"
 import { Venue } from "@/lib/models/venue"
 import { Booking } from "@/lib/models/booking"
-import { Payment } from "@/lib/models/Payment"
+import { Payment } from "@/lib/models"
 import { Review } from "@/lib/models/review"
 
 export async function GET(request: NextRequest) {

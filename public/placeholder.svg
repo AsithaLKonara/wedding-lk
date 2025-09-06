@@ -1,4 +1,1 @@
-<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="256" height="256" fill="#F3F4F6"/>
-<path d="M128 88C114.845 88 104 98.845 104 112C144 125.155 152 135.155 152 144C152 157.155 141.155 168 128 168C114.845 168 104 157.155 104 144C144 130.845 152 120.845 152 108C152 94.845 141.155 84 128 84Z" fill="#9CA3AF"/>
-</svg>
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#f3f4f6"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="#9ca3af" font-family="Arial, sans-serif" font-size="16">No Image Available</text></svg>

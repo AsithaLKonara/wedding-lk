@@ -61,7 +61,7 @@ export default function TestCredentialsPage() {
         alert('Login failed: ' + result?.error);
       }
     } catch (error) {
-      alert('Login error: ' + error.message);
+      alert('Login error: ' + (error as Error).message);
     } finally {
       setIsLoading(false);
     }

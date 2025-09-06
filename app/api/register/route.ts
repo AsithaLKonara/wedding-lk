@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalAuth } from '@/lib/local-auth';
+import { connectDB } from '@/lib/db';
+import { User } from '@/lib/models';
+import bcrypt from 'bcryptjs';
 
 export async function POST(request: NextRequest) {
   try {
@@ -42,35 +44,67 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Register user using local database
-    const result = await LocalAuth.register({
-      name,
-      email,
-      password,
-      role: userRole,
-      phone,
-      address
-    });
+    await connectDB();
 
-    if (!result.success) {
-      console.log('❌ Registration failed:', result.error);
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
       return NextResponse.json({
         success: false,
-        error: result.error || 'Registration failed'
+        error: 'User with this email already exists'
       }, { status: 400 });
     }
 
-    console.log('✅ Registration successful:', result.user?.email, 'Role:', result.user?.role);
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    // Create new user
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword,
+      role: userRole,
+      phone,
+      address,
+      location: {
+        country: 'Sri Lanka',
+        state: 'Western Province',
+        city: 'Colombo',
+        zipCode: '00100'
+      },
+      preferences: {
+        language: 'en',
+        currency: 'LKR',
+        timezone: 'Asia/Colombo',
+        notifications: {
+          email: true,
+          sms: false,
+          push: true
+        },
+        marketing: {
+          email: false,
+          sms: false,
+          push: false
+        }
+      },
+      isActive: true,
+      isVerified: false,
+      status: 'active'
+    });
+
+    await newUser.save();
+
+    console.log('✅ Registration successful:', newUser.email, 'Role:', newUser.role);
 
     return NextResponse.json({
       success: true,
       user: {
-        id: result.user?.id,
-        name: result.user?.name,
-        email: result.user?.email,
-        role: result.user?.role,
-        isVerified: result.user?.isVerified,
-        isActive: result.user?.isActive,
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+        isVerified: newUser.isVerified,
+        isActive: newUser.isActive,
       },
       message: 'Registration successful'
     });

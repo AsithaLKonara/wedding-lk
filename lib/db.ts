@@ -5,7 +5,7 @@ import './models';
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  console.warn('⚠️ MONGODB_URI not found, using fallback connection string');
+  throw new Error('MONGODB_URI environment variable is required for MongoDB Atlas connection');
 }
 
 interface ConnectionCache {
@@ -25,9 +25,40 @@ if (!global.mongoose) {
 }
 
 export async function connectDB() {
-  // DISABLED: Using local JSON database instead of MongoDB
-  console.log('⚠️ MongoDB connection disabled - using local JSON database');
-  return null;
+  if (cached.conn) {
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+      maxPoolSize: 10, // Maintain up to 10 socket connections
+      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+      family: 4 // Use IPv4, skip trying IPv6
+    };
+
+    if (!MONGODB_URI) {
+      throw new Error('MONGODB_URI environment variable is required');
+    }
+
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      console.log('✅ Connected to MongoDB Atlas');
+      return mongoose;
+    }).catch((error) => {
+      console.error('❌ MongoDB connection error:', error);
+      throw new Error(`Failed to connect to MongoDB: ${error.message}`);
+    });
+  }
+
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
+
+  return cached.conn;
 }
 
 // Add connection event listeners for better monitoring

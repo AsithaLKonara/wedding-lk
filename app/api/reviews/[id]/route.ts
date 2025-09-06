@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
-
+import { connectDB } from '@/lib/db';
+import { getAuthenticatedUser, requireAuth, requireAdmin, requireVendor, requireWeddingPlanner } from '@/lib/auth-utils';
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { id } = params;
     
     console.log('📊 Fetching review by ID:', id);
 
-    const review = LocalDatabase.readById('reviews', id);
+    await connectDB();
+    const review = await Review.findById(id);
 
     if (!review) {
       return NextResponse.json({
@@ -23,7 +25,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       review
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error fetching review:', error);
     return NextResponse.json({
       success: false,
@@ -40,7 +42,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     
     console.log('📝 Updating review:', id);
 
-    const updatedReview = LocalDatabase.update('reviews', id, updates);
+    const updatedReview = await Review.findByIdAndUpdate(id, updates, { new: true });
 
     if (!updatedReview) {
       return NextResponse.json({
@@ -57,7 +59,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       message: 'Review updated successfully'
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error updating review:', error);
     return NextResponse.json({
       success: false,
@@ -73,7 +75,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     
     console.log('🗑️ Deleting review:', id);
 
-    const deleted = LocalDatabase.delete('reviews', id);
+    const deleted = await Review.findByIdAndDelete(id);
 
     if (!deleted) {
       return NextResponse.json({
@@ -89,7 +91,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       message: 'Review deleted successfully'
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error deleting review:', error);
     return NextResponse.json({
       success: false,

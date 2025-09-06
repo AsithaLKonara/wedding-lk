@@ -316,21 +316,28 @@ UserSchema.index({ role: 1, status: 1 });
 UserSchema.index({ 'location.city': 1, 'location.state': 1 });
 UserSchema.index({ 'socialAccounts.provider': 1, 'socialAccounts.providerId': 1 });
 
-// Pre-save middleware
+// Pre-save middleware - DISABLED (password is already hashed in registration)
+// UserSchema.pre('save', async function(next) {
+//   if (this.isModified('password') && this.password) {
+//     try {
+//       // Hash password with salt
+//       const salt = await bcrypt.genSalt(10);
+//       this.password = await bcrypt.hash(this.password as string, salt);
+//     } catch (error) {
+//       return next(error as Error);
+//     }
+//   }
+//   
+//   // Set lastActiveAt to current time
+//   this.lastActiveAt = new Date();
+//   
+//   next();
+// });
+
+// Only set lastActiveAt on save
 UserSchema.pre('save', async function(next) {
-  if (this.isModified('password') && this.password) {
-    try {
-      // Hash password with salt
-      const salt = await bcrypt.genSalt(10);
-      this.password = await bcrypt.hash(this.password as string, salt);
-    } catch (error) {
-      return next(error as Error);
-    }
-  }
-  
   // Set lastActiveAt to current time
   this.lastActiveAt = new Date();
-  
   next();
 });
 

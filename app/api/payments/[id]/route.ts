@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
-
+import { connectDB } from '@/lib/db';
+import { getAuthenticatedUser, requireAuth, requireAdmin, requireVendor, requireWeddingPlanner } from '@/lib/auth-utils';
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { id } = params;
     
     console.log('📊 Fetching payment by ID:', id);
 
-    const payment = LocalDatabase.readById('payments', id);
+    await connectDB();
+    const payment = await Payment.findById(id);
 
     if (!payment) {
       return NextResponse.json({
@@ -23,7 +25,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       payment
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error fetching payment:', error);
     return NextResponse.json({
       success: false,
@@ -40,7 +42,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     
     console.log('📝 Updating payment:', id);
 
-    const updatedPayment = LocalDatabase.update('payments', id, updates);
+    const updatedPayment = await Payment.findByIdAndUpdate(id, updates, { new: true });
 
     if (!updatedPayment) {
       return NextResponse.json({
@@ -57,7 +59,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       message: 'Payment updated successfully'
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error updating payment:', error);
     return NextResponse.json({
       success: false,
@@ -73,7 +75,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     
     console.log('🗑️ Deleting payment:', id);
 
-    const deleted = LocalDatabase.delete('payments', id);
+    const deleted = await Payment.findByIdAndDelete(id);
 
     if (!deleted) {
       return NextResponse.json({
@@ -89,7 +91,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       message: 'Payment deleted successfully'
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error deleting payment:', error);
     return NextResponse.json({
       success: false,

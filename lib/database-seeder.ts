@@ -3,7 +3,7 @@ import User from "@/lib/models/user"
 import { Venue } from "@/lib/models/venue"
 import { Vendor } from "@/lib/models/vendor"
 import { Booking } from "@/lib/models/booking"
-import { Payment } from "@/lib/models/Payment"
+import { Payment } from "@/lib/models"
 
 // Mock data for seeding
 const mockUsers = [

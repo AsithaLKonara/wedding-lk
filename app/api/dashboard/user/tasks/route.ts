@@ -1,56 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
+import { connectDB } from '@/lib/db';
+import { getServerSession } from '@/lib/auth-utils';
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('📊 Fetching user tasks from local database...');
+    const session = await getServerSession();
+    
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    // Get tasks from local database
-    const tasks = LocalDatabase.read('tasks');
+    await connectDB();
 
-    // Mock user tasks (in real app, you'd filter by current user)
-    const userTasks = [
-      {
-        id: 'task-1',
-        title: 'Venue Selection',
-        category: 'venue',
-        dueDate: '2024-03-15T00:00:00.000Z',
-        status: 'completed',
-        priority: 'high'
-      },
-      {
-        id: 'task-2',
-        title: 'Catering Menu Finalization',
-        category: 'catering',
-        dueDate: '2024-04-01T00:00:00.000Z',
-        status: 'in_progress',
-        priority: 'medium'
-      },
-      {
-        id: 'task-3',
-        title: 'Photography Booking',
-        category: 'photography',
-        dueDate: '2024-04-15T00:00:00.000Z',
-        status: 'pending',
-        priority: 'high'
-      },
-      {
-        id: 'task-4',
-        title: 'Music Selection',
-        category: 'music',
-        dueDate: '2024-05-01T00:00:00.000Z',
-        status: 'pending',
-        priority: 'low'
-      },
-      {
-        id: 'task-5',
-        title: 'Flower Arrangements',
-        category: 'flowers',
-        dueDate: '2024-05-15T00:00:00.000Z',
-        status: 'pending',
-        priority: 'medium'
-      }
-    ];
+    const user = await User.findOne({ email: session.user.email });
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    console.log('📊 Fetching user tasks from MongoDB Atlas...');
+
+    // Get user tasks
+    const tasks = await Task.find({ assignedTo: user._id })
+      .populate('createdBy', 'name email')
+      .sort({ createdAt: -1 })
+      .lean();
+
+    // Format tasks for frontend
+    const userTasks = tasks.map(task => ({
+      id: (task._id as any).toString(),
+      title: task.title,
+      category: task.category || 'general',
+      dueDate: task.dueDate,
+      status: task.status,
+      priority: task.priority,
+      description: task.description,
+      createdBy: task.createdBy?.name || 'System',
+      estimatedHours: task.estimatedHours || 0,
+      actualHours: task.actualHours || 0
+    }));
 
     console.log('✅ User tasks fetched successfully');
 

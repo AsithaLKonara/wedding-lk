@@ -601,7 +601,7 @@ const WeddingPlannerProfileSchema: Schema = new Schema(
 );
 
 // Indexes for performance
-WeddingPlannerProfileSchema.index({ userId: 1 });
+// userId index is automatically created by unique: true constraint
 WeddingPlannerProfileSchema.index({ verificationStatus: 1 });
 WeddingPlannerProfileSchema.index({ 'services.name': 1 });
 WeddingPlannerProfileSchema.index({ 'serviceAreas.city': 1, 'serviceAreas.state': 1 });

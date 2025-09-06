@@ -31,53 +31,18 @@ export async function GET(request: NextRequest) {
       date: review.createdAt
     }))
 
-    // If no testimonials, return mock data
+    // If no testimonials, return empty array
     if (formattedTestimonials.length === 0) {
-      const mockTestimonials = [
-        {
-          id: 'mock1',
-          user: { name: 'John & Sarah', avatar: null },
-          rating: 5,
-          comment: 'Amazing venue! Perfect for our wedding. The staff was incredibly helpful.',
-          source: 'Venue',
-          date: new Date()
-        },
-        {
-          id: 'mock2',
-          user: { name: 'Mike & Lisa', avatar: null },
-          rating: 5,
-          comment: 'Beautiful garden setting. Our guests loved it!',
-          source: 'Venue',
-          date: new Date()
-        }
-      ]
-      return NextResponse.json({ testimonials: mockTestimonials })
+      return NextResponse.json({ testimonials: [] })
     }
 
     return NextResponse.json({ testimonials: formattedTestimonials })
 
   } catch (error) {
     console.error("Error fetching testimonials:", error)
-    
-    // Return mock data on error
-    const mockTestimonials = [
-      {
-        id: 'mock1',
-        user: { name: 'John & Sarah', avatar: null },
-        rating: 5,
-        comment: 'Amazing venue! Perfect for our wedding. The staff was incredibly helpful.',
-        source: 'Venue',
-        date: new Date()
-      },
-      {
-        id: 'mock2',
-        user: { name: 'Mike & Lisa', avatar: null },
-        rating: 5,
-        comment: 'Beautiful garden setting. Our guests loved it!',
-        source: 'Venue',
-        date: new Date()
-      }
-    ]
-    return NextResponse.json({ testimonials: mockTestimonials })
+    return NextResponse.json(
+      { error: "Failed to fetch testimonials" },
+      { status: 500 }
+    )
   }
 } 

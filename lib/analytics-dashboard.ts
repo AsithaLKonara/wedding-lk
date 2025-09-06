@@ -3,7 +3,7 @@ import User from "@/lib/models/user"
 import { Venue } from "@/lib/models/venue"
 import { Vendor } from "@/lib/models/vendor"
 import { Booking } from "@/lib/models/booking"
-import { Payment } from "@/lib/models/Payment"
+import { Payment } from "@/lib/models"
 import { Message } from "@/lib/models/message"
 import { Notification } from "@/lib/models/notification"
 

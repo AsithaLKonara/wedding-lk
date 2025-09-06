@@ -233,11 +233,11 @@ export function VenueGrid({ limit = 6, featured = false, location, className = "
           <Card key={venue._id} className="overflow-hidden hover:shadow-lg transition-shadow">
             <div className="relative">
               <img
-                src={venue.images[0] || '/placeholder.svg'}
-                alt={venue.name}
+                src={venue?.images?.[0] || '/placeholder.svg'}
+                alt={venue?.name || 'Venue'}
                 className="w-full h-48 object-cover"
               />
-              {venue.featured && (
+              {venue?.featured && (
                 <Badge className="absolute top-2 left-2 bg-yellow-500 text-white">
                   Featured
                 </Badge>
@@ -258,11 +258,11 @@ export function VenueGrid({ limit = 6, featured = false, location, className = "
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <CardTitle className="text-lg font-semibold mb-1 line-clamp-1">
-                    {venue.name}
+                    {venue?.name || 'N/A'}
                   </CardTitle>
                   <div className="flex items-center text-sm text-gray-600 mb-2">
                     <MapPin className="h-4 w-4 mr-1" />
-                    <span>{venue.location.city}, {venue.location.province}</span>
+                    <span>{venue?.location?.city || 'N/A'}, {venue?.location?.province || 'N/A'}</span>
                   </div>
                 </div>
               </div>
@@ -271,11 +271,11 @@ export function VenueGrid({ limit = 6, featured = false, location, className = "
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center text-sm text-gray-600">
                     <Users className="h-4 w-4 mr-1" />
-                    <span>{venue.capacity.min}-{venue.capacity.max}</span>
+                    <span>{venue?.capacity?.min || 0}-{venue?.capacity?.max || 0}</span>
                   </div>
                   <div className="flex items-center text-sm text-gray-600">
                     <Star className="h-4 w-4 mr-1 text-yellow-500" />
-                    <span>{venue.rating?.average?.toFixed(1) || '4.5'} ({venue.rating?.count || 0})</span>
+                    <span>{venue?.rating?.average?.toFixed(1) || '4.5'} ({venue?.rating?.count || 0})</span>
                   </div>
                 </div>
               </div>
@@ -284,17 +284,17 @@ export function VenueGrid({ limit = 6, featured = false, location, className = "
             <CardContent className="p-4 pt-0">
               <div className="mb-4">
                 <p className="text-sm text-gray-600 line-clamp-2 mb-2">
-                  {venue.description}
+                  {venue?.description || 'No description available'}
                 </p>
                 <div className="flex flex-wrap gap-1">
-                  {venue.amenities.slice(0, 3).map((amenity, index) => (
+                  {(venue?.amenities || []).slice(0, 3).map((amenity, index) => (
                     <Badge key={index} variant="secondary" className="text-xs">
                       {amenity}
                     </Badge>
                   ))}
-                  {venue.amenities.length > 3 && (
+                  {(venue?.amenities?.length || 0) > 3 && (
                     <Badge variant="secondary" className="text-xs">
-                      +{venue.amenities.length - 3} more
+                      +{(venue?.amenities?.length || 0) - 3} more
                     </Badge>
                   )}
                 </div>
@@ -303,7 +303,7 @@ export function VenueGrid({ limit = 6, featured = false, location, className = "
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-lg font-semibold text-green-600">
-                    {formatPrice(venue.pricing.basePrice, venue.pricing.currency)}
+                    {formatPrice(venue?.pricing?.basePrice || 0, venue?.pricing?.currency || 'LKR')}
                   </p>
                   <p className="text-xs text-gray-500">Starting price</p>
                 </div>
@@ -313,7 +313,7 @@ export function VenueGrid({ limit = 6, featured = false, location, className = "
                     variant="outline"
                     asChild
                   >
-                    <Link href={`/venues/${venue._id}`}>
+                    <Link href={`/venues/${venue?._id || ''}`}>
                       <Eye className="h-4 w-4 mr-1" />
                       View
                     </Link>
@@ -322,7 +322,7 @@ export function VenueGrid({ limit = 6, featured = false, location, className = "
                     size="sm"
                     asChild
                   >
-                    <Link href={`/venues/${venue._id}`}>
+                    <Link href={`/venues/${venue?._id || ''}`}>
                       <Calendar className="h-4 w-4 mr-1" />
                       Book Now
                     </Link>

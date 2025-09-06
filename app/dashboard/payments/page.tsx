@@ -88,7 +88,7 @@ export default function PaymentsPage() {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">LKR {totalPaid.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-green-600">LKR {totalPaid?.toLocaleString() || "0"}</div>
             <p className="text-xs text-muted-foreground">Completed payments</p>
           </CardContent>
         </Card>
@@ -99,7 +99,7 @@ export default function PaymentsPage() {
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">LKR {totalPending.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-yellow-600">LKR {totalPending?.toLocaleString() || "0"}</div>
             <p className="text-xs text-muted-foreground">Awaiting processing</p>
           </CardContent>
         </Card>
@@ -145,7 +145,7 @@ export default function PaymentsPage() {
 
                 <div className="flex flex-col md:flex-row items-start md:items-center space-y-2 md:space-y-0 md:space-x-4 mt-4 md:mt-0">
                   <div className="text-right">
-                    <p className="text-2xl font-bold">LKR {payment.amount.toLocaleString()}</p>
+                    <p className="text-2xl font-bold">LKR {payment.amount?.toLocaleString() || "0"}</p>
                     <p className="text-xs text-gray-500">Transaction: {payment.transactionId}</p>
                   </div>
 

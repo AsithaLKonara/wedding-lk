@@ -47,47 +47,9 @@ export default function LoginPage() {
     setError('') // Clear previous errors
 
     try {
-      // TEMPORARY: Use hardcoded authentication instead of NextAuth
-      console.log('🚀 Using hardcoded authentication system...');
+      // Use NextAuth with proper database integration
+      console.log('🚀 Using NextAuth database authentication...');
       
-      const response = await fetch('/api/simple-auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          email: formData.email, 
-          password: formData.password 
-        }),
-      });
-
-      const data = await response.json();
-      console.log('📋 Auth response:', data);
-
-      if (response.ok && data.success) {
-        console.log('✅ Login successful, redirecting...');
-        // Redirect based on user role
-        switch (data.user.role) {
-          case 'admin':
-            router.push('/dashboard/admin');
-            break;
-          case 'user':
-            router.push('/dashboard/user');
-            break;
-          case 'vendor':
-            router.push('/dashboard/vendor');
-            break;
-          case 'wedding_planner':
-            router.push('/dashboard/planner');
-            break;
-          default:
-            router.push('/dashboard');
-        }
-      } else {
-        console.error('❌ Login error:', data.error || data.message);
-        setError(data.message || data.error || 'Login failed');
-      }
-
-      /* TEMPORARILY DISABLED: NextAuth Database Authentication
-      console.log('🚀 Calling signIn with credentials...');
       const result = await signIn('credentials', {
         email: formData.email,
         password: formData.password,
@@ -116,16 +78,15 @@ export default function LoginPage() {
         console.log('⚠️ Unexpected result:', result);
         setError('Login failed: Unexpected response');
       }
-      */
 
     } catch (error) {
       console.error('💥 CRITICAL LOGIN ERROR:', error);
       console.error('📊 Error details:', {
-        message: error.message,
-        stack: error.stack,
-        name: error.name
+        message: (error as Error).message,
+        stack: (error as Error).stack,
+        name: (error as Error).name
       });
-      setError(`Login failed: ${error.message}`);
+      setError(`Login failed: ${(error as Error).message}`);
     } finally {
       setIsLoading(false)
     }
@@ -144,7 +105,7 @@ export default function LoginPage() {
       */
     } catch (error) {
       console.error('Social login error:', error)
-      setError(`Social login failed: ${error.message}`);
+      setError(`Social login failed: ${(error as Error).message}`);
     } finally {
       setIsLoading(false)
     }

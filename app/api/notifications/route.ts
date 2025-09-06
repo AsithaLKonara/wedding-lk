@@ -1,169 +1,184 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse } from 'next/server';
+import { connectDB } from '@/lib/db';
 import { getServerSession } from '@/lib/auth-utils';
-import { connectDB } from "@/lib/db"
-import { User } from "@/lib/models/user"
-import { Notification } from "@/lib/models/notification"
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post, Notification } from '@/lib/models';
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession()
+    const session = await getServerSession();
     
     if (!session?.user?.email) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await connectDB()
+    await connectDB();
 
-    const user = await User.findOne({ email: session.user.email })
+    const user = await User.findOne({ email: session.user.email });
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 })
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const { searchParams } = new URL(request.url)
-    const limit = parseInt(searchParams.get('limit') || '20')
-    const offset = parseInt(searchParams.get('offset') || '0')
-    const unreadOnly = searchParams.get('unreadOnly') === 'true'
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '20');
+    const unreadOnly = searchParams.get('unreadOnly') === 'true';
+
+    console.log('📊 Fetching notifications from MongoDB Atlas...');
 
     // Build query
-    const query: any = { user: user._id }
+    const query: any = { userId: user._id };
+    
     if (unreadOnly) {
-      query.isRead = false
+      query.isRead = false;
     }
 
-    // Get notifications
-    const notifications = await Notification.find(query)
-      .sort({ createdAt: -1 })
-      .skip(offset)
-      .limit(limit)
+    // Calculate skip value for pagination
+    const skip = (page - 1) * limit;
 
-    // Get total count
-    const totalCount = await Notification.countDocuments(query)
-    const unreadCount = await Notification.countDocuments({ 
-      user: user._id, 
-      isRead: false 
-    })
+    // Execute query with pagination
+    const [notifications, total] = await Promise.all([
+      Notification.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Notification.countDocuments(query)
+    ]);
+
+    console.log(`✅ Found ${notifications.length} notifications`);
 
     return NextResponse.json({
+      success: true,
       notifications,
       pagination: {
-        total: totalCount,
+        total,
+        page,
         limit,
-        offset,
-        hasMore: offset + limit < totalCount
-      },
-      unreadCount
-    })
+        totalPages: Math.ceil(total / limit)
+      }
+    });
 
   } catch (error) {
-    console.error("Error fetching notifications:", error)
-    return NextResponse.json(
-      { error: "Failed to fetch notifications" },
-      { status: 500 }
-    )
+    console.error('❌ Error fetching notifications:', error);
+    return NextResponse.json({
+      success: false,
+      error: 'Failed to fetch notifications',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession()
+    const session = await getServerSession();
     
     if (!session?.user?.email) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await connectDB()
+    await connectDB();
 
-    const user = await User.findOne({ email: session.user.email })
+    const user = await User.findOne({ email: session.user.email });
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 })
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const body = await request.json()
-    const { title, message, type, actionUrl, actionText } = body
+    const notificationData = await request.json();
+    
+    console.log('📝 Creating new notification...');
 
-    if (!title || !message) {
-      return NextResponse.json(
-        { error: "Title and message are required" },
-        { status: 400 }
-      )
+    // Validate required fields
+    if (!notificationData.type || !notificationData.title || !notificationData.message) {
+      return NextResponse.json({
+        success: false,
+        error: 'Type, title, and message are required'
+      }, { status: 400 });
     }
 
-    const notification = new Notification({
-      user: user._id,
-      title,
-      message,
-      type: type || 'info',
-      actionUrl,
-      actionText
-    })
+    // Create notification
+    const newNotification = new Notification({
+      userId: user._id,
+      type: notificationData.type,
+      title: notificationData.title,
+      message: notificationData.message,
+      data: notificationData.data || {},
+      isRead: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
 
-    await notification.save()
+    await newNotification.save();
 
-    return NextResponse.json({ 
-      success: true, 
-      notification 
-    })
+    console.log('✅ Notification created successfully:', newNotification._id);
+
+    return NextResponse.json({
+      success: true,
+      notification: newNotification,
+      message: 'Notification created successfully'
+    });
 
   } catch (error) {
-    console.error("Error creating notification:", error)
-    return NextResponse.json(
-      { error: "Failed to create notification" },
-      { status: 500 }
-    )
+    console.error('❌ Error creating notification:', error);
+    return NextResponse.json({
+      success: false,
+      error: 'Failed to create notification',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }
 
-export async function PATCH(request: NextRequest) {
+export async function PUT(request: NextRequest) {
   try {
-    const session = await getServerSession()
+    const session = await getServerSession();
     
     if (!session?.user?.email) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await connectDB()
+    await connectDB();
 
-    const user = await User.findOne({ email: session.user.email })
+    const user = await User.findOne({ email: session.user.email });
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 })
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const body = await request.json()
-    const { notificationId, isRead } = body
+    const { notificationId, action } = await request.json();
+    
+    console.log('📝 Updating notification...', { notificationId, action });
 
-    if (!notificationId) {
-      return NextResponse.json(
-        { error: "Notification ID is required" },
-        { status: 400 }
-      )
+    if (action === 'markAsRead') {
+      // Mark single notification as read
+      await Notification.findByIdAndUpdate(notificationId, {
+        isRead: true,
+        updatedAt: new Date()
+      });
+    } else if (action === 'markAllAsRead') {
+      // Mark all user notifications as read
+      await Notification.updateMany(
+        { userId: user._id, isRead: false },
+        { 
+          isRead: true,
+          updatedAt: new Date()
+        }
+      );
+    } else if (action === 'delete') {
+      // Delete notification
+      await Notification.findByIdAndDelete(notificationId);
     }
 
-    const notification = await Notification.findOneAndUpdate(
-      { _id: notificationId, user: user._id },
-      { 
-        isRead: isRead !== undefined ? isRead : true,
-        readAt: isRead ? new Date() : null
-      },
-      { new: true }
-    )
+    console.log('✅ Notification updated successfully');
 
-    if (!notification) {
-      return NextResponse.json(
-        { error: "Notification not found" },
-        { status: 404 }
-      )
-    }
-
-    return NextResponse.json({ 
-      success: true, 
-      notification 
-    })
+    return NextResponse.json({
+      success: true,
+      message: 'Notification updated successfully'
+    });
 
   } catch (error) {
-    console.error("Error updating notification:", error)
-    return NextResponse.json(
-      { error: "Failed to update notification" },
-      { status: 500 }
-    )
+    console.error('❌ Error updating notification:', error);
+    return NextResponse.json({
+      success: false,
+      error: 'Failed to update notification',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
-} 
+}

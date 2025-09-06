@@ -1,20 +1,19 @@
 import { NextRequest, NextResponse } from "next/server"
+import { connectDB } from "@/lib/db"
+import { Vendor } from "@/lib/models/vendor"
 
 export async function GET(request: NextRequest) {
-  console.log('Vendors categories API called');
+  console.log('📊 Fetching vendor categories from MongoDB Atlas...');
   
   try {
-    // Mock data for vendor categories - always return this data
-    const categories = [
-      { _id: 'photography', count: 25 },
-      { _id: 'catering', count: 18 },
-      { _id: 'venue', count: 32 },
-      { _id: 'music', count: 15 },
-      { _id: 'flowers', count: 12 },
-      { _id: 'makeup', count: 8 },
-      { _id: 'transportation', count: 6 },
-      { _id: 'decorations', count: 14 }
-    ];
+    await connectDB()
+
+    // Get categories with counts from MongoDB
+    const categories = await Vendor.aggregate([
+      { $match: { isActive: true } },
+      { $group: { _id: '$category', count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ])
 
     // Get featured categories (top 5)
     const featuredCategories = categories.slice(0, 5);
@@ -33,7 +32,7 @@ export async function GET(request: NextRequest) {
       timestamp: new Date().toISOString()
     };
 
-    console.log('Vendors categories response:', response);
+    console.log(`✅ Found ${categories.length} vendor categories`);
     return NextResponse.json(response, { 
       status: 200,
       headers: {
@@ -45,28 +44,13 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error("Error fetching vendor categories:", error);
     
-    // Return fallback data even on error
-    const fallbackResponse = {
-      success: false,
-      featured: [
-        { _id: 'photography', count: 25 },
-        { _id: 'catering', count: 18 },
-        { _id: 'venue', count: 32 }
-      ],
-      all: [
-        { value: 'photography', label: 'Photography', count: 25 },
-        { value: 'catering', label: 'Catering', count: 18 },
-        { value: 'venue', label: 'Venue', count: 32 }
-      ],
-      error: "Using fallback data",
-      timestamp: new Date().toISOString()
-    };
-    
-    return NextResponse.json(fallbackResponse, { 
-      status: 200, // Return 200 with fallback data
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    return NextResponse.json(
+      { 
+        success: false,
+        error: "Failed to fetch vendor categories",
+        message: error instanceof Error ? error.message : 'Unknown error'
+      },
+      { status: 500 }
+    );
   }
 } 

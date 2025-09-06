@@ -15,6 +15,7 @@ import { Conversation } from './conversation';
 import { VendorProfile } from './vendorProfile';
 import { WeddingPlannerProfile } from './weddingPlannerProfile';
 import Document from './document';
+import { Post } from './post';
 
 // Export all models
 export {
@@ -33,6 +34,7 @@ export {
   VendorProfile,
   WeddingPlannerProfile,
   Document,
+  Post,
 };
 
 // Export VenueBoost as default

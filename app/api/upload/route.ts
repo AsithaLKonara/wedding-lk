@@ -1,19 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { v2 as cloudinary } from 'cloudinary'
 import { getServerSession } from '@/lib/auth-utils';
 import { connectDB } from "@/lib/db"
 import { User } from "@/lib/models/user"
 
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-})
+// Conditionally import and configure Cloudinary
+let cloudinary: any = null;
+
+async function initializeCloudinary() {
+  if (process.env.CLOUDINARY_URL && process.env.CLOUDINARY_URL.startsWith('cloudinary://')) {
+    try {
+      const { v2 } = await import('cloudinary');
+      cloudinary = v2;
+      cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+      });
+      console.log('✅ Cloudinary configured successfully');
+    } catch (error) {
+      console.log('⚠️ Cloudinary import failed:', error);
+    }
+  } else {
+    console.log('⚠️ Cloudinary not configured - upload service disabled');
+  }
+}
+
+// Initialize Cloudinary
+initializeCloudinary();
 
 // POST /api/upload - Handle file uploads
 export async function POST(request: NextRequest) {
   try {
+    // Check if Cloudinary is configured
+    if (!cloudinary) {
+      return NextResponse.json({ error: "Cloudinary not configured" }, { status: 503 })
+    }
+    
     const session = await getServerSession()
     if (!session?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -71,7 +93,7 @@ export async function POST(request: NextRequest) {
           public_id: `${entityId}_${Date.now()}`,
           tags: [uploadType, entityId, user._id.toString()]
         },
-        (error, result) => {
+        (error: any, result: any) => {
           if (error) reject(error)
           else resolve(result)
         }

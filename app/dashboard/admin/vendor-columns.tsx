@@ -48,8 +48,8 @@ export const columns: ColumnDef<Vendor>[] = [
             <Store className="h-4 w-4 text-blue-600" />
           </div>
           <div>
-            <div className="font-medium">{vendor.businessName}</div>
-            <div className="text-sm text-gray-500">{vendor.owner.name}</div>
+            <div className="font-medium">{vendor?.businessName || 'N/A'}</div>
+            <div className="text-sm text-gray-500">{vendor?.owner?.name || 'N/A'}</div>
           </div>
         </div>
       )
@@ -74,7 +74,7 @@ export const columns: ColumnDef<Vendor>[] = [
       const vendor = row.original
       return (
         <div className="text-sm text-gray-600">
-          {vendor.location.city}, {vendor.location.province}
+          {vendor?.location?.city || 'N/A'}, {vendor?.location?.province || 'N/A'}
         </div>
       )
     },

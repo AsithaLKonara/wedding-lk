@@ -1,58 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
+import { connectDB } from '@/lib/db';
+import { getServerSession } from '@/lib/auth-utils';
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('📊 Fetching user events from local database...');
+    const session = await getServerSession();
+    
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    // Mock user events (in real app, you'd filter by current user)
-    const userEvents = [
-      {
-        id: 'event-1',
-        title: 'Venue Visit',
-        date: '2024-03-20T00:00:00.000Z',
-        time: '10:00',
-        type: 'meeting',
-        vendor: 'Royal Wedding Hall',
-        location: '123 Royal Street, Colombo 07'
-      },
-      {
-        id: 'event-2',
-        title: 'Menu Tasting',
-        date: '2024-03-25T00:00:00.000Z',
-        time: '14:00',
-        type: 'tasting',
-        vendor: 'Spice Garden Catering',
-        location: '456 Spice Lane, Kandy'
-      },
-      {
-        id: 'event-3',
-        title: 'Photography Consultation',
-        date: '2024-04-05T00:00:00.000Z',
-        time: '16:00',
-        type: 'consultation',
-        vendor: 'Golden Moments Photography',
-        location: '789 Photo Street, Galle'
-      },
-      {
-        id: 'event-4',
-        title: 'Dress Fitting',
-        date: '2024-04-10T00:00:00.000Z',
-        time: '11:00',
-        type: 'fitting',
-        vendor: 'Elegant Bridal',
-        location: '321 Fashion Avenue, Colombo'
-      },
-      {
-        id: 'event-5',
-        title: 'Wedding Rehearsal',
-        date: '2024-06-10T00:00:00.000Z',
-        time: '18:00',
-        type: 'rehearsal',
-        vendor: 'Royal Wedding Hall',
-        location: '123 Royal Street, Colombo 07'
-      }
-    ];
+    await connectDB();
+
+    const user = await User.findOne({ email: session.user.email });
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    console.log('📊 Fetching user events from MongoDB Atlas...');
+
+    // Get user's upcoming bookings as events
+    const upcomingBookings = await Booking.find({ 
+      client: user._id,
+      date: { $gte: new Date() },
+      status: { $in: ['confirmed', 'pending'] }
+    })
+      .populate('vendor', 'businessName category')
+      .populate('venue', 'name location')
+      .sort({ date: 1 })
+      .lean();
+
+    // Format bookings as events
+    const userEvents = upcomingBookings.map(booking => ({
+      id: (booking._id as any).toString(),
+      title: `${booking.service?.name || 'Service'} - ${booking.vendor?.businessName || 'Vendor'}`,
+      date: booking.date,
+      time: new Date(booking.date).toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      }),
+      type: 'booking',
+      vendor: booking.vendor?.businessName || 'Unknown Vendor',
+      location: booking.venue?.location?.address || booking.vendor?.location?.address || 'TBD'
+    }));
 
     console.log('✅ User events fetched successfully');
 
@@ -61,7 +52,7 @@ export async function GET(request: NextRequest) {
       events: userEvents
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error fetching user events:', error);
     return NextResponse.json({
       success: false,

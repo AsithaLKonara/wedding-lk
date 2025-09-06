@@ -156,7 +156,7 @@ export default function MessagesContent() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-64px)] bg-gray-50 dark:bg-gray-900">
+    <div className="flex h-[calc(100vh-200px)] bg-gray-50 dark:bg-gray-900 max-w-7xl mx-auto">
       {/* Left Pane: Conversations List */}
       <div className="w-1/3 border-r bg-white dark:bg-gray-800 dark:border-gray-700 flex flex-col">
         <div className="p-4 border-b dark:border-gray-700">

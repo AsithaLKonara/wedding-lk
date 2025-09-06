@@ -63,7 +63,7 @@ export default function BookingsTab() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium">LKR {booking.totalAmount?.toLocaleString()}</p>
+                  <p className="font-medium">LKR {booking.totalAmount?.toLocaleString() || "0"}</p>
                   <Badge variant={booking.status === 'confirmed' ? 'default' : 'secondary'}>
                     {booking.status}
                   </Badge>

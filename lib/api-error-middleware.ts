@@ -2,7 +2,7 @@
 // Provides consistent error responses and logging for all API routes
 
 import { NextRequest, NextResponse } from 'next/server';
-import { handleApiError, AppError, ValidationError, AuthenticationError, AuthorizationError, NotFoundError, ConflictError, RateLimitError, DatabaseError, ExternalServiceError } from './error-handler';
+import { handleError, AppError, ValidationError, AuthenticationError, AuthorizationError, NotFoundError, ConflictError, RateLimitError, DatabaseError } from './error-handler';
 
 export interface ApiResponse<T = any> {
   success: boolean;
@@ -101,7 +101,7 @@ export function withErrorHandling<T = any>(
       
     } catch (error: any) {
       // Handle the error
-      const errorResponse = handleApiError(error);
+      const errorResponse = handleError(error);
       
       // Log error with request details
       console.error('API Error:', {
@@ -116,7 +116,7 @@ export function withErrorHandling<T = any>(
       
       // Return error response
       return NextResponse.json(errorResponse, {
-        status: error instanceof AppError ? error.statusCode : 500,
+        status: error.statusCode || 500,
         headers: {
           'x-request-id': requestId,
           'x-response-time': `${Date.now() - startTime}ms`,
@@ -145,9 +145,7 @@ export function validateRequest<T>(
     // Validate request data
     const validationResult = schema.safeParse(body);
     if (!validationResult.success) {
-      throw new ValidationError('Request validation failed', {
-        errors: validationResult.error.errors,
-      });
+      throw new ValidationError('Request validation failed');
     }
     
     return handler(request, validationResult.data);
@@ -203,7 +201,7 @@ export function withDatabaseOperation<T>(
       .then(resolve)
       .catch((error: any) => {
         if (error.name === 'MongoServerError' || error.name === 'MongooseError') {
-          reject(new DatabaseError('Database operation failed', { originalError: error.message }));
+          reject(new DatabaseError('Database operation failed'));
         } else {
           reject(error);
         }
@@ -220,23 +218,45 @@ export function withExternalService<T>(
     operation()
       .then(resolve)
       .catch((error: any) => {
-        reject(new ExternalServiceError(serviceName, error.message, { originalError: error }));
+        reject(new DatabaseError(`External service ${serviceName} failed: ${error.message}`));
       });
   });
 }
 
-// Mock functions for JWT verification and role checking
-// Replace these with your actual implementation
+// JWT verification and role checking functions
 async function verifyJWT(token: string): Promise<string> {
-  // Implement JWT verification logic
-  // Return user ID if valid, throw error if invalid
-  throw new Error('JWT verification not implemented');
+  try {
+    const { verify } = await import('jsonwebtoken');
+    const secret = process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET;
+    
+    if (!secret) {
+      throw new Error('JWT secret not configured');
+    }
+    
+    const decoded = verify(token, secret) as any;
+    return decoded.userId || decoded.sub;
+  } catch (error) {
+    throw new Error('Invalid JWT token');
+  }
 }
 
 async function getUserRole(userId: string): Promise<string> {
-  // Implement role checking logic
-  // Return user role
-  throw new Error('Role checking not implemented');
+  try {
+    const { connectDB } = await import('./db');
+    const { User } = await import('./models');
+    
+    await connectDB();
+    const user = await User.findById(userId).select('role');
+    
+    if (!user) {
+      throw new Error('User not found');
+    }
+    
+    return user.role || 'user';
+  } catch (error) {
+    console.error('Error getting user role:', error);
+    return 'user'; // Default role
+  }
 }
 
 // Utility function to create success responses
@@ -262,9 +282,9 @@ export function createErrorResponse(
   const response: ApiResponse<never> = {
     success: false,
     error: {
-      code: error.code,
+      code: (error as any).code || 'UNKNOWN_ERROR',
       message: error.message,
-      details: error.details,
+      details: (error as any).details || undefined,
       timestamp: new Date().toISOString(),
       requestId: requestId || generateRequestId(),
     },

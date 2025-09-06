@@ -215,13 +215,13 @@ export default function VendorsPage() {
                     <div className="flex items-start justify-between">
                       <div>
                         <CardTitle className="text-lg font-semibold text-gray-900 mb-1">
-                          {vendor.businessName}
+                          {vendor?.businessName || 'N/A'}
                         </CardTitle>
                         <CardDescription className="text-sm text-gray-600">
-                          {vendor.name} • {vendor.category}
+                          {vendor?.name || 'N/A'} • {vendor?.category || 'N/A'}
                         </CardDescription>
                       </div>
-                      {vendor.isVerified && (
+                      {vendor?.isVerified && (
                         <Badge variant="default" className="text-xs">
                           Verified
                         </Badge>
@@ -231,32 +231,32 @@ export default function VendorsPage() {
 
                   <CardContent className="space-y-4">
                     <p className="text-gray-700 text-sm line-clamp-3">
-                      {vendor.description}
+                      {vendor?.description || 'No description available'}
                     </p>
 
                     <div className="flex items-center space-x-2">
                       <Star className="h-4 w-4 text-yellow-500 fill-current" />
                       <span className="text-sm font-medium text-gray-900">
-                        {vendor.reviewStats?.averageRating || 4.5}
+                        {vendor?.reviewStats?.averageRating || 4.5}
                       </span>
                       <span className="text-sm text-gray-500">
-                        ({vendor.reviewStats?.count || 0} reviews)
+                        ({vendor?.reviewStats?.count || 0} reviews)
                       </span>
                     </div>
 
                     <div className="flex items-center space-x-2 text-sm text-gray-600">
                       <MapPin className="h-4 w-4" />
-                      <span>{vendor.location.city}, {vendor.location.province}</span>
+                      <span>{vendor?.location?.city || 'N/A'}, {vendor?.location?.province || 'N/A'}</span>
                     </div>
 
                     <div className="flex items-center space-x-4 text-sm text-gray-600">
                       <div className="flex items-center space-x-1">
                         <Phone className="h-4 w-4" />
-                        <span>{vendor.contact.phone}</span>
+                        <span>{vendor?.contact?.phone || 'N/A'}</span>
                       </div>
                       <div className="flex items-center space-x-1">
                         <Mail className="h-4 w-4" />
-                        <span>{vendor.contact.email}</span>
+                        <span>{vendor?.contact?.email || 'N/A'}</span>
                       </div>
                     </div>
 

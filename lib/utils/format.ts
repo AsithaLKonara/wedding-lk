@@ -1,7 +1,8 @@
 /**
  * Format currency in LKR (Sri Lankan Rupees)
  */
-export const formatCurrency = (amount: number): string => {
+export const formatCurrency = (amount: number | null | undefined): string => {
+  if (amount === null || amount === undefined || isNaN(amount)) return "LKR 0"
   return new Intl.NumberFormat("en-LK", {
     style: "currency",
     currency: "LKR",
@@ -11,9 +12,28 @@ export const formatCurrency = (amount: number): string => {
 }
 
 /**
+ * Safe number formatting with LKR prefix
+ */
+export const formatLKR = (amount: number | null | undefined): string => {
+  if (amount === null || amount === undefined || isNaN(amount)) return "LKR 0"
+  return `LKR ${amount.toLocaleString()}`
+}
+
+/**
+ * Safe toLocaleString wrapper
+ */
+export const safeToLocaleString = (value: any, fallback: string = "N/A"): string => {
+  if (value === null || value === undefined) return fallback
+  if (typeof value === 'number' && !isNaN(value)) return value.toLocaleString()
+  if (value instanceof Date && !isNaN(value.getTime())) return value.toLocaleString()
+  return fallback
+}
+
+/**
  * Format large numbers with K, M, B suffixes
  */
-export const formatNumber = (num: number): string => {
+export const formatNumber = (num: number | null | undefined): string => {
+  if (num === null || num === undefined || isNaN(num)) return "0"
   if (num >= 1000000000) {
     return (num / 1000000000).toFixed(1) + "B"
   }
@@ -37,8 +57,10 @@ export const formatPercentage = (value: number, total: number): string => {
 /**
  * Format date for display
  */
-export const formatDate = (date: Date | string): string => {
+export const formatDate = (date: Date | string | null | undefined): string => {
+  if (!date) return "N/A"
   const d = new Date(date)
+  if (isNaN(d.getTime())) return "Invalid Date"
   return d.toLocaleDateString("en-LK", {
     year: "numeric",
     month: "short",
@@ -49,8 +71,10 @@ export const formatDate = (date: Date | string): string => {
 /**
  * Format date and time
  */
-export const formatDateTime = (date: Date | string): string => {
+export const formatDateTime = (date: Date | string | null | undefined): string => {
+  if (!date) return "N/A"
   const d = new Date(date)
+  if (isNaN(d.getTime())) return "Invalid Date"
   return d.toLocaleString("en-LK", {
     year: "numeric",
     month: "short",
@@ -63,8 +87,10 @@ export const formatDateTime = (date: Date | string): string => {
 /**
  * Calculate days until date
  */
-export const daysUntil = (date: Date | string): number => {
+export const daysUntil = (date: Date | string | null | undefined): number => {
+  if (!date) return 0
   const target = new Date(date)
+  if (isNaN(target.getTime())) return 0
   const today = new Date()
   const diffTime = target.getTime() - today.getTime()
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
@@ -74,9 +100,11 @@ export const daysUntil = (date: Date | string): number => {
 /**
  * Get relative time (e.g., "2 hours ago")
  */
-export const getRelativeTime = (date: Date | string): string => {
+export const getRelativeTime = (date: Date | string | null | undefined): string => {
+  if (!date) return "N/A"
   const now = new Date()
   const target = new Date(date)
+  if (isNaN(target.getTime())) return "Invalid Date"
   const diffMs = now.getTime() - target.getTime()
   const diffMins = Math.floor(diffMs / 60000)
   const diffHours = Math.floor(diffMins / 60)

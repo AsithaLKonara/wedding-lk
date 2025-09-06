@@ -85,6 +85,10 @@ export default function VenueSocialFeed({ venueId }: VenueSocialFeedProps) {
   }
 
   const handleLike = async (postId: string) => {
+    if (!postId) {
+      console.error('Post ID is undefined')
+      return
+    }
     setIsLoading(postId)
     try {
       const response = await fetch(`/api/posts/${postId}/interactions`, {
@@ -128,6 +132,10 @@ export default function VenueSocialFeed({ venueId }: VenueSocialFeedProps) {
   }
 
   const handleBookmark = async (postId: string) => {
+    if (!postId) {
+      console.error('Post ID is undefined')
+      return
+    }
     setIsLoading(postId)
     try {
       const response = await fetch(`/api/posts/${postId}/interactions`, {
@@ -170,6 +178,10 @@ export default function VenueSocialFeed({ venueId }: VenueSocialFeedProps) {
   }
 
   const handleShare = async (postId: string) => {
+    if (!postId) {
+      console.error('Post ID is undefined')
+      return
+    }
     setIsLoading(postId)
     try {
       const response = await fetch(`/api/posts/${postId}/interactions`, {

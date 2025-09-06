@@ -217,9 +217,9 @@ export default function VenueDetailPage() {
 
             {/* Similar Venues */}
             <SimilarVenues 
-              currentVenueId={venue._id}
-              currentVenueLocation={venue.location.city}
-              currentVenuePrice={venue.pricing.basePrice}
+              currentVenueId={venue?._id}
+              currentVenueLocation={venue?.location?.city || 'N/A'}
+              currentVenuePrice={venue?.pricing?.basePrice || 0}
             />
           </div>
 
@@ -238,18 +238,18 @@ export default function VenueDetailPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <p className="font-semibold">{venue.owner.firstName} {venue.owner.lastName}</p>
+                  <p className="font-semibold">{venue?.owner?.firstName || 'N/A'} {venue?.owner?.lastName || 'N/A'}</p>
                   <p className="text-sm text-gray-600">Venue Owner</p>
                 </div>
                 
                 <div className="space-y-2">
                   <div className="flex items-center text-sm">
                     <Phone className="h-4 w-4 mr-2 text-gray-500" />
-                    <span>{venue.owner.phone}</span>
+                    <span>{venue?.owner?.phone || 'N/A'}</span>
                   </div>
                   <div className="flex items-center text-sm">
                     <Mail className="h-4 w-4 mr-2 text-gray-500" />
-                    <span>{venue.owner.email}</span>
+                    <span>{venue?.owner?.email || 'N/A'}</span>
                   </div>
                 </div>
 

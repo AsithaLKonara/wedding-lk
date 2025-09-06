@@ -1,4 +1,4 @@
-import { cacheService } from './redis-service';
+import UpstashRedisService from './upstash-redis';
 
 // Performance monitoring for production
 export class ProductionPerformanceMonitor {

@@ -487,7 +487,7 @@ const VendorProfileSchema: Schema = new Schema(
 );
 
 // Indexes for performance
-VendorProfileSchema.index({ userId: 1 });
+// userId index is automatically created by unique: true constraint
 VendorProfileSchema.index({ verificationStatus: 1 });
 VendorProfileSchema.index({ 'services.category': 1 });
 VendorProfileSchema.index({ 'serviceAreas.city': 1, 'serviceAreas.state': 1 });

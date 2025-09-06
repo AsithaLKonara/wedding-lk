@@ -1,41 +1,57 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
+import { connectDB } from '@/lib/db';
+import { Vendor } from '@/lib/models';
 
 export async function GET(request: NextRequest) {
   try {
+    await connectDB();
+
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
     const category = searchParams.get('category');
     const search = searchParams.get('search');
 
-    console.log('📊 Fetching vendors from local database...');
+    console.log('📊 Fetching vendors from MongoDB...');
 
-    let vendors = LocalDatabase.read('vendors');
-
-    // Filter by category if provided
+    // Build query
+    const query: any = { isActive: true };
+    
     if (category) {
-      vendors = vendors.filter((vendor: any) => vendor.category === category);
+      query.category = category;
     }
 
-    // Search functionality
     if (search) {
-      vendors = LocalDatabase.search('vendors', search, ['businessName', 'description', 'category']);
+      query.$or = [
+        { businessName: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { category: { $regex: search, $options: 'i' } }
+      ];
     }
 
-    // Get paginated results
-    const paginatedResult = LocalDatabase.paginate('vendors', page, limit);
+    // Calculate skip value for pagination
+    const skip = (page - 1) * limit;
+
+    // Execute query with pagination
+    const [vendors, total] = await Promise.all([
+      Vendor.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Vendor.countDocuments(query)
+    ]);
 
     console.log(`✅ Found ${vendors.length} vendors`);
 
     return NextResponse.json({
       success: true,
-      vendors: paginatedResult.data,
+      vendors,
       pagination: {
-        total: paginatedResult.total,
-        page: paginatedResult.page,
-        limit: paginatedResult.limit,
-        totalPages: paginatedResult.totalPages
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
       }
     });
 
@@ -51,6 +67,8 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    await connectDB();
+
     const vendorData = await request.json();
     
     console.log('📝 Creating new vendor...');
@@ -64,8 +82,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if vendor already exists
-    const existingVendors = LocalDatabase.readByField('vendors', 'email', vendorData.email);
-    if (existingVendors.length > 0) {
+    const existingVendor = await Vendor.findOne({ email: vendorData.email });
+    if (existingVendor) {
       return NextResponse.json({
         success: false,
         error: 'Vendor with this email already exists'
@@ -73,7 +91,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create vendor
-    const newVendor = LocalDatabase.create('vendors', {
+    const newVendor = new Vendor({
       ...vendorData,
       isVerified: false,
       isActive: true,
@@ -86,12 +104,7 @@ export async function POST(request: NextRequest) {
       socialMedia: vendorData.socialMedia || {}
     });
 
-    if (!newVendor) {
-      return NextResponse.json({
-        success: false,
-        error: 'Failed to create vendor'
-      }, { status: 500 });
-    }
+    await newVendor.save();
 
     console.log('✅ Vendor created successfully:', newVendor.businessName);
 

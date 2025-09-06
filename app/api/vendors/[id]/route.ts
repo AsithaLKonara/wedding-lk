@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
-
+import { connectDB } from '@/lib/db';
+import { getAuthenticatedUser, requireAuth, requireAdmin, requireVendor, requireWeddingPlanner } from '@/lib/auth-utils';
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { id } = params;
     
     console.log('📊 Fetching vendor by ID:', id);
 
-    const vendor = LocalDatabase.readById('vendors', id);
+    await connectDB();
+    const vendor = await Vendor.findById(id);
 
     if (!vendor) {
       return NextResponse.json({
@@ -23,7 +25,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       vendor
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error fetching vendor:', error);
     return NextResponse.json({
       success: false,
@@ -40,7 +42,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     
     console.log('📝 Updating vendor:', id);
 
-    const updatedVendor = LocalDatabase.update('vendors', id, updates);
+    const updatedVendor = await Vendor.findByIdAndUpdate(id, updates, { new: true });
 
     if (!updatedVendor) {
       return NextResponse.json({
@@ -57,7 +59,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       message: 'Vendor updated successfully'
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error updating vendor:', error);
     return NextResponse.json({
       success: false,
@@ -73,7 +75,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     
     console.log('🗑️ Deleting vendor:', id);
 
-    const deleted = LocalDatabase.delete('vendors', id);
+    const deleted = await Vendor.findByIdAndDelete(id);
 
     if (!deleted) {
       return NextResponse.json({
@@ -89,7 +91,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       message: 'Vendor deleted successfully'
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error deleting vendor:', error);
     return NextResponse.json({
       success: false,

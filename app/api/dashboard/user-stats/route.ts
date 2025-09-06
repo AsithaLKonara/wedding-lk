@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { connectDB } from "@/lib/db"
 import { User } from "@/lib/models/user"
 import { Booking } from "@/lib/models/booking"
-import { Payment } from "@/lib/models/Payment"
+import { Payment } from "@/lib/models"
 import { Review } from "@/lib/models/review"
 import { getServerSession } from '@/lib/auth-utils';
 

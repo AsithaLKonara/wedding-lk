@@ -208,7 +208,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-screen flex bg-gray-50 overflow-hidden">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
@@ -217,131 +217,126 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar - Fixed height and position */}
       <div className={cn(
-        "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0",
+        "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col",
         sidebarOpen ? "translate-x-0" : "-translate-x-full",
         sidebarCollapsed && "lg:w-16"
       )}>
-        <div className="flex h-full flex-col">
-          {/* Header */}
-          <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200">
-            {!sidebarCollapsed && (
-              <div className="flex items-center space-x-2">
-                <div className={cn("p-2 rounded-lg", theme.bg)}>
-                  <Shield className={cn("h-6 w-6", theme.text)} />
-                </div>
-                <h2 className="text-lg font-semibold text-gray-900">
-                  {userRole === "admin" ? "Admin Panel" : "Dashboard"}
-                </h2>
-              </div>
-            )}
+        {/* Sidebar Header */}
+        <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200 flex-shrink-0">
+          {!sidebarCollapsed && (
             <div className="flex items-center space-x-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                className="hidden lg:flex p-2"
-              >
-                {sidebarCollapsed ? (
-                  <ChevronRight className="h-4 w-4" />
-                ) : (
-                  <ChevronLeft className="h-4 w-4" />
-                )}
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSidebarOpen(false)}
-                className="lg:hidden p-2"
-              >
-                <X className="h-4 w-4" />
-              </Button>
+              <div className={cn("p-2 rounded-lg", theme.bg)}>
+                <Shield className={cn("h-6 w-6", theme.text)} />
+              </div>
+              <h2 className="text-lg font-semibold text-gray-900">
+                {userRole === "admin" ? "Admin Panel" : "Dashboard"}
+              </h2>
             </div>
-          </div>
-
-          {/* User Info */}
-          <div className="p-4 border-b border-gray-200">
-            <div className="flex items-center space-x-3">
-              <Avatar className="h-10 w-10">
-                <AvatarImage src={session.user?.image || ""} />
-                <AvatarFallback>
-                  {session.user?.name?.charAt(0).toUpperCase() || "U"}
-                </AvatarFallback>
-              </Avatar>
-              {!sidebarCollapsed && (
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">
-                    {session.user?.name}
-                  </p>
-                  <Badge variant="outline" className={cn("text-xs", theme.text, theme.border)}>
-                    {roleDisplayName}
-                  </Badge>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Navigation Items */}
-          <nav className="flex-1 overflow-y-auto py-4">
-            <div className="space-y-1 px-3">
-              {filteredItems.map((item) => (
-                <Button
-                  key={item.href}
-                  variant="ghost"
-                  className={cn(
-                    "w-full justify-start h-auto p-3 text-left",
-                    sidebarCollapsed && "px-2"
-                  )}
-                  onClick={() => {
-                    router.push(item.href)
-                    setSidebarOpen(false)
-                  }}
-                >
-                  <div className="flex items-center space-x-3 w-full">
-                    {item.icon}
-                    {!sidebarCollapsed && (
-                      <>
-                        <span className="flex-1 text-sm font-medium">
-                          {item.title}
-                        </span>
-                        {item.badge && (
-                          <Badge variant="secondary" className="ml-auto">
-                            {item.badge}
-                          </Badge>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </Button>
-              ))}
-            </div>
-          </nav>
-
-          {/* Footer */}
-          <div className="border-t border-gray-200 p-4">
+          )}
+          <div className="flex items-center space-x-2">
             <Button
-              variant="outline"
-              onClick={handleLogout}
-              className={cn(
-                "w-full justify-start",
-                sidebarCollapsed && "px-2"
-              )}
+              variant="ghost"
+              size="sm"
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className="hidden lg:flex p-2"
             >
-              <LogOut className="h-4 w-4" />
-              {!sidebarCollapsed && <span className="ml-2">Logout</span>}
+              {sidebarCollapsed ? (
+                <ChevronRight className="h-4 w-4" />
+              ) : (
+                <ChevronLeft className="h-4 w-4" />
+              )}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSidebarOpen(false)}
+              className="lg:hidden p-2"
+            >
+              <X className="h-4 w-4" />
             </Button>
           </div>
         </div>
+
+        {/* User Info */}
+        <div className="p-4 border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center space-x-3">
+            <Avatar className="h-10 w-10">
+              <AvatarImage src={session.user?.image || ""} />
+              <AvatarFallback>
+                {session.user?.name?.charAt(0).toUpperCase() || "U"}
+              </AvatarFallback>
+            </Avatar>
+            {!sidebarCollapsed && (
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">
+                  {session.user?.name}
+                </p>
+                <Badge variant="outline" className={cn("text-xs", theme.text, theme.border)}>
+                  {roleDisplayName}
+                </Badge>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Navigation Items - Scrollable */}
+        <nav className="flex-1 overflow-y-auto py-4">
+          <div className="space-y-1 px-3">
+            {filteredItems.map((item) => (
+              <Button
+                key={item.href}
+                variant="ghost"
+                className={cn(
+                  "w-full justify-start h-auto p-3 text-left",
+                  sidebarCollapsed && "px-2"
+                )}
+                onClick={() => {
+                  router.push(item.href)
+                  setSidebarOpen(false)
+                }}
+              >
+                <div className="flex items-center space-x-3 w-full">
+                  {item.icon}
+                  {!sidebarCollapsed && (
+                    <>
+                      <span className="flex-1 text-sm font-medium">
+                        {item.title}
+                      </span>
+                      {item.badge && (
+                        <Badge variant="secondary" className="ml-auto">
+                          {item.badge}
+                        </Badge>
+                      )}
+                    </>
+                  )}
+                </div>
+              </Button>
+            ))}
+          </div>
+        </nav>
+
+        {/* Logout Button - Fixed at bottom */}
+        <div className="border-t border-gray-200 p-4 flex-shrink-0">
+          <Button
+            variant="outline"
+            onClick={handleLogout}
+            className={cn(
+              "w-full justify-start",
+              sidebarCollapsed && "px-2"
+            )}
+          >
+            <LogOut className="h-4 w-4" />
+            {!sidebarCollapsed && <span className="ml-2">Logout</span>}
+          </Button>
+        </div>
       </div>
 
-      {/* Main content */}
-      <div className={cn(
-        "lg:pl-64 transition-all duration-300",
-        sidebarCollapsed && "lg:pl-16"
-      )}>
-        {/* Top header */}
-        <header className="bg-white border-b border-gray-200 px-4 py-4">
+      {/* Main content area */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top header - Fixed */}
+        <header className="bg-white border-b border-gray-200 px-4 py-4 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Button
@@ -352,6 +347,15 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               >
                 <Menu className="h-5 w-5" />
               </Button>
+              
+              {/* User Avatar in navbar left corner */}
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={session.user?.image || ""} />
+                <AvatarFallback>
+                  {session.user?.name?.charAt(0).toUpperCase() || "U"}
+                </AvatarFallback>
+              </Avatar>
+              
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">
                   Welcome back, {session.user?.name}!
@@ -375,8 +379,8 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </header>
 
-        {/* Page content */}
-        <main className="p-6">
+        {/* Page content - Scrollable */}
+        <main className="flex-1 overflow-y-auto p-6">
           {children}
         </main>
       </div>

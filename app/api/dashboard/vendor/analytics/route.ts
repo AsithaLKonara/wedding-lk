@@ -3,7 +3,7 @@ import { connectDB } from "@/lib/db"
 import { Vendor } from "@/lib/models/vendor"
 import { Booking } from "@/lib/models/booking"
 import { Review } from "@/lib/models/review"
-import { Payment } from "@/lib/models/Payment"
+import { Payment } from "@/lib/models"
 import { getServerSession } from '@/lib/auth-utils';
 
 export async function GET(request: NextRequest) {

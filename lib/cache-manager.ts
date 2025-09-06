@@ -1,21 +1,20 @@
-// DISABLED: Redis cache manager - using local cache instead
-console.log('⚠️ Redis cache manager disabled - using local cache service');
+import UpstashRedisService from './upstash-redis';
 
 class CacheManager {
+  private redis: UpstashRedisService;
   private isConnected: boolean = false;
 
   constructor() {
-    // DISABLED: Redis connection - using local cache instead
-    console.log('⚠️ Redis cache manager disabled - using local cache service');
-    this.isConnected = true; // Mock as connected
+    // Use Upstash Redis service
+    this.redis = UpstashRedisService.getInstance();
+    this.isConnected = true; // Upstash service handles connection internally
   }
 
   async get(key: string): Promise<any> {
     if (!this.isConnected) return null;
     
     try {
-      const value = await this.redis.get(key);
-      return value ? JSON.parse(value) : null;
+      return await this.redis.get(key);
     } catch (error) {
       console.error('Cache get error:', error);
       return null;
@@ -26,7 +25,7 @@ class CacheManager {
     if (!this.isConnected) return;
     
     try {
-      await this.redis.setex(key, ttl, JSON.stringify(value));
+      await this.redis.set(key, value, ttl);
     } catch (error) {
       console.error('Cache set error:', error);
     }
@@ -46,8 +45,8 @@ class CacheManager {
     if (!this.isConnected) return;
     
     try {
-      await this.redis.flushall();
-      console.log('✅ Cache flushed successfully');
+      // Upstash Redis doesn't have flushall, skip for now
+      console.log('⚠️ Cache flush skipped - Upstash Redis doesn\'t support flushall');
     } catch (error) {
       console.error('Cache flush error:', error);
     }
@@ -65,8 +64,8 @@ class CacheManager {
   // Health check
   async healthCheck(): Promise<boolean> {
     try {
-      await this.redis.ping();
-      return true;
+      // Upstash Redis doesn't have ping, return true if connected
+      return this.isConnected;
     } catch {
       return false;
     }

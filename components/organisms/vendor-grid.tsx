@@ -287,8 +287,8 @@ export function VendorGrid({ limit = 6, category, location, className = "" }: Ve
           <Card key={vendor._id} className="overflow-hidden hover:shadow-lg transition-shadow">
             <div className="relative">
               <img
-                src={vendor.portfolio[0] || '/placeholder.svg'}
-                alt={vendor.businessName}
+                src={vendor?.portfolio?.[0] || '/placeholder.svg'}
+                alt={vendor?.businessName || 'Vendor'}
                 className="w-full h-48 object-cover"
               />
               <Button
@@ -307,11 +307,11 @@ export function VendorGrid({ limit = 6, category, location, className = "" }: Ve
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <CardTitle className="text-lg font-semibold mb-1 line-clamp-1">
-                    {vendor.businessName}
+                    {vendor?.businessName || 'N/A'}
                   </CardTitle>
                   <div className="flex items-center text-sm text-gray-600 mb-2">
                     <MapPin className="h-4 w-4 mr-1" />
-                    <span>{vendor.location.city}, {vendor.location.province}</span>
+                    <span>{vendor?.location?.city || 'N/A'}, {vendor?.location?.province || 'N/A'}</span>
                   </div>
                 </div>
               </div>
@@ -378,11 +378,11 @@ export function VendorGrid({ limit = 6, category, location, className = "" }: Ve
                 <div className="flex items-center justify-between text-xs text-gray-500">
                   <div className="flex items-center">
                     <Phone className="h-3 w-3 mr-1" />
-                    <span>{vendor.contact?.phone || 'N/A'}</span>
+                    <span>{vendor?.contact?.phone || 'N/A'}</span>
                   </div>
                   <div className="flex items-center">
                     <Mail className="h-3 w-3 mr-1" />
-                    <span>{vendor.contact?.email || 'N/A'}</span>
+                    <span>{vendor?.contact?.email || 'N/A'}</span>
                   </div>
                 </div>
               </div>

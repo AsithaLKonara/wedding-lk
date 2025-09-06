@@ -98,13 +98,13 @@ export default function RealFeaturedVenues() {
                 <div className="flex items-start justify-between">
                   <div>
                     <CardTitle className="text-lg font-semibold text-gray-900 mb-1">
-                      {venue.name}
+                      {venue?.name || 'N/A'}
                     </CardTitle>
                     <CardDescription className="text-sm text-gray-600">
-                      {venue.location.city}, {venue.location.province}
+                      {venue?.location?.city || 'N/A'}, {venue?.location?.province || 'N/A'}
                     </CardDescription>
                   </div>
-                  {venue.isVerified && (
+                  {venue?.isVerified && (
                     <Badge variant="default" className="text-xs">
                       Verified
                     </Badge>
@@ -114,7 +114,7 @@ export default function RealFeaturedVenues() {
 
               <CardContent className="space-y-4">
                 <p className="text-gray-700 text-sm line-clamp-3">
-                  {venue.description}
+                  {venue?.description || 'No description available'}
                 </p>
 
                 <div className="flex items-center space-x-2">
@@ -131,19 +131,19 @@ export default function RealFeaturedVenues() {
                   <div className="flex items-center space-x-2">
                     <Users className="h-4 w-4 text-blue-600" />
                     <span className="text-gray-700">
-                      {venue.capacity.min}-{venue.capacity.max} guests
+                      {venue?.capacity?.min || 0}-{venue?.capacity?.max || 0} guests
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <DollarSign className="h-4 w-4 text-green-600" />
                     <span className="text-gray-700">
-                      From {venue.pricing.currency} {venue.pricing.basePrice.toLocaleString()}
+                      From {venue?.pricing?.currency || "LKR"} {venue?.pricing?.basePrice?.toLocaleString() || "0"}
                     </span>
                   </div>
                 </div>
 
                 <div className="pt-4">
-                  <Link href={`/venues/${venue._id}`}>
+                  <Link href={`/venues/${venue?._id || ''}`}>
                     <Button className="w-full" variant="default">
                       View Venue
                     </Button>

@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
 
     // Get posts with pagination
     const posts = await Post.find(query)
-      .sort(sortCriteria)
+      .sort(sortCriteria as any)
       .skip(skip)
       .limit(limit)
       .lean();
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
 
     // Format posts as gallery photos
     const galleryPhotos = posts.flatMap(post => 
-      post.images?.map((image, index) => ({
+      post.images?.map((image: any, index: number) => ({
         id: `${post._id}-${index}`,
         url: image,
         title: post.content.substring(0, 50) + (post.content.length > 50 ? '...' : ''),
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
         isLiked: false, // TODO: Check user interactions
         tags: post.tags || [],
         description: post.content,
-        postId: post._id.toString(),
+        postId: (post._id as any).toString(),
       })) || []
     );
 

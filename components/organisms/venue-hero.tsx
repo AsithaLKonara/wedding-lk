@@ -63,16 +63,16 @@ export function VenueHero({ venue }: VenueHeroProps) {
             </div>
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">{venue.name}</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">{venue?.name || 'N/A'}</h1>
 
           <div className="flex items-center space-x-4 text-white/90">
             <div className="flex items-center">
               <MapPin className="h-4 w-4 mr-1" />
-              {venue.location.address}, {venue.location.city}
+              {venue?.location?.address || 'N/A'}, {venue?.location?.city || 'N/A'}
             </div>
             <div className="flex items-center">
               <Users className="h-4 w-4 mr-1" />
-              Up to {venue.capacity.max} guests
+              Up to {venue?.capacity?.max || 0} guests
             </div>
           </div>
         </div>
@@ -82,14 +82,16 @@ export function VenueHero({ venue }: VenueHeroProps) {
       <div className="bg-white dark:bg-gray-800 border-b px-6 py-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
           <div>
-            <div className="text-2xl font-bold text-gray-900 dark:text-white">LKR {(venue.pricing?.basePrice || 0).toLocaleString()}</div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white">LKR {venue.pricing?.basePrice?.toLocaleString() || "0"}</div>
             <div className="text-sm text-gray-600 dark:text-gray-400">Starting price per event</div>
           </div>
 
           <div className="flex space-x-3">
-            <Button variant="outline">
-              <Phone className="h-4 w-4 mr-2" />
-              Call Now
+            <Button variant="outline" asChild>
+              <a href={`tel:${venue?.contact?.phone || ''}`}>
+                <Phone className="h-4 w-4 mr-2" />
+                Call Now
+              </a>
             </Button>
             <Button className="bg-gradient-to-r from-pink-500 to-purple-600">Check Availability</Button>
           </div>

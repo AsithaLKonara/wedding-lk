@@ -57,7 +57,37 @@ export default function WeddingPackagesSection() {
   useEffect(() => {
     const generateWeddingPackages = async () => {
       try {
-        // Fetch featured venues and vendors
+        // Fetch packages from the new packages API
+        const packagesResponse = await fetch('/api/packages?limit=6')
+        
+        if (packagesResponse.ok) {
+          const packagesData = await packagesResponse.json()
+          if (packagesData.success && packagesData.packages) {
+            const formattedPackages = packagesData.packages.map((pkg: any, index: number) => ({
+              id: pkg._id,
+              title: pkg.name,
+              subtitle: pkg.description,
+              price: pkg.price,
+              originalPrice: pkg.originalPrice,
+              rating: pkg.rating?.average || 4.5,
+              reviewCount: pkg.rating?.count || 0,
+              badge: index === 0 ? "Most Popular" : index === 1 ? "Best Value" : "Featured",
+              badgeColor: index === 0 
+                ? "bg-gradient-to-r from-yellow-400 to-orange-500"
+                : index === 1 
+                ? "bg-gradient-to-r from-green-400 to-blue-500"
+                : "bg-gradient-to-r from-purple-400 to-pink-500",
+              icon: index === 0 ? Crown : index === 1 ? Star : Heart,
+              features: pkg.features || [],
+              venues: pkg.venues || [],
+              vendors: pkg.vendors || []
+            }))
+            setPackages(formattedPackages)
+            return
+          }
+        }
+
+        // Fallback: Fetch featured venues and vendors
         const [venuesResponse, vendorsResponse] = await Promise.all([
           fetch('/api/home/featured-venues'),
           fetch('/api/home/featured-vendors')
@@ -93,18 +123,18 @@ export default function WeddingPackagesSection() {
                 "Transportation for couple",
                 "Honeymoon package included",
               ],
-              venues: featuredVenues.slice(0, 3).map((venue: any) => ({
-                _id: venue._id,
-                name: venue.name,
-                rating: venue.rating?.average || 4.5,
-                image: venue.images?.[0] || '/placeholder.svg'
+              venues: (featuredVenues || []).slice(0, 3).map((venue: any) => ({
+                _id: venue?._id || '',
+                name: venue?.name || 'Unknown Venue',
+                rating: venue?.rating?.average || 4.5,
+                image: venue?.images?.[0] || '/placeholder.svg'
               })),
-              vendors: featuredVendors.slice(0, 3).map((vendor: any) => ({
-                _id: vendor._id,
-                name: vendor.name,
-                businessName: vendor.businessName,
-                category: vendor.category,
-                rating: vendor.rating?.average || 4.5
+              vendors: (featuredVendors || []).slice(0, 3).map((vendor: any) => ({
+                _id: vendor?._id || '',
+                name: vendor?.name || 'Unknown Vendor',
+                businessName: vendor?.businessName || 'Unknown Business',
+                category: vendor?.category || 'Other',
+                rating: vendor?.rating?.average || 4.5
               }))
             },
             {
@@ -128,18 +158,18 @@ export default function WeddingPackagesSection() {
                 "Bridal makeup included",
                 "Guest accommodation discount",
               ],
-              venues: featuredVenues.slice(3, 6).map((venue: any) => ({
-                _id: venue._id,
-                name: venue.name,
-                rating: venue.rating?.average || 4.5,
-                image: venue.images?.[0] || '/placeholder.svg'
+              venues: (featuredVenues || []).slice(3, 6).map((venue: any) => ({
+                _id: venue?._id || '',
+                name: venue?.name || 'Unknown Venue',
+                rating: venue?.rating?.average || 4.5,
+                image: venue?.images?.[0] || '/placeholder.svg'
               })),
-              vendors: featuredVendors.slice(3, 6).map((vendor: any) => ({
-                _id: vendor._id,
-                name: vendor.name,
-                businessName: vendor.businessName,
-                category: vendor.category,
-                rating: vendor.rating?.average || 4.5
+              vendors: (featuredVendors || []).slice(3, 6).map((vendor: any) => ({
+                _id: vendor?._id || '',
+                name: vendor?.name || 'Unknown Vendor',
+                businessName: vendor?.businessName || 'Unknown Business',
+                category: vendor?.category || 'Other',
+                rating: vendor?.rating?.average || 4.5
               }))
             },
             {
@@ -163,18 +193,18 @@ export default function WeddingPackagesSection() {
                 "Digital photo album",
                 "Wedding cake included",
               ],
-              venues: featuredVenues.slice(6, 9).map((venue: any) => ({
-                _id: venue._id,
-                name: venue.name,
-                rating: venue.rating?.average || 4.5,
-                image: venue.images?.[0] || '/placeholder.svg'
+              venues: (featuredVenues || []).slice(6, 9).map((venue: any) => ({
+                _id: venue?._id || '',
+                name: venue?.name || 'Unknown Venue',
+                rating: venue?.rating?.average || 4.5,
+                image: venue?.images?.[0] || '/placeholder.svg'
               })),
-              vendors: featuredVendors.slice(6, 9).map((vendor: any) => ({
-                _id: vendor._id,
-                name: vendor.name,
-                businessName: vendor.businessName,
-                category: vendor.category,
-                rating: vendor.rating?.average || 4.5
+              vendors: (featuredVendors || []).slice(6, 9).map((vendor: any) => ({
+                _id: vendor?._id || '',
+                name: vendor?.name || 'Unknown Vendor',
+                businessName: vendor?.businessName || 'Unknown Business',
+                category: vendor?.category || 'Other',
+                rating: vendor?.rating?.average || 4.5
               }))
             }
           ]

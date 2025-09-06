@@ -1,0 +1,669 @@
+{
+  "timestamp": "2025-09-05T16:13:14.382Z",
+  "baseUrl": "http://localhost:3000",
+  "summary": {
+    "total": 28,
+    "passed": 4,
+    "failed": 4,
+    "skipped": 20
+  },
+  "tests": [
+    {
+      "id": "GET__api_health",
+      "endpoint": "GET /api/health",
+      "description": "Health check",
+      "status": "passed",
+      "response": {
+        "status": 200,
+        "duration": "27323ms",
+        "data": {
+          "status": "healthy",
+          "timestamp": "2025-09-05T16:13:30.835Z",
+          "database": "connected",
+          "cache": "connected",
+          "system": {
+            "uptime": "24296s",
+            "memory": {
+              "rss": "328MB",
+              "heapUsed": "242MB",
+              "heapTotal": "270MB"
+            }
+          },
+          "performance": {
+            "responseTime": "11097ms",
+            "cached": false
+          }
+        }
+      },
+      "error": null,
+      "timestamp": "2025-09-05T16:13:41.713Z"
+    },
+    {
+      "id": "GET__api_vendors",
+      "endpoint": "GET /api/vendors",
+      "description": "Get vendors",
+      "status": "passed",
+      "response": {
+        "status": 200,
+        "duration": "2126ms",
+        "data": {
+          "success": true,
+          "vendors": [
+            {
+              "_id": "68b95c30ed5e3b5c360b105d",
+              "businessName": "Spice Garden Catering",
+              "ownerName": "Maria Fernando",
+              "email": "maria@spicegarden.com",
+              "phone": "+94771234572",
+              "category": "catering",
+              "description": "Authentic Sri Lankan cuisine for your special day",
+              "location": {
+                "country": "Sri Lanka",
+                "state": "Western Province",
+                "city": "Colombo",
+                "address": "456 Kandy Road, Colombo 07"
+              },
+              "services": [
+                {
+                  "name": "Buffet Service",
+                  "price": 2500,
+                  "description": "Per person buffet with 15+ dishes",
+                  "_id": "68b95c30ed5e3b5c360b105e"
+                },
+                {
+                  "name": "Plated Service",
+                  "price": 3500,
+                  "description": "Elegant plated dinner service",
+                  "_id": "68b95c30ed5e3b5c360b105f"
+                },
+                {
+                  "name": "Cocktail Reception",
+                  "price": 1500,
+                  "description": "Appetizers and drinks for cocktail hour",
+                  "_id": "68b95c30ed5e3b5c360b1060"
+                }
+              ],
+              "rating": {
+                "average": 4.6,
+                "count": 18
+              },
+              "isVerified": true,
+              "isActive": true,
+              "__v": 0,
+              "createdAt": "2025-09-04T09:30:24.857Z",
+              "updatedAt": "2025-09-04T09:30:24.857Z"
+            },
+            {
+              "_id": "68b95c30ed5e3b5c360b1061",
+              "businessName": "Harmony Music Band",
+              "ownerName": "Rajesh Kumar",
+              "email": "rajesh@harmonymusic.com",
+              "phone": "+94771234573",
+              "category": "entertainment",
+              "description": "Live music entertainment for weddings and special events",
+              "location": {
+                "country": "Sri Lanka",
+                "state": "Western Province",
+                "city": "Colombo",
+                "address": "789 Union Place, Colombo 02"
+              },
+              "services": [
+                {
+                  "name": "Full Band Performance",
+                  "price": 75000,
+                  "description": "5-piece band with sound system",
+                  "_id": "68b95c30ed5e3b5c360b1062"
+                },
+                {
+                  "name": "DJ Service",
+                  "price": 25000,
+                  "description": "Professional DJ with music library",
+                  "_id": "68b95c30ed5e3b5c360b1063"
+                },
+                {
+                  "name": "Acoustic Duo",
+                  "price": 35000,
+                  "description": "Intimate acoustic performance",
+                  "_id": "68b95c30ed5e3b5c360b1064"
+                }
+              ],
+              "rating": {
+                "average": 4.7,
+                "count": 22
+              },
+              "isVerified": true,
+              "isActive": true,
+              "__v": 0,
+              "createdAt": "2025-09-04T09:30:24.857Z",
+              "updatedAt": "2025-09-04T09:30:24.857Z"
+            },
+            {
+              "_id": "68b95c30ed5e3b5c360b1059",
+              "businessName": "Royal Wedding Photography",
+              "ownerName": "David Wilson",
+              "email": "david@royalphotography.com",
+              "phone": "+94771234571",
+              "category": "photography",
+              "description": "Professional wedding photography services with over 10 years of experience",
+              "location": {
+                "country": "Sri Lanka",
+                "state": "Western Province",
+                "city": "Colombo",
+                "address": "123 Galle Road, Colombo 03"
+              },
+              "services": [
+                {
+                  "name": "Full Day Photography",
+                  "price": 50000,
+                  "description": "Complete wedding day coverage",
+                  "_id": "68b95c30ed5e3b5c360b105a"
+                },
+                {
+                  "name": "Half Day Photography",
+                  "price": 30000,
+                  "description": "Ceremony and reception coverage",
+                  "_id": "68b95c30ed5e3b5c360b105b"
+                },
+                {
+                  "name": "Engagement Session",
+                  "price": 15000,
+                  "description": "Pre-wedding photo session",
+                  "_id": "68b95c30ed5e3b5c360b105c"
+                }
+              ],
+              "rating": {
+                "average": 4.8,
+                "count": 25
+              },
+              "isVerified": true,
+              "isActive": true,
+              "__v": 0,
+              "createdAt": "2025-09-04T09:30:24.856Z",
+              "updatedAt": "2025-09-04T09:30:24.856Z"
+            }
+          ],
+          "pagination": {
+            "total": 3,
+            "page": 1,
+            "limit": 10,
+            "totalPages": 1
+          }
+        }
+      },
+      "error": null,
+      "timestamp": "2025-09-05T16:13:43.941Z"
+    },
+    {
+      "id": "GET__api_venues",
+      "endpoint": "GET /api/venues",
+      "description": "Get venues",
+      "status": "passed",
+      "response": {
+        "status": 200,
+        "duration": "2574ms",
+        "data": {
+          "success": true,
+          "venues": [
+            {
+              "_id": "68b95c30ed5e3b5c360b1066",
+              "name": "Grand Ballroom Hotel",
+              "description": "Elegant ballroom with crystal chandeliers and marble floors",
+              "location": {
+                "country": "Sri Lanka",
+                "state": "Western Province",
+                "city": "Colombo",
+                "address": "100 Galle Face, Colombo 03",
+                "coordinates": {
+                  "latitude": 6.9271,
+                  "longitude": 79.8612
+                }
+              },
+              "capacity": {
+                "min": 100,
+                "max": 300
+              },
+              "pricing": {
+                "startingPrice": 150000,
+                "packages": [
+                  {
+                    "name": "Basic Package",
+                    "price": 150000,
+                    "description": "Venue rental only",
+                    "_id": "68b95c30ed5e3b5c360b1067"
+                  },
+                  {
+                    "name": "Standard Package",
+                    "price": 200000,
+                    "description": "Venue + basic decorations",
+                    "_id": "68b95c30ed5e3b5c360b1068"
+                  },
+                  {
+                    "name": "Premium Package",
+                    "price": 250000,
+                    "description": "Venue + full decorations + lighting",
+                    "_id": "68b95c30ed5e3b5c360b1069"
+                  }
+                ]
+              },
+              "amenities": [
+                "Air Conditioning",
+                "Parking",
+                "Bridal Suite",
+                "Sound System",
+                "Lighting"
+              ],
+              "images": [
+                "venue1.jpg",
+                "venue2.jpg"
+              ],
+              "rating": {
+                "average": 4.5,
+                "count": 15
+              },
+              "isActive": true,
+              "isAvailable": true,
+              "__v": 0,
+              "createdAt": "2025-09-04T09:30:24.974Z",
+              "updatedAt": "2025-09-04T09:30:24.974Z"
+            },
+            {
+              "_id": "68b95c30ed5e3b5c360b106a",
+              "name": "Garden Paradise Resort",
+              "description": "Beautiful outdoor garden venue with natural surroundings",
+              "location": {
+                "country": "Sri Lanka",
+                "state": "Western Province",
+                "city": "Negombo",
+                "address": "200 Beach Road, Negombo",
+                "coordinates": {
+                  "latitude": 7.2095,
+                  "longitude": 79.835
+                }
+              },
+              "capacity": {
+                "min": 50,
+                "max": 200
+              },
+              "pricing": {
+                "startingPrice": 100000,
+                "packages": [
+                  {
+                    "name": "Garden Package",
+                    "price": 100000,
+                    "description": "Garden venue rental",
+                    "_id": "68b95c30ed5e3b5c360b106b"
+                  },
+                  {
+                    "name": "Beach Package",
+                    "price": 150000,
+                    "description": "Beachfront ceremony + garden reception",
+                    "_id": "68b95c30ed5e3b5c360b106c"
+                  },
+                  {
+                    "name": "Luxury Package",
+                    "price": 200000,
+                    "description": "Full resort experience",
+                    "_id": "68b95c30ed5e3b5c360b106d"
+                  }
+                ]
+              },
+              "amenities": [
+                "Garden Setting",
+                "Beach Access",
+                "Parking",
+                "Restrooms",
+                "Catering Kitchen"
+              ],
+              "images": [
+                "garden1.jpg",
+                "garden2.jpg"
+              ],
+              "rating": {
+                "average": 4.8,
+                "count": 20
+              },
+              "isActive": true,
+              "isAvailable": true,
+              "__v": 0,
+              "createdAt": "2025-09-04T09:30:24.974Z",
+              "updatedAt": "2025-09-04T09:30:24.974Z"
+            }
+          ],
+          "pagination": {
+            "total": 2,
+            "page": 1,
+            "limit": 10,
+            "totalPages": 1
+          }
+        }
+      },
+      "error": null,
+      "timestamp": "2025-09-05T16:13:46.615Z"
+    },
+    {
+      "id": "GET__api_gallery",
+      "endpoint": "GET /api/gallery",
+      "description": "Get gallery",
+      "status": "passed",
+      "response": {
+        "status": 200,
+        "duration": "3907ms",
+        "data": {
+          "success": true,
+          "data": [
+            {
+              "id": "68b95c31ed5e3b5c360b1078-0",
+              "url": "photo1.jpg",
+              "title": "Just had the most amazing wedding photography sess...",
+              "category": "general",
+              "venue": "Unknown Venue",
+              "venueId": "unknown",
+              "photographer": "John Doe",
+              "photographerAvatar": "https://ui-avatars.com/api/?name=JD&background=random&color=fff&size=200",
+              "date": "2025-09-04",
+              "likes": 12,
+              "views": 45,
+              "isLiked": false,
+              "tags": [
+                "photography",
+                "wedding",
+                "recommendation"
+              ],
+              "description": "Just had the most amazing wedding photography session with Royal Wedding Photography! The team was professional and the photos are stunning. Highly recommended! 📸✨",
+              "postId": "68b95c31ed5e3b5c360b1078"
+            },
+            {
+              "id": "68b95c31ed5e3b5c360b1078-1",
+              "url": "photo2.jpg",
+              "title": "Just had the most amazing wedding photography sess...",
+              "category": "general",
+              "venue": "Unknown Venue",
+              "venueId": "unknown",
+              "photographer": "John Doe",
+              "photographerAvatar": "https://ui-avatars.com/api/?name=JD&background=random&color=fff&size=200",
+              "date": "2025-09-04",
+              "likes": 12,
+              "views": 45,
+              "isLiked": false,
+              "tags": [
+                "photography",
+                "wedding",
+                "recommendation"
+              ],
+              "description": "Just had the most amazing wedding photography session with Royal Wedding Photography! The team was professional and the photos are stunning. Highly recommended! 📸✨",
+              "postId": "68b95c31ed5e3b5c360b1078"
+            },
+            {
+              "id": "68b95c31ed5e3b5c360b1079-0",
+              "url": "package1.jpg",
+              "title": "New wedding package available! Our premium photogr...",
+              "category": "general",
+              "venue": "Unknown Venue",
+              "venueId": "unknown",
+              "photographer": "Royal Wedding Photography",
+              "photographerAvatar": "https://ui-avatars.com/api/?name=RW&background=random&color=fff&size=200",
+              "date": "2025-09-04",
+              "likes": 8,
+              "views": 32,
+              "isLiked": false,
+              "tags": [
+                "photography",
+                "package",
+                "offer"
+              ],
+              "description": "New wedding package available! Our premium photography package now includes engagement session, full day coverage, and 500+ edited photos. Book now for 20% off!",
+              "postId": "68b95c31ed5e3b5c360b1079"
+            }
+          ],
+          "pagination": {
+            "page": 1,
+            "limit": 20,
+            "total": 3,
+            "pages": 1,
+            "hasNext": false,
+            "hasPrev": false
+          }
+        }
+      },
+      "error": null,
+      "timestamp": "2025-09-05T16:13:50.624Z"
+    },
+    {
+      "id": "POST__api_auth_signin",
+      "endpoint": "POST /api/auth/signin",
+      "description": "Sign in",
+      "status": "failed",
+      "response": {
+        "status": 500,
+        "duration": "17387ms",
+        "data": {}
+      },
+      "error": "HTTP 500",
+      "timestamp": "2025-09-05T16:14:08.112Z"
+    },
+    {
+      "id": "POST__api_auth_signout",
+      "endpoint": "POST /api/auth/signout",
+      "description": "Sign out",
+      "status": "failed",
+      "response": {
+        "status": 500,
+        "duration": "760ms",
+        "data": {}
+      },
+      "error": "HTTP 500",
+      "timestamp": "2025-09-05T16:14:08.973Z"
+    },
+    {
+      "id": "POST__api_register",
+      "endpoint": "POST /api/register",
+      "description": "User registration",
+      "status": "failed",
+      "response": {
+        "status": 400,
+        "duration": "3113ms",
+        "data": {
+          "success": false,
+          "error": "Name, email, and password are required"
+        }
+      },
+      "error": "HTTP 400",
+      "timestamp": "2025-09-05T16:14:12.188Z"
+    },
+    {
+      "id": "POST__api_auth_forgot-password",
+      "endpoint": "POST /api/auth/forgot-password",
+      "description": "Forgot password",
+      "status": "failed",
+      "response": {
+        "status": 400,
+        "duration": "12600ms",
+        "data": {
+          "error": "Email is required"
+        }
+      },
+      "error": "HTTP 400",
+      "timestamp": "2025-09-05T16:14:24.889Z"
+    },
+    {
+      "id": "GET__api_dashboard_admin_stats",
+      "endpoint": "GET /api/dashboard/admin/stats",
+      "description": "Admin stats",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for admin: 500",
+      "timestamp": "2025-09-05T16:14:28.050Z"
+    },
+    {
+      "id": "GET__api_dashboard_admin_users",
+      "endpoint": "GET /api/dashboard/admin/users",
+      "description": "Admin users",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for admin: 500",
+      "timestamp": "2025-09-05T16:14:28.050Z"
+    },
+    {
+      "id": "GET__api_dashboard_admin_vendors",
+      "endpoint": "GET /api/dashboard/admin/vendors",
+      "description": "Admin vendors",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for admin: 500",
+      "timestamp": "2025-09-05T16:14:28.050Z"
+    },
+    {
+      "id": "GET__api_dashboard_admin_bookings",
+      "endpoint": "GET /api/dashboard/admin/bookings",
+      "description": "Admin bookings",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for admin: 500",
+      "timestamp": "2025-09-05T16:14:28.050Z"
+    },
+    {
+      "id": "GET__api_users",
+      "endpoint": "GET /api/users",
+      "description": "Get all users",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for admin: 500",
+      "timestamp": "2025-09-05T16:14:28.050Z"
+    },
+    {
+      "id": "POST__api_users",
+      "endpoint": "POST /api/users",
+      "description": "Create user",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for admin: 500",
+      "timestamp": "2025-09-05T16:14:28.050Z"
+    },
+    {
+      "id": "GET__api_dashboard_vendor_stats",
+      "endpoint": "GET /api/dashboard/vendor/stats",
+      "description": "Vendor stats",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for vendor: 500",
+      "timestamp": "2025-09-05T16:14:29.223Z"
+    },
+    {
+      "id": "GET__api_dashboard_vendor_services",
+      "endpoint": "GET /api/dashboard/vendor/services",
+      "description": "Vendor services",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for vendor: 500",
+      "timestamp": "2025-09-05T16:14:29.223Z"
+    },
+    {
+      "id": "GET__api_dashboard_vendor_bookings",
+      "endpoint": "GET /api/dashboard/vendor/bookings",
+      "description": "Vendor bookings",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for vendor: 500",
+      "timestamp": "2025-09-05T16:14:29.223Z"
+    },
+    {
+      "id": "GET__api_dashboard_vendor_messages",
+      "endpoint": "GET /api/dashboard/vendor/messages",
+      "description": "Vendor messages",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for vendor: 500",
+      "timestamp": "2025-09-05T16:14:29.223Z"
+    },
+    {
+      "id": "GET__api_dashboard_user_stats",
+      "endpoint": "GET /api/dashboard/user/stats",
+      "description": "User stats",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for user: 500",
+      "timestamp": "2025-09-05T16:14:30.429Z"
+    },
+    {
+      "id": "GET__api_dashboard_user_tasks",
+      "endpoint": "GET /api/dashboard/user/tasks",
+      "description": "User tasks",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for user: 500",
+      "timestamp": "2025-09-05T16:14:30.429Z"
+    },
+    {
+      "id": "GET__api_dashboard_user_events",
+      "endpoint": "GET /api/dashboard/user/events",
+      "description": "User events",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for user: 500",
+      "timestamp": "2025-09-05T16:14:30.429Z"
+    },
+    {
+      "id": "GET__api_dashboard_user_activity",
+      "endpoint": "GET /api/dashboard/user/activity",
+      "description": "User activity",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for user: 500",
+      "timestamp": "2025-09-05T16:14:30.429Z"
+    },
+    {
+      "id": "GET__api_bookings",
+      "endpoint": "GET /api/bookings",
+      "description": "Get bookings",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for user: 500",
+      "timestamp": "2025-09-05T16:14:30.429Z"
+    },
+    {
+      "id": "POST__api_bookings",
+      "endpoint": "POST /api/bookings",
+      "description": "Create booking",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for user: 500",
+      "timestamp": "2025-09-05T16:14:30.429Z"
+    },
+    {
+      "id": "GET__api_tasks",
+      "endpoint": "GET /api/tasks",
+      "description": "Get tasks",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for user: 500",
+      "timestamp": "2025-09-05T16:14:30.429Z"
+    },
+    {
+      "id": "POST__api_tasks",
+      "endpoint": "POST /api/tasks",
+      "description": "Create task",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for user: 500",
+      "timestamp": "2025-09-05T16:14:30.429Z"
+    },
+    {
+      "id": "GET__api_reviews",
+      "endpoint": "GET /api/reviews",
+      "description": "Get reviews",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for user: 500",
+      "timestamp": "2025-09-05T16:14:30.429Z"
+    },
+    {
+      "id": "POST__api_reviews",
+      "endpoint": "POST /api/reviews",
+      "description": "Create review",
+      "status": "skipped",
+      "response": null,
+      "error": "Authentication failed: Authentication failed for user: 500",
+      "timestamp": "2025-09-05T16:14:30.429Z"
+    }
+  ]
+}

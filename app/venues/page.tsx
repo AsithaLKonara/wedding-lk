@@ -236,7 +236,7 @@ export default function VenuesPage() {
                       <div className="flex items-center space-x-2">
                         <DollarSign className="h-4 w-4 text-green-600" />
                         <span className="text-gray-700">
-                          From LKR {venue.pricing.basePrice.toLocaleString()}
+                          From LKR {venue.pricing?.basePrice?.toLocaleString() || "0"}
                         </span>
                       </div>
                     </div>

@@ -28,68 +28,39 @@ export default function PlanningPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Mock planning tasks data
-    const mockTasks: PlanningTask[] = [
-      {
-        id: "task-1",
-        title: "Venue Selection",
-        description: "Research and select wedding venue",
-        category: "venue",
-        priority: "high",
-        status: "completed",
-        dueDate: "2024-03-15T00:00:00.000Z",
-        completedDate: "2024-03-10T00:00:00.000Z",
-        estimatedHours: 8,
-        actualHours: 6
-      },
-      {
-        id: "task-2",
-        title: "Catering Menu Finalization",
-        description: "Finalize wedding menu with caterer",
-        category: "catering",
-        priority: "medium",
-        status: "in_progress",
-        dueDate: "2024-04-01T00:00:00.000Z",
-        estimatedHours: 4,
-        actualHours: 2
-      },
-      {
-        id: "task-3",
-        title: "Photography Booking",
-        description: "Book wedding photographer",
-        category: "photography",
-        priority: "high",
-        status: "pending",
-        dueDate: "2024-03-20T00:00:00.000Z",
-        estimatedHours: 3
-      },
-      {
-        id: "task-4",
-        title: "Music & Entertainment",
-        description: "Book live band or DJ for reception",
-        category: "entertainment",
-        priority: "medium",
-        status: "pending",
-        dueDate: "2024-04-15T00:00:00.000Z",
-        estimatedHours: 2
-      },
-      {
-        id: "task-5",
-        title: "Wedding Dress Fitting",
-        description: "Schedule and attend dress fitting appointments",
-        category: "attire",
-        priority: "high",
-        status: "pending",
-        dueDate: "2024-05-01T00:00:00.000Z",
-        estimatedHours: 6
-      }
-    ]
-
-    setTimeout(() => {
-      setTasks(mockTasks)
-      setLoading(false)
-    }, 1000)
+    fetchTasks()
   }, [])
+
+  const fetchTasks = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch('/api/tasks?limit=20')
+      if (response.ok) {
+        const data = await response.json()
+        if (data.success) {
+          const formattedTasks = data.tasks.map((task: any) => ({
+            id: task._id,
+            title: task.title,
+            description: task.description,
+            category: task.category,
+            priority: task.priority,
+            status: task.status,
+            dueDate: task.dueDate,
+            completedDate: task.completedAt,
+            estimatedHours: task.estimatedHours || 0,
+            actualHours: task.actualHours || 0
+          }))
+          setTasks(formattedTasks)
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching tasks:', error)
+      // Fallback to empty array if API fails
+      setTasks([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {

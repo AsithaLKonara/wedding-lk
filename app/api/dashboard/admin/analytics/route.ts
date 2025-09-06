@@ -1,18 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
+import { connectDB } from '@/lib/db';
+import { getAuthenticatedUser, requireAuth, requireAdmin, requireVendor, requireWeddingPlanner } from '@/lib/auth-utils';
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
 import { formatCurrency } from '@/lib/utils/format';
 
 export async function GET(request: NextRequest) {
+  const authResult = await requireAdmin(request);
+  if (!authResult.success) {
+    return NextResponse.json({ error: authResult.error }, { status: 401 });
+  }
   try {
-    console.log('📊 Fetching admin analytics from local database...');
+    await connectDB();
+    console.log('📊 Fetching admin analytics from MongoDB Atlas...');
 
-    // Get all data from local database
-    const users = LocalDatabase.read('users');
-    const vendors = LocalDatabase.read('vendors');
-    const venues = LocalDatabase.read('venues');
-    const bookings = LocalDatabase.read('bookings');
-    const payments = LocalDatabase.read('payments');
-    const reviews = LocalDatabase.read('reviews');
+    // Get all data from MongoDB Atlas
+    const [users, vendors, venues, bookings, payments, reviews] = await Promise.all([
+      User.find({}).lean(),
+      Vendor.find({}).lean(),
+      Venue.find({}).lean(),
+      Booking.find({}).lean(),
+      Payment.find({}).lean(),
+      Review.find({}).lean()
+    ]);
 
     // Calculate platform statistics
     const totalUsers = users.length;
@@ -106,4 +115,4 @@ export async function GET(request: NextRequest) {
       message: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
-} 
+}

@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
+import { connectDB } from "@/lib/db"
+import { Venue } from "@/lib/models/venue"
 
 export async function GET(request: NextRequest) {
   try {
+    await connectDB()
+
     const { searchParams } = new URL(request.url)
     const query = searchParams.get('q') || ''
     const location = searchParams.get('location') || ''
@@ -13,89 +17,64 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20')
     const offset = parseInt(searchParams.get('offset') || '0')
 
-    // Mock venue data for search
-    const mockVenues = [
-      {
-        _id: "venue1",
-        name: "Grand Ballroom Colombo",
-        description: "Elegant ballroom in the heart of Colombo",
-        location: {
-          address: "123 Galle Road, Colombo 03",
-          city: "Colombo",
-          province: "Western Province",
-          coordinates: { lat: 6.9271, lng: 79.8612 }
-        },
-        capacity: { min: 50, max: 500 },
-        pricing: { basePrice: 150000, currency: "LKR" },
-        rating: { average: 4.5, count: 120 },
-        amenities: ["Parking", "AC", "Sound System", "Catering"],
-        images: ["/placeholder.svg"],
-        isActive: true
-      },
-      {
-        _id: "venue2", 
-        name: "Beachside Resort Negombo",
-        description: "Beautiful beachfront venue with ocean views",
-        location: {
-          address: "456 Beach Road, Negombo",
-          city: "Negombo", 
-          province: "Western Province",
-          coordinates: { lat: 7.2086, lng: 79.8358 }
-        },
-        capacity: { min: 30, max: 200 },
-        pricing: { basePrice: 200000, currency: "LKR" },
-        rating: { average: 4.8, count: 85 },
-        amenities: ["Beach Access", "Parking", "AC", "Catering"],
-        images: ["/placeholder.svg"],
-        isActive: true
-      },
-      {
-        _id: "venue3",
-        name: "Mountain View Estate Kandy", 
-        description: "Scenic mountain venue with panoramic views",
-        location: {
-          address: "789 Hill Road, Kandy",
-          city: "Kandy",
-          province: "Central Province", 
-          coordinates: { lat: 7.2906, lng: 80.6337 }
-        },
-        capacity: { min: 25, max: 150 },
-        pricing: { basePrice: 120000, currency: "LKR" },
-        rating: { average: 4.3, count: 65 },
-        amenities: ["Mountain Views", "Parking", "Garden", "Catering"],
-        images: ["/placeholder.svg"],
-        isActive: true
-      }
-    ]
+    console.log('🔍 Searching venues in MongoDB Atlas...')
 
-    // Simple filtering logic
-    let filteredVenues = mockVenues.filter(venue => {
-      if (query && !venue.name.toLowerCase().includes(query.toLowerCase()) && 
-          !venue.description.toLowerCase().includes(query.toLowerCase()) &&
-          !venue.location.city.toLowerCase().includes(query.toLowerCase())) {
-        return false
-      }
-      if (location && !venue.location.city.toLowerCase().includes(location.toLowerCase())) {
-        return false
-      }
-      if (minCapacity && venue.capacity.max < parseInt(minCapacity)) {
-        return false
-      }
-      if (maxCapacity && venue.capacity.min > parseInt(maxCapacity)) {
-        return false
-      }
-      if (minRating && venue.rating.average < parseFloat(minRating)) {
-        return false
-      }
-      return true
-    })
+    // Build MongoDB query
+    const mongoQuery: any = { isActive: true }
 
-    // Apply pagination
-    const totalCount = filteredVenues.length
-    const paginatedVenues = filteredVenues.slice(offset, offset + limit)
+    // Text search
+    if (query) {
+      mongoQuery.$or = [
+        { name: { $regex: query, $options: 'i' } },
+        { description: { $regex: query, $options: 'i' } },
+        { 'location.city': { $regex: query, $options: 'i' } }
+      ]
+    }
+
+    // Location filter
+    if (location) {
+      mongoQuery['location.city'] = { $regex: location, $options: 'i' }
+    }
+
+    // Capacity filters
+    if (minCapacity) {
+      mongoQuery.capacity = { $gte: parseInt(minCapacity) }
+    }
+    if (maxCapacity) {
+      mongoQuery.capacity = { ...mongoQuery.capacity, $lte: parseInt(maxCapacity) }
+    }
+
+    // Rating filter
+    if (minRating) {
+      mongoQuery['rating.average'] = { $gte: parseFloat(minRating) }
+    }
+
+    // Price filter
+    if (maxPrice) {
+      mongoQuery['pricing.basePrice'] = { $lte: parseInt(maxPrice) }
+    }
+
+    // Amenities filter
+    if (amenities) {
+      const amenityList = amenities.split(',').map(a => a.trim())
+      mongoQuery.amenities = { $in: amenityList }
+    }
+
+    // Execute search with pagination
+    const [venues, totalCount] = await Promise.all([
+      Venue.find(mongoQuery)
+        .select('name description location capacity pricing rating amenities images')
+        .sort({ 'rating.average': -1, createdAt: -1 })
+        .skip(offset)
+        .limit(limit)
+        .lean(),
+      Venue.countDocuments(mongoQuery)
+    ])
+
+    console.log(`✅ Found ${venues.length} venues matching search criteria`)
 
     return NextResponse.json({
-      venues: paginatedVenues,
+      venues,
       pagination: {
         total: totalCount,
         limit,

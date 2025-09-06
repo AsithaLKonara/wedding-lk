@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
-
+import { connectDB } from '@/lib/db';
+import { getAuthenticatedUser, requireAuth, requireAdmin, requireVendor, requireWeddingPlanner } from '@/lib/auth-utils';
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { id } = params;
     
     console.log('📊 Fetching booking by ID:', id);
 
-    const booking = LocalDatabase.readById('bookings', id);
+    await connectDB();
+    const booking = await Booking.findById(id);
 
     if (!booking) {
       return NextResponse.json({
@@ -23,7 +25,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       booking
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error fetching booking:', error);
     return NextResponse.json({
       success: false,
@@ -40,7 +42,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     
     console.log('📝 Updating booking:', id);
 
-    const updatedBooking = LocalDatabase.update('bookings', id, updates);
+    const updatedBooking = await Booking.findByIdAndUpdate(id, updates, { new: true });
 
     if (!updatedBooking) {
       return NextResponse.json({
@@ -57,7 +59,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       message: 'Booking updated successfully'
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error updating booking:', error);
     return NextResponse.json({
       success: false,
@@ -73,7 +75,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     
     console.log('🗑️ Deleting booking:', id);
 
-    const deleted = LocalDatabase.delete('bookings', id);
+    const deleted = await Booking.findByIdAndDelete(id);
 
     if (!deleted) {
       return NextResponse.json({
@@ -89,7 +91,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       message: 'Booking deleted successfully'
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error deleting booking:', error);
     return NextResponse.json({
       success: false,

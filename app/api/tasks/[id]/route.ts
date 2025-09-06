@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
-
+import { connectDB } from '@/lib/db';
+import { getAuthenticatedUser, requireAuth, requireAdmin, requireVendor, requireWeddingPlanner } from '@/lib/auth-utils';
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { id } = params;
     
     console.log('📊 Fetching task by ID:', id);
 
-    const task = LocalDatabase.readById('tasks', id);
+    await connectDB();
+    const task = await Task.findById(id);
 
     if (!task) {
       return NextResponse.json({
@@ -23,7 +25,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       task
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error fetching task:', error);
     return NextResponse.json({
       success: false,
@@ -40,7 +42,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     
     console.log('📝 Updating task:', id);
 
-    const updatedTask = LocalDatabase.update('tasks', id, updates);
+    const updatedTask = await Task.findByIdAndUpdate(id, updates, { new: true });
 
     if (!updatedTask) {
       return NextResponse.json({
@@ -57,7 +59,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       message: 'Task updated successfully'
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error updating task:', error);
     return NextResponse.json({
       success: false,
@@ -73,7 +75,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     
     console.log('🗑️ Deleting task:', id);
 
-    const deleted = LocalDatabase.delete('tasks', id);
+    const deleted = await Task.findByIdAndDelete(id);
 
     if (!deleted) {
       return NextResponse.json({
@@ -89,7 +91,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       message: 'Task deleted successfully'
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error deleting task:', error);
     return NextResponse.json({
       success: false,

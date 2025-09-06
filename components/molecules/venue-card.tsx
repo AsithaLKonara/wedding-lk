@@ -68,7 +68,7 @@ export function VenueCard({
                 <Users className="h-3 w-3 mr-1" />
                 Up to {capacity} guests
               </div>
-              <div className="font-semibold text-gray-900 dark:text-white">LKR {price.toLocaleString()}</div>
+              <div className="font-semibold text-gray-900 dark:text-white">LKR {price?.toLocaleString() || "0"}</div>
             </div>
 
             <div className="flex flex-wrap gap-1">

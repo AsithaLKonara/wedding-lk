@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
+import { connectDB } from '@/lib/db';
+import { Venue } from '@/lib/models';
 
 export async function GET(request: NextRequest) {
   try {
+    await connectDB();
+
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
@@ -11,39 +14,54 @@ export async function GET(request: NextRequest) {
     const maxPrice = parseInt(searchParams.get('maxPrice') || '999999999');
     const search = searchParams.get('search');
 
-    console.log('📊 Fetching venues from local database...');
+    console.log('📊 Fetching venues from MongoDB Atlas...');
 
-    let venues = LocalDatabase.read('venues');
-
-    // Filter by city if provided
+    // Build query
+    const query: any = { isActive: true };
+    
     if (city) {
-      venues = venues.filter((venue: any) => venue.location.city === city);
+      query['location.city'] = city;
     }
 
-    // Filter by capacity
-    venues = venues.filter((venue: any) => venue.capacity.min >= minCapacity);
+    if (minCapacity > 0) {
+      query['capacity.min'] = { $gte: minCapacity };
+    }
 
-    // Filter by price
-    venues = venues.filter((venue: any) => venue.pricing.startingPrice <= maxPrice);
+    if (maxPrice < 999999999) {
+      query['pricing.startingPrice'] = { $lte: maxPrice };
+    }
 
-    // Search functionality
     if (search) {
-      venues = LocalDatabase.search('venues', search, ['name', 'description', 'location.address']);
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { 'location.address': { $regex: search, $options: 'i' } }
+      ];
     }
 
-    // Get paginated results
-    const paginatedResult = LocalDatabase.paginate('venues', page, limit);
+    // Calculate skip value for pagination
+    const skip = (page - 1) * limit;
+
+    // Execute query with pagination
+    const [venues, total] = await Promise.all([
+      Venue.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Venue.countDocuments(query)
+    ]);
 
     console.log(`✅ Found ${venues.length} venues`);
 
     return NextResponse.json({
       success: true,
-      venues: paginatedResult.data,
+      venues,
       pagination: {
-        total: paginatedResult.total,
-        page: paginatedResult.page,
-        limit: paginatedResult.limit,
-        totalPages: paginatedResult.totalPages
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
       }
     });
 
@@ -59,21 +77,24 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    await connectDB();
+
     const venueData = await request.json();
     
     console.log('📝 Creating new venue...');
 
     // Validate required fields
-    if (!venueData.name || !venueData.capacity || !venueData.price || !venueData.vendor) {
+    if (!venueData.name || !venueData.capacity || !venueData.pricing || !venueData.vendor) {
       return NextResponse.json({
         success: false,
-        error: 'Name, capacity, price, and vendor are required'
+        error: 'Name, capacity, pricing, and vendor are required'
       }, { status: 400 });
     }
 
     // Create venue
-    const newVenue = LocalDatabase.create('venues', {
+    const newVenue = new Venue({
       ...venueData,
+      isActive: true,
       isAvailable: true,
       rating: {
         average: 0,
@@ -83,12 +104,7 @@ export async function POST(request: NextRequest) {
       images: venueData.images || []
     });
 
-    if (!newVenue) {
-      return NextResponse.json({
-        success: false,
-        error: 'Failed to create venue'
-      }, { status: 500 });
-    }
+    await newVenue.save();
 
     console.log('✅ Venue created successfully:', newVenue.name);
 

@@ -223,27 +223,27 @@ export default function VendorDetailPage() {
         <div className="relative h-full flex items-center">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl">
-              <Badge className={`mb-4 ${getCategoryColor(vendor.category)}`}>
-                {vendor.category}
+              <Badge className={`mb-4 ${getCategoryColor(vendor?.category)}`}>
+                {vendor?.category || 'N/A'}
               </Badge>
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                {vendor.businessName}
+                {vendor?.businessName || 'N/A'}
               </h1>
               <p className="text-xl text-white/90 mb-6 max-w-2xl">
-                {vendor.description}
+                {vendor?.description || 'No description available'}
               </p>
               <div className="flex items-center space-x-6 text-white">
                 <div className="flex items-center">
                   <MapPin className="h-5 w-5 mr-2" />
-                  <span>{vendor.location.city}, {vendor.location.province}</span>
+                  <span>{vendor?.location?.city || 'N/A'}, {vendor?.location?.province || 'N/A'}</span>
                 </div>
                 <div className="flex items-center">
                   <Star className="h-5 w-5 mr-2 text-yellow-400" />
-                  <span>{vendor.rating.average.toFixed(1)} ({vendor.rating.count} reviews)</span>
+                  <span>{vendor?.rating?.average?.toFixed(1) || '0.0'} ({vendor?.rating?.count || 0} reviews)</span>
                 </div>
                 <div className="flex items-center">
                   <Award className="h-5 w-5 mr-2" />
-                  <span>{vendor.experience} years experience</span>
+                  <span>{vendor?.experience || 0} years experience</span>
                 </div>
               </div>
             </div>
@@ -259,7 +259,7 @@ export default function VendorDetailPage() {
             <VendorProfile vendor={vendor} />
 
             {/* Portfolio */}
-            <VendorPortfolio images={vendor.portfolio} vendorName={vendor.businessName} />
+            <VendorPortfolio images={vendor?.portfolio || []} vendorName={vendor?.businessName || 'N/A'} />
 
             {/* Services */}
             <Card>
@@ -268,15 +268,15 @@ export default function VendorDetailPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {vendor.services.map((service, index) => (
+                  {(vendor?.services || []).map((service, index) => (
                     <div key={index} className="border rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-semibold">{service.name}</h3>
+                        <h3 className="font-semibold">{service?.name || 'N/A'}</h3>
                         <span className="text-lg font-bold text-green-600">
-                          {formatPrice(service.price, vendor.pricing.currency)}
+                          {formatPrice(service?.price || 0, vendor?.pricing?.currency || 'LKR')}
                         </span>
                       </div>
-                      <p className="text-gray-600 text-sm">{service.description}</p>
+                      <p className="text-gray-600 text-sm">{service?.description || 'No description'}</p>
                     </div>
                   ))}
                 </div>
@@ -285,10 +285,10 @@ export default function VendorDetailPage() {
 
             {/* Reviews */}
             <VendorReviews 
-              reviews={vendor.reviews} 
-              rating={vendor.rating} 
-              vendorId={vendor._id}
-              vendorName={vendor.businessName}
+              reviews={vendor?.reviews || []} 
+              rating={vendor?.rating || { average: 0, count: 0 }} 
+              vendorId={vendor?._id}
+              vendorName={vendor?.businessName || 'N/A'}
             />
           </div>
 
@@ -305,15 +305,15 @@ export default function VendorDetailPage() {
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">Category</span>
-                  <Badge className={getCategoryColor(vendor.category)}>
-                    {vendor.category}
+                  <Badge className={getCategoryColor(vendor?.category)}>
+                    {vendor?.category || 'N/A'}
                   </Badge>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">Starting Price</span>
                   <span className="font-semibold text-green-600">
-                    {formatPrice(vendor.pricing.startingPrice, vendor.pricing.currency)}
+                    {formatPrice(vendor?.pricing?.startingPrice || 0, vendor?.pricing?.currency || 'LKR')}
                   </span>
                 </div>
 
@@ -321,27 +321,27 @@ export default function VendorDetailPage() {
                   <span className="text-sm text-gray-600">Rating</span>
                   <div className="flex items-center">
                     <Star className="h-4 w-4 text-yellow-500 mr-1" />
-                    <span className="font-semibold">{vendor.rating.average.toFixed(1)}</span>
-                    <span className="text-sm text-gray-500 ml-1">({vendor.rating.count})</span>
+                    <span className="font-semibold">{vendor?.rating?.average?.toFixed(1) || '0.0'}</span>
+                    <span className="text-sm text-gray-500 ml-1">({vendor?.rating?.count || 0})</span>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">Experience</span>
-                  <span className="font-semibold">{vendor.experience} years</span>
+                  <span className="font-semibold">{vendor?.experience || 0} years</span>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600">Availability</span>
-                  <Badge variant={vendor.availability.isAvailable ? "default" : "secondary"}>
-                    {vendor.availability.isAvailable ? "Available" : "Busy"}
+                  <Badge variant={vendor?.availability?.isAvailable ? "default" : "secondary"}>
+                    {vendor?.availability?.isAvailable ? "Available" : "Busy"}
                   </Badge>
                 </div>
               </CardContent>
             </Card>
 
             {/* Awards */}
-            {vendor.awards.length > 0 && (
+            {vendor?.awards?.length > 0 && (
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
@@ -351,10 +351,10 @@ export default function VendorDetailPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
-                    {vendor.awards.map((award, index) => (
+                    {(vendor?.awards || []).map((award, index) => (
                       <div key={index} className="flex items-center text-sm">
                         <Award className="h-4 w-4 text-yellow-500 mr-2" />
-                        <span>{award}</span>
+                        <span>{award || 'N/A'}</span>
                       </div>
                     ))}
                   </div>
@@ -372,20 +372,20 @@ export default function VendorDetailPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <p className="font-semibold">{vendor.owner.firstName} {vendor.owner.lastName}</p>
+                  <p className="font-semibold">{vendor?.owner?.firstName || 'N/A'} {vendor?.owner?.lastName || 'N/A'}</p>
                   <p className="text-sm text-gray-600">Business Owner</p>
                 </div>
                 
                 <div className="space-y-2">
                   <div className="flex items-center text-sm">
                     <Phone className="h-4 w-4 mr-2 text-gray-500" />
-                    <span>{vendor.contact.phone}</span>
+                    <span>{vendor?.contact?.phone || 'N/A'}</span>
                   </div>
                   <div className="flex items-center text-sm">
                     <Mail className="h-4 w-4 mr-2 text-gray-500" />
-                    <span>{vendor.contact.email}</span>
+                    <span>{vendor?.contact?.email || 'N/A'}</span>
                   </div>
-                  {vendor.contact.website && (
+                  {vendor?.contact?.website && (
                     <div className="flex items-center text-sm">
                       <Globe className="h-4 w-4 mr-2 text-gray-500" />
                       <span>{vendor.contact.website}</span>

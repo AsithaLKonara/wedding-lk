@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
+import { connectDB } from '@/lib/db';
+import { Payment } from '@/lib/models';
 
 export async function GET(request: NextRequest) {
   try {
+    await connectDB();
+
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
@@ -12,48 +15,57 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status');
     const paymentMethod = searchParams.get('paymentMethod');
 
-    console.log('📊 Fetching payments from local database...');
+    console.log('📊 Fetching payments from MongoDB Atlas...');
 
-    let payments = LocalDatabase.read('payments');
+    // Build MongoDB query
+    const query: any = {};
 
-    // Filter by client if provided
     if (clientId) {
-      payments = payments.filter((payment: any) => payment.client === clientId);
+      query.user = clientId;
     }
 
-    // Filter by vendor if provided
     if (vendorId) {
-      payments = payments.filter((payment: any) => payment.vendor === vendorId);
+      query.vendor = vendorId;
     }
 
-    // Filter by booking if provided
     if (bookingId) {
-      payments = payments.filter((payment: any) => payment.booking === bookingId);
+      query.booking = bookingId;
     }
 
-    // Filter by status if provided
     if (status) {
-      payments = payments.filter((payment: any) => payment.status === status);
+      query.status = status;
     }
 
-    // Filter by payment method if provided
     if (paymentMethod) {
-      payments = payments.filter((payment: any) => payment.paymentMethod === paymentMethod);
+      query.paymentMethod = paymentMethod;
     }
 
-    // Get paginated results
-    const paginatedResult = LocalDatabase.paginate('payments', page, limit);
+    // Calculate skip value for pagination
+    const skip = (page - 1) * limit;
+
+    // Execute query with pagination
+    const [payments, total] = await Promise.all([
+      Payment.find(query)
+        .populate('user', 'name email')
+        .populate('vendor', 'businessName')
+        .populate('booking', 'date status')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Payment.countDocuments(query)
+    ]);
 
     console.log(`✅ Found ${payments.length} payments`);
 
     return NextResponse.json({
       success: true,
-      payments: paginatedResult.data,
+      payments,
       pagination: {
-        total: paginatedResult.total,
-        page: paginatedResult.page,
-        limit: paginatedResult.limit,
-        totalPages: paginatedResult.totalPages
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
       }
     });
 
@@ -69,34 +81,30 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    await connectDB();
     const paymentData = await request.json();
     
     console.log('📝 Creating new payment...');
 
     // Validate required fields
-    if (!paymentData.booking || !paymentData.client || !paymentData.vendor || !paymentData.amount || !paymentData.paymentMethod) {
+    if (!paymentData.user || !paymentData.amount || !paymentData.paymentMethod) {
       return NextResponse.json({
         success: false,
-        error: 'Booking, client, vendor, amount, and payment method are required'
+        error: 'User, amount, and payment method are required'
       }, { status: 400 });
     }
 
     // Create payment
-    const newPayment = LocalDatabase.create('payments', {
+    const newPayment = new Payment({
       ...paymentData,
       currency: 'LKR',
       status: 'pending',
       transactionId: `TXN${Date.now()}`
     });
 
-    if (!newPayment) {
-      return NextResponse.json({
-        success: false,
-        error: 'Failed to create payment'
-      }, { status: 500 });
-    }
+    await newPayment.save();
 
-    console.log('✅ Payment created successfully:', newPayment.id);
+    console.log('✅ Payment created successfully:', newPayment._id);
 
     return NextResponse.json({
       success: true,

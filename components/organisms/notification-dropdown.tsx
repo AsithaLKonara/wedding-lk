@@ -23,64 +23,84 @@ export function NotificationDropdown() {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [loading, setLoading] = useState(false)
 
-  // Mock notifications for now - would be fetched from API
+  // Fetch notifications from API
   useEffect(() => {
-    const mockNotifications: Notification[] = [
-      {
-        id: '1',
-        type: 'like',
-        title: 'New Like',
-        message: 'Sarah liked your wedding post',
-        timestamp: new Date(Date.now() - 5 * 60 * 1000), // 5 minutes ago
-        read: false,
-        avatar: '/placeholder.svg?height=40&width=40'
-      },
-      {
-        id: '2',
-        type: 'comment',
-        title: 'New Comment',
-        message: 'John commented on your venue photo',
-        timestamp: new Date(Date.now() - 15 * 60 * 1000), // 15 minutes ago
-        read: false,
-        avatar: '/placeholder.svg?height=40&width=40'
-      },
-      {
-        id: '3',
-        type: 'booking',
-        title: 'Booking Request',
-        message: 'New booking request for your venue',
-        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
-        read: true,
-        avatar: '/placeholder.svg?height=40&width=40'
-      },
-      {
-        id: '4',
-        type: 'system',
-        title: 'Welcome!',
-        message: 'Welcome to Wedding.lk! Start planning your perfect day.',
-        timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
-        read: true
-      }
-    ]
-    setNotifications(mockNotifications)
+    fetchNotifications()
   }, [])
+
+  const fetchNotifications = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch('/api/notifications?limit=20')
+      if (response.ok) {
+        const data = await response.json()
+        const formattedNotifications = data.notifications.map((notif: any) => ({
+          id: notif._id,
+          type: notif.type || 'system',
+          title: notif.title,
+          message: notif.message,
+          timestamp: new Date(notif.createdAt),
+          read: notif.isRead,
+          actionUrl: notif.actionUrl
+        }))
+        setNotifications(formattedNotifications)
+      }
+    } catch (error) {
+      console.error('Failed to fetch notifications:', error)
+      // Fallback to empty array if API fails
+      setNotifications([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const unreadCount = notifications.filter(n => !n.read).length
 
-  const markAsRead = (id: string) => {
-    setNotifications(prev => 
-      prev.map(notification => 
-        notification.id === id 
-          ? { ...notification, read: true }
-          : notification
-      )
-    )
+  const markAsRead = async (id: string) => {
+    try {
+      const response = await fetch('/api/notifications', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ notificationId: id, isRead: true })
+      })
+      
+      if (response.ok) {
+        setNotifications(prev => 
+          prev.map(notification => 
+            notification.id === id 
+              ? { ...notification, read: true }
+              : notification
+          )
+        )
+      }
+    } catch (error) {
+      console.error('Failed to mark notification as read:', error)
+    }
   }
 
-  const markAllAsRead = () => {
-    setNotifications(prev => 
-      prev.map(notification => ({ ...notification, read: true }))
-    )
+  const markAllAsRead = async () => {
+    try {
+      const unreadNotifications = notifications.filter(n => !n.read)
+      await Promise.all(
+        unreadNotifications.map(notification => 
+          fetch('/api/notifications', {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ notificationId: notification.id, isRead: true })
+          })
+        )
+      )
+      
+      setNotifications(prev => 
+        prev.map(notification => ({ ...notification, read: true }))
+      )
+    } catch (error) {
+      console.error('Failed to mark all notifications as read:', error)
+    }
   }
 
   const getNotificationIcon = (type: string) => {

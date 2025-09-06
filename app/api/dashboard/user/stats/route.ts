@@ -1,27 +1,61 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
+import { connectDB } from '@/lib/db';
+import { getServerSession } from '@/lib/auth-utils';
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
 import { formatCurrency } from '@/lib/utils/format';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('📊 Fetching user stats from local database...');
+    const session = await getServerSession();
+    
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    // Get user data from local database
-    const users = LocalDatabase.read('users');
-    const bookings = LocalDatabase.read('bookings');
-    const tasks = LocalDatabase.read('tasks');
-    const payments = LocalDatabase.read('payments');
+    await connectDB();
 
-    // Mock user stats (in real app, you'd filter by current user)
+    const user = await User.findOne({ email: session.user.email });
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    console.log('📊 Fetching user stats from MongoDB Atlas...');
+
+    // Get user-specific data
+    const userId = user._id;
+
+    // Get user tasks
+    const tasks = await Task.find({ assignedTo: userId });
+    const totalTasks = tasks.length;
+    const tasksCompleted = tasks.filter(t => t.status === 'completed').length;
+
+    // Get user bookings
+    const bookings = await Booking.find({ client: userId });
+    const upcomingEvents = bookings.filter(b => 
+      new Date(b.date) > new Date() && b.status !== 'cancelled'
+    ).length;
+
+    // Get user payments
+    const payments = await Payment.find({ userId });
+    const budgetUsed = payments
+      .filter(p => p.status === 'completed')
+      .reduce((sum, p) => sum + p.amount, 0);
+
+    // Mock data for features not yet implemented
+    const totalBudget = 500000; // This could be stored in user profile
+    const daysUntilWedding = 45; // This could be calculated from user's wedding date
+    const newMessages = 3; // This would come from message system
+    const favoriteVendors = 5; // This would come from favorites system
+
     const userStats = {
-      daysUntilWedding: 45,
-      tasksCompleted: 8,
-      totalTasks: 12,
-      budgetUsed: 150000,
-      totalBudget: 500000,
-      newMessages: 3,
-      favoriteVendors: 5,
-      upcomingEvents: 2
+      daysUntilWedding,
+      tasksCompleted,
+      totalTasks,
+      budgetUsed,
+      totalBudget,
+      newMessages,
+      favoriteVendors,
+      upcomingEvents
     };
 
     console.log('✅ User stats fetched successfully');

@@ -54,45 +54,84 @@ export default function ProfilePage() {
   const [editForm, setEditForm] = useState<Partial<UserProfile>>({})
 
   useEffect(() => {
-    // Mock user profile data
-    const mockProfile: UserProfile = {
-      id: "user-1",
-      name: "Sarah & John",
-      email: "user1@example.com",
-      phone: "+94 77 111 1111",
-      role: "user",
-      location: {
-        country: "Sri Lanka",
-        state: "Western Province",
-        city: "Colombo",
-        zipCode: "00300"
-      },
-      preferences: {
-        language: "en",
-        currency: "LKR",
-        timezone: "Asia/Colombo",
-        notifications: {
-          email: true,
-          sms: false,
-          push: true
-        },
-        marketing: {
-          email: false,
-          sms: false,
-          push: false
-        }
-      },
-      isVerified: true,
-      isActive: true,
-      createdAt: "2024-01-01T00:00:00.000Z",
-      updatedAt: "2024-09-04T00:00:00.000Z"
-    }
-
-    setTimeout(() => {
-      setProfile(mockProfile)
-      setLoading(false)
-    }, 1000)
+    fetchProfile()
   }, [])
+
+  const fetchProfile = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch('/api/dashboard/user/profile')
+      if (response.ok) {
+        const data = await response.json()
+        if (data.success) {
+          const userData = data.user
+          setProfile({
+            id: userData._id,
+            name: userData.name || "User",
+            email: userData.email || "",
+            phone: userData.phone || "",
+            role: userData.role || "user",
+            location: {
+              country: userData.location?.country || "Sri Lanka",
+              state: userData.location?.province || "Western Province",
+              city: userData.location?.city || "Colombo",
+              zipCode: userData.location?.zipCode || "00300"
+            },
+            preferences: {
+              language: userData.preferences?.language || "en",
+              currency: userData.preferences?.currency || "LKR",
+              timezone: userData.preferences?.timezone || "Asia/Colombo",
+              notifications: {
+                email: userData.preferences?.notifications?.email ?? true,
+                sms: userData.preferences?.notifications?.sms ?? false,
+                push: userData.preferences?.notifications?.push ?? true
+              },
+              marketing: {
+                email: userData.preferences?.marketing?.email ?? false,
+                sms: userData.preferences?.marketing?.sms ?? false,
+                push: userData.preferences?.marketing?.push ?? false
+              }
+            },
+            isVerified: userData.isVerified || false,
+            isActive: userData.isActive || true,
+            createdAt: userData.createdAt || new Date().toISOString(),
+            updatedAt: userData.updatedAt || new Date().toISOString()
+          })
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error)
+      // Fallback to session data if API fails
+      if (session?.user) {
+        setProfile({
+          id: session.user.id || "user",
+          name: session.user.name || "User",
+          email: session.user.email || "",
+          phone: "",
+          role: session.user.role || "user",
+          location: {
+            country: "Sri Lanka",
+            state: "Western Province",
+            city: "Colombo",
+            zipCode: "00300"
+          },
+          preferences: {
+            language: "en",
+            currency: "LKR",
+            timezone: "Asia/Colombo",
+            notifications: { email: true, sms: false, push: true },
+            marketing: { email: false, sms: false, push: false }
+          },
+          isVerified: true,
+          isActive: true,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        })
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleEdit = () => {
     setEditForm(profile || {})
@@ -240,7 +279,7 @@ export default function ProfilePage() {
                       value={editForm.location?.city || ""}
                       onChange={(e) => setEditForm({ 
                         ...editForm, 
-                        location: { ...editForm.location, city: e.target.value }
+                        location: { ...editForm.location, city: e.target.value, country: editForm.location?.country || 'Sri Lanka', state: editForm.location?.state || 'Western Province' }
                       })}
                     />
                   </div>

@@ -95,7 +95,7 @@ export function handleError(error: AppError, req?: NextRequest): NextResponse {
   } else if (error.name === 'CastError') {
     statusCode = 400;
     message = 'Invalid data format';
-  } else if (error.name === 'MongoError' && error.code === 11000) {
+  } else if (error.name === 'MongoError' && (error as any).code === 11000) {
     statusCode = 409;
     message = 'Duplicate entry';
     code = 'DUPLICATE_KEY';

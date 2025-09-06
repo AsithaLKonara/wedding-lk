@@ -1,49 +1,79 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
+import { connectDB } from '@/lib/db';
+import { getServerSession } from '@/lib/auth-utils';
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('📊 Fetching user activity from local database...');
+    const session = await getServerSession();
+    
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    // Mock user activity (in real app, you'd filter by current user)
-    const userActivity = [
-      {
-        id: 'activity-1',
-        action: 'Completed venue selection task',
-        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-        status: 'completed'
-      },
-      {
-        id: 'activity-2',
-        action: 'Added new vendor to favorites',
-        timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-        status: 'completed'
-      },
-      {
-        id: 'activity-3',
-        action: 'Updated wedding budget',
-        timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
-        status: 'completed'
-      },
-      {
-        id: 'activity-4',
-        action: 'Scheduled venue visit',
-        timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
-        status: 'completed'
-      },
-      {
-        id: 'activity-5',
-        action: 'Sent message to photographer',
-        timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
-        status: 'completed'
-      },
-      {
-        id: 'activity-6',
-        action: 'Payment processed for venue booking',
-        timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-        status: 'completed'
-      }
-    ];
+    await connectDB();
+
+    const user = await User.findOne({ email: session.user.email });
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    console.log('📊 Fetching user activity from MongoDB Atlas...');
+
+    // Get recent user activities from different collections
+    const recentBookings = await Booking.find({ client: user._id })
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .populate('vendor', 'businessName')
+      .lean();
+
+    const recentPayments = await Payment.find({ userId: user._id })
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .lean();
+
+    const recentTasks = await Task.find({ assignedTo: user._id })
+      .sort({ updatedAt: -1 })
+      .limit(5)
+      .lean();
+
+    // Format activities
+    const activities: any[] = [];
+
+    // Add booking activities
+    recentBookings.forEach(booking => {
+      activities.push({
+        id: `booking-${booking._id}`,
+        action: `Booking ${booking.status} for ${booking.vendor?.businessName || 'vendor'}`,
+        timestamp: booking.createdAt,
+        status: booking.status === 'completed' ? 'completed' : 'pending'
+      });
+    });
+
+    // Add payment activities
+    recentPayments.forEach(payment => {
+      activities.push({
+        id: `payment-${payment._id}`,
+        action: `Payment ${payment.status} - ${payment.amount} LKR`,
+        timestamp: payment.createdAt,
+        status: payment.status === 'completed' ? 'completed' : 'pending'
+      });
+    });
+
+    // Add task activities
+    recentTasks.forEach(task => {
+      activities.push({
+        id: `task-${task._id}`,
+        action: `Task "${task.title}" ${task.status}`,
+        timestamp: task.updatedAt || task.createdAt,
+        status: task.status === 'completed' ? 'completed' : 'pending'
+      });
+    });
+
+    // Sort by timestamp and limit to 10 most recent
+    const userActivity = activities
+      .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+      .slice(0, 10);
 
     console.log('✅ User activity fetched successfully');
 

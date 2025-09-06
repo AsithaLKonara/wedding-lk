@@ -1,189 +1,175 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IPost extends Document {
-  // Basic Information
   content: string;
-  images?: string[];
-  tags?: string[];
-  
-  // Author Information
+  images: string[];
+  tags: string[];
   author: {
-    type: 'user' | 'vendor' | 'venue';
+    type: 'user' | 'vendor' | 'venue' | 'planner';
     id: mongoose.Types.ObjectId;
     name: string;
     avatar?: string;
-    verified?: boolean;
+    verified: boolean;
   };
-  
-  // Location Information
   location?: {
-    name: string;
-    address?: string;
-    city?: string;
-    state?: string;
-    country?: string;
+    city: string;
+    venue?: string;
     coordinates?: {
-      latitude: number;
-      longitude: number;
+      lat: number;
+      lng: number;
     };
   };
-  
-  // Engagement Metrics
   engagement: {
     likes: number;
     comments: number;
     shares: number;
     views: number;
   };
-  
-  // User Interactions (for tracking)
   userInteractions: {
     likedBy: mongoose.Types.ObjectId[];
     bookmarkedBy: mongoose.Types.ObjectId[];
     sharedBy: mongoose.Types.ObjectId[];
   };
-  
-  // Post Status
-  status: 'active' | 'hidden' | 'deleted';
+  status: 'active' | 'inactive' | 'deleted';
   isActive: boolean;
   isVerified: boolean;
-  
-  // Timestamps
   createdAt: Date;
   updatedAt: Date;
 }
 
-const PostSchema: Schema = new Schema(
-  {
-    content: {
+const PostSchema = new Schema<IPost>({
+  content: {
+    type: String,
+    required: [true, 'Post content is required'],
+    maxlength: [2000, 'Post content cannot exceed 2000 characters']
+  },
+  images: [{
+    type: String,
+    validate: {
+      validator: function(v: string) {
+        return /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i.test(v);
+      },
+      message: 'Invalid image URL format'
+    }
+  }],
+  tags: [{
+    type: String,
+    maxlength: [50, 'Tag cannot exceed 50 characters']
+  }],
+  author: {
+    type: {
       type: String,
       required: true,
-      maxlength: 2000,
+      enum: ['user', 'vendor', 'venue', 'planner']
     },
-    images: [{
+    id: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      refPath: 'author.type'
+    },
+    name: {
+      type: String,
+      required: true,
+      maxlength: [100, 'Author name cannot exceed 100 characters']
+    },
+    avatar: {
       type: String,
       validate: {
         validator: function(v: string) {
-          return /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i.test(v);
+          return !v || /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i.test(v);
         },
-        message: 'Invalid image URL'
+        message: 'Invalid avatar URL format'
       }
-    }],
-    tags: [{
-      type: String,
-      maxlength: 50
-    }],
-    
-    // Author Information
-    author: {
-      type: {
-        type: String,
-        enum: ['user', 'vendor', 'venue'],
-        required: true,
-      },
-      id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-      },
-      name: {
-        type: String,
-        required: true,
-      },
-      avatar: String,
-      verified: {
-        type: Boolean,
-        default: false,
-      },
     },
-    
-    // Location Information
-    location: {
-      name: String,
-      address: String,
-      city: String,
-      state: String,
-      country: String,
-      coordinates: {
-        latitude: {
-          type: Number,
-          min: -90,
-          max: 90,
-        },
-        longitude: {
-          type: Number,
-          min: -180,
-          max: 180,
-        },
-      },
-    },
-    
-    // Engagement Metrics
-    engagement: {
-      likes: {
-        type: Number,
-        default: 0,
-        min: 0,
-      },
-      comments: {
-        type: Number,
-        default: 0,
-        min: 0,
-      },
-      shares: {
-        type: Number,
-        default: 0,
-        min: 0,
-      },
-      views: {
-        type: Number,
-        default: 0,
-        min: 0,
-      },
-    },
-    
-    // User Interactions
-    userInteractions: {
-      likedBy: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-      }],
-      bookmarkedBy: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-      }],
-      sharedBy: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-      }],
-    },
-    
-    // Post Status
-    status: {
-      type: String,
-      enum: ['active', 'hidden', 'deleted'],
-      default: 'active',
-    },
-    isActive: {
+    verified: {
       type: Boolean,
-      default: true,
-    },
-    isVerified: {
-      type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
-  {
-    timestamps: true,
+  location: {
+    city: {
+      type: String,
+      maxlength: [100, 'City name cannot exceed 100 characters']
+    },
+    venue: {
+      type: String,
+      maxlength: [200, 'Venue name cannot exceed 200 characters']
+    },
+    coordinates: {
+      lat: {
+        type: Number,
+        min: -90,
+        max: 90
+      },
+      lng: {
+        type: Number,
+        min: -180,
+        max: 180
+      }
+    }
+  },
+  engagement: {
+    likes: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    comments: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    shares: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+    views: {
+      type: Number,
+      default: 0,
+      min: 0
+    }
+  },
+  userInteractions: {
+    likedBy: [{
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }],
+    bookmarkedBy: [{
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }],
+    sharedBy: [{
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }]
+  },
+  status: {
+    type: String,
+    enum: ['active', 'inactive', 'deleted'],
+    default: 'active'
+  },
+  isActive: {
+    type: Boolean,
+    default: true
+  },
+  isVerified: {
+    type: Boolean,
+    default: false
   }
-);
+}, {
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
 
 // Indexes for performance
-PostSchema.index({ 'author.id': 1, createdAt: -1 });
-PostSchema.index({ status: 1, isActive: 1, createdAt: -1 });
-PostSchema.index({ tags: 1 });
-PostSchema.index({ 'location.city': 1, 'location.state': 1 });
+PostSchema.index({ 'author.type': 1, 'author.id': 1 });
+PostSchema.index({ status: 1, isActive: 1 });
+PostSchema.index({ createdAt: -1 });
 PostSchema.index({ 'engagement.likes': -1 });
-PostSchema.index({ 'engagement.comments': -1 });
+PostSchema.index({ tags: 1 });
+PostSchema.index({ 'location.city': 1 });
 
 // Virtual for formatted date
 PostSchema.virtual('formattedDate').get(function() {
@@ -198,42 +184,44 @@ PostSchema.virtual('formattedDate').get(function() {
   return this.createdAt.toLocaleDateString();
 });
 
-// Instance methods
-PostSchema.methods.toggleLike = function(userId: mongoose.Types.ObjectId) {
-  const isLiked = this.userInteractions.likedBy.includes(userId);
+// Pre-save middleware
+PostSchema.pre('save', function(next) {
+  // Ensure engagement numbers are not negative
+  if (this.engagement.likes < 0) this.engagement.likes = 0;
+  if (this.engagement.comments < 0) this.engagement.comments = 0;
+  if (this.engagement.shares < 0) this.engagement.shares = 0;
+  if (this.engagement.views < 0) this.engagement.views = 0;
   
-  if (isLiked) {
-    this.userInteractions.likedBy.pull(userId);
-    this.engagement.likes = Math.max(0, this.engagement.likes - 1);
-  } else {
-    this.userInteractions.likedBy.push(userId);
-    this.engagement.likes += 1;
-  }
-  
-  return !isLiked;
+  next();
+});
+
+// Static methods
+PostSchema.statics.findByAuthor = function(authorType: string, authorId: string) {
+  return this.find({ 
+    'author.type': authorType, 
+    'author.id': authorId,
+    status: 'active',
+    isActive: true 
+  }).sort({ createdAt: -1 });
 };
 
-PostSchema.methods.toggleBookmark = function(userId: mongoose.Types.ObjectId) {
-  const isBookmarked = this.userInteractions.bookmarkedBy.includes(userId);
-  
-  if (isBookmarked) {
-    this.userInteractions.bookmarkedBy.pull(userId);
-  } else {
-    this.userInteractions.bookmarkedBy.push(userId);
-  }
-  
-  return !isBookmarked;
+PostSchema.statics.findTrending = function(limit: number = 10) {
+  return this.find({ 
+    status: 'active', 
+    isActive: true 
+  }).sort({ 
+    'engagement.likes': -1, 
+    'engagement.comments': -1, 
+    createdAt: -1 
+  }).limit(limit);
 };
 
-PostSchema.methods.addShare = function(userId: mongoose.Types.ObjectId) {
-  if (!this.userInteractions.sharedBy.includes(userId)) {
-    this.userInteractions.sharedBy.push(userId);
-    this.engagement.shares += 1;
-  }
-};
-
-PostSchema.methods.incrementViews = function() {
-  this.engagement.views += 1;
+PostSchema.statics.findByLocation = function(city: string) {
+  return this.find({ 
+    'location.city': city,
+    status: 'active',
+    isActive: true 
+  }).sort({ createdAt: -1 });
 };
 
 export const Post = mongoose.models.Post || mongoose.model<IPost>('Post', PostSchema);

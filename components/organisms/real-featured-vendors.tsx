@@ -91,18 +91,18 @@ export default function RealFeaturedVendors() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {vendors.map((vendor) => (
-            <Card key={vendor._id} className="hover:shadow-lg transition-shadow duration-300">
+            <Card key={vendor?._id || Math.random()} className="hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
                   <div>
                     <CardTitle className="text-lg font-semibold text-gray-900 mb-1">
-                      {vendor.businessName}
+                      {vendor?.businessName || 'Unknown Business'}
                     </CardTitle>
                     <CardDescription className="text-sm text-gray-600">
-                      {vendor.name} • {vendor.category}
+                      {vendor?.name || 'Unknown'} • {vendor?.category || 'General'}
                     </CardDescription>
                   </div>
-                  {vendor.isVerified && (
+                  {vendor?.isVerified && (
                     <Badge variant="default" className="text-xs">
                       Verified
                     </Badge>
@@ -112,7 +112,7 @@ export default function RealFeaturedVendors() {
 
               <CardContent className="space-y-4">
                 <p className="text-gray-700 text-sm line-clamp-3">
-                  {vendor.description}
+                  {vendor?.description || 'No description available'}
                 </p>
 
                 <div className="flex items-center space-x-2">
@@ -127,22 +127,22 @@ export default function RealFeaturedVendors() {
 
                 <div className="flex items-center space-x-2 text-sm text-gray-600">
                   <MapPin className="h-4 w-4" />
-                  <span>{vendor.location.city}, {vendor.location.province}</span>
+                  <span>{vendor?.location?.city || 'Unknown'}, {vendor?.location?.province || 'Unknown'}</span>
                 </div>
 
                 <div className="flex items-center space-x-4 text-sm text-gray-600">
                   <div className="flex items-center space-x-1">
                     <Phone className="h-4 w-4" />
-                    <span>{vendor.contact.phone}</span>
+                    <span>{vendor?.contact?.phone || 'N/A'}</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <Mail className="h-4 w-4" />
-                    <span>{vendor.contact.email}</span>
+                    <span>{vendor?.contact?.email || 'N/A'}</span>
                   </div>
                 </div>
 
                 <div className="pt-4">
-                  <Link href={`/vendors/${vendor._id}`}>
+                  <Link href={`/vendors/${vendor?._id || 'unknown'}`}>
                     <Button className="w-full" variant="default">
                       View Profile
                     </Button>

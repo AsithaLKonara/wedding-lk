@@ -1,55 +1,67 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
+import { connectDB } from '@/lib/db';
+import { getServerSession } from '@/lib/auth-utils';
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('📊 Fetching planner clients from local database...');
+    const session = await getServerSession();
+    
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    // Mock planner clients
-    const plannerClients = [
-      {
-        id: 'user-1',
-        name: 'John & Jane Smith',
-        email: 'john.smith@example.com',
-        phone: '+94 77 111 1111',
-        weddingDate: '2024-06-15T00:00:00.000Z',
-        budget: 500000,
-        location: 'Colombo',
-        status: 'active',
-        tasksCompleted: 8,
-        totalTasks: 12,
-        lastContact: '2024-01-15T00:00:00.000Z',
-        rating: 4.8
-      },
-      {
-        id: 'user-2',
-        name: 'Mike & Sarah Johnson',
-        email: 'mike.johnson@example.com',
-        phone: '+94 77 111 1112',
-        weddingDate: '2024-07-20T00:00:00.000Z',
-        budget: 750000,
-        location: 'Kandy',
-        status: 'active',
-        tasksCompleted: 5,
-        totalTasks: 15,
-        lastContact: '2024-01-20T00:00:00.000Z',
-        rating: 4.9
-      },
-      {
-        id: 'user-3',
-        name: 'David & Lisa Brown',
-        email: 'david.brown@example.com',
-        phone: '+94 77 111 1113',
-        weddingDate: '2024-08-10T00:00:00.000Z',
-        budget: 600000,
-        location: 'Galle',
-        status: 'completed',
-        tasksCompleted: 15,
-        totalTasks: 15,
-        lastContact: '2024-01-10T00:00:00.000Z',
-        rating: 5.0
-      }
-    ];
+    await connectDB();
+
+    const user = await User.findOne({ email: session.user.email });
+    if (!user || user.role !== 'wedding_planner') {
+      return NextResponse.json({ error: "Wedding planner access required" }, { status: 403 });
+    }
+
+    console.log('📊 Fetching planner clients from MongoDB Atlas...');
+
+    // Get clients (users) that have tasks assigned by this planner
+    const tasks = await Task.find({ createdBy: user._id });
+    const clientIds = [...new Set(tasks.map(task => task.assignedTo.toString()))];
+    
+    const clients = await User.find({ 
+      _id: { $in: clientIds },
+      role: 'user' 
+    }).lean();
+
+    // Format clients with task statistics
+    const plannerClients = await Promise.all(clients.map(async (client) => {
+      const clientTasks = tasks.filter(task => 
+        task.assignedTo.toString() === (client._id as any).toString()
+      );
+      
+      const tasksCompleted = clientTasks.filter(task => 
+        task.status === 'completed'
+      ).length;
+
+      // Get client's bookings for wedding date and budget info
+      const bookings = await Booking.find({ client: client._id });
+      const weddingDate = bookings.length > 0 ? bookings[0].date : null;
+      
+      // Calculate total spent from payments
+      const payments = await Payment.find({ userId: client._id });
+      const budget = payments.reduce((sum, p) => sum + p.amount, 0);
+
+      return {
+        id: (client._id as any).toString(),
+        name: client.name,
+        email: client.email,
+        phone: client.phone || 'Not provided',
+        weddingDate: weddingDate || 'Not set',
+        budget: budget,
+        location: client.location?.city || 'Not specified',
+        status: clientTasks.length > 0 ? 'active' : 'inactive',
+        tasksCompleted,
+        totalTasks: clientTasks.length,
+        lastContact: client.updatedAt || client.createdAt,
+        rating: 4.5 // Default rating - could be calculated from reviews
+      };
+    }));
 
     console.log('✅ Planner clients fetched successfully');
 

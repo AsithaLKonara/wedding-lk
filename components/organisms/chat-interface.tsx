@@ -466,7 +466,7 @@ export function ChatInterface({ conversationId, onConversationSelect, className 
                     <Avatar className="h-10 w-10">
                       <AvatarImage src={conversation.participants[0]?.user.profileImage} />
                       <AvatarFallback>
-                        {conversation.participants[0]?.user.firstName?.[0]}
+                        {conversation.participants?.[0]?.user?.firstName?.[0] || 'U'}
                       </AvatarFallback>
                     </Avatar>
                     
@@ -526,7 +526,7 @@ export function ChatInterface({ conversationId, onConversationSelect, className 
                   <Avatar className="h-10 w-10">
                     <AvatarImage src={selectedConversation.participants[0]?.user.profileImage} />
                     <AvatarFallback>
-                      {selectedConversation.participants[0]?.user.firstName?.[0]}
+                      {selectedConversation.participants?.[0]?.user?.firstName?.[0] || 'U'}
                     </AvatarFallback>
                   </Avatar>
                   

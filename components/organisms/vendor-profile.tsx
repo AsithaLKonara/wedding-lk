@@ -70,19 +70,19 @@ export function VendorProfile({ vendor }: VendorProfileProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="flex items-center space-x-2">
             <MapPin className="h-4 w-4 text-gray-500" />
-            <span>{vendor.location.address}, {vendor.location.city}</span>
+            <span>{vendor?.location?.address || 'N/A'}, {vendor?.location?.city || 'N/A'}</span>
           </div>
           <div className="flex items-center space-x-2">
             <Clock className="h-4 w-4 text-gray-500" />
-            <span>{vendor.experience || 0} years experience</span>
+            <span>{vendor?.experience || 0} years experience</span>
           </div>
           <div className="flex items-center space-x-2">
             <DollarSign className="h-4 w-4 text-gray-500" />
-            <span>Starting from LKR {(vendor.pricing?.startingPrice || 0).toLocaleString()}</span>
+            <span>Starting from LKR {(vendor?.pricing?.startingPrice || 0).toLocaleString()}</span>
           </div>
         </div>
 
-        <p className="text-gray-600 dark:text-gray-300 mb-6">{vendor.description}</p>
+        <p className="text-gray-600 dark:text-gray-300 mb-6">{vendor?.description || 'No description available'}</p>
 
         <div className="space-y-4">
           <h3 className="font-semibold">Services Offered</h3>
@@ -98,15 +98,15 @@ export function VendorProfile({ vendor }: VendorProfileProps) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="flex items-center space-x-2">
               <Phone className="h-4 w-4 text-gray-500" />
-              <span>{vendor.contact?.phone || 'N/A'}</span>
+              <span>{vendor?.contact?.phone || 'N/A'}</span>
             </div>
             <div className="flex items-center space-x-2">
               <Mail className="h-4 w-4 text-gray-500" />
-              <span>{vendor.contact?.email || 'N/A'}</span>
+              <span>{vendor?.contact?.email || 'N/A'}</span>
             </div>
             <div className="flex items-center space-x-2">
               <Globe className="h-4 w-4 text-gray-500" />
-              <span>{vendor.contact?.website || 'N/A'}</span>
+              <span>{vendor?.contact?.website || 'N/A'}</span>
             </div>
           </div>
         </div>

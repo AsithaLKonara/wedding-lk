@@ -28,54 +28,67 @@ export default function FavoritesPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Mock favorites data - in real app, this would come from API
-    const mockFavorites: Favorite[] = [
-      {
-        id: "fav-1",
-        type: "vendor",
-        name: "Royal Wedding Photography",
-        description: "Professional wedding photography capturing your precious moments with artistic flair.",
-        location: "Colombo",
-        rating: 4.8,
-        price: 75000,
-        image: "/images/royal-photo-1.jpg",
-        category: "Photography",
-        phone: "+94 77 444 4441",
-        email: "royal@photography.lk"
-      },
-      {
-        id: "fav-2",
-        type: "venue",
-        name: "Garden Paradise Resort",
-        description: "Beautiful outdoor venue surrounded by lush gardens and tropical plants.",
-        location: "Kandy",
-        rating: 4.5,
-        price: 180000,
-        image: "/images/garden-paradise-1.jpg",
-        category: "Venue",
-        phone: "+94 77 444 4442",
-        email: "info@gardenparadise.lk"
-      },
-      {
-        id: "fav-3",
-        type: "vendor",
-        name: "Spice Garden Catering",
-        description: "Authentic Sri Lankan cuisine with international options for your special day.",
-        location: "Kandy",
-        rating: 4.7,
-        price: 85000,
-        image: "/images/spice-garden-1.jpg",
-        category: "Catering",
-        phone: "+94 77 444 4443",
-        email: "spice@catering.lk"
-      }
-    ]
-
-    setTimeout(() => {
-      setFavorites(mockFavorites)
-      setLoading(false)
-    }, 1000)
+    fetchFavorites()
   }, [])
+
+  const fetchFavorites = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch('/api/favorites')
+      if (response.ok) {
+        const data = await response.json()
+        if (data.success) {
+          const allFavorites: Favorite[] = []
+          
+          // Add venues
+          if (data.favorites.venues) {
+            data.favorites.venues.forEach((venue: any) => {
+              allFavorites.push({
+                id: venue._id,
+                type: "venue",
+                name: venue.name,
+                description: venue.description || "Beautiful wedding venue",
+                location: venue.location?.city || "Unknown",
+                rating: venue.rating?.average || 0,
+                price: venue.pricing?.basePrice || 0,
+                image: venue.images?.[0] || "/placeholder.svg",
+                category: "Venue",
+                phone: venue.contact?.phone || "",
+                email: venue.contact?.email || ""
+              })
+            })
+          }
+          
+          // Add vendors
+          if (data.favorites.vendors) {
+            data.favorites.vendors.forEach((vendor: any) => {
+              allFavorites.push({
+                id: vendor._id,
+                type: "vendor",
+                name: vendor.name,
+                description: vendor.description || "Professional wedding service",
+                location: vendor.location?.city || "Unknown",
+                rating: vendor.rating?.average || 0,
+                price: vendor.pricing?.startingPrice || 0,
+                image: vendor.portfolio?.[0] || "/placeholder.svg",
+                category: vendor.category || "Service",
+                phone: vendor.contact?.phone || "",
+                email: vendor.contact?.email || ""
+              })
+            })
+          }
+          
+          setFavorites(allFavorites)
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching favorites:', error)
+      // Fallback to empty array if API fails
+      setFavorites([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const removeFavorite = (id: string) => {
     setFavorites(favorites.filter(fav => fav.id !== id))

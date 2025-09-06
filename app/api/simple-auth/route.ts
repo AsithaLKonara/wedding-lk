@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { LocalAuth } from '@/lib/local-auth';
+import { connectDB } from '@/lib/db';
+import { User } from '@/lib/models/user';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,42 +18,71 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Use local database authentication
-    const result = await LocalAuth.login(email, password);
+    // Connect to MongoDB Atlas
+    await connectDB();
 
-    if (!result.success) {
-      console.log('❌ Simple Auth - Login failed:', result.error);
+    // Find user in MongoDB Atlas
+    const user = await User.findOne({ email: email.toLowerCase() });
+    
+    if (!user) {
+      console.log('❌ Simple Auth - User not found:', email);
       return NextResponse.json({
         success: false,
-        error: result.error || 'Invalid credentials'
+        error: 'Invalid credentials'
       }, { status: 401 });
     }
 
-    if (!result.user || !result.token) {
-      console.log('❌ Simple Auth - Missing user or token');
+    // Check if user is active
+    if (!user.isActive || user.status !== 'active') {
+      console.log('❌ Simple Auth - User account is inactive:', email);
       return NextResponse.json({
         success: false,
-        error: 'Authentication failed'
-      }, { status: 500 });
+        error: 'Account is inactive'
+      }, { status: 401 });
     }
 
-    console.log('✅ Simple Auth - User found:', result.user.email, 'Role:', result.user.role);
+    // Verify password
+    const isPasswordValid = await user.comparePassword(password);
+    
+    if (!isPasswordValid) {
+      console.log('❌ Simple Auth - Invalid password for:', email);
+      return NextResponse.json({
+        success: false,
+        error: 'Invalid credentials'
+      }, { status: 401 });
+    }
+
+    // Update last login
+    await user.updateLastActive();
+
+    console.log('✅ Simple Auth - User found:', user.email, 'Role:', user.role);
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        id: user._id.toString(), 
+        email: user.email, 
+        role: user.role 
+      },
+      process.env.JWT_SECRET || 'fallback-secret',
+      { expiresIn: '30d' }
+    );
 
     // Create session data
     const sessionData = {
       user: {
-        id: result.user.id,
-        email: result.user.email,
-        name: result.user.name,
-        role: result.user.role,
-        image: null,
+        id: user._id.toString(),
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        image: user.avatar || null,
       },
       expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
     };
 
     // Set cookie
     const cookieStore = cookies();
-    cookieStore.set('simple-auth-session', JSON.stringify(sessionData), {
+    (await cookieStore).set('simple-auth-session', JSON.stringify(sessionData), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -76,7 +108,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const cookieStore = cookies();
-    const sessionCookie = cookieStore.get('simple-auth-session');
+    const sessionCookie = (await cookieStore).get('simple-auth-session');
     
     if (!sessionCookie) {
       return NextResponse.json({
@@ -90,7 +122,7 @@ export async function GET(request: NextRequest) {
     
     // Check if session is expired
     if (new Date(sessionData.expires) < new Date()) {
-      cookieStore.delete('simple-auth-session');
+      (await cookieStore).delete('simple-auth-session');
       return NextResponse.json({
         success: false,
         user: null,
@@ -117,7 +149,7 @@ export async function GET(request: NextRequest) {
 export async function DELETE() {
   try {
     const cookieStore = cookies();
-    cookieStore.delete('simple-auth-session');
+    (await cookieStore).delete('simple-auth-session');
     
     return NextResponse.json({
       success: true,

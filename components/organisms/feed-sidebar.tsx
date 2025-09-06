@@ -44,12 +44,40 @@ export function FeedSidebar() {
           setTrendingVenues(venuesData.venues || [])
         }
 
-        // Fetch user activity (mock for now - would need user session)
-        setUserActivity({
-          postsLiked: Math.floor(Math.random() * 50) + 10,
-          venuesSaved: Math.floor(Math.random() * 20) + 5,
-          vendorsFollowing: Math.floor(Math.random() * 30) + 8
-        })
+        // Fetch user activity from database
+        try {
+          const [favoritesResponse, postsResponse] = await Promise.all([
+            fetch('/api/favorites'),
+            fetch('/api/posts?userId=current&limit=100')
+          ])
+          
+          let userActivity = {
+            postsLiked: 0,
+            venuesSaved: 0,
+            vendorsFollowing: 0
+          }
+          
+          if (favoritesResponse.ok) {
+            const favoritesData = await favoritesResponse.json()
+            userActivity.venuesSaved = favoritesData.favorites?.venues?.length || 0
+            userActivity.vendorsFollowing = favoritesData.favorites?.vendors?.length || 0
+          }
+          
+          if (postsResponse.ok) {
+            const postsData = await postsResponse.json()
+            userActivity.postsLiked = postsData.posts?.reduce((sum: number, post: any) => sum + (post.likes || 0), 0) || 0
+          }
+          
+          setUserActivity(userActivity)
+        } catch (error) {
+          console.error('Error fetching user activity:', error)
+          // Fallback to mock data
+          setUserActivity({
+            postsLiked: Math.floor(Math.random() * 50) + 10,
+            venuesSaved: Math.floor(Math.random() * 20) + 5,
+            vendorsFollowing: Math.floor(Math.random() * 30) + 8
+          })
+        }
       } catch (error) {
         console.error('Error fetching sidebar data:', error)
       } finally {

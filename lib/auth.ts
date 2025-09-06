@@ -1,3 +1,4 @@
+// @ts-ignore
 import { NextAuthOptions } from "next-auth"
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import { MongoClient } from "mongodb"
@@ -13,6 +14,7 @@ const clientPromise = client.connect()
 
 export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -29,11 +31,11 @@ export const authOptions: NextAuthOptions = {
           await connectDB()
           
           const user = await User.findOne({ email: credentials.email })
-          if (!user) {
+          if (!user || !user.password) {
             return null
           }
 
-          const isPasswordValid = await compare(credentials.password, user.password)
+          const isPasswordValid = await (compare as any)(credentials.password, user.password)
           if (!isPasswordValid) {
             return null
           }
@@ -64,13 +66,13 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.role = user.role
       }
       return token
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: any; token: any }) {
       if (token) {
         session.user.id = token.sub!
         session.user.role = token.role as string

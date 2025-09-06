@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import LocalAuthService from '@/lib/local-auth-service';
+import { connectDB } from '@/lib/db';
+import { User } from '@/lib/models';
+import bcrypt from 'bcryptjs';
 
 export async function POST(request: NextRequest) {
   try {
+    await connectDB();
+
     const {
       name,
       email,
@@ -39,22 +43,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create new user using local database
-    const newUser = await LocalAuthService.createUser({
-      name,
-      email,
-      password,
-      phone,
-      role,
-      location
-    });
-
-    if (!newUser) {
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
       return NextResponse.json(
-        { error: 'Failed to create user' },
-        { status: 500 }
+        { error: 'User with this email already exists' },
+        { status: 400 }
       );
     }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    // Create new user
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword,
+      phone,
+      role,
+      location,
+      status: 'active',
+      isVerified: false,
+      isActive: true
+    });
+
+    await newUser.save();
 
     console.log(`✅ New user registered: ${email} with role: ${role}`);
 
@@ -66,7 +80,7 @@ export async function POST(request: NextRequest) {
       { 
         message: 'User registered successfully',
         user: {
-          id: newUser.id,
+          id: newUser._id,
           name: newUser.name,
           email: newUser.email,
           role: newUser.role,
@@ -78,14 +92,6 @@ export async function POST(request: NextRequest) {
 
   } catch (error: any) {
     console.error('❌ Registration error:', error);
-    
-    // Handle specific errors
-    if (error.message === 'User with this email already exists') {
-      return NextResponse.json(
-        { error: 'User with this email already exists' },
-        { status: 400 }
-      );
-    }
     
     return NextResponse.json(
       { error: 'Internal server error' },

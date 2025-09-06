@@ -254,7 +254,7 @@ export default function VenueBoostManager() {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analytics.overview.activeBoosts}</div>
+              <div className="text-2xl font-bold">{analytics?.overview?.activeBoosts || 0}</div>
               <p className="text-xs text-muted-foreground">Currently running</p>
             </CardContent>
           </Card>
@@ -265,7 +265,7 @@ export default function VenueBoostManager() {
               <Eye className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analytics.overview.totalImpressions.toLocaleString()}</div>
+              <div className="text-2xl font-bold">{(analytics?.overview?.totalImpressions || 0).toLocaleString()}</div>
               <p className="text-xs text-muted-foreground">Venue views</p>
             </CardContent>
           </Card>
@@ -276,7 +276,7 @@ export default function VenueBoostManager() {
               <MousePointer className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analytics.performance.ctr.toFixed(2)}%</div>
+              <div className="text-2xl font-bold">{(analytics?.performance?.ctr || 0).toFixed(2)}%</div>
               <p className="text-xs text-muted-foreground">Engagement rate</p>
             </CardContent>
           </Card>
@@ -287,7 +287,7 @@ export default function VenueBoostManager() {
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">LKR {analytics.overview.totalSpent.toLocaleString()}</div>
+              <div className="text-2xl font-bold">LKR {(analytics?.overview?.totalSpent || 0).toLocaleString()}</div>
               <p className="text-xs text-muted-foreground">Budget used</p>
             </CardContent>
           </Card>
@@ -321,19 +321,19 @@ export default function VenueBoostManager() {
                       <div className="space-y-2">
                         <div className="flex justify-between">
                           <span>Total Campaigns:</span>
-                          <span className="font-medium">{analytics.overview.totalBoosts}</span>
+                          <span className="font-medium">{analytics?.overview?.totalBoosts || 0}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Active Campaigns:</span>
-                          <span className="font-medium text-green-600">{analytics.overview.activeBoosts}</span>
+                          <span className="font-medium text-green-600">{analytics?.overview?.activeBoosts || 0}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Total Budget:</span>
-                          <span className="font-medium">LKR {analytics.overview.totalBudget.toLocaleString()}</span>
+                          <span className="font-medium">LKR {(analytics?.overview?.totalBudget || 0).toLocaleString()}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Budget Used:</span>
-                          <span className="font-medium">LKR {analytics.overview.totalSpent.toLocaleString()}</span>
+                          <span className="font-medium">LKR {(analytics?.overview?.totalSpent || 0).toLocaleString()}</span>
                         </div>
                       </div>
                     </div>
@@ -342,19 +342,19 @@ export default function VenueBoostManager() {
                       <div className="space-y-2">
                         <div className="flex justify-between">
                           <span>CTR:</span>
-                          <span className="font-medium">{analytics.performance.ctr.toFixed(2)}%</span>
+                          <span className="font-medium">{(analytics?.performance?.ctr || 0).toFixed(2)}%</span>
                         </div>
                         <div className="flex justify-between">
                           <span>CPC:</span>
-                          <span className="font-medium">LKR {analytics.performance.cpc.toFixed(2)}</span>
+                          <span className="font-medium">LKR {(analytics?.performance?.cpc || 0).toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>CPM:</span>
-                          <span className="font-medium">LKR {analytics.performance.cpm.toFixed(2)}</span>
+                          <span className="font-medium">LKR {(analytics?.performance?.cpm || 0).toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>ROI:</span>
-                          <span className="font-medium">{analytics.performance.roi.toFixed(2)}%</span>
+                          <span className="font-medium">{(analytics?.performance?.roi || 0).toFixed(2)}%</span>
                         </div>
                       </div>
                     </div>
@@ -388,14 +388,14 @@ export default function VenueBoostManager() {
                         <div className="flex items-center space-x-3">
                           <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
                             <img 
-                              src={boost.venue.images[0] || '/placeholder.svg'} 
-                              alt={boost.venue.name}
+                              src={boost?.venue?.images?.[0] || '/placeholder.svg'} 
+                              alt={boost?.venue?.name || 'Venue'}
                               className="w-full h-full object-cover rounded-lg"
                             />
                           </div>
                           <div>
-                            <h3 className="font-semibold">{boost.venue.name}</h3>
-                            <p className="text-sm text-gray-500">{boost.venue.location.city}, {boost.venue.location.province}</p>
+                            <h3 className="font-semibold">{boost?.venue?.name || 'N/A'}</h3>
+                            <p className="text-sm text-gray-500">{boost?.venue?.location?.city || 'N/A'}, {boost?.venue?.location?.province || 'N/A'}</p>
                           </div>
                         </div>
                         <div className="flex items-center space-x-2">
@@ -492,7 +492,7 @@ export default function VenueBoostManager() {
                   <div>
                     <h3 className="font-semibold mb-3">Top Performing Campaigns</h3>
                     <div className="space-y-3">
-                      {analytics.topPerforming.map((campaign) => (
+                      {(analytics?.topPerforming || []).map((campaign) => (
                         <div key={campaign.id} className="flex items-center justify-between p-3 border rounded-lg">
                           <div>
                             <p className="font-medium">{campaign.venueName}</p>
@@ -537,7 +537,7 @@ export default function VenueBoostManager() {
                     <SelectContent>
                       {venues.map((venue: any) => (
                         <SelectItem key={venue._id} value={venue._id}>
-                          {venue.name} - {venue.location?.city}
+                          {venue?.name || 'N/A'} - {venue?.location?.city || 'N/A'}
                         </SelectItem>
                       ))}
                     </SelectContent>

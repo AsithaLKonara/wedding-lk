@@ -1,53 +1,60 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
+import { connectDB } from '@/lib/db';
+import { Post, User, Vendor, Venue } from '@/lib/models';
 
 export async function GET(request: NextRequest) {
   try {
+    await connectDB();
+    
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
     const filter = searchParams.get('filter') || 'all';
     const authorType = searchParams.get('authorType') || 'all';
 
-    console.log('📊 Fetching posts from local database...');
+    console.log('📊 Fetching posts from MongoDB Atlas...');
 
-    // Get all posts from local database
-    let posts = LocalDatabase.read('posts') || [];
-
-    // Apply filters
+    // Build query
+    const query: any = { status: 'active', isActive: true };
+    
     if (authorType !== 'all') {
-      posts = posts.filter((post: any) => post.author?.type === authorType);
+      query['author.type'] = authorType;
     }
 
-    // Apply status filter
-    posts = posts.filter((post: any) => post.status === 'active' && post.isActive === true);
+    // Calculate skip value for pagination
+    const skip = (page - 1) * limit;
 
-    // Sort posts
+    // Execute query with pagination
+    const [posts, total] = await Promise.all([
+      Post.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Post.countDocuments(query)
+    ]);
+
+    // Apply sorting based on filter
+    let sortQuery = { createdAt: -1 };
     switch (filter) {
       case 'trending':
+        // Sort by engagement (likes + comments)
         posts.sort((a: any, b: any) => {
           const aEngagement = (a.engagement?.likes || 0) + (a.engagement?.comments || 0);
           const bEngagement = (b.engagement?.likes || 0) + (b.engagement?.comments || 0);
           return bEngagement - aEngagement;
         });
         break;
-      case 'recent':
-        posts.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        break;
       case 'liked':
         posts.sort((a: any, b: any) => (b.engagement?.likes || 0) - (a.engagement?.likes || 0));
         break;
       default:
-        posts.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        // Already sorted by createdAt in the query
+        break;
     }
 
-    // Apply pagination
-    const total = posts.length;
-    const skip = (page - 1) * limit;
-    const paginatedPosts = posts.slice(skip, skip + limit);
-
     // Format posts for frontend
-    const formattedPosts = paginatedPosts.map((post: any) => ({
+    const formattedPosts = posts.map((post: any) => ({
       id: post.id,
       content: post.content,
       images: post.images || [],
@@ -85,7 +92,7 @@ export async function GET(request: NextRequest) {
       },
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error fetching posts:', error);
     return NextResponse.json(
       { error: 'Failed to fetch posts' },
@@ -96,6 +103,8 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    await connectDB();
+    
     const body = await request.json();
     const { 
       content, 
@@ -114,17 +123,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get author from local database
+    // Get author from MongoDB Atlas
     let author;
     switch (authorType) {
       case 'user':
-        author = LocalDatabase.readById('users', authorId);
+        author = await User.findById(authorId);
         break;
       case 'vendor':
-        author = LocalDatabase.readById('vendors', authorId);
+        author = await Vendor.findById(authorId);
         break;
       case 'venue':
-        author = LocalDatabase.readById('venues', authorId);
+        author = await Venue.findById(authorId);
         break;
       default:
         return NextResponse.json(
@@ -141,7 +150,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create new post
-    const newPost = {
+    const newPost = new Post({
       content,
       images: images || [],
       tags: tags || [],
@@ -166,12 +175,10 @@ export async function POST(request: NextRequest) {
       },
       status: 'active',
       isActive: true,
-      isVerified: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
+      isVerified: false
+    });
 
-    const createdPost = LocalDatabase.create('posts', newPost);
+    const createdPost = await newPost.save();
 
     if (!createdPost) {
       return NextResponse.json(
@@ -185,7 +192,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       data: {
-        id: createdPost.id,
+        id: createdPost._id,
         content: createdPost.content,
         images: createdPost.images,
         tags: createdPost.tags,

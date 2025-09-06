@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
+import { connectDB } from '@/lib/db';
+import { Booking } from '@/lib/models';
 
 export async function GET(request: NextRequest) {
   try {
+    await connectDB();
+
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
@@ -11,47 +14,56 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status');
     const date = searchParams.get('date');
 
-    console.log('📊 Fetching bookings from local database...');
+    console.log('📊 Fetching bookings from MongoDB Atlas...');
 
-    let bookings = LocalDatabase.read('bookings');
-
-    // Filter by client if provided
+    // Build query
+    const query: any = {};
+    
     if (clientId) {
-      bookings = bookings.filter((booking: any) => booking.client === clientId);
+      query.user = clientId;
     }
 
-    // Filter by vendor if provided
     if (vendorId) {
-      bookings = bookings.filter((booking: any) => booking.vendor === vendorId);
+      query.vendor = vendorId;
     }
 
-    // Filter by status if provided
     if (status) {
-      bookings = bookings.filter((booking: any) => booking.status === status);
+      query.status = status;
     }
 
-    // Filter by date if provided
     if (date) {
       const targetDate = new Date(date);
-      bookings = bookings.filter((booking: any) => {
-        const bookingDate = new Date(booking.date);
-        return bookingDate.toDateString() === targetDate.toDateString();
-      });
+      const startOfDay = new Date(targetDate.setHours(0, 0, 0, 0));
+      const endOfDay = new Date(targetDate.setHours(23, 59, 59, 999));
+      query.date = { $gte: startOfDay, $lte: endOfDay };
     }
 
-    // Get paginated results
-    const paginatedResult = LocalDatabase.paginate('bookings', page, limit);
+    // Calculate skip value for pagination
+    const skip = (page - 1) * limit;
+
+    // Execute query with pagination
+    const [bookings, total] = await Promise.all([
+      Booking.find(query)
+        .populate('user', 'name email')
+        .populate('vendor', 'businessName email')
+        .populate('venue', 'name location')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Booking.countDocuments(query)
+    ]);
 
     console.log(`✅ Found ${bookings.length} bookings`);
 
     return NextResponse.json({
       success: true,
-      bookings: paginatedResult.data,
+      bookings,
       pagination: {
-        total: paginatedResult.total,
-        page: paginatedResult.page,
-        limit: paginatedResult.limit,
-        totalPages: paginatedResult.totalPages
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
       }
     });
 
@@ -67,33 +79,29 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    await connectDB();
+
     const bookingData = await request.json();
     
     console.log('📝 Creating new booking...');
 
     // Validate required fields
-    if (!bookingData.client || !bookingData.vendor || !bookingData.service || !bookingData.date) {
+    if (!bookingData.user || !bookingData.date || !bookingData.totalAmount) {
       return NextResponse.json({
         success: false,
-        error: 'Client, vendor, service, and date are required'
+        error: 'User, date, and total amount are required'
       }, { status: 400 });
     }
 
     // Create booking
-    const newBooking = LocalDatabase.create('bookings', {
+    const newBooking = new Booking({
       ...bookingData,
-      status: 'pending',
-      paymentStatus: 'pending'
+      status: 'pending'
     });
 
-    if (!newBooking) {
-      return NextResponse.json({
-        success: false,
-        error: 'Failed to create booking'
-      }, { status: 500 });
-    }
+    await newBooking.save();
 
-    console.log('✅ Booking created successfully:', newBooking.id);
+    console.log('✅ Booking created successfully:', newBooking._id);
 
     return NextResponse.json({
       success: true,

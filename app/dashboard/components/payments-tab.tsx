@@ -67,7 +67,7 @@ export default function PaymentsTab() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium text-lg">LKR {payment.amount?.toLocaleString()}</p>
+                  <p className="font-medium text-lg">LKR {payment.amount?.toLocaleString() || "0"}</p>
                   <Badge variant={payment.status === 'completed' ? 'default' : 'secondary'}>
                     {payment.status}
                   </Badge>

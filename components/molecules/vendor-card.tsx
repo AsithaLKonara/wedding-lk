@@ -36,7 +36,15 @@ export function VendorCard({
       <Link href={`/vendors/${id}`} className="cursor-pointer">
         <Card className="h-full border-0 bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
           <div className="relative h-48">
-            <Image src={image || "/placeholder.svg"} alt={name} fill className="object-cover" />
+            <Image 
+              src={image || "/placeholder.svg"} 
+              alt={name} 
+              fill 
+              className="object-cover"
+              onError={(e) => {
+                e.currentTarget.src = "/placeholder.svg"
+              }}
+            />
             <div className="absolute top-4 right-4">
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -68,7 +76,7 @@ export function VendorCard({
                 <span className="text-sm font-medium">{rating}</span>
               </div>
               <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                From LKR {price.toLocaleString()}
+                From LKR {price?.toLocaleString() || "0"}
               </div>
             </div>
 

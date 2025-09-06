@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
-
+import { connectDB } from '@/lib/db';
+import { getAuthenticatedUser, requireAuth, requireAdmin, requireVendor, requireWeddingPlanner } from '@/lib/auth-utils';
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { id } = params;
     
     console.log('📊 Fetching venue by ID:', id);
 
-    const venue = LocalDatabase.readById('venues', id);
+    await connectDB();
+    const venue = await Venue.findById(id);
 
     if (!venue) {
       return NextResponse.json({
@@ -23,7 +25,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       venue
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error fetching venue:', error);
     return NextResponse.json({
       success: false,
@@ -40,7 +42,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     
     console.log('📝 Updating venue:', id);
 
-    const updatedVenue = LocalDatabase.update('venues', id, updates);
+    const updatedVenue = await Venue.findByIdAndUpdate(id, updates, { new: true });
 
     if (!updatedVenue) {
       return NextResponse.json({
@@ -57,7 +59,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       message: 'Venue updated successfully'
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error updating venue:', error);
     return NextResponse.json({
       success: false,
@@ -73,7 +75,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     
     console.log('🗑️ Deleting venue:', id);
 
-    const deleted = LocalDatabase.delete('venues', id);
+    const deleted = await Venue.findByIdAndDelete(id);
 
     if (!deleted) {
       return NextResponse.json({
@@ -89,7 +91,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       message: 'Venue deleted successfully'
     });
 
-  } catch (error) {
+    } catch (error) {
     console.error('❌ Error deleting venue:', error);
     return NextResponse.json({
       success: false,

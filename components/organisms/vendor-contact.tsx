@@ -148,7 +148,7 @@ export function VendorContact({ vendor }: VendorContactProps) {
           <div className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-gray-500" />
             <span className="text-sm text-gray-600">
-              {vendor.location.address}, {vendor.location.city}, {vendor.location.province}
+              {vendor?.location?.address || 'N/A'}, {vendor?.location?.city || 'N/A'}, {vendor?.location?.province || 'N/A'}
             </span>
           </div>
           
@@ -162,7 +162,7 @@ export function VendorContact({ vendor }: VendorContactProps) {
           <div className="flex items-center gap-2">
             <DollarSign className="h-4 w-4 text-green-500" />
             <span className="text-sm text-gray-600">
-              Starting from {vendor.pricing.currency} {vendor.pricing.startingPrice.toLocaleString()}
+              Starting from {vendor.pricing?.currency || "LKR"} {vendor.pricing?.startingPrice?.toLocaleString() || "0"}
             </span>
           </div>
         </div>
@@ -263,15 +263,15 @@ export function VendorContact({ vendor }: VendorContactProps) {
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm">
               <Phone className="h-4 w-4 text-gray-500" />
-              <a href={`tel:${vendor.contact?.phone || ''}`} className="text-blue-600 hover:underline">
-                {vendor.contact?.phone || 'N/A'}
+              <a href={`tel:${vendor?.contact?.phone || ''}`} className="text-blue-600 hover:underline">
+                {vendor?.contact?.phone || 'N/A'}
               </a>
             </div>
             
             <div className="flex items-center gap-2 text-sm">
               <Mail className="h-4 w-4 text-gray-500" />
-              <a href={`mailto:${vendor.contact?.email || ''}`} className="text-blue-600 hover:underline">
-                {vendor.contact?.email || 'N/A'}
+              <a href={`mailto:${vendor?.contact?.email || ''}`} className="text-blue-600 hover:underline">
+                {vendor?.contact?.email || 'N/A'}
               </a>
             </div>
             

@@ -1,81 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LocalDatabase } from '@/lib/local-database';
+import { connectDB } from '@/lib/db';
+import { getServerSession } from '@/lib/auth-utils';
+import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('📊 Fetching planner tasks from local database...');
+    const session = await getServerSession();
+    
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    // Get tasks from local database
-    const tasks = LocalDatabase.read('tasks');
+    await connectDB();
 
-    // Mock planner tasks (in real app, you'd filter by current planner)
-    const plannerTasks = [
-      {
-        id: 'task-1',
-        title: 'Venue Selection',
-        description: 'Research and select wedding venue',
-        clientId: 'user-1',
-        clientName: 'John & Jane Smith',
-        category: 'venue',
-        priority: 'high',
-        dueDate: '2024-03-15T00:00:00.000Z',
-        status: 'completed',
-        estimatedHours: 8,
-        actualHours: 6
-      },
-      {
-        id: 'task-2',
-        title: 'Catering Menu Finalization',
-        description: 'Finalize wedding menu with caterer',
-        clientId: 'user-1',
-        clientName: 'John & Jane Smith',
-        category: 'catering',
-        priority: 'medium',
-        dueDate: '2024-04-01T00:00:00.000Z',
-        status: 'in_progress',
-        estimatedHours: 4,
-        actualHours: 2
-      },
-      {
-        id: 'task-3',
-        title: 'Photography Booking',
-        description: 'Book photographer and plan photo sessions',
-        clientId: 'user-2',
-        clientName: 'Mike & Sarah Johnson',
-        category: 'photography',
-        priority: 'high',
-        dueDate: '2024-04-15T00:00:00.000Z',
-        status: 'pending',
-        estimatedHours: 3,
-        actualHours: 0
-      },
-      {
-        id: 'task-4',
-        title: 'Music Selection',
-        description: 'Select music and book DJ/band',
-        clientId: 'user-2',
-        clientName: 'Mike & Sarah Johnson',
-        category: 'music',
-        priority: 'medium',
-        dueDate: '2024-05-01T00:00:00.000Z',
-        status: 'pending',
-        estimatedHours: 2,
-        actualHours: 0
-      },
-      {
-        id: 'task-5',
-        title: 'Flower Arrangements',
-        description: 'Design and order flower arrangements',
-        clientId: 'user-3',
-        clientName: 'David & Lisa Brown',
-        category: 'flowers',
-        priority: 'medium',
-        dueDate: '2024-05-15T00:00:00.000Z',
-        status: 'pending',
-        estimatedHours: 5,
-        actualHours: 0
-      }
-    ];
+    const user = await User.findOne({ email: session.user.email });
+    if (!user || user.role !== 'wedding_planner') {
+      return NextResponse.json({ error: "Wedding planner access required" }, { status: 403 });
+    }
+
+    console.log('📊 Fetching planner tasks from MongoDB Atlas...');
+
+    // Get planner tasks with populated client data
+    const tasks = await Task.find({ createdBy: user._id })
+      .populate('assignedTo', 'name email')
+      .sort({ createdAt: -1 })
+      .lean();
+
+    // Format tasks for frontend
+    const plannerTasks = tasks.map(task => ({
+      id: (task._id as any).toString(),
+      title: task.title,
+      description: task.description,
+      clientId: task.assignedTo?._id?.toString() || '',
+      clientName: task.assignedTo?.name || 'Unknown Client',
+      category: task.category || 'general',
+      priority: task.priority,
+      dueDate: task.dueDate,
+      status: task.status,
+      estimatedHours: task.estimatedHours || 0,
+      actualHours: task.actualHours || 0
+    }));
 
     console.log('✅ Planner tasks fetched successfully');
 
@@ -96,18 +60,52 @@ export async function GET(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
+    const session = await getServerSession();
+    
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    await connectDB();
+
+    const user = await User.findOne({ email: session.user.email });
+    if (!user || user.role !== 'wedding_planner') {
+      return NextResponse.json({ error: "Wedding planner access required" }, { status: 403 });
+    }
+
     const { taskId, action } = await request.json();
     
     console.log('📝 Processing task action:', { taskId, action });
 
-    // Mock task action processing
+    // Find the task
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return NextResponse.json({
+        success: false,
+        error: 'Task not found'
+      }, { status: 404 });
+    }
+
+    // Verify planner owns this task
+    if (task.createdBy.toString() !== user._id.toString()) {
+      return NextResponse.json({
+        success: false,
+        error: 'Unauthorized to modify this task'
+      }, { status: 403 });
+    }
+
+    // Process the action
     if (action === 'start') {
+      task.status = 'in_progress';
+      await task.save();
       console.log('✅ Task started:', taskId);
       return NextResponse.json({
         success: true,
         message: 'Task started successfully'
       });
     } else if (action === 'complete') {
+      task.status = 'completed';
+      await task.save();
       console.log('✅ Task completed:', taskId);
       return NextResponse.json({
         success: true,
