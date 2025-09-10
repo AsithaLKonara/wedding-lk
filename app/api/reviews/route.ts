@@ -20,32 +20,11 @@ async function getReviews(request: NextRequest) {
 
     await connectDB();
 
-    // Build query - start with empty query to get all reviews
+    // Simple test query - get any reviews
     const query: any = {};
     
-    // Only add status filter if we want to filter by status
-    if (searchParams.get('status')) {
-      query.status = searchParams.get('status');
-    } else {
-      // Default to approved reviews
-      query.status = 'approved';
-    }
-    
-    if (vendorId) {
-      query.vendorId = vendorId;
-    }
-    
-    if (userId) {
-      query.userId = userId;
-    }
-    
-    if (rating) {
-      query.overallRating = parseInt(rating);
-    }
-    
-    if (verified === 'true') {
-      query.isVerified = true;
-    }
+    console.log('🔍 Reviews API Debug - Query:', query);
+    console.log('🔍 Reviews API Debug - Search params:', Object.fromEntries(searchParams.entries()));
 
     // Build sort criteria
     let sortCriteria: any = {};
