@@ -1,308 +1,283 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
-import { getServerSession } from '@/lib/auth-utils';
-import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
+import { Review } from '@/lib/models/review';
+import { User } from '@/lib/models/user';
+import { Vendor } from '@/lib/models/vendor';
+import { withAuth, requireUser } from '@/lib/middleware/auth-middleware';
+import { withRateLimit, rateLimitConfigs } from '@/lib/middleware/rate-limit-middleware';
 
-export async function GET(request: NextRequest) {
+// GET - Get reviews for a vendor or user
+async function getReviews(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url);
+    const vendorId = searchParams.get('vendorId');
+    const userId = searchParams.get('userId');
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = Math.min(parseInt(searchParams.get('limit') || '10'), 50);
+    const sortBy = searchParams.get('sortBy') || 'newest';
+    const rating = searchParams.get('rating');
+    const verified = searchParams.get('verified');
+
     await connectDB();
 
-    const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
-    const itemId = searchParams.get('itemId');
-    const itemType = searchParams.get('itemType');
-    const userId = searchParams.get('userId');
-
-    console.log('📊 Fetching reviews from MongoDB Atlas...');
-
     // Build query
-    const query: any = {};
+    const query: any = { status: 'approved' };
     
-    if (itemId && itemType) {
-      query[`${itemType}Id`] = itemId;
+    if (vendorId) {
+      query.vendorId = vendorId;
     }
-
+    
     if (userId) {
       query.userId = userId;
     }
+    
+    if (rating) {
+      query.overallRating = parseInt(rating);
+    }
+    
+    if (verified === 'true') {
+      query.isVerified = true;
+    }
 
-    // Calculate skip value for pagination
-    const skip = (page - 1) * limit;
+    // Build sort criteria
+    let sortCriteria: any = {};
+    switch (sortBy) {
+      case 'newest':
+        sortCriteria.createdAt = -1;
+        break;
+      case 'oldest':
+        sortCriteria.createdAt = 1;
+        break;
+      case 'highest_rating':
+        sortCriteria.overallRating = -1;
+        break;
+      case 'lowest_rating':
+        sortCriteria.overallRating = 1;
+        break;
+      case 'most_helpful':
+        sortCriteria.helpful = -1;
+        break;
+      default:
+        sortCriteria.createdAt = -1;
+    }
 
-    // Execute query with pagination
-    const [reviews, total] = await Promise.all([
-      Review.find(query)
-        .populate('userId', 'name email')
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-      Review.countDocuments(query)
+    const reviews = await Review.find(query)
+      .sort(sortCriteria)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .lean();
+
+    // Get total count for pagination
+    const total = await Review.countDocuments(query);
+
+    // Calculate average rating
+    const avgRating = await Review.aggregate([
+      { $match: { ...query, overallRating: { $exists: true } } },
+      { $group: { _id: null, average: { $avg: '$overallRating' }, count: { $sum: 1 } } }
     ]);
 
-    console.log(`✅ Found ${reviews.length} reviews`);
+    // Get rating distribution
+    const ratingDistribution = await Review.aggregate([
+      { $match: { ...query, overallRating: { $exists: true } } },
+      { $group: { _id: '$overallRating', count: { $sum: 1 } } },
+      { $sort: { _id: -1 } }
+    ]);
 
     return NextResponse.json({
       success: true,
       reviews,
       pagination: {
-        total,
         page,
         limit,
+        total,
         totalPages: Math.ceil(total / limit)
+      },
+      statistics: {
+        averageRating: avgRating[0]?.average || 0,
+        totalReviews: avgRating[0]?.count || 0,
+        ratingDistribution: ratingDistribution.reduce((acc, item) => {
+          acc[item._id] = item.count;
+          return acc;
+        }, {})
       }
     });
 
   } catch (error) {
-    console.error('❌ Error fetching reviews:', error);
+    console.error('Error fetching reviews:', error);
     return NextResponse.json({
       success: false,
-      error: 'Failed to fetch reviews',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to fetch reviews'
     }, { status: 500 });
   }
 }
 
-export async function POST(request: NextRequest) {
+// POST - Create a new review
+async function createReview(request: NextRequest) {
   try {
-    const session = await getServerSession();
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    await connectDB();
-
-    const user = await User.findOne({ email: session.user.email });
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-
-    const reviewData = await request.json();
-    
-    console.log('📝 Creating new review...');
+    const user = (request as any).user;
+    const {
+      vendorId,
+      venueId,
+      bookingId,
+      overallRating,
+      categoryRatings,
+      title,
+      comment,
+      pros,
+      cons,
+      images,
+      videos,
+      isAnonymous
+    } = await request.json();
 
     // Validate required fields
-    if (!reviewData.itemId || !reviewData.itemType || !reviewData.rating) {
+    if (!vendorId || !overallRating || !title || !comment) {
       return NextResponse.json({
         success: false,
-        error: 'Item ID, item type, and rating are required'
+        error: 'Missing required fields'
       }, { status: 400 });
     }
 
     // Validate rating
-    if (reviewData.rating < 1 || reviewData.rating > 5) {
+    if (overallRating < 1 || overallRating > 5) {
       return NextResponse.json({
         success: false,
         error: 'Rating must be between 1 and 5'
       }, { status: 400 });
     }
 
-    // Check if user has already reviewed this item
+    await connectDB();
+
+    // Check if user has already reviewed this vendor
     const existingReview = await Review.findOne({
-      userId: user._id,
-      [`${reviewData.itemType}Id`]: reviewData.itemId
+      vendorId,
+      userId: user.id
     });
 
     if (existingReview) {
       return NextResponse.json({
         success: false,
-        error: 'You have already reviewed this item'
+        error: 'You have already reviewed this vendor'
       }, { status: 400 });
     }
 
+    // Verify user has a booking with this vendor (optional verification)
+    if (bookingId) {
+      const booking = await Booking.findOne({
+        _id: bookingId,
+        userId: user.id,
+        vendorId,
+        status: { $in: ['completed', 'confirmed'] }
+      });
+
+      if (!booking) {
+        return NextResponse.json({
+          success: false,
+          error: 'Invalid booking reference'
+        }, { status: 400 });
+      }
+    }
+
     // Create review
-    const newReview = new Review({
-      userId: user._id,
-      [`${reviewData.itemType}Id`]: reviewData.itemId,
-      itemType: reviewData.itemType,
-      rating: reviewData.rating,
-      comment: reviewData.comment || '',
-      images: reviewData.images || [],
-      isVerified: false, // Will be verified if user has booking
-      createdAt: new Date(),
-      updatedAt: new Date()
+    const review = new Review({
+      vendorId,
+      venueId,
+      userId: user.id,
+      bookingId,
+      overallRating,
+      categoryRatings: categoryRatings || {
+        service: overallRating,
+        quality: overallRating,
+        value: overallRating,
+        communication: overallRating,
+        timeliness: overallRating
+      },
+      title,
+      comment,
+      pros: pros || [],
+      cons: cons || [],
+      images: images || [],
+      videos: videos || [],
+      isAnonymous: isAnonymous || false,
+      status: 'pending' // Will be auto-approved or require moderation
     });
 
-    await newReview.save();
-
-    // Update the item's rating
-    await updateItemRating(reviewData.itemId, reviewData.itemType);
-
-    console.log('✅ Review created successfully:', newReview._id);
-
-    return NextResponse.json({
-      success: true,
-      review: newReview,
-      message: 'Review created successfully'
-    });
-
-  } catch (error) {
-    console.error('❌ Error creating review:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'Failed to create review',
-      message: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
-  }
-}
-
-export async function PUT(request: NextRequest) {
-  try {
-    const session = await getServerSession();
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    await connectDB();
-
-    const user = await User.findOne({ email: session.user.email });
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-
-    const { reviewId, ...updateData } = await request.json();
-    
-    console.log('📝 Updating review...', reviewId);
-
-    // Find the review
-    const review = await Review.findById(reviewId);
-    if (!review) {
-      return NextResponse.json({
-        success: false,
-        error: 'Review not found'
-      }, { status: 404 });
-    }
-
-    // Check if user owns this review
-    if (review.userId.toString() !== user._id.toString()) {
-      return NextResponse.json({
-        success: false,
-        error: 'Unauthorized to update this review'
-      }, { status: 403 });
-    }
-
-    // Update review
-    Object.assign(review, updateData);
-    review.updatedAt = new Date();
     await review.save();
 
-    // Update the item's rating
-    await updateItemRating(review[`${review.itemType}Id`], review.itemType);
-
-    console.log('✅ Review updated successfully');
+    // Update vendor rating (async)
+    updateVendorRating(vendorId);
 
     return NextResponse.json({
       success: true,
-      review,
-      message: 'Review updated successfully'
-    });
+      review: {
+        id: review._id,
+        overallRating: review.overallRating,
+        title: review.title,
+        comment: review.comment,
+        createdAt: review.createdAt
+      },
+      message: 'Review submitted successfully'
+    }, { status: 201 });
 
   } catch (error) {
-    console.error('❌ Error updating review:', error);
+    console.error('Error creating review:', error);
     return NextResponse.json({
       success: false,
-      error: 'Failed to update review',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to create review'
     }, { status: 500 });
   }
 }
 
-export async function DELETE(request: NextRequest) {
+// Helper function to update vendor rating
+async function updateVendorRating(vendorId: string) {
   try {
-    const session = await getServerSession();
-    
-    if (!session?.user?.email) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    await connectDB();
-
-    const user = await User.findOne({ email: session.user.email });
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-
-    const { searchParams } = new URL(request.url);
-    const reviewId = searchParams.get('reviewId');
-    
-    console.log('📝 Deleting review...', reviewId);
-
-    // Find the review
-    const review = await Review.findById(reviewId);
-    if (!review) {
-      return NextResponse.json({
-        success: false,
-        error: 'Review not found'
-      }, { status: 404 });
-    }
-
-    // Check if user owns this review or is admin
-    if (review.userId.toString() !== user._id.toString() && user.role !== 'admin') {
-      return NextResponse.json({
-        success: false,
-        error: 'Unauthorized to delete this review'
-      }, { status: 403 });
-    }
-
-    // Store item info before deletion
-    const itemId = review[`${review.itemType}Id`];
-    const itemType = review.itemType;
-
-    // Delete review
-    await Review.findByIdAndDelete(reviewId);
-
-    // Update the item's rating
-    await updateItemRating(itemId, itemType);
-
-    console.log('✅ Review deleted successfully');
-
-    return NextResponse.json({
-      success: true,
-      message: 'Review deleted successfully'
-    });
-
-  } catch (error) {
-    console.error('❌ Error deleting review:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'Failed to delete review',
-      message: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
-  }
-}
-
-// Helper function to update item rating
-async function updateItemRating(itemId: string, itemType: string) {
-  try {
-    // Get all reviews for this item
     const reviews = await Review.find({
-      [`${itemType}Id`]: itemId
+      vendorId,
+      status: 'approved'
     });
 
     if (reviews.length === 0) return;
 
-    // Calculate average rating
-    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    const totalRating = reviews.reduce((sum, review) => sum + review.overallRating, 0);
     const averageRating = totalRating / reviews.length;
 
-    // Update the item's rating
-    if (itemType === 'venue') {
-      await Venue.findByIdAndUpdate(itemId, {
-        'rating.average': Math.round(averageRating * 10) / 10,
-        'rating.count': reviews.length
+    const categoryTotals = reviews.reduce((acc, review) => {
+      Object.keys(review.categoryRatings).forEach(category => {
+        acc[category] = (acc[category] || 0) + review.categoryRatings[category];
       });
-    } else if (itemType === 'vendor') {
-      await Vendor.findByIdAndUpdate(itemId, {
-        'rating.average': Math.round(averageRating * 10) / 10,
-        'rating.count': reviews.length
-      });
-    }
+      return acc;
+    }, {});
 
-    console.log(`✅ Updated ${itemType} rating:`, averageRating);
+    const categoryAverages = Object.keys(categoryTotals).reduce((acc, category) => {
+      acc[category] = categoryTotals[category] / reviews.length;
+      return acc;
+    }, {});
+
+    await Vendor.findByIdAndUpdate(vendorId, {
+      rating: {
+        average: Math.round(averageRating * 10) / 10,
+        count: reviews.length,
+        breakdown: {
+          1: reviews.filter(r => r.overallRating === 1).length,
+          2: reviews.filter(r => r.overallRating === 2).length,
+          3: reviews.filter(r => r.overallRating === 3).length,
+          4: reviews.filter(r => r.overallRating === 4).length,
+          5: reviews.filter(r => r.overallRating === 5).length
+        },
+        categoryAverages
+      }
+    });
   } catch (error) {
-    console.error('Error updating item rating:', error);
+    console.error('Error updating vendor rating:', error);
   }
 }
+
+export const GET = withRateLimit(
+  rateLimitConfigs.public,
+  getReviews
+);
+
+export const POST = withRateLimit(
+  rateLimitConfigs.api,
+  withAuth(createReview, requireUser())
+);
