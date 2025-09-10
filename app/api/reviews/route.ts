@@ -19,6 +19,11 @@ async function getReviews(request: NextRequest) {
 
     await connectDB();
 
+    // Test direct database access
+    const db = (await import('mongoose')).connection.db;
+    const directReviews = await db.collection('reviews').find({}).limit(3).toArray();
+    console.log('🔍 Direct DB query found:', directReviews.length, 'reviews');
+    
     // Simple test query - get any reviews
     const query: any = {};
     
@@ -89,7 +94,11 @@ async function getReviews(request: NextRequest) {
       debug: {
         query,
         foundReviews: reviews.length,
-        sampleReview: reviews[0] || null
+        sampleReview: reviews[0] || null,
+        directDbQuery: {
+          foundReviews: directReviews.length,
+          sampleDirectReview: directReviews[0] || null
+        }
       }
     });
 
