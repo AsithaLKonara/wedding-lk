@@ -20,8 +20,16 @@ async function getReviews(request: NextRequest) {
 
     await connectDB();
 
-    // Build query
-    const query: any = { status: 'approved' };
+    // Build query - start with empty query to get all reviews
+    const query: any = {};
+    
+    // Only add status filter if we want to filter by status
+    if (searchParams.get('status')) {
+      query.status = searchParams.get('status');
+    } else {
+      // Default to approved reviews
+      query.status = 'approved';
+    }
     
     if (vendorId) {
       query.vendorId = vendorId;
@@ -99,6 +107,11 @@ async function getReviews(request: NextRequest) {
           acc[item._id] = item.count;
           return acc;
         }, {})
+      },
+      debug: {
+        query,
+        foundReviews: reviews.length,
+        sampleReview: reviews[0] || null
       }
     });
 
