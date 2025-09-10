@@ -20,9 +20,15 @@ async function getReviews(request: NextRequest) {
     await connectDB();
 
     // Test direct database access
-    const db = (await import('mongoose')).connection.db;
-    const directReviews = await db.collection('reviews').find({}).limit(3).toArray();
-    console.log('🔍 Direct DB query found:', directReviews.length, 'reviews');
+    let directReviews = [];
+    try {
+      const mongoose = await import('mongoose');
+      const db = mongoose.connection.db;
+      directReviews = await db.collection('reviews').find({}).limit(3).toArray();
+      console.log('🔍 Direct DB query found:', directReviews.length, 'reviews');
+    } catch (dbError) {
+      console.error('🔍 Direct DB query error:', dbError.message);
+    }
     
     // Simple test query - get any reviews
     const query: any = {};
@@ -106,7 +112,9 @@ async function getReviews(request: NextRequest) {
     console.error('Error fetching reviews:', error);
     return NextResponse.json({
       success: false,
-      error: 'Failed to fetch reviews'
+      error: 'Failed to fetch reviews',
+      details: error.message,
+      stack: error.stack
     }, { status: 500 });
   }
 }
