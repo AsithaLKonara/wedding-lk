@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-// import { Providers } from './providers';
-import { Toaster } from '@/components/ui/toaster';
+import { Providers } from './providers';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { errorHandler } from '@/lib/error-handler';
 import { Analytics } from '@vercel/analytics/react';
@@ -183,10 +182,9 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <ErrorBoundary>
-          <div>
+          <Providers>
             {children}
-            <Toaster />
-          </div>
+          </Providers>
         </ErrorBoundary>
         <Analytics />
         <SpeedInsights />

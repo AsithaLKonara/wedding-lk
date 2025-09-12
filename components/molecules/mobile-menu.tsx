@@ -12,6 +12,7 @@ interface MobileMenuProps {
 const navItems = [
   { href: "/venues", label: "Venues" },
   { href: "/vendors", label: "Vendors" },
+  { href: "/feed", label: "Feed" },
   { href: "/gallery", label: "Gallery" },
   { href: "/about", label: "About" },
 ]

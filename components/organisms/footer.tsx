@@ -1,10 +1,24 @@
 "use client"
 
 import Link from "next/link"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { Logo } from "@/components/atoms/logo"
 import { SocialLinks } from "@/components/molecules/social-links"
 
 export function Footer() {
+  const { data: session } = useSession()
+  const router = useRouter()
+
+  const handlePlanningToolsClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    if (session?.user) {
+      router.push('/dashboard/user')
+    } else {
+      router.push('/auth/signin')
+    }
+  }
+
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -32,9 +46,12 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/planning" className="hover:text-white transition-colors">
+                <button 
+                  onClick={handlePlanningToolsClick}
+                  className="hover:text-white transition-colors text-left"
+                >
                   Planning Tools
-                </Link>
+                </button>
               </li>
               <li>
                 <Link href="/gallery" className="hover:text-white transition-colors">

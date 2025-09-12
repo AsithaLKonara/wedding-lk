@@ -161,6 +161,7 @@ export function StatsSection() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => window.location.href = '/register'}
                 className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 Start Planning Today
@@ -168,6 +169,7 @@ export function StatsSection() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => window.location.href = '/venues'}
                 className="border-2 border-purple-300 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 px-8 py-3 rounded-full font-semibold transition-all duration-300"
               >
                 Explore Venues

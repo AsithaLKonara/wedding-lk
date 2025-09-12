@@ -33,7 +33,7 @@ export default function CTASection(props: any) {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 hover:text-white backdrop-blur-sm"
+                className="border-white/30 text-gray-600 hover:bg-white/10 hover:text-gray-600 backdrop-blur-sm bg-white/90"
                 asChild
               >
                 <Link href="/contact">Contact Us</Link>

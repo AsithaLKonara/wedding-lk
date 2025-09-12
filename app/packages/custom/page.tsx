@@ -34,16 +34,21 @@ export default function CustomPackagePage() {
   const router = useRouter()
   const [budget, setBudget] = useState([500000])
   const [selectedServices, setSelectedServices] = useState<string[]>([])
+  const [weddingDate, setWeddingDate] = useState('')
+  const [guestCount, setGuestCount] = useState('')
+  const [location, setLocation] = useState('')
+  const [packageName, setPackageName] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
 
   const services = [
-    { id: "venue", name: "Venue Rental", price: 200000, required: true },
-    { id: "photography", name: "Photography & Videography", price: 150000, required: false },
-    { id: "catering", name: "Catering Services", price: 180000, required: false },
-    { id: "decoration", name: "Decoration & Flowers", price: 100000, required: false },
-    { id: "entertainment", name: "Entertainment (DJ/Band)", price: 80000, required: false },
-    { id: "transport", name: "Transportation", price: 50000, required: false },
-    { id: "coordinator", name: "Wedding Coordinator", price: 75000, required: false },
-    { id: "makeup", name: "Bridal Makeup & Hair", price: 45000, required: false },
+    { id: "venue", name: "Venue Rental", price: 200000, required: true, description: "Beautiful wedding venue with all amenities" },
+    { id: "photography", name: "Photography & Videography", price: 150000, required: false, description: "Professional photographer and videographer" },
+    { id: "catering", name: "Catering Services", price: 180000, required: false, description: "Delicious menu for all guests" },
+    { id: "decoration", name: "Decoration & Flowers", price: 100000, required: false, description: "Beautiful floral arrangements and decorations" },
+    { id: "entertainment", name: "Entertainment (DJ/Band)", price: 80000, required: false, description: "Music and entertainment for the celebration" },
+    { id: "transport", name: "Transportation", price: 50000, required: false, description: "Transportation for bride, groom, and guests" },
+    { id: "coordinator", name: "Wedding Coordinator", price: 75000, required: false, description: "Professional wedding day coordination" },
+    { id: "makeup", name: "Bridal Makeup & Hair", price: 45000, required: false, description: "Professional bridal styling" },
   ]
 
   const handleServiceToggle = (serviceId: string) => {
@@ -55,6 +60,50 @@ export default function CustomPackagePage() {
   const totalCost = services
     .filter((service) => service.required || selectedServices.includes(service.id))
     .reduce((sum, service) => sum + service.price, 0)
+
+  const handleSavePackage = async () => {
+    if (!packageName.trim()) {
+      alert('Please enter a package name')
+      return
+    }
+
+    setIsSaving(true)
+    try {
+      // Here you would save the custom package to the database
+      const customPackage = {
+        name: packageName,
+        description: `Custom wedding package for ${guestCount} guests in ${location}`,
+        price: totalCost,
+        originalPrice: totalCost,
+        weddingDate,
+        guestCount: parseInt(guestCount),
+        location,
+        budget: budget[0],
+        services: services.filter(service => service.required || selectedServices.includes(service.id)),
+        createdAt: new Date().toISOString()
+      }
+
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      alert('Custom package saved successfully!')
+      router.push('/packages')
+    } catch (error) {
+      alert('Failed to save package. Please try again.')
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  const handleGetQuote = () => {
+    if (!packageName.trim() || !weddingDate || !guestCount || !location) {
+      alert('Please fill in all required fields')
+      return
+    }
+    
+    // Here you would send the quote request to vendors
+    alert('Quote request sent! Vendors will contact you within 24 hours.')
+  }
 
   return (
     <MainLayout>
@@ -102,19 +151,44 @@ export default function CustomPackagePage() {
                   <CardTitle>Wedding Details</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  <div>
+                    <Label htmlFor="packageName">Package Name *</Label>
+                    <Input 
+                      id="packageName" 
+                      placeholder="My Dream Wedding Package"
+                      value={packageName}
+                      onChange={(e) => setPackageName(e.target.value)}
+                    />
+                  </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="date">Wedding Date</Label>
-                      <Input type="date" id="date" />
+                      <Label htmlFor="date">Wedding Date *</Label>
+                      <Input 
+                        type="date" 
+                        id="date" 
+                        value={weddingDate}
+                        onChange={(e) => setWeddingDate(e.target.value)}
+                      />
                     </div>
                     <div>
-                      <Label htmlFor="guests">Number of Guests</Label>
-                      <Input type="number" id="guests" placeholder="150" />
+                      <Label htmlFor="guests">Number of Guests *</Label>
+                      <Input 
+                        type="number" 
+                        id="guests" 
+                        placeholder="150"
+                        value={guestCount}
+                        onChange={(e) => setGuestCount(e.target.value)}
+                      />
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="location">Preferred Location</Label>
-                    <Input id="location" placeholder="Colombo, Western Province" />
+                    <Label htmlFor="location">Preferred Location *</Label>
+                    <Input 
+                      id="location" 
+                      placeholder="Colombo, Western Province"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                    />
                   </div>
                 </CardContent>
               </Card>
@@ -126,7 +200,7 @@ export default function CustomPackagePage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {services.map((service) => (
-                    <div key={service.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div key={service.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                       <div className="flex items-center space-x-3">
                         <Checkbox
                           checked={service.required || selectedServices.includes(service.id)}
@@ -135,7 +209,8 @@ export default function CustomPackagePage() {
                         />
                         <div>
                           <div className="font-medium">{service.name}</div>
-                          {service.required && <div className="text-sm text-gray-500">Required</div>}
+                          <div className="text-sm text-gray-500">{service.description}</div>
+                          {service.required && <div className="text-sm text-blue-600 font-medium">Required</div>}
                         </div>
                       </div>
                       <div className="text-right">
@@ -178,9 +253,19 @@ export default function CustomPackagePage() {
                   </div>
 
                   <div className="space-y-2 pt-4">
-                    <Button className="w-full">Save Package</Button>
-                    <Button variant="outline" className="w-full">
-                      Get Quote
+                    <Button 
+                      className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+                      onClick={handleSavePackage}
+                      disabled={isSaving}
+                    >
+                      {isSaving ? 'Saving...' : 'Save Package'}
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-pink-500 text-pink-500 hover:bg-pink-50"
+                      onClick={handleGetQuote}
+                    >
+                      Get Quote from Vendors
                     </Button>
                   </div>
                 </CardContent>

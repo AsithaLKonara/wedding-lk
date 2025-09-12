@@ -121,11 +121,11 @@ export function AboutStory() {
             <h3 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Our Journey</h3>
 
             <div className="relative">
-              {/* Timeline line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-pink-500 to-purple-600 rounded-full" />
+              {/* Timeline line - hidden on mobile */}
+              <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-pink-500 to-purple-600 rounded-full" />
 
               {/* Timeline items */}
-              <div className="space-y-12">
+              <div className="space-y-8 md:space-y-12">
                 {[
                   {
                     year: "2020",
@@ -164,18 +164,22 @@ export function AboutStory() {
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                     viewport={{ once: true }}
-                    className={`flex items-center ${item.side === "left" ? "justify-start" : "justify-end"}`}
+                    className={`flex items-center ${
+                      item.side === "left" ? "justify-start" : "justify-end"
+                    } md:flex-row flex-col`}
                   >
-                    <div className={`w-5/12 ${item.side === "left" ? "text-right pr-8" : "text-left pl-8"}`}>
-                      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-                        <div className="text-2xl font-bold text-pink-600 mb-2">{item.year}</div>
-                        <div className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{item.title}</div>
-                        <div className="text-gray-600 dark:text-gray-300">{item.description}</div>
+                    <div className={`w-full md:w-5/12 ${
+                      item.side === "left" ? "md:text-right md:pr-8" : "md:text-left md:pl-8"
+                    } text-center md:text-left`}>
+                      <div className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                        <div className="text-xl md:text-2xl font-bold text-pink-600 mb-2">{item.year}</div>
+                        <div className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white mb-2">{item.title}</div>
+                        <div className="text-sm md:text-base text-gray-600 dark:text-gray-300">{item.description}</div>
                       </div>
                     </div>
 
-                    {/* Timeline dot */}
-                    <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white dark:bg-gray-800 border-4 border-pink-500 rounded-full" />
+                    {/* Timeline dot - hidden on mobile */}
+                    <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white dark:bg-gray-800 border-4 border-pink-500 rounded-full" />
                   </motion.div>
                 ))}
               </div>
