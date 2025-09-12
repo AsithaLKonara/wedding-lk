@@ -31,8 +31,44 @@ export function WeddingPackageCard({ package: pkg }: WeddingPackageCardProps) {
   const router = useRouter()
 
   const handleSave = (packageId: number) => {
-    // Add to favorites logic
-    console.log("Saving package:", packageId)
+    try {
+      // Get existing saved packages from localStorage
+      const savedPackages = JSON.parse(localStorage.getItem('savedPackages') || '[]')
+      
+      // Check if package is already saved
+      const isAlreadySaved = savedPackages.some((pkg: any) => pkg.id === packageId.toString())
+      
+      if (isAlreadySaved) {
+        // Remove from saved packages
+        const updatedPackages = savedPackages.filter((pkg: any) => pkg.id !== packageId.toString())
+        localStorage.setItem('savedPackages', JSON.stringify(updatedPackages))
+        alert('Package removed from favorites')
+      } else {
+        // Add to saved packages
+        const packageToSave = {
+          id: packageId.toString(),
+          name: pkg.title,
+          description: pkg.subtitle,
+          price: pkg.price,
+          originalPrice: pkg.originalPrice,
+          rating: pkg.rating,
+          reviewCount: pkg.reviewCount,
+          badge: pkg.badge,
+          badgeColor: pkg.badgeColor,
+          features: pkg.features,
+          venues: pkg.venues,
+          vendors: pkg.vendors,
+          savedAt: new Date().toISOString()
+        }
+        
+        savedPackages.push(packageToSave)
+        localStorage.setItem('savedPackages', JSON.stringify(savedPackages))
+        alert('Package added to favorites')
+      }
+    } catch (error) {
+      console.error('Error saving package:', error)
+      alert('Failed to save package')
+    }
   }
 
   const handleShare = (packageId: number) => {
