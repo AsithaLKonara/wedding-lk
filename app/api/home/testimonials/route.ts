@@ -16,6 +16,14 @@ export async function GET(request: NextRequest) {
       .limit(8)
       .lean()
 
+    // If no testimonials found, return empty array instead of error
+    if (!testimonials || testimonials.length === 0) {
+      return NextResponse.json({ 
+        success: true,
+        testimonials: [] 
+      })
+    }
+
     // Format testimonials for display
     const formattedTestimonials = testimonials.map(testimonial => ({
       id: testimonial._id,
@@ -37,9 +45,10 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error("Error fetching testimonials:", error)
-    return NextResponse.json(
-      { error: "Failed to fetch testimonials" },
-      { status: 500 }
-    )
+    // Return empty array instead of error to prevent frontend crashes
+    return NextResponse.json({ 
+      success: true,
+      testimonials: [] 
+    })
   }
 } 

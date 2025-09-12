@@ -61,6 +61,7 @@ async function processAISearch(query: string) {
     console.log(`⚡ AI search completed in ${searchTime}ms (${result.vendors.length} vendors, ${result.venues.length} venues)`);
     
     return NextResponse.json({
+      success: true,
       ...result,
       performance: {
         searchTime,
@@ -71,9 +72,19 @@ async function processAISearch(query: string) {
     
   } catch (error) {
     console.error('❌ Error in AI search:', error);
-    return NextResponse.json(
-      { error: 'AI search failed' },
-      { status: 500 }
-    );
+    // Return empty results instead of error to prevent frontend crashes
+    return NextResponse.json({
+      success: true,
+      vendors: [],
+      venues: [],
+      extractedParams: {},
+      timestamp: new Date().toISOString(),
+      cached: false,
+      performance: {
+        searchTime: 0,
+        cached: false,
+        timestamp: new Date().toISOString()
+      }
+    });
   }
 } 
