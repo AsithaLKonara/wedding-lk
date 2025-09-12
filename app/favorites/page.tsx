@@ -82,15 +82,15 @@ export default function FavoritesPage() {
     router.push(`/packages/${packageId}/book`)
   }
 
-  const handleShare = (package: SavedPackage) => {
+  const handleShare = (packageData: SavedPackage) => {
     if (navigator.share) {
       navigator.share({
-        title: package.name,
-        text: package.description,
-        url: `${window.location.origin}/packages/${package.id}`,
+        title: packageData.name,
+        text: packageData.description,
+        url: `${window.location.origin}/packages/${packageData.id}`,
       })
     } else {
-      navigator.clipboard.writeText(`${window.location.origin}/packages/${package.id}`)
+      navigator.clipboard.writeText(`${window.location.origin}/packages/${packageData.id}`)
       toast({
         title: 'Link copied',
         description: 'Package link copied to clipboard'

@@ -52,7 +52,7 @@ export default function PackageDetailPage() {
   const { toast } = useToast()
   const packageId = params.id as string
   
-  const [package, setPackage] = useState<WeddingPackage | null>(null)
+  const [packageData, setPackageData] = useState<WeddingPackage | null>(null)
   const [loading, setLoading] = useState(true)
   const [isSaved, setIsSaved] = useState(false)
 
@@ -69,7 +69,7 @@ export default function PackageDetailPage() {
       if (response.ok) {
         const data = await response.json()
         if (data.success) {
-          setPackage(data.package)
+          setPackageData(data.package)
         }
       }
     } catch (error) {
@@ -129,7 +129,7 @@ export default function PackageDetailPage() {
     )
   }
 
-  if (!package) {
+  if (!packageData) {
     return (
       <>
         <Header />
@@ -150,8 +150,8 @@ export default function PackageDetailPage() {
     )
   }
 
-  const savings = package.originalPrice - package.price
-  const savingsPercentage = Math.round((savings / package.originalPrice) * 100)
+  const savings = packageData.originalPrice - packageData.price
+  const savingsPercentage = Math.round((savings / packageData.originalPrice) * 100)
 
   return (
     <>
@@ -181,13 +181,13 @@ export default function PackageDetailPage() {
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div>
-                        {package.badge && (
-                          <Badge className={`${package.badgeColor} text-white mb-4`}>
-                            {package.badge}
+                        {packageData.badge && (
+                          <Badge className={`${packageData.badgeColor} text-white mb-4`}>
+                            {packageData.badge}
                           </Badge>
                         )}
-                        <CardTitle className="text-3xl mb-2">{package.name}</CardTitle>
-                        <p className="text-gray-600 dark:text-gray-300 text-lg">{package.description}</p>
+                        <CardTitle className="text-3xl mb-2">{packageData.name}</CardTitle>
+                        <p className="text-gray-600 dark:text-gray-300 text-lg">{packageData.description}</p>
                       </div>
                       <div className="flex space-x-2">
                         <Button variant="outline" size="sm" onClick={handleSave}>
@@ -205,13 +205,13 @@ export default function PackageDetailPage() {
                     <div className="flex items-center space-x-6 mt-4">
                       <div className="flex items-center">
                         <Star className="h-5 w-5 text-yellow-400 fill-current" />
-                        <span className="ml-1 font-medium text-lg">{package.rating.average}</span>
-                        <span className="ml-1 text-gray-600 dark:text-gray-300">({package.rating.count} reviews)</span>
+                        <span className="ml-1 font-medium text-lg">{packageData.rating.average}</span>
+                        <span className="ml-1 text-gray-600 dark:text-gray-300">({packageData.rating.count} reviews)</span>
                       </div>
-                      {package.location && (
+                      {packageData.location && (
                         <div className="flex items-center">
                           <MapPin className="h-4 w-4 text-gray-400 mr-1" />
-                          <span className="text-gray-600 dark:text-gray-300">{package.location}</span>
+                          <span className="text-gray-600 dark:text-gray-300">{packageData.location}</span>
                         </div>
                       )}
                     </div>
@@ -219,8 +219,8 @@ export default function PackageDetailPage() {
                     {/* Pricing */}
                     <div className="mt-6">
                       <div className="flex items-baseline space-x-3">
-                        <span className="text-4xl font-bold text-green-600">LKR {package.price.toLocaleString()}</span>
-                        <span className="text-2xl text-gray-500 line-through">LKR {package.originalPrice.toLocaleString()}</span>
+                        <span className="text-4xl font-bold text-green-600">LKR {packageData.price.toLocaleString()}</span>
+                        <span className="text-2xl text-gray-500 line-through">LKR {packageData.originalPrice.toLocaleString()}</span>
                       </div>
                       <div className="flex items-center space-x-2 mt-2">
                         <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
@@ -247,7 +247,7 @@ export default function PackageDetailPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {package.features.map((feature, index) => (
+                      {packageData.features.map((feature, index) => (
                         <div key={index} className="flex items-start space-x-3">
                           <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
                           <span className="text-gray-700 dark:text-gray-300">{feature}</span>
@@ -259,7 +259,7 @@ export default function PackageDetailPage() {
               </motion.div>
 
               {/* Featured Venues */}
-              {package.venues && package.venues.length > 0 && (
+              {packageData.venues && packageData.venues.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -271,7 +271,7 @@ export default function PackageDetailPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {package.venues.map((venue, index) => (
+                        {packageData.venues.map((venue, index) => (
                           <div key={index} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
                             <div className="flex items-center space-x-3">
                               <Image
@@ -298,7 +298,7 @@ export default function PackageDetailPage() {
               )}
 
               {/* Top Vendors */}
-              {package.vendors && package.vendors.length > 0 && (
+              {packageData.vendors && packageData.vendors.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -310,7 +310,7 @@ export default function PackageDetailPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
-                        {package.vendors.map((vendor, index) => (
+                        {packageData.vendors.map((vendor, index) => (
                           <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
                             <div className="flex items-center space-x-3">
                               <Avatar className="h-10 w-10">
@@ -350,7 +350,7 @@ export default function PackageDetailPage() {
                   <CardContent className="space-y-4">
                     <div className="text-center">
                       <div className="text-3xl font-bold text-green-600 mb-2">
-                        LKR {package.price.toLocaleString()}
+                        LKR {packageData.price.toLocaleString()}
                       </div>
                       <p className="text-sm text-gray-600 dark:text-gray-300">
                         All-inclusive wedding package

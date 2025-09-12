@@ -57,7 +57,7 @@ export default function BookPackagePage() {
   const { toast } = useToast()
   const packageId = params.id as string
   
-  const [package, setPackage] = useState<WeddingPackage | null>(null)
+  const [packageData, setPackageData] = useState<WeddingPackage | null>(null)
   const [loading, setLoading] = useState(true)
   const [booking, setBooking] = useState(false)
   const [formData, setFormData] = useState<BookingForm>({
@@ -83,7 +83,7 @@ export default function BookPackagePage() {
       if (response.ok) {
         const data = await response.json()
         if (data.success) {
-          setPackage(data.package)
+          setPackageData(data.package)
         }
       }
     } catch (error) {
@@ -156,7 +156,7 @@ export default function BookPackagePage() {
     )
   }
 
-  if (!package) {
+  if (!packageData) {
     return (
       <>
         <Header />
@@ -177,8 +177,8 @@ export default function BookPackagePage() {
     )
   }
 
-  const savings = package.originalPrice - package.price
-  const savingsPercentage = Math.round((savings / package.originalPrice) * 100)
+  const savings = packageData.originalPrice - packageData.price
+  const savingsPercentage = Math.round((savings / packageData.originalPrice) * 100)
 
   return (
     <>
@@ -363,19 +363,19 @@ export default function BookPackagePage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <h4 className="font-semibold">{package.name}</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">{package.description}</p>
+                      <h4 className="font-semibold">{packageData.name}</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">{packageData.description}</p>
                     </div>
 
                     <div className="flex items-center space-x-2">
                       <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <span className="text-sm">{package.rating.average} ({package.rating.count} reviews)</span>
+                      <span className="text-sm">{packageData.rating.average} ({packageData.rating.count} reviews)</span>
                     </div>
 
                     <div className="border-t pt-4">
                       <div className="flex items-baseline space-x-2">
-                        <span className="text-2xl font-bold text-green-600">LKR {package.price.toLocaleString()}</span>
-                        <span className="text-lg text-gray-500 line-through">LKR {package.originalPrice.toLocaleString()}</span>
+                        <span className="text-2xl font-bold text-green-600">LKR {packageData.price.toLocaleString()}</span>
+                        <span className="text-lg text-gray-500 line-through">LKR {packageData.originalPrice.toLocaleString()}</span>
                       </div>
                       <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 mt-2">
                         Save {savingsPercentage}%
@@ -391,15 +391,15 @@ export default function BookPackagePage() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
-                      {package.features.slice(0, 6).map((feature, index) => (
+                      {packageData.features.slice(0, 6).map((feature, index) => (
                         <div key={index} className="flex items-start space-x-2">
                           <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
                           <span className="text-sm">{feature}</span>
                         </div>
                       ))}
-                      {package.features.length > 6 && (
+                      {packageData.features.length > 6 && (
                         <div className="text-sm text-purple-600 dark:text-purple-400 font-medium">
-                          +{package.features.length - 6} more features
+                          +{packageData.features.length - 6} more features
                         </div>
                       )}
                     </div>
