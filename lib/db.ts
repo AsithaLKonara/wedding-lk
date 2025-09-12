@@ -32,10 +32,19 @@ export async function connectDB() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
-      maxPoolSize: 10, // Maintain up to 10 socket connections
-      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
-      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-      family: 4 // Use IPv4, skip trying IPv6
+      maxPoolSize: 20, // Increased pool size for better performance
+      minPoolSize: 5, // Maintain minimum connections
+      serverSelectionTimeoutMS: 10000, // Increased timeout for better reliability
+      socketTimeoutMS: 30000, // Reduced socket timeout for faster failure detection
+      connectTimeoutMS: 10000, // Connection timeout
+      maxIdleTimeMS: 30000, // Close connections after 30 seconds of inactivity
+      family: 4, // Use IPv4, skip trying IPv6
+      retryWrites: true, // Enable retryable writes
+      retryReads: true, // Enable retryable reads
+      compressors: ['zlib'], // Enable compression
+      zlibCompressionLevel: 6, // Compression level
+      heartbeatFrequencyMS: 10000, // Heartbeat frequency
+      maxStalenessSeconds: 90, // Max staleness for secondary reads
     };
 
     if (!MONGODB_URI) {
@@ -43,7 +52,7 @@ export async function connectDB() {
     }
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      console.log('✅ Connected to MongoDB Atlas');
+      console.log('✅ Connected to MongoDB Atlas with optimized settings');
       return mongoose;
     }).catch((error) => {
       console.error('❌ MongoDB connection error:', error);
@@ -74,17 +83,50 @@ mongoose.connection.on('disconnected', () => {
   console.log('⚠️ Mongoose disconnected from MongoDB');
 });
 
-// Performance monitoring
+// Enhanced performance monitoring
 mongoose.connection.on('connected', () => {
-  if (process.env.NODE_ENV === 'development') {
-    const pool = (mongoose.connection as any).pool;
-    if (pool) {
-      console.log(`📊 MongoDB Performance Stats:`);
-      console.log(`   Pool Size: ${pool.size()}`);
-      console.log(`   Available: ${pool.available()}`);
-      console.log(`   Pending: ${pool.pending()}`);
-    }
+  console.log('📊 MongoDB Performance Stats:');
+  const pool = (mongoose.connection as any).pool;
+  if (pool) {
+    console.log(`   Pool Size: ${pool.size()}`);
+    console.log(`   Available: ${pool.available()}`);
+    console.log(`   Pending: ${pool.pending()}`);
+    console.log(`   Total Connections: ${pool.totalConnectionCount}`);
+    console.log(`   Active Connections: ${pool.activeConnectionCount}`);
   }
+});
+
+// Query performance monitoring
+mongoose.connection.on('open', () => {
+  // Enable query logging in development
+  if (process.env.NODE_ENV === 'development') {
+    mongoose.set('debug', (collectionName, method, query, doc) => {
+      console.log(`🔍 MongoDB Query: ${collectionName}.${method}`, {
+        query: JSON.stringify(query),
+        doc: doc ? JSON.stringify(doc) : 'N/A'
+      });
+    });
+  }
+});
+
+// Monitor slow queries
+let slowQueryThreshold = 1000; // 1 second
+mongoose.connection.on('open', () => {
+  const originalExec = mongoose.Query.prototype.exec;
+  mongoose.Query.prototype.exec = function() {
+    const start = Date.now();
+    return originalExec.apply(this, arguments).then((result) => {
+      const duration = Date.now() - start;
+      if (duration > slowQueryThreshold) {
+        console.warn(`🐌 Slow Query Detected: ${duration}ms`, {
+          collection: this.model?.collection?.name || 'unknown',
+          query: this.getQuery(),
+          duration: `${duration}ms`
+        });
+      }
+      return result;
+    });
+  };
 });
 
 // Graceful shutdown

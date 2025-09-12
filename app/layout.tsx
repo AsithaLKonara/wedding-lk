@@ -5,6 +5,8 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { errorHandler } from '@/lib/error-handler';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -186,6 +188,8 @@ export default function RootLayout({
             <Toaster />
           </div>
         </ErrorBoundary>
+        <Analytics />
+        <SpeedInsights />
         <script
           dangerouslySetInnerHTML={{
             __html: `
