@@ -37,6 +37,7 @@ import DynamicPricing from './dynamicPricing';
 import VendorPackage from './vendorPackage';
 import Comment from './comment';
 import { MetaAdsCampaign, MetaAdsAdSet, MetaAdsCreative, MetaAdsAccount } from './metaAds';
+import Testimonial from './testimonial';
 
 // Export all models
 export {
@@ -80,6 +81,7 @@ export {
   MetaAdsAdSet,
   MetaAdsCreative,
   MetaAdsAccount,
+  Testimonial,
 };
 
 // Export VenueBoost as default

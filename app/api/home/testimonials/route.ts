@@ -1,42 +1,39 @@
 import { NextRequest, NextResponse } from "next/server"
 import { connectDB } from "@/lib/db"
-import { Review } from "@/lib/models/review"
+import { Testimonial } from "@/lib/models/testimonial"
 
 export async function GET(request: NextRequest) {
   try {
     await connectDB()
 
-    // Get verified testimonials with high ratings
-    const testimonials = await Review.find({ 
-      isVerified: true, 
+    // Get featured testimonials
+    const testimonials = await Testimonial.find({ 
+      featured: true, 
       isActive: true,
-      rating: { $gte: 4 },
-      comment: { $exists: true, $ne: "" }
+      rating: { $gte: 4 }
     })
       .sort({ rating: -1, createdAt: -1 })
       .limit(8)
       .lean()
 
     // Format testimonials for display
-    const formattedTestimonials = testimonials.map(review => ({
-      id: review._id,
-      user: {
-        name: review.user ? 'User' : 'Anonymous',
-        avatar: null
-      },
-      rating: review.rating,
-      comment: review.comment,
-      source: review.vendor ? `Vendor` : 
-              review.venue ? `Venue` : 'WeddingLK',
-      date: review.createdAt
+    const formattedTestimonials = testimonials.map(testimonial => ({
+      id: testimonial._id,
+      name: testimonial.name,
+      location: testimonial.location,
+      rating: testimonial.rating,
+      text: testimonial.text,
+      weddingDate: testimonial.weddingDate,
+      venue: testimonial.venue,
+      vendor: testimonial.vendor,
+      isVerified: testimonial.isVerified,
+      date: testimonial.createdAt
     }))
 
-    // If no testimonials, return empty array
-    if (formattedTestimonials.length === 0) {
-      return NextResponse.json({ testimonials: [] })
-    }
-
-    return NextResponse.json({ testimonials: formattedTestimonials })
+    return NextResponse.json({ 
+      success: true,
+      testimonials: formattedTestimonials 
+    })
 
   } catch (error) {
     console.error("Error fetching testimonials:", error)
