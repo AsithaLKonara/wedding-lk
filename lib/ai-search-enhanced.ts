@@ -5,6 +5,7 @@ import OpenAI from 'openai';
 import { connectDB } from './db';
 import { Venue } from './models/venue';
 import { Vendor } from './models/vendor';
+import { Package } from './models/package';
 import { enhancedCacheManager } from './enhanced-cache-manager';
 
 const openai = process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'test-key-for-build' ? new OpenAI({
@@ -24,6 +25,7 @@ export interface WeddingContext {
 export interface AISearchResult {
   venues: any[];
   vendors: any[];
+  packages: any[];
   recommendations: string[];
   budgetBreakdown: {
     venue: number;
@@ -71,10 +73,11 @@ export class EnhancedAISearchService {
       // Generate AI-powered search results
       const aiResponse = await this.generateAIResponse(query, context);
       
-      // Search database for relevant venues and vendors
-      const [venues, vendors] = await Promise.all([
+      // Search database for relevant venues, vendors, and packages
+      const [venues, vendors, packages] = await Promise.all([
         this.searchVenues(context),
-        this.searchVendors(context)
+        this.searchVendors(context),
+        this.searchPackages(context)
       ]);
 
       // Generate recommendations and insights
@@ -87,6 +90,7 @@ export class EnhancedAISearchService {
       const result: AISearchResult = {
         venues,
         vendors,
+        packages,
         recommendations,
         budgetBreakdown,
         timeline,
@@ -243,6 +247,42 @@ export class EnhancedAISearchService {
       }));
     } catch (error) {
       console.error('Vendor search error:', error);
+      return [];
+    }
+  }
+
+  // Search wedding packages based on context
+  private async searchPackages(context: WeddingContext): Promise<any[]> {
+    try {
+      await connectDB();
+      
+      const packages = await Package.find({
+        price: { $lte: context.budget * 1.2 }, // Allow 20% over budget for recommendations
+        featured: true
+      })
+      .populate('venues', 'name rating images location capacity pricing')
+      .populate('vendors', 'businessName category rating location services')
+      .sort({ 'rating.average': -1 })
+      .limit(6)
+      .lean();
+
+      return packages.map(pkg => ({
+        id: pkg._id,
+        name: pkg.name,
+        description: pkg.description,
+        price: pkg.price,
+        originalPrice: pkg.originalPrice,
+        rating: pkg.rating,
+        features: pkg.features,
+        venues: pkg.venues,
+        vendors: pkg.vendors,
+        matchScore: this.calculatePackageMatchScore(pkg, context),
+        personalizedFeatures: this.generatePersonalizedFeatures(pkg, context),
+        whyRecommended: this.generatePackageWhyRecommended(pkg, context)
+      }));
+
+    } catch (error) {
+      console.error('Package search error:', error);
       return [];
     }
   }
@@ -506,6 +546,87 @@ export class EnhancedAISearchService {
     }
     
     return reasons.join(', ');
+  }
+
+  // Calculate match score for package
+  private calculatePackageMatchScore(pkg: any, context: WeddingContext): number {
+    let score = 0;
+    
+    // Budget match (40% weight)
+    const budgetRatio = pkg.price / context.budget;
+    if (budgetRatio <= 1) {
+      score += 40;
+    } else if (budgetRatio <= 1.2) {
+      score += 30;
+    } else {
+      score += 20;
+    }
+    
+    // Rating match (30% weight)
+    score += (pkg.rating?.average || 0) * 6; // 5 stars = 30 points
+    
+    // Feature match (20% weight)
+    const featureMatches = context.preferences.filter((pref: string) => 
+      pkg.features.some((feature: string) => 
+        feature.toLowerCase().includes(pref.toLowerCase())
+      )
+    ).length;
+    score += (featureMatches / Math.max(context.preferences.length, 1)) * 20;
+    
+    // Location match (10% weight)
+    const hasLocationMatch = pkg.venues?.some((venue: any) => 
+      venue.location?.city?.toLowerCase().includes(context.location.toLowerCase())
+    );
+    if (hasLocationMatch) score += 10;
+    
+    return Math.min(Math.round(score), 100);
+  }
+
+  // Generate personalized features for package
+  private generatePersonalizedFeatures(pkg: any, context: WeddingContext): string[] {
+    const features = [...(pkg.features || [])];
+    
+    // Add personalized features based on context
+    if (context.guestCount > 200) {
+      features.push(`Accommodates ${context.guestCount}+ guests`);
+    }
+    
+    if (context.budget > 1000000) {
+      features.push('Premium luxury experience');
+    }
+    
+    if (context.preferences.includes('Traditional')) {
+      features.push('Traditional Sri Lankan elements');
+    }
+    
+    if (context.preferences.includes('Modern')) {
+      features.push('Contemporary wedding styling');
+    }
+    
+    return features.slice(0, 8); // Limit to 8 features
+  }
+
+  // Generate why recommended for package
+  private generatePackageWhyRecommended(pkg: any, context: WeddingContext): string[] {
+    const reasons = [];
+    
+    if (pkg.price <= context.budget) {
+      reasons.push('Fits perfectly within your budget');
+    }
+    
+    if (pkg.rating?.average >= 4.5) {
+      reasons.push('Highly rated by previous couples');
+    }
+    
+    if (pkg.features?.length > 6) {
+      reasons.push('Comprehensive package with many inclusions');
+    }
+    
+    if (pkg.venues?.length > 0) {
+      reasons.push('Includes premium venue options');
+    }
+    
+    return reasons;
   }
 }
 

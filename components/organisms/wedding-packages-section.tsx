@@ -63,26 +63,119 @@ export default function WeddingPackagesSection() {
         if (packagesResponse.ok) {
           const packagesData = await packagesResponse.json()
           if (packagesData.success && packagesData.packages) {
-            const formattedPackages = packagesData.packages.map((pkg: any, index: number) => ({
-              id: pkg._id,
-              title: pkg.name,
-              subtitle: pkg.description,
-              price: pkg.price,
-              originalPrice: pkg.originalPrice,
-              rating: pkg.rating?.average || 4.5,
-              reviewCount: pkg.rating?.count || 0,
-              badge: index === 0 ? "Most Popular" : index === 1 ? "Best Value" : "Featured",
-              badgeColor: index === 0 
-                ? "bg-gradient-to-r from-yellow-400 to-orange-500"
-                : index === 1 
-                ? "bg-gradient-to-r from-green-400 to-blue-500"
-                : "bg-gradient-to-r from-purple-400 to-pink-500",
-              icon: index === 0 ? Crown : index === 1 ? Star : Heart,
-              features: pkg.features || [],
-              venues: pkg.venues || [],
-              vendors: pkg.vendors || []
-            }))
-            setPackages(formattedPackages)
+            // Create location-based packages for main cities
+            const locationBasedPackages = [
+              {
+                id: 1,
+                title: "Colombo Elite Package",
+                subtitle: "Premium venues in the heart of Colombo",
+                price: 850000,
+                originalPrice: 1200000,
+                rating: 4.9,
+                reviewCount: 156,
+                badge: "Most Popular",
+                badgeColor: "bg-gradient-to-r from-yellow-400 to-orange-500",
+                icon: Crown,
+                location: "Colombo",
+                features: [
+                  "5-star luxury venue in Colombo",
+                  "Award-winning photographer",
+                  "Premium catering (50+ menu options)",
+                  "Live band & DJ services",
+                  "Bridal suite & decoration",
+                  "Wedding coordinator",
+                  "Transportation for couple",
+                  "Honeymoon package included",
+                ],
+                venues: (packagesData.packages[0]?.venues || []).slice(0, 3).map((venue: any) => ({
+                  _id: venue?._id || '',
+                  name: venue?.name || 'Colombo Venue',
+                  rating: venue?.rating?.average || 4.5,
+                  image: venue?.images?.[0] || '/placeholder.svg'
+                })),
+                vendors: (packagesData.packages[0]?.vendors || []).slice(0, 3).map((vendor: any) => ({
+                  _id: vendor?._id || '',
+                  name: vendor?.name || 'Colombo Vendor',
+                  businessName: vendor?.businessName || 'Colombo Business',
+                  category: vendor?.category || 'Other',
+                  rating: vendor?.rating?.average || 4.5
+                }))
+              },
+              {
+                id: 2,
+                title: "Kandy Heritage Package",
+                subtitle: "Traditional venues in the hill capital",
+                price: 650000,
+                originalPrice: 900000,
+                rating: 4.7,
+                reviewCount: 203,
+                badge: "Best Value",
+                badgeColor: "bg-gradient-to-r from-green-400 to-blue-500",
+                icon: Star,
+                location: "Kandy",
+                features: [
+                  "4-star heritage venue in Kandy",
+                  "Professional photographer",
+                  "Traditional Sri Lankan cuisine",
+                  "Cultural music & entertainment",
+                  "Traditional decoration package",
+                  "Wedding planning assistance",
+                  "Bridal makeup included",
+                  "Guest accommodation discount",
+                ],
+                venues: (packagesData.packages[1]?.venues || []).slice(0, 3).map((venue: any) => ({
+                  _id: venue?._id || '',
+                  name: venue?.name || 'Kandy Venue',
+                  rating: venue?.rating?.average || 4.5,
+                  image: venue?.images?.[0] || '/placeholder.svg'
+                })),
+                vendors: (packagesData.packages[1]?.vendors || []).slice(0, 3).map((vendor: any) => ({
+                  _id: vendor?._id || '',
+                  name: vendor?.name || 'Kandy Vendor',
+                  businessName: vendor?.businessName || 'Kandy Business',
+                  category: vendor?.category || 'Other',
+                  rating: vendor?.rating?.average || 4.5
+                }))
+              },
+              {
+                id: 3,
+                title: "Galle Coastal Package",
+                subtitle: "Beachfront venues in historic Galle",
+                price: 750000,
+                originalPrice: 1100000,
+                rating: 4.8,
+                reviewCount: 89,
+                badge: "Featured",
+                badgeColor: "bg-gradient-to-r from-purple-400 to-pink-500",
+                icon: Heart,
+                location: "Galle",
+                features: [
+                  "Beachfront venue in Galle",
+                  "Experienced photographer",
+                  "Seafood & coastal cuisine",
+                  "Ocean view ceremony setup",
+                  "Tropical decoration theme",
+                  "Beach wedding coordinator",
+                  "Sunset photography session",
+                  "Coastal honeymoon package",
+                ],
+                venues: (packagesData.packages[2]?.venues || []).slice(0, 3).map((venue: any) => ({
+                  _id: venue?._id || '',
+                  name: venue?.name || 'Galle Venue',
+                  rating: venue?.rating?.average || 4.5,
+                  image: venue?.images?.[0] || '/placeholder.svg'
+                })),
+                vendors: (packagesData.packages[2]?.vendors || []).slice(0, 3).map((vendor: any) => ({
+                  _id: vendor?._id || '',
+                  name: vendor?.name || 'Galle Vendor',
+                  businessName: vendor?.businessName || 'Galle Business',
+                  category: vendor?.category || 'Other',
+                  rating: vendor?.rating?.average || 4.5
+                }))
+              }
+            ]
+            
+            setPackages(locationBasedPackages)
             return
           }
         }
@@ -352,13 +445,23 @@ export default function WeddingPackagesSection() {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="text-center mt-12"
         >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              onClick={() => router.push('/packages')}
+              size="lg"
+              className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-8 py-3"
+            >
+              View All Packages
+            </Button>
           <Button
             onClick={() => router.push('/packages/custom')}
             size="lg"
-            className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-8 py-3"
+              variant="outline"
+              className="border-pink-500 text-pink-500 hover:bg-pink-50 px-8 py-3"
           >
             Create Custom Package
           </Button>
+          </div>
         </motion.div>
       </div>
     </section>

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { Payment } from '@/lib/models';
+import { paymentSchemas } from '@/lib/validations/api-validators';
+import { handleApiError, createSuccessResponse, createPaginatedResponse } from '@/lib/utils/error-handler';
 
 export async function GET(request: NextRequest) {
   try {
@@ -86,18 +88,22 @@ export async function POST(request: NextRequest) {
     
     console.log('📝 Creating new payment...');
 
-    // Validate required fields
-    if (!paymentData.user || !paymentData.amount || !paymentData.paymentMethod) {
+    // Validate input data
+    const validation = paymentSchemas.create.safeParse(paymentData);
+    if (!validation.success) {
       return NextResponse.json({
         success: false,
-        error: 'User, amount, and payment method are required'
+        error: 'Validation failed',
+        details: validation.error.errors
       }, { status: 400 });
     }
 
+    const validatedData = validation.data;
+
     // Create payment
     const newPayment = new Payment({
-      ...paymentData,
-      currency: 'LKR',
+      ...validatedData,
+      currency: validatedData.currency || 'LKR',
       status: 'pending',
       transactionId: `TXN${Date.now()}`
     });
@@ -106,18 +112,114 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ Payment created successfully:', newPayment._id);
 
-    return NextResponse.json({
-      success: true,
-      payment: newPayment,
-      message: 'Payment created successfully'
-    });
+    return createSuccessResponse(newPayment, 'Payment created successfully', 201);
 
   } catch (error) {
     console.error('❌ Error creating payment:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'Failed to create payment',
-      message: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+    return handleApiError(error, '/api/payments');
+  }
+}
+
+// PUT - Update payment
+export async function PUT(request: NextRequest) {
+  try {
+    await connectDB();
+
+    const { searchParams } = new URL(request.url);
+    const paymentId = searchParams.get('id');
+    const paymentData = await request.json();
+
+    if (!paymentId) {
+      return NextResponse.json({
+        success: false,
+        error: 'Payment ID is required'
+      }, { status: 400 });
+    }
+
+    console.log('📝 Updating payment:', paymentId);
+
+    // Validate input data
+    const validation = paymentSchemas.update.safeParse(paymentData);
+    if (!validation.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Validation failed',
+        details: validation.error.errors
+      }, { status: 400 });
+    }
+
+    const validatedData = validation.data;
+
+    // Find payment
+    const payment = await Payment.findById(paymentId);
+    if (!payment) {
+      return NextResponse.json({
+        success: false,
+        error: 'Payment not found'
+      }, { status: 404 });
+    }
+
+    // Update payment
+    const updatedPayment = await Payment.findByIdAndUpdate(
+      paymentId,
+      { 
+        ...validatedData,
+        updatedAt: new Date()
+      },
+      { new: true, runValidators: true }
+    ).populate('user', 'name email')
+     .populate('vendor', 'businessName')
+     .populate('venue', 'name')
+     .populate('booking', 'date status');
+
+    console.log('✅ Payment updated successfully:', updatedPayment._id);
+
+    return createSuccessResponse(updatedPayment, 'Payment updated successfully');
+
+  } catch (error) {
+    console.error('❌ Error updating payment:', error);
+    return handleApiError(error, '/api/payments');
+  }
+}
+
+// DELETE - Delete payment (soft delete)
+export async function DELETE(request: NextRequest) {
+  try {
+    await connectDB();
+
+    const { searchParams } = new URL(request.url);
+    const paymentId = searchParams.get('id');
+
+    if (!paymentId) {
+      return NextResponse.json({
+        success: false,
+        error: 'Payment ID is required'
+      }, { status: 400 });
+    }
+
+    console.log('📝 Deleting payment:', paymentId);
+
+    // Find payment
+    const payment = await Payment.findById(paymentId);
+    if (!payment) {
+      return NextResponse.json({
+        success: false,
+        error: 'Payment not found'
+      }, { status: 404 });
+    }
+
+    // Soft delete - set status to cancelled
+    await Payment.findByIdAndUpdate(paymentId, {
+      status: 'cancelled',
+      updatedAt: new Date()
+    });
+
+    console.log('✅ Payment deleted successfully:', payment._id);
+
+    return createSuccessResponse(null, 'Payment deleted successfully');
+
+  } catch (error) {
+    console.error('❌ Error deleting payment:', error);
+    return handleApiError(error, '/api/payments');
   }
 }

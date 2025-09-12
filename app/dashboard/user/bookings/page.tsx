@@ -9,7 +9,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Calendar, Clock, DollarSign, MapPin, Star, Eye, MessageSquare, Download, X } from 'lucide-react';
+import { Calendar, Clock, DollarSign, MapPin, Star, Eye, MessageSquare, Download, X, CheckCircle, Mail, Phone } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
 
 interface Booking {
   id: string;

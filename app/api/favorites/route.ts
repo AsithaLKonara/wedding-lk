@@ -1,21 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { Favorite } from '@/lib/models/favorite';
+import { withAuth, requireUser } from '@/lib/middleware/auth-middleware';
+import { withRateLimit, rateLimitConfigs } from '@/lib/middleware/rate-limit-middleware';
 
-export async function GET(request: NextRequest) {
+async function getFavorites(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const userId = searchParams.get('userId');
     const type = searchParams.get('type'); // 'venue' or 'vendor'
-
-    // If no userId provided, return empty array for now
-    if (!userId) {
-      return NextResponse.json({
-        success: true,
-        favorites: [],
-        message: 'No user ID provided'
-      });
-    }
+    
+    // Get user from authenticated request
+    const user = (request as any).user;
+    const userId = user.id;
 
     await connectDB();
 
@@ -43,11 +39,20 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
-  try {
-    const { userId, itemId, type } = await request.json();
+export const GET = withRateLimit(
+  rateLimitConfigs.api,
+  withAuth(getFavorites, requireUser())
+);
 
-    if (!userId || !itemId || !type) {
+async function addFavorite(request: NextRequest) {
+  try {
+    const { itemId, type } = await request.json();
+    
+    // Get user from authenticated request
+    const user = (request as any).user;
+    const userId = user.id;
+
+    if (!itemId || !type) {
       return NextResponse.json({
         success: false,
         error: 'Missing required fields'
@@ -87,14 +92,22 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function DELETE(request: NextRequest) {
+export const POST = withRateLimit(
+  rateLimitConfigs.api,
+  withAuth(addFavorite, requireUser())
+);
+
+async function deleteFavorite(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const userId = searchParams.get('userId');
     const itemId = searchParams.get('itemId');
     const type = searchParams.get('type');
+    
+    // Get user from authenticated request
+    const user = (request as any).user;
+    const userId = user.id;
 
-    if (!userId || !itemId || !type) {
+    if (!itemId || !type) {
       return NextResponse.json({
         success: false,
         error: 'Missing required parameters'
@@ -125,3 +138,8 @@ export async function DELETE(request: NextRequest) {
     }, { status: 500 });
   }
 }
+
+export const DELETE = withRateLimit(
+  rateLimitConfigs.api,
+  withAuth(deleteFavorite, requireUser())
+);

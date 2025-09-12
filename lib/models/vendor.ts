@@ -77,7 +77,16 @@ const VendorSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  },
+  }
 )
+
+// Add indexes for better search performance
+VendorSchema.index({ businessName: 'text', description: 'text', 'services.name': 'text' });
+VendorSchema.index({ category: 1 });
+VendorSchema.index({ 'location.city': 1, 'location.province': 1 });
+VendorSchema.index({ 'pricing.startingPrice': 1 });
+VendorSchema.index({ 'rating.average': -1 });
+VendorSchema.index({ isActive: 1, isVerified: 1 });
+VendorSchema.index({ createdAt: -1 });
 
 export const Vendor = mongoose.models.Vendor || mongoose.model("Vendor", VendorSchema)

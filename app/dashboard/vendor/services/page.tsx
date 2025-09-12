@@ -50,16 +50,35 @@ export default function VendorServicesPage() {
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    description: string;
+    category: string;
+    price: number;
+    priceType: 'fixed' | 'hourly' | 'package';
+    duration: number;
+    location: string;
+    status: 'active' | 'inactive' | 'pending';
+    features: string[];
+    availability: {
+      monday: boolean;
+      tuesday: boolean;
+      wednesday: boolean;
+      thursday: boolean;
+      friday: boolean;
+      saturday: boolean;
+      sunday: boolean;
+    };
+  }>({
     name: '',
     description: '',
     category: '',
     price: 0,
-    priceType: 'fixed' as const,
+    priceType: 'fixed',
     duration: 0,
     location: '',
-    status: 'active' as const,
-    features: [] as string[],
+    status: 'active',
+    features: [],
     availability: {
       monday: true,
       tuesday: true,

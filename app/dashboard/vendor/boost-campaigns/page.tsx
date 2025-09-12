@@ -44,10 +44,19 @@ export default function VendorBoostCampaignsPage() {
   const [filterType, setFilterType] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCampaigns, setSelectedCampaigns] = useState<string[]>([]);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    description: string;
+    type: 'featured' | 'premium' | 'sponsored';
+    budget: number;
+    duration: number;
+    startDate: string;
+    endDate: string;
+    targetAudience: string;
+  }>({
     name: '',
     description: '',
-    type: 'featured' as const,
+    type: 'featured',
     budget: 0,
     duration: 30,
     startDate: '',

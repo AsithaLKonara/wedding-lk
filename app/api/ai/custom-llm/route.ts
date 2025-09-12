@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import getServerSession from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getServerSession } from '@/lib/auth-utils';
 import customLLMService from '@/lib/custom-llm-service';
 import PerformanceMonitor from '@/lib/performance-monitor';
 
@@ -8,9 +7,9 @@ import PerformanceMonitor from '@/lib/performance-monitor';
 export async function POST(request: NextRequest) {
   return PerformanceMonitor.trackAPIPerformance('custom-llm-query', async () => {
     try {
-      const session = await getServerSession(authOptions);
+      const session = await getServerSession();
       
-      if (!session || !(session as any).user || !(session as any).user.id) {
+      if (!session?.user || !('id' in session.user)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       }
 
@@ -89,9 +88,9 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   return PerformanceMonitor.trackAPIPerformance('custom-llm-status', async () => {
     try {
-      const session = await getServerSession(authOptions);
+      const session = await getServerSession();
       
-      if (!session || !(session as any).user || !(session as any).user.id) {
+      if (!session?.user || !('id' in session.user)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       }
 

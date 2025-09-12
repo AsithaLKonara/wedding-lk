@@ -43,7 +43,18 @@ export default function PlannerClientsPage() {
   const [filterPriority, setFilterPriority] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClients, setSelectedClients] = useState<string[]>([]);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    email: string;
+    phone: string;
+    weddingDate: string;
+    budget: number;
+    guestCount: number;
+    venue: string;
+    status: 'prospect' | 'active' | 'completed' | 'cancelled';
+    priority: 'low' | 'medium' | 'high' | 'urgent';
+    notes: string;
+  }>({
     name: '',
     email: '',
     phone: '',
@@ -51,8 +62,8 @@ export default function PlannerClientsPage() {
     budget: 0,
     guestCount: 0,
     venue: '',
-    status: 'prospect' as const,
-    priority: 'medium' as const,
+    status: 'prospect',
+    priority: 'medium',
     notes: ''
   });
 

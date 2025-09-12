@@ -77,3 +77,4 @@ PackageSchema.index({ price: 1 });
 PackageSchema.index({ 'rating.average': -1 });
 
 export const Package = mongoose.models.Package || mongoose.model<IPackage>('Package', PackageSchema);
+

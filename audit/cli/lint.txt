@@ -1,0 +1,1100 @@
+
+> weddinglk-next@1.0.0 lint
+> next lint
+
+
+ ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config
+
+./app/api/ai/custom-llm/route.ts
+13:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+13:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+94:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+94:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/ai-search-enhanced/route.ts
+86:17  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/analytics/route.ts
+31:11  Error: Unexpected lexical declaration in case block.  no-case-declarations
+35:11  Error: Unexpected lexical declaration in case block.  no-case-declarations
+45:11  Error: Unexpected lexical declaration in case block.  no-case-declarations
+54:11  Error: Unexpected lexical declaration in case block.  no-case-declarations
+
+./app/api/auth/[...nextauth]/route.ts
+7:8  Warning: 'bcrypt' is defined but never used.  no-unused-vars
+7:8  Warning: 'bcrypt' is defined but never used.  @typescript-eslint/no-unused-vars
+95:41  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+95:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+103:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+103:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+105:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+106:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/auth/oauth/instagram/route.ts
+65:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/auth/register/route.ts
+93:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/auth/session/route.ts
+3:27  Warning: 'request' is defined but never used.  no-unused-vars
+3:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/auth/social-accounts/route.ts
+13:27  Warning: 'request' is defined but never used.  no-unused-vars
+13:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/auth/social-login/route.ts
+3:10  Warning: 'User' is defined but never used.  no-unused-vars
+3:10  Warning: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+12:30  Warning: 'role' is assigned a value but never used.  no-unused-vars
+12:30  Warning: 'role' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/bookings/[id]/route.ts
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  no-unused-vars
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  @typescript-eslint/no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  @typescript-eslint/no-unused-vars
+3:45  Warning: 'requireAdmin' is defined but never used.  no-unused-vars
+3:45  Warning: 'requireAdmin' is defined but never used.  @typescript-eslint/no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  @typescript-eslint/no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  @typescript-eslint/no-unused-vars
+4:10  Warning: 'User' is defined but never used.  no-unused-vars
+4:10  Warning: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/bookings/route.ts
+20:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/cache-demo/route.ts
+27:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+34:9  Error: Unexpected lexical declaration in case block.  no-case-declarations
+88:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+133:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+230:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/conversations/route.ts
+7:27  Warning: 'request' is defined but never used.  no-unused-vars
+7:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/dashboard/admin/activity/route.ts
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  no-unused-vars
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  @typescript-eslint/no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  @typescript-eslint/no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  @typescript-eslint/no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  @typescript-eslint/no-unused-vars
+4:10  Warning: 'User' is defined but never used.  no-unused-vars
+4:10  Warning: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/dashboard/admin/analytics/route.ts
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  no-unused-vars
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  @typescript-eslint/no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  @typescript-eslint/no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  @typescript-eslint/no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+5:10  Warning: 'formatCurrency' is defined but never used.  no-unused-vars
+5:10  Warning: 'formatCurrency' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/dashboard/admin/platform-stats/route.ts
+11:27  Warning: 'request' is defined but never used.  no-unused-vars
+11:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/dashboard/admin/settings/route.ts
+138:17  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/admin/stats/route.ts
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+5:10  Warning: 'formatCurrency' is defined but never used.  no-unused-vars
+5:10  Warning: 'formatCurrency' is defined but never used.  @typescript-eslint/no-unused-vars
+7:27  Warning: 'request' is defined but never used.  no-unused-vars
+7:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+29:11  Warning: 'totalReviews' is assigned a value but never used.  no-unused-vars
+29:11  Warning: 'totalReviews' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/dashboard/admin/users/route.ts
+4:10  Warning: 'VendorProfile' is defined but never used.  no-unused-vars
+4:10  Warning: 'VendorProfile' is defined but never used.  @typescript-eslint/no-unused-vars
+5:10  Warning: 'WeddingPlannerProfile' is defined but never used.  no-unused-vars
+5:10  Warning: 'WeddingPlannerProfile' is defined but never used.  @typescript-eslint/no-unused-vars
+32:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+44:17  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+112:32  Warning: 'permissions' is assigned a value but never used.  no-unused-vars
+112:32  Warning: 'permissions' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+228:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/admin/vendors/route.ts
+26:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/planner/clients/route.ts
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+35:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+51:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/planner/stats/route.ts
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+5:10  Warning: 'formatCurrency' is defined but never used.  no-unused-vars
+5:10  Warning: 'formatCurrency' is defined but never used.  @typescript-eslint/no-unused-vars
+7:27  Warning: 'request' is defined but never used.  no-unused-vars
+7:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/dashboard/planner/tasks/route.ts
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+31:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/planner/timeline/route.ts
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+36:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/user/activity/route.ts
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+41:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/user/bookings/route.ts
+26:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/user/events/route.ts
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+36:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/user/favorites/route.ts
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/dashboard/user/payments/route.ts
+26:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/user/profile/route.ts
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/dashboard/user/stats/route.ts
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+5:10  Warning: 'formatCurrency' is defined but never used.  no-unused-vars
+5:10  Warning: 'formatCurrency' is defined but never used.  @typescript-eslint/no-unused-vars
+7:27  Warning: 'request' is defined but never used.  no-unused-vars
+7:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/dashboard/user/tasks/route.ts
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+31:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/user-stats/route.ts
+9:27  Warning: 'request' is defined but never used.  no-unused-vars
+9:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/dashboard/vendor/analytics/route.ts
+161:71  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/vendor/bookings/route.ts
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+37:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/vendor/messages/route.ts
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/dashboard/vendor/services/route.ts
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+33:76  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/dashboard/vendor/stats/route.ts
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+5:10  Warning: 'formatCurrency' is defined but never used.  no-unused-vars
+5:10  Warning: 'formatCurrency' is defined but never used.  @typescript-eslint/no-unused-vars
+7:27  Warning: 'request' is defined but never used.  no-unused-vars
+7:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/debug-admin-user/route.ts
+1:10  Warning: 'NextRequest' is defined but never used.  no-unused-vars
+1:10  Warning: 'NextRequest' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/favorites/route.ts
+22:9  Error: 'query' is never reassigned. Use 'const' instead.  prefer-const
+22:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/gallery/route.ts
+17:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+37:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+43:11  Warning: 'total' is assigned a value but never used.  no-unused-vars
+43:11  Warning: 'total' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+47:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+62:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/gallery/stats/route.ts
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+76:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/home/stats/route.ts
+13:27  Warning: 'request' is defined but never used.  no-unused-vars
+13:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+17:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/home/testimonials/route.ts
+5:27  Warning: 'request' is defined but never used.  no-unused-vars
+5:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/mobile/route.ts
+40:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+122:11  Error: Unexpected lexical declaration in case block.  no-case-declarations
+128:11  Error: Unexpected lexical declaration in case block.  no-case-declarations
+134:11  Error: Unexpected lexical declaration in case block.  no-case-declarations
+140:11  Error: Unexpected lexical declaration in case block.  no-case-declarations
+
+./app/api/packages/route.ts
+14:9  Error: 'query' is never reassigned. Use 'const' instead.  prefer-const
+14:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/payments/[id]/route.ts
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  no-unused-vars
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  @typescript-eslint/no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  @typescript-eslint/no-unused-vars
+3:45  Warning: 'requireAdmin' is defined but never used.  no-unused-vars
+3:45  Warning: 'requireAdmin' is defined but never used.  @typescript-eslint/no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  @typescript-eslint/no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  @typescript-eslint/no-unused-vars
+4:10  Warning: 'User' is defined but never used.  no-unused-vars
+4:10  Warning: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/payments/route.ts
+21:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/payments/webhook/route.ts
+11:66  Warning: 'customerName' is assigned a value but never used.  no-unused-vars
+11:66  Warning: 'customerName' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/performance/route.ts
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/posts/route.ts
+18:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+38:9  Warning: 'sortQuery' is assigned a value but never used.  no-unused-vars
+38:9  Error: 'sortQuery' is never reassigned. Use 'const' instead.  prefer-const
+38:9  Warning: 'sortQuery' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+42:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+42:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+49:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+49:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+57:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/reviews/[id]/route.ts
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  no-unused-vars
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  @typescript-eslint/no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  @typescript-eslint/no-unused-vars
+3:45  Warning: 'requireAdmin' is defined but never used.  no-unused-vars
+3:45  Warning: 'requireAdmin' is defined but never used.  @typescript-eslint/no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  @typescript-eslint/no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  @typescript-eslint/no-unused-vars
+4:10  Warning: 'User' is defined but never used.  no-unused-vars
+4:10  Warning: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/reviews/route.ts
+4:31  Warning: 'Booking' is defined but never used.  no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+20:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/security/route.ts
+22:25  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+97:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+100:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/tasks/[id]/route.ts
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  no-unused-vars
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  @typescript-eslint/no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  @typescript-eslint/no-unused-vars
+3:45  Warning: 'requireAdmin' is defined but never used.  no-unused-vars
+3:45  Warning: 'requireAdmin' is defined but never used.  @typescript-eslint/no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  @typescript-eslint/no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  @typescript-eslint/no-unused-vars
+4:10  Warning: 'User' is defined but never used.  no-unused-vars
+4:10  Warning: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/tasks/route.build.ts
+3:27  Warning: 'request' is defined but never used.  no-unused-vars
+3:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+7:28  Warning: 'request' is defined but never used.  no-unused-vars
+7:28  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+11:29  Warning: 'request' is defined but never used.  no-unused-vars
+11:29  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+15:30  Warning: 'request' is defined but never used.  no-unused-vars
+15:30  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/tasks/route.ts
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+32:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/test-auth/route.ts
+6:27  Warning: 'request' is defined but never used.  no-unused-vars
+6:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/test-models/route.ts
+5:27  Warning: 'request' is defined but never used.  no-unused-vars
+5:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/third-party/route.ts
+40:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/upload/route.ts
+7:17  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+96:17  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+96:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+103:11  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+177:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+303:25  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/vendors/[id]/route.ts
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  no-unused-vars
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  @typescript-eslint/no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  @typescript-eslint/no-unused-vars
+3:45  Warning: 'requireAdmin' is defined but never used.  no-unused-vars
+3:45  Warning: 'requireAdmin' is defined but never used.  @typescript-eslint/no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  @typescript-eslint/no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  @typescript-eslint/no-unused-vars
+4:10  Warning: 'User' is defined but never used.  no-unused-vars
+4:10  Warning: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  no-unused-vars
+4:24  Warning: 'Venue' is defined but never used.  @typescript-eslint/no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/vendors/categories/route.ts
+5:27  Warning: 'request' is defined but never used.  no-unused-vars
+5:27  Warning: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/vendors/route.ts
+18:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/vendors/search/route.ts
+20:9  Error: 'query' is never reassigned. Use 'const' instead.  prefer-const
+20:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/venue-boosts/analytics/route.ts
+28:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+99:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+100:51  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+101:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+102:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+103:51  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+104:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+105:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+106:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+133:59  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+134:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+135:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+136:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+187:39  Warning: 'metadata' is assigned a value but never used.  no-unused-vars
+187:39  Warning: 'metadata' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+206:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/venue-boosts/route.ts
+164:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+207:83  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+273:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/venues/[id]/route.ts
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  no-unused-vars
+3:10  Warning: 'getAuthenticatedUser' is defined but never used.  @typescript-eslint/no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  no-unused-vars
+3:32  Warning: 'requireAuth' is defined but never used.  @typescript-eslint/no-unused-vars
+3:45  Warning: 'requireAdmin' is defined but never used.  no-unused-vars
+3:45  Warning: 'requireAdmin' is defined but never used.  @typescript-eslint/no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  no-unused-vars
+3:59  Warning: 'requireVendor' is defined but never used.  @typescript-eslint/no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  no-unused-vars
+3:74  Warning: 'requireWeddingPlanner' is defined but never used.  @typescript-eslint/no-unused-vars
+4:10  Warning: 'User' is defined but never used.  no-unused-vars
+4:10  Warning: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  no-unused-vars
+4:16  Warning: 'Vendor' is defined but never used.  @typescript-eslint/no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  no-unused-vars
+4:31  Warning: 'Booking' is defined but never used.  @typescript-eslint/no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  no-unused-vars
+4:40  Warning: 'Payment' is defined but never used.  @typescript-eslint/no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  no-unused-vars
+4:49  Warning: 'Review' is defined but never used.  @typescript-eslint/no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  no-unused-vars
+4:57  Warning: 'Task' is defined but never used.  @typescript-eslint/no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  no-unused-vars
+4:63  Warning: 'Post' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/api/venues/availability/route.ts
+41:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/venues/pricing/route.ts
+55:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+67:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+78:61  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/venues/route.ts
+20:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/venues/search/route.ts
+21:9  Error: 'query' is never reassigned. Use 'const' instead.  prefer-const
+21:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/auth/signin/page.tsx
+5:10  Warning: 'Button' is defined but never used.  no-unused-vars
+5:10  Warning: 'Button' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/admin/page.tsx
+19:3  Warning: 'AlertTriangle' is defined but never used.  no-unused-vars
+19:3  Warning: 'AlertTriangle' is defined but never used.  @typescript-eslint/no-unused-vars
+21:3  Warning: 'Clock' is defined but never used.  no-unused-vars
+21:3  Warning: 'Clock' is defined but never used.  @typescript-eslint/no-unused-vars
+24:3  Warning: 'LineChart' is defined but never used.  no-unused-vars
+24:3  Warning: 'LineChart' is defined but never used.  @typescript-eslint/no-unused-vars
+27:40  Warning: 'formatPercentage' is defined but never used.  no-unused-vars
+27:40  Warning: 'formatPercentage' is defined but never used.  @typescript-eslint/no-unused-vars
+49:17  Warning: 'session' is assigned a value but never used.  no-unused-vars
+49:17  Warning: 'session' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/admin/reports/page.tsx
+6:10  Warning: 'Badge' is defined but never used.  no-unused-vars
+6:10  Warning: 'Badge' is defined but never used.  @typescript-eslint/no-unused-vars
+11:3  Warning: 'BarChart3' is defined but never used.  no-unused-vars
+11:3  Warning: 'BarChart3' is defined but never used.  @typescript-eslint/no-unused-vars
+19:3  Warning: 'Filter' is defined but never used.  no-unused-vars
+19:3  Warning: 'Filter' is defined but never used.  @typescript-eslint/no-unused-vars
+25:3  Warning: 'CreditCard' is defined but never used.  no-unused-vars
+25:3  Warning: 'CreditCard' is defined but never used.  @typescript-eslint/no-unused-vars
+388:50  Warning: 'index' is defined but never used.  no-unused-vars
+388:50  Warning: 'index' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/admin/settings/page.tsx
+11:10  Warning: 'Separator' is defined but never used.  no-unused-vars
+11:10  Warning: 'Separator' is defined but never used.  @typescript-eslint/no-unused-vars
+19:3  Warning: 'Bell' is defined but never used.  no-unused-vars
+19:3  Warning: 'Bell' is defined but never used.  @typescript-eslint/no-unused-vars
+23:3  Warning: 'Server' is defined but never used.  no-unused-vars
+23:3  Warning: 'Server' is defined but never used.  @typescript-eslint/no-unused-vars
+24:3  Warning: 'Key' is defined but never used.  no-unused-vars
+24:3  Warning: 'Key' is defined but never used.  @typescript-eslint/no-unused-vars
+25:3  Warning: 'Users' is defined but never used.  no-unused-vars
+25:3  Warning: 'Users' is defined but never used.  @typescript-eslint/no-unused-vars
+179:83  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+192:9  Warning: 'getStatusIcon' is assigned a value but never used.  no-unused-vars
+192:9  Warning: 'getStatusIcon' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/admin/users/page.tsx
+41:11  Error: 'User' is already defined.  no-redeclare
+
+./app/dashboard/admin/vendors/page.tsx
+15:10  Warning: 'Progress' is defined but never used.  no-unused-vars
+15:10  Warning: 'Progress' is defined but never used.  @typescript-eslint/no-unused-vars
+16:30  Warning: 'Eye' is defined but never used.  no-unused-vars
+16:30  Warning: 'Eye' is defined but never used.  @typescript-eslint/no-unused-vars
+16:114  Warning: 'Users' is defined but never used.  no-unused-vars
+16:114  Warning: 'Users' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/ai-demo/page.tsx
+11:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/dashboard/cache-demo/page.tsx
+40:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+69:14  Warning: 'err' is defined but never used.  no-unused-vars
+69:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+92:14  Warning: 'err' is defined but never used.  no-unused-vars
+92:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+130:14  Warning: 'err' is defined but never used.  no-unused-vars
+130:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+159:14  Warning: 'err' is defined but never used.  no-unused-vars
+159:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/components/bookings-tab.tsx
+54:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/dashboard/components/favorites-tab.tsx
+54:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/dashboard/components/messages-tab.tsx
+54:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/dashboard/components/payments-tab.tsx
+54:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/dashboard/dashboard-content.tsx
+8:64  Warning: 'Star' is defined but never used.  no-unused-vars
+8:64  Warning: 'Star' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/favorites/page.tsx
+26:17  Warning: 'session' is assigned a value but never used.  no-unused-vars
+26:17  Warning: 'session' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+45:51  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+64:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/dashboard/loading.tsx
+1:41  Warning: 'CardTitle' is defined but never used.  no-unused-vars
+1:41  Warning: 'CardTitle' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/messages/messages-content.tsx
+12:18  Warning: 'MessageSquare' is defined but never used.  no-unused-vars
+12:18  Warning: 'MessageSquare' is defined but never used.  @typescript-eslint/no-unused-vars
+19:25  Warning: 'setConversations' is assigned a value but never used.  no-unused-vars
+19:25  Warning: 'setConversations' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/page.tsx
+6:10  Warning: 'Loader2' is defined but never used.  no-unused-vars
+6:10  Warning: 'Loader2' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/planner/clients/page.tsx
+16:30  Warning: 'Eye' is defined but never used.  no-unused-vars
+16:30  Warning: 'Eye' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/planner/page.tsx
+15:3  Warning: 'FileText' is defined but never used.  no-unused-vars
+15:3  Warning: 'FileText' is defined but never used.  @typescript-eslint/no-unused-vars
+18:3  Warning: 'Edit' is defined but never used.  no-unused-vars
+18:3  Warning: 'Edit' is defined but never used.  @typescript-eslint/no-unused-vars
+19:3  Warning: 'Trash2' is defined but never used.  no-unused-vars
+19:3  Warning: 'Trash2' is defined but never used.  @typescript-eslint/no-unused-vars
+21:3  Warning: 'MapPin' is defined but never used.  no-unused-vars
+21:3  Warning: 'MapPin' is defined but never used.  @typescript-eslint/no-unused-vars
+22:3  Warning: 'Phone' is defined but never used.  no-unused-vars
+22:3  Warning: 'Phone' is defined but never used.  @typescript-eslint/no-unused-vars
+23:3  Warning: 'Mail' is defined but never used.  no-unused-vars
+23:3  Warning: 'Mail' is defined but never used.  @typescript-eslint/no-unused-vars
+24:3  Warning: 'Heart' is defined but never used.  no-unused-vars
+24:3  Warning: 'Heart' is defined but never used.  @typescript-eslint/no-unused-vars
+34:40  Warning: 'getRelativeTime' is defined but never used.  no-unused-vars
+34:40  Warning: 'getRelativeTime' is defined but never used.  @typescript-eslint/no-unused-vars
+34:57  Warning: 'daysUntil' is defined but never used.  no-unused-vars
+34:57  Warning: 'daysUntil' is defined but never used.  @typescript-eslint/no-unused-vars
+89:17  Warning: 'session' is assigned a value but never used.  no-unused-vars
+89:17  Warning: 'session' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/planner/timeline/page.tsx
+4:29  Warning: 'CardDescription' is defined but never used.  no-unused-vars
+4:29  Warning: 'CardDescription' is defined but never used.  @typescript-eslint/no-unused-vars
+12:40  Warning: 'Circle' is defined but never used.  no-unused-vars
+12:40  Warning: 'Circle' is defined but never used.  @typescript-eslint/no-unused-vars
+36:26  Warning: 'setFilterCategory' is assigned a value but never used.  no-unused-vars
+36:26  Warning: 'setFilterCategory' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+37:24  Warning: 'setFilterStatus' is assigned a value but never used.  no-unused-vars
+37:24  Warning: 'setFilterStatus' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+38:22  Warning: 'setSearchTerm' is assigned a value but never used.  no-unused-vars
+38:22  Warning: 'setSearchTerm' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+227:9  Warning: 'handleStatusChange' is assigned a value but never used.  no-unused-vars
+227:9  Warning: 'handleStatusChange' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+230:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/dashboard/planning/page.tsx
+26:17  Warning: 'session' is assigned a value but never used.  no-unused-vars
+26:17  Warning: 'session' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+41:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/dashboard/profile/page.tsx
+9:10  Warning: 'Textarea' is defined but never used.  no-unused-vars
+9:10  Warning: 'Textarea' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/redirect/page.tsx
+6:10  Warning: 'Loader2' is defined but never used.  no-unused-vars
+6:10  Warning: 'Loader2' is defined but never used.  @typescript-eslint/no-unused-vars
+21:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/dashboard/role-based-dashboard.tsx
+8:127  Warning: 'UserCheck' is defined but never used.  no-unused-vars
+8:127  Warning: 'UserCheck' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/settings/page.tsx
+90:10  Warning: 'otpSent' is assigned a value but never used.  no-unused-vars
+90:10  Warning: 'otpSent' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+92:10  Warning: 'otpStatus' is assigned a value but never used.  no-unused-vars
+92:10  Warning: 'otpStatus' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+92:21  Warning: 'setOtpStatus' is assigned a value but never used.  no-unused-vars
+92:21  Warning: 'setOtpStatus' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+95:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+114:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+163:14  Warning: 'error' is defined but never used.  no-unused-vars
+163:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+194:14  Warning: 'error' is defined but never used.  no-unused-vars
+194:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+214:14  Warning: 'error' is defined but never used.  no-unused-vars
+214:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/social-accounts/page.tsx
+11:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/dashboard/subscription/page.tsx
+60:20  Warning: 'setPayments' is assigned a value but never used.  no-unused-vars
+60:20  Warning: 'setPayments' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/user/favorites/page.tsx
+4:29  Warning: 'CardDescription' is defined but never used.  no-unused-vars
+4:29  Warning: 'CardDescription' is defined but never used.  @typescript-eslint/no-unused-vars
+4:46  Warning: 'CardHeader' is defined but never used.  no-unused-vars
+4:46  Warning: 'CardHeader' is defined but never used.  @typescript-eslint/no-unused-vars
+4:58  Warning: 'CardTitle' is defined but never used.  no-unused-vars
+4:58  Warning: 'CardTitle' is defined but never used.  @typescript-eslint/no-unused-vars
+11:31  Warning: 'Phone' is defined but never used.  no-unused-vars
+11:31  Warning: 'Phone' is defined but never used.  @typescript-eslint/no-unused-vars
+11:38  Warning: 'Mail' is defined but never used.  no-unused-vars
+11:38  Warning: 'Mail' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/user/page.tsx
+15:3  Warning: 'Bell' is defined but never used.  no-unused-vars
+15:3  Warning: 'Bell' is defined but never used.  @typescript-eslint/no-unused-vars
+16:3  Warning: 'User' is defined but never used.  no-unused-vars
+16:3  Warning: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+17:3  Warning: 'LogOut' is defined but never used.  no-unused-vars
+17:3  Warning: 'LogOut' is defined but never used.  @typescript-eslint/no-unused-vars
+20:3  Warning: 'Clock' is defined but never used.  no-unused-vars
+20:3  Warning: 'Clock' is defined but never used.  @typescript-eslint/no-unused-vars
+21:3  Warning: 'Star' is defined but never used.  no-unused-vars
+21:3  Warning: 'Star' is defined but never used.  @typescript-eslint/no-unused-vars
+31:26  Warning: 'daysUntil' is defined but never used.  no-unused-vars
+31:26  Warning: 'daysUntil' is defined but never used.  @typescript-eslint/no-unused-vars
+71:17  Warning: 'session' is assigned a value but never used.  no-unused-vars
+71:17  Warning: 'session' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/user/profile/page.tsx
+12:10  Warning: 'User' is defined but never used.  no-unused-vars
+12:10  Warning: 'User' is defined but never used.  @typescript-eslint/no-unused-vars
+12:16  Warning: 'Mail' is defined but never used.  no-unused-vars
+12:16  Warning: 'Mail' is defined but never used.  @typescript-eslint/no-unused-vars
+12:22  Warning: 'Phone' is defined but never used.  no-unused-vars
+12:22  Warning: 'Phone' is defined but never used.  @typescript-eslint/no-unused-vars
+12:62  Warning: 'Camera' is defined but never used.  no-unused-vars
+12:62  Warning: 'Camera' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/vendor/booking-columns.tsx
+117:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/dashboard/vendor/bookings/page.tsx
+14:85  Warning: 'XCircle' is defined but never used.  no-unused-vars
+14:85  Warning: 'XCircle' is defined but never used.  @typescript-eslint/no-unused-vars
+107:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/dashboard/vendor/boost-campaigns/page.tsx
+15:90  Warning: 'Users' is defined but never used.  no-unused-vars
+15:90  Warning: 'Users' is defined but never used.  @typescript-eslint/no-unused-vars
+15:97  Warning: 'BarChart3' is defined but never used.  no-unused-vars
+15:97  Warning: 'BarChart3' is defined but never used.  @typescript-eslint/no-unused-vars
+43:24  Warning: 'setFilterStatus' is assigned a value but never used.  no-unused-vars
+43:24  Warning: 'setFilterStatus' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+44:22  Warning: 'setFilterType' is assigned a value but never used.  no-unused-vars
+44:22  Warning: 'setFilterType' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+45:22  Warning: 'setSearchTerm' is assigned a value but never used.  no-unused-vars
+45:22  Warning: 'setSearchTerm' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+203:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+208:9  Warning: 'handleBulkAction' is assigned a value but never used.  no-unused-vars
+208:9  Warning: 'handleBulkAction' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/vendor/message-columns.tsx
+147:13  Warning: 'message' is assigned a value but never used.  no-unused-vars
+147:13  Warning: 'message' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/vendor/onboarding/page.tsx
+34:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+59:16  Warning: 'e' is defined but never used.  no-unused-vars
+59:16  Warning: 'e' is defined but never used.  @typescript-eslint/no-unused-vars
+132:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+150:14  Warning: 'err' is defined but never used.  no-unused-vars
+150:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+159:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/dashboard/vendor/page.tsx
+17:3  Warning: 'Users' is defined but never used.  no-unused-vars
+17:3  Warning: 'Users' is defined but never used.  @typescript-eslint/no-unused-vars
+19:3  Warning: 'CheckCircle' is defined but never used.  no-unused-vars
+19:3  Warning: 'CheckCircle' is defined but never used.  @typescript-eslint/no-unused-vars
+20:3  Warning: 'Clock' is defined but never used.  no-unused-vars
+20:3  Warning: 'Clock' is defined but never used.  @typescript-eslint/no-unused-vars
+21:3  Warning: 'AlertTriangle' is defined but never used.  no-unused-vars
+21:3  Warning: 'AlertTriangle' is defined but never used.  @typescript-eslint/no-unused-vars
+24:3  Warning: 'LineChart' is defined but never used.  no-unused-vars
+24:3  Warning: 'LineChart' is defined but never used.  @typescript-eslint/no-unused-vars
+25:3  Warning: 'Eye' is defined but never used.  no-unused-vars
+25:3  Warning: 'Eye' is defined but never used.  @typescript-eslint/no-unused-vars
+26:3  Warning: 'Edit' is defined but never used.  no-unused-vars
+26:3  Warning: 'Edit' is defined but never used.  @typescript-eslint/no-unused-vars
+27:3  Warning: 'Trash2' is defined but never used.  no-unused-vars
+27:3  Warning: 'Trash2' is defined but never used.  @typescript-eslint/no-unused-vars
+28:3  Warning: 'MoreHorizontal' is defined but never used.  no-unused-vars
+28:3  Warning: 'MoreHorizontal' is defined but never used.  @typescript-eslint/no-unused-vars
+80:17  Warning: 'session' is assigned a value but never used.  no-unused-vars
+80:17  Warning: 'session' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/vendor/services/page.tsx
+14:30  Warning: 'Eye' is defined but never used.  no-unused-vars
+14:30  Warning: 'Eye' is defined but never used.  @typescript-eslint/no-unused-vars
+14:63  Warning: 'Users' is defined but never used.  no-unused-vars
+14:63  Warning: 'Users' is defined but never used.  @typescript-eslint/no-unused-vars
+14:78  Warning: 'Clock' is defined but never used.  no-unused-vars
+14:78  Warning: 'Clock' is defined but never used.  @typescript-eslint/no-unused-vars
+14:85  Warning: 'Image' is defined but never used.  no-unused-vars
+14:85  Warning: 'Image' is defined but never used.  @typescript-eslint/no-unused-vars
+49:24  Warning: 'setFilterStatus' is assigned a value but never used.  no-unused-vars
+49:24  Warning: 'setFilterStatus' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+50:26  Warning: 'setFilterCategory' is assigned a value but never used.  no-unused-vars
+50:26  Warning: 'setFilterCategory' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+51:22  Warning: 'setSearchTerm' is assigned a value but never used.  no-unused-vars
+51:22  Warning: 'setSearchTerm' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+253:9  Warning: 'handleBulkAction' is assigned a value but never used.  no-unused-vars
+253:9  Warning: 'handleBulkAction' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/forgot-password/page.tsx
+43:14  Warning: 'err' is defined but never used.  no-unused-vars
+43:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/planning/page.tsx
+7:10  Warning: 'Textarea' is defined but never used.  no-unused-vars
+7:10  Warning: 'Textarea' is defined but never used.  @typescript-eslint/no-unused-vars
+16:3  Warning: 'MapPin' is defined but never used.  no-unused-vars
+16:3  Warning: 'MapPin' is defined but never used.  @typescript-eslint/no-unused-vars
+17:3  Warning: 'Clock' is defined but never used.  no-unused-vars
+17:3  Warning: 'Clock' is defined but never used.  @typescript-eslint/no-unused-vars
+19:3  Warning: 'Save' is defined but never used.  no-unused-vars
+19:3  Warning: 'Save' is defined but never used.  @typescript-eslint/no-unused-vars
+143:77  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+255:91  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/register/enhanced/page.tsx
+7:10  Warning: 'Badge' is defined but never used.  no-unused-vars
+7:10  Warning: 'Badge' is defined but never used.  @typescript-eslint/no-unused-vars
+14:3  Warning: 'ArrowRight' is defined but never used.  no-unused-vars
+14:3  Warning: 'ArrowRight' is defined but never used.  @typescript-eslint/no-unused-vars
+15:3  Warning: 'Save' is defined but never used.  no-unused-vars
+15:3  Warning: 'Save' is defined but never used.  @typescript-eslint/no-unused-vars
+16:3  Warning: 'Eye' is defined but never used.  no-unused-vars
+16:3  Warning: 'Eye' is defined but never used.  @typescript-eslint/no-unused-vars
+23:10  Warning: 'DynamicFormFactory' is defined but never used.  no-unused-vars
+23:10  Warning: 'DynamicFormFactory' is defined but never used.  @typescript-eslint/no-unused-vars
+26:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+102:11  Warning: 'updatedSteps' is assigned a value but never used.  no-unused-vars
+102:11  Warning: 'updatedSteps' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+182:14  Warning: 'error' is defined but never used.  no-unused-vars
+182:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+209:13  Warning: 'result' is assigned a value but never used.  no-unused-vars
+209:13  Warning: 'result' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/register/page.tsx
+103:14  Warning: 'err' is defined but never used.  no-unused-vars
+103:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/reset-password/page.tsx
+79:14  Warning: 'err' is defined but never used.  no-unused-vars
+79:14  Warning: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/simple-login/page.tsx
+33:10  Warning: 'selectedUser' is assigned a value but never used.  no-unused-vars
+33:10  Warning: 'selectedUser' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+33:24  Warning: 'setSelectedUser' is assigned a value but never used.  no-unused-vars
+33:24  Warning: 'setSelectedUser' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+72:14  Warning: 'error' is defined but never used.  no-unused-vars
+72:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+114:14  Warning: 'error' is defined but never used.  no-unused-vars
+114:14  Warning: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/test/comprehensive/page.tsx
+17:12  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+24:9  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/test/page.tsx
+3:10  Warning: 'useState' is defined but never used.  no-unused-vars
+3:10  Warning: 'useState' is defined but never used.  @typescript-eslint/no-unused-vars
+3:20  Warning: 'useEffect' is defined but never used.  no-unused-vars
+3:20  Warning: 'useEffect' is defined but never used.  @typescript-eslint/no-unused-vars
+4:10  Warning: 'motion' is defined but never used.  no-unused-vars
+4:10  Warning: 'motion' is defined but never used.  @typescript-eslint/no-unused-vars
+5:10  Warning: 'Card' is defined but never used.  no-unused-vars
+5:10  Warning: 'Card' is defined but never used.  @typescript-eslint/no-unused-vars
+5:16  Warning: 'CardContent' is defined but never used.  no-unused-vars
+5:16  Warning: 'CardContent' is defined but never used.  @typescript-eslint/no-unused-vars
+5:29  Warning: 'CardHeader' is defined but never used.  no-unused-vars
+5:29  Warning: 'CardHeader' is defined but never used.  @typescript-eslint/no-unused-vars
+5:41  Warning: 'CardTitle' is defined but never used.  no-unused-vars
+5:41  Warning: 'CardTitle' is defined but never used.  @typescript-eslint/no-unused-vars
+6:10  Warning: 'Button' is defined but never used.  no-unused-vars
+6:10  Warning: 'Button' is defined but never used.  @typescript-eslint/no-unused-vars
+7:10  Warning: 'Badge' is defined but never used.  no-unused-vars
+7:10  Warning: 'Badge' is defined but never used.  @typescript-eslint/no-unused-vars
+8:10  Warning: 'Avatar' is defined but never used.  no-unused-vars
+8:10  Warning: 'Avatar' is defined but never used.  @typescript-eslint/no-unused-vars
+8:18  Warning: 'AvatarFallback' is defined but never used.  no-unused-vars
+8:18  Warning: 'AvatarFallback' is defined but never used.  @typescript-eslint/no-unused-vars
+8:34  Warning: 'AvatarImage' is defined but never used.  no-unused-vars
+8:34  Warning: 'AvatarImage' is defined but never used.  @typescript-eslint/no-unused-vars
+9:10  Warning: 'TestimonialCard' is defined but never used.  no-unused-vars
+9:10  Warning: 'TestimonialCard' is defined but never used.  @typescript-eslint/no-unused-vars
+11:11  Warning: 'TestResult' is defined but never used.  no-unused-vars
+11:11  Warning: 'TestResult' is defined but never used.  @typescript-eslint/no-unused-vars
+15:13  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/test-auth/page.tsx
+10:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/vendors/[id]/page.tsx
+10:44  Warning: 'Clock' is defined but never used.  no-unused-vars
+10:44  Warning: 'Clock' is defined but never used.  @typescript-eslint/no-unused-vars
+10:51  Warning: 'DollarSign' is defined but never used.  no-unused-vars
+10:51  Warning: 'DollarSign' is defined but never used.  @typescript-eslint/no-unused-vars
+10:70  Warning: 'Users' is defined but never used.  no-unused-vars
+10:70  Warning: 'Users' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/vendors/page.tsx
+9:45  Warning: 'Filter' is defined but never used.  no-unused-vars
+9:45  Warning: 'Filter' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/venues/[id]/page.tsx
+10:10  Warning: 'MapPin' is defined but never used.  no-unused-vars
+10:10  Warning: 'MapPin' is defined but never used.  @typescript-eslint/no-unused-vars
+10:18  Warning: 'Users' is defined but never used.  no-unused-vars
+10:18  Warning: 'Users' is defined but never used.  @typescript-eslint/no-unused-vars
+10:31  Warning: 'Calendar' is defined but never used.  no-unused-vars
+10:31  Warning: 'Calendar' is defined but never used.  @typescript-eslint/no-unused-vars
+10:54  Warning: 'Globe' is defined but never used.  no-unused-vars
+10:54  Warning: 'Globe' is defined but never used.  @typescript-eslint/no-unused-vars
+10:61  Warning: 'Clock' is defined but never used.  no-unused-vars
+10:61  Warning: 'Clock' is defined but never used.  @typescript-eslint/no-unused-vars
+10:68  Warning: 'DollarSign' is defined but never used.  no-unused-vars
+10:68  Warning: 'DollarSign' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/venues/page.tsx
+9:16  Warning: 'MapPin' is defined but never used.  no-unused-vars
+9:16  Warning: 'MapPin' is defined but never used.  @typescript-eslint/no-unused-vars
+9:61  Warning: 'Filter' is defined but never used.  no-unused-v

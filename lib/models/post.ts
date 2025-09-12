@@ -64,23 +64,13 @@ const PostSchema = new Schema<IPost>({
     },
     id: {
       type: Schema.Types.ObjectId,
-      required: true,
-      refPath: 'author.type'
+      required: true
     },
     name: {
       type: String,
-      required: true,
-      maxlength: [100, 'Author name cannot exceed 100 characters']
+      required: true
     },
-    avatar: {
-      type: String,
-      validate: {
-        validator: function(v: string) {
-          return !v || /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i.test(v);
-        },
-        message: 'Invalid avatar URL format'
-      }
-    },
+    avatar: String,
     verified: {
       type: Boolean,
       default: false
@@ -163,66 +153,125 @@ const PostSchema = new Schema<IPost>({
   toObject: { virtuals: true }
 });
 
-// Indexes for performance
-PostSchema.index({ 'author.type': 1, 'author.id': 1 });
-PostSchema.index({ status: 1, isActive: 1 });
-PostSchema.index({ createdAt: -1 });
-PostSchema.index({ 'engagement.likes': -1 });
-PostSchema.index({ tags: 1 });
+// Indexes
+PostSchema.index({ 'author.id': 1, createdAt: -1 });
 PostSchema.index({ 'location.city': 1 });
+PostSchema.index({ tags: 1 });
+PostSchema.index({ status: 1, isActive: 1 });
+PostSchema.index({ 'engagement.likes': -1 });
+PostSchema.index({ createdAt: -1 });
 
-// Virtual for formatted date
-PostSchema.virtual('formattedDate').get(function() {
+// Virtual for time ago
+PostSchema.virtual('timeAgo').get(function() {
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - this.createdAt.getTime()) / 1000);
   
-  if (diffInSeconds < 60) return 'Just now';
+  if (diffInSeconds < 60) return 'just now';
   if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
   if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-  if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+  if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)}d ago`;
   
   return this.createdAt.toLocaleDateString();
 });
 
-// Pre-save middleware
-PostSchema.pre('save', function(next) {
-  // Ensure engagement numbers are not negative
+// Virtual for formatted date
+PostSchema.virtual('formattedDate').get(function() {
+  return this.createdAt.toLocaleDateString();
+});
+
+// Method to update engagement
+PostSchema.methods.updateEngagement = function() {
   if (this.engagement.likes < 0) this.engagement.likes = 0;
   if (this.engagement.comments < 0) this.engagement.comments = 0;
   if (this.engagement.shares < 0) this.engagement.shares = 0;
   if (this.engagement.views < 0) this.engagement.views = 0;
-  
-  next();
-});
-
-// Static methods
-PostSchema.statics.findByAuthor = function(authorType: string, authorId: string) {
-  return this.find({ 
-    'author.type': authorType, 
-    'author.id': authorId,
-    status: 'active',
-    isActive: true 
-  }).sort({ createdAt: -1 });
+  return this.save();
 };
 
-PostSchema.statics.findTrending = function(limit: number = 10) {
+// Method to add like
+PostSchema.methods.addLike = function(userId: mongoose.Types.ObjectId) {
+  if (!this.userInteractions.likedBy.includes(userId)) {
+    this.userInteractions.likedBy.push(userId);
+    this.engagement.likes += 1;
+  }
+  return this.save();
+};
+
+// Method to remove like
+PostSchema.methods.removeLike = function(userId: mongoose.Types.ObjectId) {
+  const index = this.userInteractions.likedBy.indexOf(userId);
+  if (index > -1) {
+    this.userInteractions.likedBy.splice(index, 1);
+    this.engagement.likes = Math.max(0, this.engagement.likes - 1);
+  }
+  return this.save();
+};
+
+// Method to add bookmark
+PostSchema.methods.addBookmark = function(userId: mongoose.Types.ObjectId) {
+  if (!this.userInteractions.bookmarkedBy.includes(userId)) {
+    this.userInteractions.bookmarkedBy.push(userId);
+  }
+  return this.save();
+};
+
+// Method to remove bookmark
+PostSchema.methods.removeBookmark = function(userId: mongoose.Types.ObjectId) {
+  const index = this.userInteractions.bookmarkedBy.indexOf(userId);
+  if (index > -1) {
+    this.userInteractions.bookmarkedBy.splice(index, 1);
+  }
+  return this.save();
+};
+
+// Method to add share
+PostSchema.methods.addShare = function(userId: mongoose.Types.ObjectId) {
+  if (!this.userInteractions.sharedBy.includes(userId)) {
+    this.userInteractions.sharedBy.push(userId);
+    this.engagement.shares += 1;
+  }
+  return this.save();
+};
+
+// Method to increment views
+PostSchema.methods.incrementViews = function() {
+  this.engagement.views += 1;
+  return this.save();
+};
+
+// Static method to get trending posts
+PostSchema.statics.getTrending = function(limit = 10) {
+  return this.find({ status: 'active', isActive: true })
+    .sort({ 'engagement.likes': -1, 'engagement.views': -1, createdAt: -1 })
+    .limit(limit)
+    .populate('author.id', 'name avatar verified')
+    .lean();
+};
+
+// Static method to get posts by location
+PostSchema.statics.getByLocation = function(city: string, limit = 20) {
   return this.find({ 
+    'location.city': new RegExp(city, 'i'), 
     status: 'active', 
     isActive: true 
-  }).sort({ 
-    'engagement.likes': -1, 
-    'engagement.comments': -1, 
-    createdAt: -1 
-  }).limit(limit);
+  })
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .populate('author.id', 'name avatar verified')
+    .lean();
 };
 
-PostSchema.statics.findByLocation = function(city: string) {
+// Static method to get posts by tags
+PostSchema.statics.getByTags = function(tags: string[], limit = 20) {
   return this.find({ 
-    'location.city': city,
-    status: 'active',
+    tags: { $in: tags }, 
+    status: 'active', 
     isActive: true 
-  }).sort({ createdAt: -1 });
+  })
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .populate('author.id', 'name avatar verified')
+    .lean();
 };
 
-export const Post = mongoose.models.Post || mongoose.model<IPost>('Post', PostSchema);
-export default Post;
+export default mongoose.models.Post || mongoose.model<IPost>('Post', PostSchema);

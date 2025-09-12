@@ -4,9 +4,10 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ShieldX, ArrowLeft, Home } from "lucide-react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 
-export default function UnauthorizedPage() {
-  const { data: session } = useSession();
+function UnauthorizedPage() {
+  const { data: session } = useSession() || { data: null };
   const router = useRouter();
 
   const handleGoBack = () => {
@@ -98,3 +99,5 @@ export default function UnauthorizedPage() {
     </div>
   );
 }
+
+export default dynamic(() => Promise.resolve(UnauthorizedPage), { ssr: false });

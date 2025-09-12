@@ -16,6 +16,7 @@ type ToasterToast = ToastProps & {
   title?: React.ReactNode
   description?: React.ReactNode
   action?: React.ComponentProps<typeof ToastActionElement>
+  onOpenChange?: (open: boolean) => void
 }
 
 const actionTypes = {
@@ -157,7 +158,6 @@ function toast({ ...props }: Toast) {
     toast: {
       ...props,
       id,
-      open: true,
       onOpenChange: (open: boolean) => {
         if (!open) dismiss()
       },

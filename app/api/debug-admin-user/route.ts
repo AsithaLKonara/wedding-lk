@@ -42,7 +42,7 @@ export async function GET() {
             userId: user._id,
             email: user.email,
             passwordValid: false,
-            error: error.message
+            error: error instanceof Error ? error.message : 'Unknown error'
           });
         }
       } else {

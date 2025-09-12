@@ -270,7 +270,6 @@ export function ChatInterface({ conversationId, onConversationSelect, className 
       toast({
         title: notification.title,
         description: notification.message,
-        duration: 3000,
       })
     }
   }

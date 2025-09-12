@@ -25,7 +25,9 @@ import {
   Eye,
   Edit,
   Trash2,
-  MoreHorizontal
+  MoreHorizontal,
+  Target,
+  ExternalLink
 } from "lucide-react"
 import { DashboardLayout } from "@/components/layouts/dashboard-layout"
 import { formatCurrency, formatNumber, getRelativeTime } from "@/lib/utils/format"
@@ -286,12 +288,13 @@ export default function VendorDashboard() {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="bookings">Bookings</TabsTrigger>
             <TabsTrigger value="services">Services</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="messages">Messages</TabsTrigger>
+            <TabsTrigger value="meta-ads">Meta Ads</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -546,6 +549,96 @@ export default function VendorDashboard() {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="meta-ads" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Target className="h-5 w-5 mr-2" />
+                  Meta Ads Promotion
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-8">
+                  <Target className="w-16 h-16 mx-auto mb-4 text-blue-500" />
+                  <h3 className="text-xl font-semibold mb-2">Promote Your Packages with Meta Ads</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Reach more couples planning their wedding by promoting your packages on Facebook and Instagram
+                  </p>
+                  <div className="flex gap-4 justify-center">
+                    <Button onClick={() => window.open('/dashboard/meta-ads', '_blank')}>
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      Open Meta Ads Dashboard
+                    </Button>
+                    <Button variant="outline">
+                      <TrendingUp className="w-4 h-4 mr-2" />
+                      Learn More
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <BarChart3 className="h-5 w-5 mr-2" />
+                    Campaign Performance
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">Active Campaigns</span>
+                      <span className="font-semibold">0</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">Total Impressions</span>
+                      <span className="font-semibold">0</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">Total Clicks</span>
+                      <span className="font-semibold">0</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">Total Spend</span>
+                      <span className="font-semibold">LKR 0</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Settings className="h-5 w-5 mr-2" />
+                    Quick Actions
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <Button className="w-full justify-start" variant="outline">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Create New Campaign
+                    </Button>
+                    <Button className="w-full justify-start" variant="outline">
+                      <Eye className="w-4 h-4 mr-2" />
+                      View All Campaigns
+                    </Button>
+                    <Button className="w-full justify-start" variant="outline">
+                      <BarChart3 className="w-4 h-4 mr-2" />
+                      View Analytics
+                    </Button>
+                    <Button className="w-full justify-start" variant="outline">
+                      <Settings className="w-4 h-4 mr-2" />
+                      Account Settings
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </div>

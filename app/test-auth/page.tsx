@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import dynamic from 'next/dynamic';
 
-export default function TestAuthPage() {
-  const { data: session, status } = useSession();
+function TestAuthPage() {
+  const { data: session, status } = useSession() || { data: null, status: 'loading' };
   const [email, setEmail] = useState('fixed@example.com');
   const [password, setPassword] = useState('password123');
   const [result, setResult] = useState<any>(null);
@@ -85,3 +86,5 @@ export default function TestAuthPage() {
     </div>
   );
 }
+
+export default dynamic(() => Promise.resolve(TestAuthPage), { ssr: false });

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { Vendor } from '@/lib/models';
+import { vendorSchemas } from '@/lib/validations/api-validators';
+import { handleApiError, createSuccessResponse, createPaginatedResponse } from '@/lib/utils/error-handler';
 
 export async function GET(request: NextRequest) {
   try {
@@ -73,53 +75,150 @@ export async function POST(request: NextRequest) {
     
     console.log('📝 Creating new vendor...');
 
-    // Validate required fields
-    if (!vendorData.businessName || !vendorData.ownerName || !vendorData.email || !vendorData.category) {
+    // Validate input data
+    const validation = vendorSchemas.create.safeParse(vendorData);
+    if (!validation.success) {
       return NextResponse.json({
         success: false,
-        error: 'Business name, owner name, email, and category are required'
+        error: 'Validation failed',
+        details: validation.error.errors
       }, { status: 400 });
     }
 
+    const validatedData = validation.data;
+
     // Check if vendor already exists
-    const existingVendor = await Vendor.findOne({ email: vendorData.email });
+    const existingVendor = await Vendor.findOne({ email: validatedData.email });
     if (existingVendor) {
       return NextResponse.json({
         success: false,
         error: 'Vendor with this email already exists'
-      }, { status: 400 });
+      }, { status: 409 });
     }
 
     // Create vendor
     const newVendor = new Vendor({
-      ...vendorData,
+      ...validatedData,
       isVerified: false,
       isActive: true,
       rating: {
         average: 0,
         count: 0
       },
-      services: vendorData.services || [],
-      images: vendorData.images || [],
-      socialMedia: vendorData.socialMedia || {}
+      services: validatedData.services || [],
+      images: [],
+      socialMedia: validatedData.contact.socialMedia || {}
     });
 
     await newVendor.save();
 
     console.log('✅ Vendor created successfully:', newVendor.businessName);
 
-    return NextResponse.json({
-      success: true,
-      vendor: newVendor,
-      message: 'Vendor created successfully'
-    });
+    return createSuccessResponse(newVendor, 'Vendor created successfully', 201);
 
   } catch (error) {
     console.error('❌ Error creating vendor:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'Failed to create vendor',
-      message: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+    return handleApiError(error, '/api/vendors');
+  }
+}
+
+// PUT - Update vendor
+export async function PUT(request: NextRequest) {
+  try {
+    await connectDB();
+
+    const { searchParams } = new URL(request.url);
+    const vendorId = searchParams.get('id');
+    const vendorData = await request.json();
+
+    if (!vendorId) {
+      return NextResponse.json({
+        success: false,
+        error: 'Vendor ID is required'
+      }, { status: 400 });
+    }
+
+    console.log('📝 Updating vendor:', vendorId);
+
+    // Validate input data
+    const validation = vendorSchemas.update.safeParse(vendorData);
+    if (!validation.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Validation failed',
+        details: validation.error.errors
+      }, { status: 400 });
+    }
+
+    const validatedData = validation.data;
+
+    // Find vendor
+    const vendor = await Vendor.findById(vendorId);
+    if (!vendor) {
+      return NextResponse.json({
+        success: false,
+        error: 'Vendor not found'
+      }, { status: 404 });
+    }
+
+    // Update vendor
+    const updatedVendor = await Vendor.findByIdAndUpdate(
+      vendorId,
+      { 
+        ...validatedData,
+        updatedAt: new Date()
+      },
+      { new: true, runValidators: true }
+    );
+
+    console.log('✅ Vendor updated successfully:', updatedVendor.businessName);
+
+    return createSuccessResponse(updatedVendor, 'Vendor updated successfully');
+
+  } catch (error) {
+    console.error('❌ Error updating vendor:', error);
+    return handleApiError(error, '/api/vendors');
+  }
+}
+
+// DELETE - Delete vendor (soft delete)
+export async function DELETE(request: NextRequest) {
+  try {
+    await connectDB();
+
+    const { searchParams } = new URL(request.url);
+    const vendorId = searchParams.get('id');
+
+    if (!vendorId) {
+      return NextResponse.json({
+        success: false,
+        error: 'Vendor ID is required'
+      }, { status: 400 });
+    }
+
+    console.log('📝 Deleting vendor:', vendorId);
+
+    // Find vendor
+    const vendor = await Vendor.findById(vendorId);
+    if (!vendor) {
+      return NextResponse.json({
+        success: false,
+        error: 'Vendor not found'
+      }, { status: 404 });
+    }
+
+    // Soft delete - set isActive to false
+    await Vendor.findByIdAndUpdate(vendorId, {
+      isActive: false,
+      updatedAt: new Date()
+    });
+
+    console.log('✅ Vendor deleted successfully:', vendor.businessName);
+
+    return createSuccessResponse(null, 'Vendor deleted successfully');
+
+  } catch (error) {
+    console.error('❌ Error deleting vendor:', error);
+    return handleApiError(error, '/api/vendors');
   }
 }

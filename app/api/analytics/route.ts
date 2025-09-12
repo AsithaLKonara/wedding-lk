@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from '@/lib/db'
-import AnalyticsDashboard from '@/lib/analytics-dashboard'
+import { AnalyticsDashboard } from '@/lib/analytics-dashboard'
 import SecurityService from '@/lib/security-service'
 import PerformanceMonitor from '@/lib/performance-monitor'
 
@@ -27,32 +27,36 @@ export async function GET(request: NextRequest) {
       let analyticsData: Record<string, unknown> = {}
 
       switch (type) {
-        case 'overview':
+        case 'overview': {
           const overviewMetrics = await AnalyticsDashboard.getAnalyticsMetrics()
           analyticsData = { ...overviewMetrics }
           break
-        case 'charts':
+        }
+        case 'charts': {
           const chartData = await AnalyticsDashboard.getChartData(
             timeRange === '7d' ? 7 : timeRange === '1h' ? 1 : 30
           )
           analyticsData = { ...chartData }
           break
+        }
         case 'realtime':
           analyticsData = await AnalyticsDashboard.getRealTimeData()
           break
-        case 'performance':
+        case 'performance': {
           // Ensure timeRange is one of the allowed values
           const validTimeRange = (timeRange === '1h' || timeRange === '24h' || timeRange === '7d') 
             ? timeRange as '1h' | '24h' | '7d' 
             : '24h'
           analyticsData = await PerformanceMonitor.getPerformanceAnalytics(validTimeRange)
           break
+        }
         case 'security':
           analyticsData = SecurityService.getSecurityStats()
           break
-        default:
+        default: {
           const defaultMetrics = await AnalyticsDashboard.getAnalyticsMetrics()
           analyticsData = { ...defaultMetrics }
+        }
       }
 
       return NextResponse.json({

@@ -153,4 +153,143 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
+}
+
+// PUT - Update message
+export async function PUT(request: NextRequest) {
+  try {
+    const session = await getServerSession()
+    
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    await connectDB()
+
+    const user = await User.findOne({ email: session.user.email })
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 })
+    }
+
+    const { searchParams } = new URL(request.url)
+    const messageId = searchParams.get('id')
+    const body = await request.json()
+    const { content, messageType, attachments } = body
+
+    if (!messageId) {
+      return NextResponse.json(
+        { error: "Message ID is required" },
+        { status: 400 }
+      )
+    }
+
+    // Find the message
+    const message = await Message.findById(messageId)
+    if (!message) {
+      return NextResponse.json(
+        { error: "Message not found" },
+        { status: 404 }
+      )
+    }
+
+    // Check if user is the sender
+    if (message.sender.toString() !== user._id.toString()) {
+      return NextResponse.json(
+        { error: "Unauthorized to update this message" },
+        { status: 403 }
+      )
+    }
+
+    // Update message
+    const updatedMessage = await Message.findByIdAndUpdate(
+      messageId,
+      {
+        content: content || message.content,
+        messageType: messageType || message.messageType,
+        attachments: attachments || message.attachments,
+        updatedAt: new Date(),
+        isEdited: true
+      },
+      { new: true, runValidators: true }
+    ).populate('sender', 'name email avatar')
+     .populate('receiver', 'name email avatar')
+
+            return NextResponse.json({
+              success: true,
+              data: updatedMessage,
+              message: 'Message updated successfully'
+            })
+
+  } catch (error) {
+    console.error("Error updating message:", error)
+    return NextResponse.json(
+      { error: "Failed to update message" },
+      { status: 500 }
+    )
+  }
+}
+
+// DELETE - Delete message (soft delete)
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await getServerSession()
+    
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    await connectDB()
+
+    const user = await User.findOne({ email: session.user.email })
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 })
+    }
+
+    const { searchParams } = new URL(request.url)
+    const messageId = searchParams.get('id')
+
+    if (!messageId) {
+      return NextResponse.json(
+        { error: "Message ID is required" },
+        { status: 400 }
+      )
+    }
+
+    // Find the message
+    const message = await Message.findById(messageId)
+    if (!message) {
+      return NextResponse.json(
+        { error: "Message not found" },
+        { status: 404 }
+      )
+    }
+
+    // Check if user is the sender or receiver
+    if (message.sender.toString() !== user._id.toString() && 
+        message.receiver.toString() !== user._id.toString()) {
+      return NextResponse.json(
+        { error: "Unauthorized to delete this message" },
+        { status: 403 }
+      )
+    }
+
+    // Soft delete - set isDeleted to true
+    await Message.findByIdAndUpdate(messageId, {
+      isDeleted: true,
+      deletedAt: new Date(),
+      updatedAt: new Date()
+    })
+
+    return NextResponse.json({
+      success: true,
+      message: 'Message deleted successfully'
+    })
+
+  } catch (error) {
+    console.error("Error deleting message:", error)
+    return NextResponse.json(
+      { error: "Failed to delete message" },
+      { status: 500 }
+    )
+  }
 } 

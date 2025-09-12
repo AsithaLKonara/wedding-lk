@@ -36,15 +36,27 @@ export default function PlannerTimelinePage() {
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    duration: number;
+    category: 'ceremony' | 'reception' | 'preparation' | 'photography' | 'transportation' | 'other';
+    status: 'pending' | 'completed' | 'confirmed' | 'cancelled';
+    priority: 'low' | 'medium' | 'high' | 'urgent';
+    assignedTo: string;
+    location: string;
+    notes: string;
+  }>({
     title: '',
     description: '',
     date: '',
     time: '',
     duration: 60,
-    category: 'ceremony' as const,
-    status: 'pending' as const,
-    priority: 'medium' as const,
+    category: 'ceremony',
+    status: 'pending',
+    priority: 'medium',
     assignedTo: '',
     location: '',
     notes: ''

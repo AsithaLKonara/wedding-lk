@@ -52,4 +52,12 @@ const VenueSchema = new mongoose.Schema(
   },
 )
 
+// Add indexes for better search performance
+VenueSchema.index({ name: 'text', description: 'text' });
+VenueSchema.index({ 'location.city': 1, 'location.province': 1 });
+VenueSchema.index({ 'pricing.basePrice': 1 });
+VenueSchema.index({ 'rating.average': -1 });
+VenueSchema.index({ isActive: 1, featured: 1 });
+VenueSchema.index({ createdAt: -1 });
+
 export const Venue = mongoose.models.Venue || mongoose.model("Venue", VenueSchema)

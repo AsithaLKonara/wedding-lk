@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
     const action = searchParams.get('action') || 'demo';
     const category = searchParams.get('category');
 
-    let result: any;
+    let result: Record<string, unknown>;
 
     switch (action) {
       case 'demo':

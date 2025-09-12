@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { signOut } from "next-auth/react"
+import dynamic from "next/dynamic"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -184,7 +185,7 @@ const navigationItems: NavigationItem[] = [
   },
 ]
 
-export function DashboardLayout({ children }: DashboardLayoutProps) {
+function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
   const { data: session } = useSession()
   const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -387,3 +388,5 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     </div>
   )
 }
+
+export const DashboardLayout = dynamic(() => Promise.resolve(DashboardLayoutComponent), { ssr: false });

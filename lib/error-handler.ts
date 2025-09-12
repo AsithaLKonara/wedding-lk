@@ -1,234 +1,216 @@
-import { NextRequest, NextResponse } from 'next/server';
-
-export interface AppError extends Error {
-  statusCode?: number;
-  isOperational?: boolean;
-  code?: string;
-  keyValue?: any;
-  errors?: any;
+// Global error handling utilities
+export interface ErrorLog {
+  errorId: string;
+  message: string;
+  stack?: string;
+  componentStack?: string;
+  timestamp: string;
+  userAgent: string;
+  url: string;
+  userId?: string | null;
+  sessionId?: string;
+  type: 'client_error' | 'api_error' | 'unhandled_rejection' | 'uncaught_exception';
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  context?: Record<string, any>;
 }
 
-export class CustomError extends Error implements AppError {
-  public statusCode: number;
-  public isOperational: boolean;
-  public code?: string;
+class ErrorHandler {
+  private sessionId: string;
+  private userId: string | null = null;
 
-  constructor(message: string, statusCode: number = 500, isOperational: boolean = true) {
-    super(message);
-    this.statusCode = statusCode;
-    this.isOperational = isOperational;
-    
-    Error.captureStackTrace(this, this.constructor);
-  }
-}
-
-export class ValidationError extends CustomError {
-  constructor(message: string, field?: string) {
-    super(field ? `${field}: ${message}` : message, 400);
-    this.name = 'ValidationError';
-  }
-}
-
-export class AuthenticationError extends CustomError {
-  constructor(message: string = 'Authentication failed') {
-    super(message, 401);
-    this.name = 'AuthenticationError';
-  }
-}
-
-export class AuthorizationError extends CustomError {
-  constructor(message: string = 'Access denied') {
-    super(message, 403);
-    this.name = 'AuthorizationError';
-  }
-}
-
-export class NotFoundError extends CustomError {
-  constructor(resource: string = 'Resource') {
-    super(`${resource} not found`, 404);
-    this.name = 'NotFoundError';
-  }
-}
-
-export class ConflictError extends CustomError {
-  constructor(message: string) {
-    super(message, 409);
-    this.name = 'ConflictError';
-  }
-}
-
-export class RateLimitError extends CustomError {
-  constructor(message: string = 'Too many requests') {
-    super(message, 429);
-    this.name = 'RateLimitError';
-  }
-}
-
-export class DatabaseError extends CustomError {
-  constructor(message: string = 'Database operation failed') {
-    super(message, 500);
-    this.name = 'DatabaseError';
-  }
-}
-
-// Error handler middleware
-export function handleError(error: AppError, req?: NextRequest): NextResponse {
-  console.error('🚨 Error Handler:', {
-    name: error.name,
-    message: error.message,
-    statusCode: error.statusCode,
-    stack: error.stack,
-    timestamp: new Date().toISOString(),
-    url: req?.url,
-    method: req?.method,
-  });
-
-  // Default error response
-  let statusCode = error.statusCode || 500;
-  let message = error.message || 'Internal server error';
-  let code = error.code;
-
-  // Handle specific error types
-  if (error.name === 'ValidationError') {
-    statusCode = 400;
-    message = 'Validation failed';
-  } else if (error.name === 'CastError') {
-    statusCode = 400;
-    message = 'Invalid data format';
-  } else if (error.name === 'MongoError' && (error as any).code === 11000) {
-    statusCode = 409;
-    message = 'Duplicate entry';
-    code = 'DUPLICATE_KEY';
-  } else if (error.name === 'JsonWebTokenError') {
-    statusCode = 401;
-    message = 'Invalid token';
-  } else if (error.name === 'TokenExpiredError') {
-    statusCode = 401;
-    message = 'Token expired';
-  } else if (error.name === 'MulterError') {
-    statusCode = 400;
-    message = 'File upload error';
+  constructor() {
+    this.sessionId = this.getOrCreateSessionId();
+    this.setupGlobalErrorHandlers();
   }
 
-  // Don't expose internal errors in production
-  if (process.env.NODE_ENV === 'production' && statusCode === 500) {
-    message = 'Something went wrong';
+  private getOrCreateSessionId(): string {
+    try {
+      let sessionId = sessionStorage.getItem('sessionId');
+      if (!sessionId) {
+        sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        sessionStorage.setItem('sessionId', sessionId);
+      }
+      return sessionId;
+    } catch {
+      return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    }
   }
 
-  const errorResponse = {
-    success: false,
-    error: {
-      message,
-      code,
-      statusCode,
-      timestamp: new Date().toISOString(),
-      ...(process.env.NODE_ENV === 'development' && {
-        stack: error.stack,
-        details: error,
-      }),
-    },
-  };
-
-  return NextResponse.json(errorResponse, { status: statusCode });
-}
-
-// Async error wrapper
-export function asyncHandler(fn: Function) {
-  return (req: NextRequest, ...args: any[]) => {
-    return Promise.resolve(fn(req, ...args)).catch((error) => {
-      return handleError(error, req);
+  private setupGlobalErrorHandlers() {
+    // Handle unhandled promise rejections
+    window.addEventListener('unhandledrejection', (event) => {
+      console.error('Unhandled Promise Rejection:', event.reason);
+      
+      this.logError({
+        errorId: `rejection_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        message: event.reason?.message || 'Unhandled Promise Rejection',
+        stack: event.reason?.stack,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        url: window.location.href,
+        type: 'unhandled_rejection',
+        severity: 'high',
+        context: {
+          reason: event.reason,
+          promise: event.promise,
+        },
+      });
     });
-  };
+
+    // Handle uncaught exceptions
+    window.addEventListener('error', (event) => {
+      console.error('Uncaught Error:', event.error);
+      
+      this.logError({
+        errorId: `exception_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        message: event.message || 'Uncaught Exception',
+        stack: event.error?.stack,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        url: window.location.href,
+        type: 'uncaught_exception',
+        severity: 'critical',
+        context: {
+          filename: event.filename,
+          lineno: event.lineno,
+          colno: event.colno,
+        },
+      });
+    });
+
+    // Handle console errors
+    const originalConsoleError = console.error;
+    console.error = (...args) => {
+      originalConsoleError.apply(console, args);
+      
+      // Log significant console errors
+      if (args.length > 0 && typeof args[0] === 'string' && args[0].includes('Error')) {
+        this.logError({
+          errorId: `console_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          message: args.join(' '),
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+          url: window.location.href,
+          type: 'client_error',
+          severity: 'medium',
+          context: {
+            consoleArgs: args,
+          },
+        });
+      }
+    };
+  }
+
+  setUserId(userId: string | null) {
+    this.userId = userId;
+  }
+
+  async logError(errorData: Omit<ErrorLog, 'sessionId' | 'userId'>) {
+    const fullErrorData: ErrorLog = {
+      ...errorData,
+      sessionId: this.sessionId,
+      userId: this.userId,
+    };
+
+    try {
+      await fetch('/api/errors', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(fullErrorData),
+      });
+    } catch (logError) {
+      console.error('Failed to log error to service:', logError);
+    }
+  }
+
+  // API error handler
+  async handleApiError(error: any, context?: Record<string, any>) {
+    const errorData: Omit<ErrorLog, 'sessionId' | 'userId'> = {
+      errorId: `api_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      message: error.message || 'API Error',
+      stack: error.stack,
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      url: window.location.href,
+      type: 'api_error',
+      severity: error.status >= 500 ? 'high' : 'medium',
+      context: {
+        status: error.status,
+        statusText: error.statusText,
+        url: error.url,
+        ...context,
+      },
+    };
+
+    await this.logError(errorData);
+  }
+
+  // React error handler
+  handleReactError(error: Error, errorInfo: any) {
+    this.logError({
+      errorId: `react_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      message: error.message,
+      stack: error.stack,
+      componentStack: errorInfo.componentStack,
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      url: window.location.href,
+      type: 'client_error',
+      severity: 'high',
+      context: {
+        componentStack: errorInfo.componentStack,
+        errorBoundary: errorInfo.errorBoundary,
+      },
+    });
+  }
 }
 
-// Database error handler
-export function handleDatabaseError(error: any): AppError {
-  console.error('🗄️ Database Error:', error);
+// Global error handler instance
+export const errorHandler = new ErrorHandler();
 
-  if (error.name === 'ValidationError') {
-    const messages = Object.values(error.errors).map((err: any) => err.message);
-    return new ValidationError(messages.join(', '));
-  }
-
-  if (error.name === 'CastError') {
-    return new ValidationError(`Invalid ${error.path}: ${error.value}`);
-  }
-
-  if (error.code === 11000) {
-    const field = Object.keys(error.keyValue)[0];
-    return new ConflictError(`${field} already exists`);
-  }
-
-  if (error.name === 'MongoNetworkError') {
-    return new DatabaseError('Database connection failed');
-  }
-
-  if (error.name === 'MongoTimeoutError') {
-    return new DatabaseError('Database operation timeout');
-  }
-
-  return new DatabaseError(error.message);
-}
-
-// Validation error handler
-export function handleValidationError(error: any): AppError {
-  if (error.details) {
-    const messages = error.details.map((detail: any) => detail.message);
-    return new ValidationError(messages.join(', '));
-  }
-  return new ValidationError(error.message);
-}
-
-// Rate limiting error handler
-export function handleRateLimitError(limit: number, windowMs: number): AppError {
-  const message = `Rate limit exceeded. Maximum ${limit} requests per ${windowMs / 1000} seconds`;
-  return new RateLimitError(message);
-}
-
-// Logging utility
-export function logError(error: AppError, context?: any) {
-  const logData = {
-    timestamp: new Date().toISOString(),
-    level: 'error',
-    name: error.name,
-    message: error.message,
-    statusCode: error.statusCode,
-    stack: error.stack,
-    context,
-  };
-
-  // In production, you might want to send this to a logging service
-  if (process.env.NODE_ENV === 'production') {
-    // Send to external logging service (e.g., Sentry, LogRocket, etc.)
-    console.error('Production Error Log:', JSON.stringify(logData));
-  } else {
-    console.error('Development Error Log:', logData);
-  }
-}
-
-// Success response helper
-export function successResponse(data: any, message: string = 'Success', statusCode: number = 200) {
-  return NextResponse.json({
-    success: true,
-    message,
-    data,
-    timestamp: new Date().toISOString(),
-  }, { status: statusCode });
-}
-
-// Pagination helper
-export function paginateResponse(data: any[], page: number, limit: number, total: number) {
-  const totalPages = Math.ceil(total / limit);
-  
+// Export for use in components
+export const useErrorHandler = () => {
   return {
-    data,
-    pagination: {
-      currentPage: page,
-      totalPages,
-      totalItems: total,
-      itemsPerPage: limit,
-      hasNextPage: page < totalPages,
-      hasPrevPage: page > 1,
-    },
+    logError: errorHandler.logError.bind(errorHandler),
+    handleApiError: errorHandler.handleApiError.bind(errorHandler),
+    handleReactError: errorHandler.handleReactError.bind(errorHandler),
+    setUserId: errorHandler.setUserId.bind(errorHandler),
   };
-}
+};
+
+// API error interceptor for fetch
+export const createApiClient = () => {
+  const originalFetch = window.fetch;
+  
+  window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+    try {
+      const response = await originalFetch(input, init);
+      
+      if (!response.ok) {
+        const error = new Error(`HTTP ${response.status}: ${response.statusText}`);
+        (error as any).status = response.status;
+        (error as any).statusText = response.statusText;
+        (error as any).url = response.url;
+        
+        await errorHandler.handleApiError(error, {
+          method: init?.method || 'GET',
+          headers: init?.headers,
+        });
+      }
+      
+      return response;
+    } catch (error) {
+      await errorHandler.handleApiError(error, {
+        method: init?.method || 'GET',
+        headers: init?.headers,
+      });
+      throw error;
+    }
+  };
+  
+  return originalFetch;
+};
+
+export default errorHandler;

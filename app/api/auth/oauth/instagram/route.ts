@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
     let profilePicture = '';
     if (mediaResponse.ok) {
       const mediaData = await mediaResponse.json();
-      const firstImage = mediaData.data?.find((item: any) => 
+      const firstImage = mediaData.data?.find((item: Record<string, unknown>) => 
         item.media_type === 'IMAGE' || item.media_type === 'CAROUSEL_ALBUM'
       );
       if (firstImage) {

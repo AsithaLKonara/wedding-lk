@@ -1,400 +1,528 @@
-import { connectDB } from "@/lib/db"
-import User from "@/lib/models/user"
-import { Venue } from "@/lib/models/venue"
-import { Vendor } from "@/lib/models/vendor"
-import { Booking } from "@/lib/models/booking"
-import { Payment } from "@/lib/models"
-import { Message } from "@/lib/models/message"
-import { Notification } from "@/lib/models/notification"
+import { connectDB } from './db';
+import { User, Vendor, Venue, Booking, Payment, Review } from './models';
 
-interface AnalyticsMetrics {
-  users: {
-    total: number
-    active: number
-    newThisMonth: number
-    growth: number
-  }
-  revenue: {
-    total: number
-    thisMonth: number
-    growth: number
-    averageBooking: number
-  }
-  bookings: {
-    total: number
-    thisMonth: number
-    pending: number
-    confirmed: number
-    completed: number
-    cancelled: number
-  }
-  venues: {
-    total: number
-    active: number
-    averageRating: number
-    topRated: any[]
-  }
-  vendors: {
-    total: number
-    active: number
-    byCategory: Record<string, number>
-    topPerforming: any[]
-  }
-  engagement: {
-    messagesSent: number
-    notificationsSent: number
-    averageResponseTime: number
-  }
-  performance: {
-    pageViews: number
-    uniqueVisitors: number
-    conversionRate: number
-    averageSessionDuration: number
-  }
+export interface AnalyticsMetrics {
+  totalUsers: number;
+  totalVendors: number;
+  totalVenues: number;
+  totalBookings: number;
+  totalRevenue: number;
+  averageRating: number;
+  conversionRate: number;
+  monthlyGrowth: {
+    users: number;
+    vendors: number;
+    bookings: number;
+    revenue: number;
+  };
 }
 
-interface ChartData {
-  revenue: Array<{ date: string; amount: number }>
-  bookings: Array<{ date: string; count: number }>
-  users: Array<{ date: string; count: number }>
-  categories: Array<{ category: string; count: number }>
+export interface ChartData {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    backgroundColor?: string;
+    borderColor?: string;
+  }[];
 }
 
-class AnalyticsDashboard {
-  // Get comprehensive analytics metrics
-  async getAnalyticsMetrics(): Promise<AnalyticsMetrics> {
+export interface RealTimeData {
+  activeUsers: number;
+  recentBookings: number;
+  pendingPayments: number;
+  systemHealth: 'healthy' | 'warning' | 'critical';
+}
+
+export class AnalyticsDashboard {
+  /**
+   * Get comprehensive analytics metrics
+   */
+  static async getAnalyticsMetrics(): Promise<AnalyticsMetrics> {
     try {
-      await connectDB()
-      
-      const now = new Date()
-      const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-      const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+      await connectDB();
 
-      // User metrics
-      const totalUsers = await User.countDocuments()
-      const activeUsers = await User.countDocuments({ isActive: true })
-      const newUsersThisMonth = await User.countDocuments({
-        createdAt: { $gte: thisMonth }
-      })
-      const newUsersLastMonth = await User.countDocuments({
-        createdAt: { $gte: lastMonth, $lt: thisMonth }
-      })
-      const userGrowth = newUsersLastMonth > 0 ? ((newUsersThisMonth - newUsersLastMonth) / newUsersLastMonth) * 100 : 0
+      const [
+        totalUsers,
+        totalVendors,
+        totalVenues,
+        totalBookings,
+        totalRevenue,
+        averageRating,
+        monthlyGrowth
+      ] = await Promise.all([
+        User.countDocuments(),
+        Vendor.countDocuments(),
+        Venue.countDocuments(),
+        Booking.countDocuments(),
+        Payment.aggregate([
+          { $match: { status: 'completed' } },
+          { $group: { _id: null, total: { $sum: '$amount' } } }
+        ]),
+        Review.aggregate([
+          { $group: { _id: null, average: { $avg: '$rating' } } }
+        ]),
+        this.getMonthlyGrowth()
+      ]);
 
-      // Revenue metrics
-      const totalRevenue = await Payment.aggregate([
-        { $match: { status: 'completed' } },
-        { $group: { _id: null, total: { $sum: '$amount' } } }
-      ])
-      
-      const thisMonthRevenue = await Payment.aggregate([
-        { 
-          $match: { 
-            status: 'completed',
-            createdAt: { $gte: thisMonth }
-          }
-        },
-        { $group: { _id: null, total: { $sum: '$amount' } } }
-      ])
-
-      const lastMonthRevenue = await Payment.aggregate([
-        { 
-          $match: { 
-            status: 'completed',
-            createdAt: { $gte: lastMonth, $lt: thisMonth }
-          }
-        },
-        { $group: { _id: null, total: { $sum: '$amount' } } }
-      ])
-
-      const revenueGrowth = lastMonthRevenue[0]?.total > 0 
-        ? ((thisMonthRevenue[0]?.total || 0) - lastMonthRevenue[0].total) / lastMonthRevenue[0].total * 100 
-        : 0
-
-      const averageBooking = await Payment.aggregate([
-        { $match: { status: 'completed' } },
-        { $group: { _id: null, average: { $avg: '$amount' } } }
-      ])
-
-      // Booking metrics
-      const totalBookings = await Booking.countDocuments()
-      const bookingsThisMonth = await Booking.countDocuments({
-        createdAt: { $gte: thisMonth }
-      })
-      const pendingBookings = await Booking.countDocuments({ status: 'pending' })
-      const confirmedBookings = await Booking.countDocuments({ status: 'confirmed' })
-      const completedBookings = await Booking.countDocuments({ status: 'completed' })
-      const cancelledBookings = await Booking.countDocuments({ status: 'cancelled' })
-
-      // Venue metrics
-      const totalVenues = await Venue.countDocuments()
-      const activeVenues = await Venue.countDocuments({ isActive: true })
-      const averageVenueRating = await Venue.aggregate([
-        { $group: { _id: null, average: { $avg: '$rating' } } }
-      ])
-      const topRatedVenues = await Venue.find({ isActive: true })
-        .sort({ rating: -1 })
-        .limit(5)
-        .select('name rating location price')
-
-      // Vendor metrics
-      const totalVendors = await Vendor.countDocuments()
-      const activeVendors = await Vendor.countDocuments({ isActive: true })
-      const vendorsByCategory = await Vendor.aggregate([
-        { $group: { _id: '$category', count: { $sum: 1 } } }
-      ])
-      const topPerformingVendors = await Vendor.find({ isActive: true })
-        .sort({ rating: -1 })
-        .limit(5)
-        .select('name category rating price')
-
-      // Engagement metrics
-      const messagesSent = await Message.countDocuments()
-      const notificationsSent = await Notification.countDocuments()
-      const averageResponseTime = await this.calculateAverageResponseTime()
-
-      // Performance metrics (mock data for now)
-      const performance = {
-        pageViews: Math.floor(Math.random() * 10000) + 5000,
-        uniqueVisitors: Math.floor(Math.random() * 2000) + 1000,
-        conversionRate: Math.random() * 10 + 2,
-        averageSessionDuration: Math.floor(Math.random() * 300) + 120
-      }
+      const revenue = totalRevenue[0]?.total || 0;
+      const avgRating = averageRating[0]?.average || 0;
+      const conversionRate = totalUsers > 0 ? (totalBookings / totalUsers) * 100 : 0;
 
       return {
-        users: {
-          total: totalUsers,
-          active: activeUsers,
-          newThisMonth: newUsersThisMonth,
-          growth: userGrowth
-        },
-        revenue: {
-          total: totalRevenue[0]?.total || 0,
-          thisMonth: thisMonthRevenue[0]?.total || 0,
-          growth: revenueGrowth,
-          averageBooking: averageBooking[0]?.average || 0
-        },
-        bookings: {
-          total: totalBookings,
-          thisMonth: bookingsThisMonth,
-          pending: pendingBookings,
-          confirmed: confirmedBookings,
-          completed: completedBookings,
-          cancelled: cancelledBookings
-        },
-        venues: {
-          total: totalVenues,
-          active: activeVenues,
-          averageRating: averageVenueRating[0]?.average || 0,
-          topRated: topRatedVenues
-        },
-        vendors: {
-          total: totalVendors,
-          active: activeVendors,
-          byCategory: vendorsByCategory.reduce((acc: Record<string, number>, item: any) => {
-            acc[item._id] = item.count
-            return acc
-          }, {} as Record<string, number>),
-          topPerforming: topPerformingVendors
-        },
-        engagement: {
-          messagesSent,
-          notificationsSent,
-          averageResponseTime
-        },
-        performance
-      }
-
+        totalUsers,
+        totalVendors,
+        totalVenues,
+        totalBookings,
+        totalRevenue: revenue,
+        averageRating: Math.round(avgRating * 10) / 10,
+        conversionRate: Math.round(conversionRate * 100) / 100,
+        monthlyGrowth
+      };
     } catch (error) {
-      // Log error without console.log in production
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Analytics metrics error:', error)
-      }
-      return this.getDefaultMetrics()
+      console.error('Analytics metrics error:', error);
+      throw error;
     }
   }
 
-  // Get chart data for visualizations
-  async getChartData(days: number = 30): Promise<ChartData> {
+  /**
+   * Get chart data for different time periods
+   */
+  static async getChartData(days: number = 30): Promise<ChartData> {
     try {
-      await connectDB()
-      
-      const endDate = new Date()
-      const startDate = new Date(endDate.getTime() - (days * 24 * 60 * 60 * 1000))
+      await connectDB();
 
-      // Revenue chart data
-      const revenueData = await Payment.aggregate([
-        {
-          $match: {
-            status: 'completed',
-            createdAt: { $gte: startDate, $lte: endDate }
-          }
-        },
-        {
-          $group: {
-            _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-            amount: { $sum: '$amount' }
-          }
-        },
-        { $sort: { _id: 1 } }
-      ])
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(endDate.getDate() - days);
 
-      // Bookings chart data
-      const bookingsData = await Booking.aggregate([
-        {
-          $match: {
-            createdAt: { $gte: startDate, $lte: endDate }
-          }
-        },
-        {
-          $group: {
-            _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-            count: { $sum: 1 }
-          }
-        },
-        { $sort: { _id: 1 } }
-      ])
+      // Get daily data
+      const dailyData = await this.getDailyData(startDate, endDate);
 
-      // Users chart data
-      const usersData = await User.aggregate([
-        {
-          $match: {
-            createdAt: { $gte: startDate, $lte: endDate }
-          }
-        },
-        {
-          $group: {
-            _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-            count: { $sum: 1 }
-          }
-        },
-        { $sort: { _id: 1 } }
-      ])
-
-      // Categories chart data
-      const categoriesData = await Vendor.aggregate([
-        {
-          $group: {
-            _id: '$category',
-            count: { $sum: 1 }
-          }
-        },
-        { $sort: { count: -1 } }
-      ])
+      const labels = dailyData.map(item => 
+        new Date(item.date).toLocaleDateString('en-US', { 
+          month: 'short', 
+          day: 'numeric' 
+        })
+      );
 
       return {
-        revenue: revenueData.map((item: any) => ({ date: item._id, amount: item.amount })),
-        bookings: bookingsData.map((item: any) => ({ date: item._id, count: item.count })),
-        users: usersData.map((item: any) => ({ date: item._id, count: item.count })),
-        categories: categoriesData.map((item: any) => ({ category: item._id, count: item.count }))
-      }
-
+        labels,
+        datasets: [
+          {
+            label: 'Bookings',
+            data: dailyData.map(item => item.bookings),
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderColor: 'rgba(59, 130, 246, 1)',
+          },
+          {
+            label: 'Revenue (LKR)',
+            data: dailyData.map(item => item.revenue),
+            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+            borderColor: 'rgba(34, 197, 94, 1)',
+          },
+          {
+            label: 'New Users',
+            data: dailyData.map(item => item.newUsers),
+            backgroundColor: 'rgba(168, 85, 247, 0.1)',
+            borderColor: 'rgba(168, 85, 247, 1)',
+          }
+        ]
+      };
     } catch (error) {
-      // Log error without console.log in production
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Chart data error:', error)
-      }
-      return {
-        revenue: [],
-        bookings: [],
-        users: [],
-        categories: []
-      }
+      console.error('Chart data error:', error);
+      throw error;
     }
   }
 
-  // Get real-time dashboard data
-  async getRealTimeData() {
+  /**
+   * Get real-time data
+   */
+  static async getRealTimeData(): Promise<RealTimeData> {
     try {
-      await connectDB()
-      
-      const now = new Date()
-      const lastHour = new Date(now.getTime() - (60 * 60 * 1000))
-      const last24Hours = new Date(now.getTime() - (24 * 60 * 60 * 1000))
+      await connectDB();
 
-      const recentBookings = await Booking.find({
-        createdAt: { $gte: last24Hours }
-      }).populate('userId', 'name email')
+      const oneHourAgo = new Date();
+      oneHourAgo.setHours(oneHourAgo.getHours() - 1);
 
-      const recentPayments = await Payment.find({
-        createdAt: { $gte: last24Hours }
-      }).populate('userId', 'name email')
-
-      const recentMessages = await Message.find({
-        createdAt: { $gte: lastHour }
-      }).populate('senderId', 'name email')
-
-      const unreadNotifications = await Notification.countDocuments({
-        isRead: false,
-        createdAt: { $gte: last24Hours }
-      })
-
-      return {
+      const [
+        activeUsers,
         recentBookings,
-        recentPayments,
-        recentMessages,
-        unreadNotifications,
-        lastUpdated: now
-      }
+        pendingPayments
+      ] = await Promise.all([
+        User.countDocuments({ lastActive: { $gte: oneHourAgo } }),
+        Booking.countDocuments({ 
+          createdAt: { $gte: oneHourAgo },
+          status: { $in: ['pending', 'confirmed'] }
+        }),
+        Payment.countDocuments({ status: 'pending' })
+      ]);
 
-    } catch (error) {
-      // Log error without console.log in production
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Real-time data error:', error)
-      }
+      // Simple system health check
+      const systemHealth = this.getSystemHealth(activeUsers, recentBookings, pendingPayments);
+
       return {
-        recentBookings: [],
-        recentPayments: [],
-        recentMessages: [],
-        unreadNotifications: 0,
-        lastUpdated: new Date()
-      }
-    }
-  }
-
-  private async calculateAverageResponseTime(): Promise<number> {
-    try {
-      const messages = await Message.find({
-        type: 'text',
-        createdAt: { $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) }
-      }).sort({ createdAt: 1 })
-
-      let totalResponseTime = 0
-      let responseCount = 0
-
-      for (let i = 1; i < messages.length; i++) {
-        const currentMessage = messages[i]
-        const previousMessage = messages[i - 1]
-
-        if (currentMessage.senderId.toString() !== previousMessage.senderId.toString()) {
-          const responseTime = currentMessage.createdAt.getTime() - previousMessage.createdAt.getTime()
-          totalResponseTime += responseTime
-          responseCount++
-        }
-      }
-
-      return responseCount > 0 ? totalResponseTime / responseCount / 1000 : 0 // Return in seconds
-
+        activeUsers,
+        recentBookings,
+        pendingPayments,
+        systemHealth
+      };
     } catch (error) {
-      // Log error without console.log in production
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Response time calculation error:', error)
-      }
-      return 0
+      console.error('Real-time data error:', error);
+      throw error;
     }
   }
 
-  private getDefaultMetrics(): AnalyticsMetrics {
-    return {
-      users: { total: 0, active: 0, newThisMonth: 0, growth: 0 },
-      revenue: { total: 0, thisMonth: 0, growth: 0, averageBooking: 0 },
-      bookings: { total: 0, thisMonth: 0, pending: 0, confirmed: 0, completed: 0, cancelled: 0 },
-      venues: { total: 0, active: 0, averageRating: 0, topRated: [] },
-      vendors: { total: 0, active: 0, byCategory: {}, topPerforming: [] },
-      engagement: { messagesSent: 0, notificationsSent: 0, averageResponseTime: 0 },
-      performance: { pageViews: 0, uniqueVisitors: 0, conversionRate: 0, averageSessionDuration: 0 }
+  /**
+   * Get vendor-specific analytics
+   */
+  static async getVendorAnalytics(vendorId: string): Promise<{
+    totalBookings: number;
+    totalRevenue: number;
+    averageRating: number;
+    monthlyBookings: number;
+    monthlyRevenue: number;
+    topVenues: Array<{ name: string; bookings: number; revenue: number }>;
+    recentReviews: Array<{ rating: number; comment: string; date: Date }>;
+  }> {
+    try {
+      await connectDB();
+
+      const startOfMonth = new Date();
+      startOfMonth.setDate(1);
+      startOfMonth.setHours(0, 0, 0, 0);
+
+      const [
+        totalBookings,
+        totalRevenue,
+        averageRating,
+        monthlyBookings,
+        monthlyRevenue,
+        topVenues,
+        recentReviews
+      ] = await Promise.all([
+        Booking.countDocuments({ vendorId }),
+        Payment.aggregate([
+          { $match: { vendorId, status: 'completed' } },
+          { $group: { _id: null, total: { $sum: '$amount' } } }
+        ]),
+        Review.aggregate([
+          { $match: { vendorId } },
+          { $group: { _id: null, average: { $avg: '$rating' } } }
+        ]),
+        Booking.countDocuments({ 
+          vendorId, 
+          createdAt: { $gte: startOfMonth } 
+        }),
+        Payment.aggregate([
+          { 
+            $match: { 
+              vendorId, 
+              status: 'completed',
+              createdAt: { $gte: startOfMonth }
+            } 
+          },
+          { $group: { _id: null, total: { $sum: '$amount' } } }
+        ]),
+        this.getVendorTopVenues(vendorId),
+        this.getVendorRecentReviews(vendorId)
+      ]);
+
+      return {
+        totalBookings,
+        totalRevenue: totalRevenue[0]?.total || 0,
+        averageRating: averageRating[0]?.average || 0,
+        monthlyBookings,
+        monthlyRevenue: monthlyRevenue[0]?.total || 0,
+        topVenues,
+        recentReviews
+      };
+    } catch (error) {
+      console.error('Vendor analytics error:', error);
+      throw error;
     }
+  }
+
+  /**
+   * Get user-specific analytics
+   */
+  static async getUserAnalytics(userId: string): Promise<{
+    totalBookings: number;
+    totalSpent: number;
+    favoriteCategories: Array<{ category: string; count: number }>;
+    upcomingEvents: Array<{ name: string; date: Date; venue: string }>;
+    recentActivity: Array<{ type: string; description: string; date: Date }>;
+  }> {
+    try {
+      await connectDB();
+
+      const [
+        totalBookings,
+        totalSpent,
+        favoriteCategories,
+        upcomingEvents,
+        recentActivity
+      ] = await Promise.all([
+        Booking.countDocuments({ userId }),
+        Payment.aggregate([
+          { $match: { userId, status: 'completed' } },
+          { $group: { _id: null, total: { $sum: '$amount' } } }
+        ]),
+        this.getUserFavoriteCategories(userId),
+        this.getUserUpcomingEvents(userId),
+        this.getUserRecentActivity(userId)
+      ]);
+
+      return {
+        totalBookings,
+        totalSpent: totalSpent[0]?.total || 0,
+        favoriteCategories,
+        upcomingEvents,
+        recentActivity
+      };
+    } catch (error) {
+      console.error('User analytics error:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get monthly growth data
+   */
+  private static async getMonthlyGrowth(): Promise<{
+    users: number;
+    vendors: number;
+    bookings: number;
+    revenue: number;
+  }> {
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+
+    const startOfLastMonth = new Date(startOfMonth);
+    startOfLastMonth.setMonth(startOfLastMonth.getMonth() - 1);
+
+    const [
+      currentMonthUsers,
+      lastMonthUsers,
+      currentMonthVendors,
+      lastMonthVendors,
+      currentMonthBookings,
+      lastMonthBookings,
+      currentMonthRevenue,
+      lastMonthRevenue
+    ] = await Promise.all([
+      User.countDocuments({ createdAt: { $gte: startOfMonth } }),
+      User.countDocuments({ 
+        createdAt: { $gte: startOfLastMonth, $lt: startOfMonth } 
+      }),
+      Vendor.countDocuments({ createdAt: { $gte: startOfMonth } }),
+      Vendor.countDocuments({ 
+        createdAt: { $gte: startOfLastMonth, $lt: startOfMonth } 
+      }),
+      Booking.countDocuments({ createdAt: { $gte: startOfMonth } }),
+      Booking.countDocuments({ 
+        createdAt: { $gte: startOfLastMonth, $lt: startOfMonth } 
+      }),
+      Payment.aggregate([
+        { 
+          $match: { 
+            status: 'completed',
+            createdAt: { $gte: startOfMonth } 
+          } 
+        },
+        { $group: { _id: null, total: { $sum: '$amount' } } }
+      ]),
+      Payment.aggregate([
+        { 
+          $match: { 
+            status: 'completed',
+            createdAt: { $gte: startOfLastMonth, $lt: startOfMonth } 
+          } 
+        },
+        { $group: { _id: null, total: { $sum: '$amount' } } }
+      ])
+    ]);
+
+    const calculateGrowth = (current: number, last: number) => 
+      last > 0 ? ((current - last) / last) * 100 : 0;
+
+    return {
+      users: calculateGrowth(currentMonthUsers, lastMonthUsers),
+      vendors: calculateGrowth(currentMonthVendors, lastMonthVendors),
+      bookings: calculateGrowth(currentMonthBookings, lastMonthBookings),
+      revenue: calculateGrowth(
+        currentMonthRevenue[0]?.total || 0,
+        lastMonthRevenue[0]?.total || 0
+      )
+    };
+  }
+
+  /**
+   * Get daily data for charts
+   */
+  private static async getDailyData(startDate: Date, endDate: Date) {
+    const dailyData = [];
+    const currentDate = new Date(startDate);
+
+    while (currentDate <= endDate) {
+      const nextDate = new Date(currentDate);
+      nextDate.setDate(nextDate.getDate() + 1);
+
+      const [bookings, revenue, newUsers] = await Promise.all([
+        Booking.countDocuments({
+          createdAt: { $gte: currentDate, $lt: nextDate }
+        }),
+        Payment.aggregate([
+          {
+            $match: {
+              status: 'completed',
+              createdAt: { $gte: currentDate, $lt: nextDate }
+            }
+          },
+          { $group: { _id: null, total: { $sum: '$amount' } } }
+        ]),
+        User.countDocuments({
+          createdAt: { $gte: currentDate, $lt: nextDate }
+        })
+      ]);
+
+      dailyData.push({
+        date: currentDate.toISOString(),
+        bookings,
+        revenue: revenue[0]?.total || 0,
+        newUsers
+      });
+
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dailyData;
+  }
+
+  /**
+   * Get system health status
+   */
+  private static getSystemHealth(
+    activeUsers: number,
+    recentBookings: number,
+    pendingPayments: number
+  ): 'healthy' | 'warning' | 'critical' {
+    if (pendingPayments > 100 || activeUsers === 0) {
+      return 'critical';
+    }
+    if (pendingPayments > 50 || recentBookings === 0) {
+      return 'warning';
+    }
+    return 'healthy';
+  }
+
+  /**
+   * Get vendor's top venues
+   */
+  private static async getVendorTopVenues(vendorId: string) {
+    return Booking.aggregate([
+      { $match: { vendorId } },
+      { $group: { _id: '$venueId', bookings: { $sum: 1 } } },
+      { $lookup: { from: 'venues', localField: '_id', foreignField: '_id', as: 'venue' } },
+      { $unwind: '$venue' },
+      { $project: { name: '$venue.name', bookings: 1, revenue: 0 } },
+      { $sort: { bookings: -1 } },
+      { $limit: 5 }
+    ]);
+  }
+
+  /**
+   * Get vendor's recent reviews
+   */
+  private static async getVendorRecentReviews(vendorId: string) {
+    const reviews = await Review.find({ vendorId })
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .select('rating comment createdAt')
+      .lean();
+    
+    return reviews.map(review => ({
+      rating: review.rating,
+      comment: review.comment,
+      date: review.createdAt
+    }));
+  }
+
+  /**
+   * Get user's favorite categories
+   */
+  private static async getUserFavoriteCategories(userId: string) {
+    return Booking.aggregate([
+      { $match: { userId } },
+      { $lookup: { from: 'vendors', localField: 'vendorId', foreignField: '_id', as: 'vendor' } },
+      { $unwind: '$vendor' },
+      { $group: { _id: '$vendor.category', count: { $sum: 1 } } },
+      { $project: { category: '$_id', count: 1, _id: 0 } },
+      { $sort: { count: -1 } },
+      { $limit: 5 }
+    ]);
+  }
+
+  /**
+   * Get user's upcoming events
+   */
+  private static async getUserUpcomingEvents(userId: string) {
+    const now = new Date();
+    const bookings = await Booking.find({
+      userId,
+      eventDate: { $gte: now },
+      status: { $in: ['confirmed', 'pending'] }
+    })
+      .populate('venueId', 'name')
+      .sort({ eventDate: 1 })
+      .limit(5)
+      .select('eventDate venueId')
+      .lean();
+    
+    return bookings.map(booking => ({
+      name: `Event at ${booking.venueId?.name || 'Unknown Venue'}`,
+      date: booking.eventDate,
+      venue: booking.venueId?.name || 'Unknown Venue'
+    }));
+  }
+
+  /**
+   * Get user's recent activity
+   */
+  private static async getUserRecentActivity(userId: string) {
+    const activities: Array<{ type: string; description: string; date: Date }> = [];
+    
+    // Recent bookings
+    const recentBookings = await Booking.find({ userId })
+      .sort({ createdAt: -1 })
+      .limit(3)
+      .select('createdAt status')
+      .lean();
+
+    recentBookings.forEach(booking => {
+      activities.push({
+        type: 'booking',
+        description: `Booking ${booking.status}`,
+        date: booking.createdAt
+      });
+    });
+
+    // Recent reviews
+    const recentReviews = await Review.find({ userId })
+      .sort({ createdAt: -1 })
+      .limit(3)
+      .select('createdAt rating')
+      .lean();
+
+    recentReviews.forEach(review => {
+      activities.push({
+        type: 'review',
+        description: `Posted ${review.rating}-star review`,
+        date: review.createdAt
+      });
+    });
+
+    return activities.sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 10);
   }
 }
-
-export default new AnalyticsDashboard() 

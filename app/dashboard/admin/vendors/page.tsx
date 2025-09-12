@@ -45,16 +45,26 @@ export default function AdminVendorsPage() {
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedVendors, setSelectedVendors] = useState<string[]>([]);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    businessName: string;
+    contactName: string;
+    email: string;
+    phone: string;
+    category: string;
+    location: string;
+    status: 'pending' | 'approved' | 'rejected' | 'suspended';
+    description: string;
+    verificationStatus: 'unverified' | 'verified' | 'pending_verification';
+  }>({
     businessName: '',
     contactName: '',
     email: '',
     phone: '',
     category: '',
     location: '',
-    status: 'pending' as const,
+    status: 'pending',
     description: '',
-    verificationStatus: 'unverified' as const
+    verificationStatus: 'unverified'
   });
 
   const categories = [

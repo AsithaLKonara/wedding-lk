@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { Venue } from '@/lib/models';
+import { venueSchemas } from '@/lib/validations/api-validators';
+import { handleApiError, createSuccessResponse, createPaginatedResponse } from '@/lib/utils/error-handler';
 
 export async function GET(request: NextRequest) {
   try {
@@ -83,43 +85,140 @@ export async function POST(request: NextRequest) {
     
     console.log('📝 Creating new venue...');
 
-    // Validate required fields
-    if (!venueData.name || !venueData.capacity || !venueData.pricing || !venueData.vendor) {
+    // Validate input data
+    const validation = venueSchemas.create.safeParse(venueData);
+    if (!validation.success) {
       return NextResponse.json({
         success: false,
-        error: 'Name, capacity, pricing, and vendor are required'
+        error: 'Validation failed',
+        details: validation.error.errors
       }, { status: 400 });
     }
 
+    const validatedData = validation.data;
+
     // Create venue
     const newVenue = new Venue({
-      ...venueData,
+      ...validatedData,
       isActive: true,
       isAvailable: true,
       rating: {
         average: 0,
         count: 0
       },
-      amenities: venueData.amenities || [],
-      images: venueData.images || []
+      amenities: validatedData.amenities || [],
+      images: validatedData.images || []
     });
 
     await newVenue.save();
 
     console.log('✅ Venue created successfully:', newVenue.name);
 
-    return NextResponse.json({
-      success: true,
-      venue: newVenue,
-      message: 'Venue created successfully'
-    });
+    return createSuccessResponse(newVenue, 'Venue created successfully', 201);
 
   } catch (error) {
     console.error('❌ Error creating venue:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'Failed to create venue',
-      message: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+    return handleApiError(error, '/api/venues');
+  }
+}
+
+// PUT - Update venue
+export async function PUT(request: NextRequest) {
+  try {
+    await connectDB();
+
+    const { searchParams } = new URL(request.url);
+    const venueId = searchParams.get('id');
+    const venueData = await request.json();
+
+    if (!venueId) {
+      return NextResponse.json({
+        success: false,
+        error: 'Venue ID is required'
+      }, { status: 400 });
+    }
+
+    console.log('📝 Updating venue:', venueId);
+
+    // Validate input data
+    const validation = venueSchemas.update.safeParse(venueData);
+    if (!validation.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Validation failed',
+        details: validation.error.errors
+      }, { status: 400 });
+    }
+
+    const validatedData = validation.data;
+
+    // Find venue
+    const venue = await Venue.findById(venueId);
+    if (!venue) {
+      return NextResponse.json({
+        success: false,
+        error: 'Venue not found'
+      }, { status: 404 });
+    }
+
+    // Update venue
+    const updatedVenue = await Venue.findByIdAndUpdate(
+      venueId,
+      { 
+        ...validatedData,
+        updatedAt: new Date()
+      },
+      { new: true, runValidators: true }
+    );
+
+    console.log('✅ Venue updated successfully:', updatedVenue.name);
+
+    return createSuccessResponse(updatedVenue, 'Venue updated successfully');
+
+  } catch (error) {
+    console.error('❌ Error updating venue:', error);
+    return handleApiError(error, '/api/venues');
+  }
+}
+
+// DELETE - Delete venue (soft delete)
+export async function DELETE(request: NextRequest) {
+  try {
+    await connectDB();
+
+    const { searchParams } = new URL(request.url);
+    const venueId = searchParams.get('id');
+
+    if (!venueId) {
+      return NextResponse.json({
+        success: false,
+        error: 'Venue ID is required'
+      }, { status: 400 });
+    }
+
+    console.log('📝 Deleting venue:', venueId);
+
+    // Find venue
+    const venue = await Venue.findById(venueId);
+    if (!venue) {
+      return NextResponse.json({
+        success: false,
+        error: 'Venue not found'
+      }, { status: 404 });
+    }
+
+    // Soft delete - set isActive to false
+    await Venue.findByIdAndUpdate(venueId, {
+      isActive: false,
+      updatedAt: new Date()
+    });
+
+    console.log('✅ Venue deleted successfully:', venue.name);
+
+    return createSuccessResponse(null, 'Venue deleted successfully');
+
+  } catch (error) {
+    console.error('❌ Error deleting venue:', error);
+    return handleApiError(error, '/api/venues');
   }
 }

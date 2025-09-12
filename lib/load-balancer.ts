@@ -131,6 +131,12 @@ export class LoadBalancer {
       console.log('🏥 Load balancer health checks disabled for build');
       return;
     }
+    
+    // Skip health checks during build process (Next.js build)
+    if (process.env.NEXT_PHASE === 'phase-production-build') {
+      console.log('🏥 Load balancer health checks disabled during Next.js build');
+      return;
+    }
 
     this.healthCheckInterval = setInterval(async () => {
       await this.performHealthChecks();
