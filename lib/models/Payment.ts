@@ -7,6 +7,10 @@ const PaymentSchema = new mongoose.Schema(
       ref: "User", 
       required: true 
     },
+    userId: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: "User" 
+    },
     vendor: { 
       type: mongoose.Schema.Types.ObjectId, 
       ref: "Vendor" 
@@ -33,11 +37,25 @@ const PaymentSchema = new mongoose.Schema(
       enum: ["pending", "processing", "completed", "failed", "refunded"], 
       default: "pending" 
     },
+    type: { 
+      type: String, 
+      enum: ["booking", "ads_payment", "ads_subscription", "subscription"], 
+      default: "booking" 
+    },
     paymentMethod: { 
       type: String, 
       required: true 
     },
     transactionId: { 
+      type: String
+    },
+    stripePaymentIntentId: { 
+      type: String
+    },
+    stripeSubscriptionId: { 
+      type: String
+    },
+    stripeCustomerId: { 
       type: String
     },
     gatewayResponse: { 
@@ -48,6 +66,9 @@ const PaymentSchema = new mongoose.Schema(
     },
     metadata: { 
       type: mongoose.Schema.Types.Mixed 
+    },
+    completedAt: { 
+      type: Date 
     }
   },
   {
@@ -67,17 +88,23 @@ export const Payment = mongoose.models.Payment || mongoose.model("Payment", Paym
 
 export interface IPayment extends mongoose.Document {
   user: mongoose.Types.ObjectId
+  userId?: mongoose.Types.ObjectId
   vendor?: mongoose.Types.ObjectId
   venue?: mongoose.Types.ObjectId
   booking?: mongoose.Types.ObjectId
   amount: number
   currency: string
   status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded'
+  type: 'booking' | 'ads_payment' | 'ads_subscription' | 'subscription'
   paymentMethod: string
   transactionId?: string
+  stripePaymentIntentId?: string
+  stripeSubscriptionId?: string
+  stripeCustomerId?: string
   gatewayResponse?: any
   description?: string
   metadata?: Record<string, any>
+  completedAt?: Date
   createdAt: Date
   updatedAt: Date
 } 
