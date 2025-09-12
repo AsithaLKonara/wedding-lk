@@ -7,11 +7,6 @@
   },
   "env": {
     "NEXTAUTH_URL": "https://wedding-lkcom.vercel.app",
-    "MONGODB_URI": "@mongodb_uri",
-    "NEXTAUTH_SECRET": "@nextauth_secret",
-    "GOOGLE_CLIENT_ID": "@google_client_id",
-    "GOOGLE_CLIENT_SECRET": "@google_client_secret",
-    "REDIS_URL": "@redis_url",
     "NODE_ENV": "production"
   },
   "headers": [
