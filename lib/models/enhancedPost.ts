@@ -186,8 +186,7 @@ const EnhancedPostSchema = new Schema<IEnhancedPost>({
       default: 'Point'
     },
     coordinates: {
-      type: [Number],
-      index: '2dsphere'
+      type: [Number]
     },
     address: String,
     venue: String

@@ -1,5 +1,5 @@
 import { connectDB } from '@/lib/db';
-import { PerformanceMonitor } from '@/lib/monitoring/performance-monitor';
+import PerformanceMonitor from '@/lib/monitoring/performance-monitor';
 
 export interface ScalingMetrics {
   currentLoad: {

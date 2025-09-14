@@ -95,8 +95,8 @@ export default function PackageDetailPage() {
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: package?.name || 'Wedding Package',
-        text: package?.description || 'Check out this wedding package',
+        title: packageData?.name || 'Wedding Package',
+        text: packageData?.description || 'Check out this wedding package',
         url: window.location.href,
       })
     } else {

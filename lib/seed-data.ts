@@ -1,7 +1,7 @@
 import { connectDB } from './db';
 import { Vendor } from './models/vendor';
 import { Venue } from './models/venue';
-import { Testimonial } from './models/testimonial';
+import Testimonial from './models/testimonial';
 import { Package } from './models/package';
 import { User } from './models/user';
 import bcrypt from 'bcryptjs';

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from '@/lib/db'
-import { VendorPackage } from '@/lib/models/vendorPackage'
+import VendorPackage from '@/lib/models/vendorPackage'
 
 export async function GET(
   request: NextRequest,

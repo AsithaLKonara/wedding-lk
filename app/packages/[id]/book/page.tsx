@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
@@ -23,32 +23,37 @@ import Header from '@/components/organisms/header'
 import Footer from '@/components/organisms/footer'
 import { useToast } from '@/hooks/use-toast'
 
-interface WeddingPackage {
-  _id: string
+interface PackageData {
+  id: string
   name: string
   description: string
   price: number
-  originalPrice: number
-  rating: {
-    average: number
-    count: number
+  originalPrice?: number
+  location: string
+  vendor: {
+    name: string
+    rating: number
+    reviewCount: number
   }
   features: string[]
-  venues: any[]
-  vendors: any[]
-  badge?: string
-  badgeColor?: string
-  location?: string
+  includes: string[]
+  images: string[]
+  category: string
+  duration: string
+  guestCapacity: number
+  availability: boolean
 }
 
-interface BookingForm {
+interface BookingFormData {
   weddingDate: string
-  guestCount: string
-  location: string
+  guestCount: number
   specialRequests: string
   contactName: string
   contactEmail: string
   contactPhone: string
+  venueAddress: string
+  ceremonyTime: string
+  receptionTime: string
 }
 
 export default function BookPackagePage() {
@@ -56,83 +61,109 @@ export default function BookPackagePage() {
   const router = useRouter()
   const { toast } = useToast()
   const packageId = params.id as string
-  
-  const [packageData, setPackageData] = useState<WeddingPackage | null>(null)
+
+  const [packageData, setPackageData] = useState<PackageData | null>(null)
   const [loading, setLoading] = useState(true)
   const [booking, setBooking] = useState(false)
-  const [formData, setFormData] = useState<BookingForm>({
+  const [formData, setFormData] = useState<BookingFormData>({
     weddingDate: '',
-    guestCount: '',
-    location: '',
+    guestCount: 0,
     specialRequests: '',
     contactName: '',
     contactEmail: '',
-    contactPhone: ''
+    contactPhone: '',
+    venueAddress: '',
+    ceremonyTime: '',
+    receptionTime: ''
   })
 
   useEffect(() => {
-    if (packageId) {
-      fetchPackageDetails()
-    }
-  }, [packageId])
-
-  const fetchPackageDetails = async () => {
-    try {
-      setLoading(true)
-      const response = await fetch(`/api/packages/${packageId}`)
-      if (response.ok) {
-        const data = await response.json()
-        if (data.success) {
-          setPackageData(data.package)
+    const fetchPackage = async () => {
+      try {
+        const response = await fetch(`/api/packages/${packageId}`)
+        if (response.ok) {
+          const data = await response.json()
+          setPackageData(data)
+        } else {
+          toast({
+            title: "Error",
+            description: "Package not found",
+            variant: "destructive"
+          })
+          router.push('/packages')
         }
+      } catch (error) {
+        console.error('Error fetching package:', error)
+        toast({
+          title: "Error",
+          description: "Failed to load package details",
+          variant: "destructive"
+        })
+      } finally {
+        setLoading(false)
       }
-    } catch (error) {
-      console.error('Error fetching package details:', error)
-      toast({
-        title: 'Error',
-        description: 'Failed to load package details',
-        variant: 'destructive'
-      })
-    } finally {
-      setLoading(false)
     }
-  }
+
+    if (packageId) {
+      fetchPackage()
+    }
+  }, [packageId, router, toast])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: name === 'guestCount' ? parseInt(value) || 0 : value
     }))
   }
 
   const handleBooking = async () => {
-    if (!formData.weddingDate || !formData.guestCount || !formData.contactName || !formData.contactEmail) {
+    if (!packageData) return
+
+    // Basic validation
+    if (!formData.weddingDate || !formData.contactName || !formData.contactEmail) {
       toast({
-        title: 'Missing Information',
-        description: 'Please fill in all required fields',
-        variant: 'destructive'
+        title: "Missing Information",
+        description: "Please fill in all required fields",
+        variant: "destructive"
       })
       return
     }
 
     setBooking(true)
     try {
-      // Simulate booking process
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      toast({
-        title: 'Booking Successful!',
-        description: 'Your wedding package booking has been confirmed. You will receive a confirmation email shortly.'
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          packageId: packageData.id,
+          ...formData,
+          totalAmount: packageData.price
+        })
       })
-      
-      // Redirect to success page or dashboard
-      router.push('/dashboard/user')
+
+      if (response.ok) {
+        toast({
+          title: "Booking Successful!",
+          description: "Your wedding package has been booked successfully",
+        })
+        router.push('/dashboard/user')
+      } else {
+        const error = await response.json()
+        toast({
+          title: "Booking Failed",
+          description: error.message || "Failed to book package",
+          variant: "destructive"
+        })
+      }
     } catch (error) {
+      console.error('Booking error:', error)
       toast({
-        title: 'Booking Failed',
-        description: 'There was an error processing your booking. Please try again.',
-        variant: 'destructive'
+        title: "Error",
+        description: "An error occurred while booking",
+        variant: "destructive"
       })
     } finally {
       setBooking(false)
@@ -141,47 +172,35 @@ export default function BookPackagePage() {
 
   if (loading) {
     return (
-      <>
-        <Header />
-        <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4 py-8">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-pink-500 mx-auto"></div>
-              <p className="mt-4 text-gray-600">Loading package details...</p>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-pink-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">Loading package details...</p>
+        </div>
+      </div>
     )
   }
 
   if (!packageData) {
     return (
-      <>
-        <Header />
-        <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
-          <div className="container mx-auto px-4 py-8">
-            <div className="text-center">
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Package Not Found</h1>
-              <p className="text-gray-600 dark:text-gray-300 mb-8">The package you're looking for doesn't exist.</p>
-              <Button onClick={() => router.push('/packages')}>
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Packages
-              </Button>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Package Not Found</h1>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">The package you're looking for doesn't exist.</p>
+          <Button onClick={() => router.push('/packages')}>
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Packages
+          </Button>
+        </div>
+      </div>
     )
   }
 
-  const savings = packageData.originalPrice - packageData.price
-  const savingsPercentage = Math.round((savings / packageData.originalPrice) * 100)
+  const savings = packageData.originalPrice ? packageData.originalPrice - packageData.price : 0
+  const savingsPercentage = packageData.originalPrice ? Math.round((savings / packageData.originalPrice) * 100) : 0
 
   return (
-    <>
+    <div>
       <Header />
       <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 py-8">
@@ -191,7 +210,7 @@ export default function BookPackagePage() {
             onClick={() => router.back()}
             className="mb-6"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
+            <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
 
@@ -201,7 +220,7 @@ export default function BookPackagePage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.5 }}
               >
                 <Card>
                   <CardHeader>
@@ -218,51 +237,63 @@ export default function BookPackagePage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="weddingDate">Wedding Date *</Label>
-                          <div className="relative">
-                            <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                            <Input
-                              id="weddingDate"
-                              name="weddingDate"
-                              type="date"
-                              value={formData.weddingDate}
-                              onChange={handleInputChange}
-                              className="pl-10"
-                              required
-                            />
-                          </div>
+                          <Input
+                            id="weddingDate"
+                            name="weddingDate"
+                            type="date"
+                            value={formData.weddingDate}
+                            onChange={handleInputChange}
+                            required
+                          />
                         </div>
                         
                         <div>
-                          <Label htmlFor="guestCount">Number of Guests *</Label>
-                          <div className="relative">
-                            <Users className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                            <Input
-                              id="guestCount"
-                              name="guestCount"
-                              type="number"
-                              placeholder="150"
-                              value={formData.guestCount}
-                              onChange={handleInputChange}
-                              className="pl-10"
-                              required
-                            />
-                          </div>
+                          <Label htmlFor="guestCount">Guest Count *</Label>
+                          <Input
+                            id="guestCount"
+                            name="guestCount"
+                            type="number"
+                            value={formData.guestCount}
+                            onChange={handleInputChange}
+                            min="1"
+                            required
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="ceremonyTime">Ceremony Time</Label>
+                          <Input
+                            id="ceremonyTime"
+                            name="ceremonyTime"
+                            type="time"
+                            value={formData.ceremonyTime}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                        
+                        <div>
+                          <Label htmlFor="receptionTime">Reception Time</Label>
+                          <Input
+                            id="receptionTime"
+                            name="receptionTime"
+                            type="time"
+                            value={formData.receptionTime}
+                            onChange={handleInputChange}
+                          />
                         </div>
                       </div>
 
                       <div>
-                        <Label htmlFor="location">Wedding Location</Label>
-                        <div className="relative">
-                          <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                          <Input
-                            id="location"
-                            name="location"
-                            placeholder="Colombo, Western Province"
-                            value={formData.location}
-                            onChange={handleInputChange}
-                            className="pl-10"
-                          />
-                        </div>
+                        <Label htmlFor="venueAddress">Venue Address</Label>
+                        <Input
+                          id="venueAddress"
+                          name="venueAddress"
+                          value={formData.venueAddress}
+                          onChange={handleInputChange}
+                          placeholder="Enter venue address"
+                        />
                       </div>
 
                       <div>
@@ -270,9 +301,9 @@ export default function BookPackagePage() {
                         <Textarea
                           id="specialRequests"
                           name="specialRequests"
-                          placeholder="Any special requirements or requests for your wedding..."
                           value={formData.specialRequests}
                           onChange={handleInputChange}
+                          placeholder="Any special requirements or requests..."
                           rows={4}
                         />
                       </div>
@@ -288,7 +319,6 @@ export default function BookPackagePage() {
                           <Input
                             id="contactName"
                             name="contactName"
-                            placeholder="John Doe"
                             value={formData.contactName}
                             onChange={handleInputChange}
                             required
@@ -296,12 +326,11 @@ export default function BookPackagePage() {
                         </div>
                         
                         <div>
-                          <Label htmlFor="contactEmail">Email Address *</Label>
+                          <Label htmlFor="contactEmail">Email *</Label>
                           <Input
                             id="contactEmail"
                             name="contactEmail"
                             type="email"
-                            placeholder="john@example.com"
                             value={formData.contactEmail}
                             onChange={handleInputChange}
                             required
@@ -315,129 +344,137 @@ export default function BookPackagePage() {
                           id="contactPhone"
                           name="contactPhone"
                           type="tel"
-                          placeholder="+94 77 123 4567"
                           value={formData.contactPhone}
                           onChange={handleInputChange}
+                          placeholder="+94 XX XXX XXXX"
                         />
                       </div>
                     </div>
 
                     {/* Booking Button */}
-                    <div className="pt-6">
-                      <Button 
-                        className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
-                        size="lg"
-                        onClick={handleBooking}
-                        disabled={booking}
-                      >
-                        {booking ? (
-                          <>
-                            <Clock className="h-4 w-4 mr-2 animate-spin" />
-                            Processing Booking...
-                          </>
-                        ) : (
-                          <>
-                            <CreditCard className="h-4 w-4 mr-2" />
-                            Book Package - LKR {package.price.toLocaleString()}
-                          </>
-                        )}
-                      </Button>
-                    </div>
+                    <Button 
+                      onClick={handleBooking}
+                      disabled={booking}
+                      className="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 text-lg"
+                    >
+                      {booking ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          <CreditCard className="w-5 h-5 mr-2" />
+                          Book This Package - LKR {packageData.price.toLocaleString()}
+                        </>
+                      )}
+                    </Button>
                   </CardContent>
                 </Card>
               </motion.div>
             </div>
 
-            {/* Package Summary */}
-            <div className="lg:col-span-1">
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="sticky top-4 space-y-6"
-              >
-                {/* Package Info */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Package Summary</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
+            {/* Package Info */}
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Package Summary</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-lg">{packageData.name}</h4>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">
+                      {packageData.description}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="font-semibold">{packageData.name}</h4>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">{packageData.description}</p>
-                    </div>
-
-                    <div className="flex items-center space-x-2">
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <span className="text-sm">{packageData.rating.average} ({packageData.rating.count} reviews)</span>
-                    </div>
-
-                    <div className="border-t pt-4">
-                      <div className="flex items-baseline space-x-2">
-                        <span className="text-2xl font-bold text-green-600">LKR {packageData.price.toLocaleString()}</span>
-                        <span className="text-lg text-gray-500 line-through">LKR {packageData.originalPrice.toLocaleString()}</span>
-                      </div>
-                      <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 mt-2">
-                        Save {savingsPercentage}%
-                      </Badge>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* What's Included */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">What's Included</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      {packageData.features.slice(0, 6).map((feature, index) => (
-                        <div key={index} className="flex items-start space-x-2">
-                          <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                          <span className="text-sm">{feature}</span>
-                        </div>
-                      ))}
-                      {packageData.features.length > 6 && (
-                        <div className="text-sm text-purple-600 dark:text-purple-400 font-medium">
-                          +{packageData.features.length - 6} more features
-                        </div>
+                      <span className="text-2xl font-bold text-pink-600">
+                        LKR {packageData.price.toLocaleString()}
+                      </span>
+                      {packageData.originalPrice && (
+                        <span className="text-lg text-gray-500 line-through ml-2">
+                          LKR {packageData.originalPrice.toLocaleString()}
+                        </span>
                       )}
                     </div>
-                  </CardContent>
-                </Card>
+                    {savings > 0 && (
+                      <Badge variant="secondary" className="bg-green-100 text-green-800">
+                        Save LKR {savings.toLocaleString()} ({savingsPercentage}%)
+                      </Badge>
+                    )}
+                  </div>
 
-                {/* Booking Guarantee */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Booking Guarantee</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-center space-x-2">
-                        <Check className="h-4 w-4 text-green-500" />
-                        <span>Free consultation included</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Check className="h-4 w-4 text-green-500" />
-                        <span>30-day money-back guarantee</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Check className="h-4 w-4 text-green-500" />
-                        <span>Professional wedding coordinator</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Check className="h-4 w-4 text-green-500" />
-                        <span>24/7 customer support</span>
-                      </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center">
+                      <MapPin className="w-4 h-4 mr-2 text-gray-500" />
+                      <span>{packageData.location}</span>
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                    <div className="flex items-center">
+                      <Users className="w-4 h-4 mr-2 text-gray-500" />
+                      <span>Up to {packageData.guestCapacity} guests</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Clock className="w-4 h-4 mr-2 text-gray-500" />
+                      <span>{packageData.duration}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Star className="w-4 h-4 mr-2 text-yellow-500" />
+                      <span>{packageData.vendor.rating} ({packageData.vendor.reviewCount} reviews)</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* What's Included */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">What's Included</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {packageData.includes.map((item, index) => (
+                      <div key={index} className="flex items-center">
+                        <Check className="w-4 h-4 mr-2 text-green-500" />
+                        <span className="text-sm">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Booking Guarantee */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Booking Guarantee</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center">
+                      <Check className="w-4 h-4 mr-2 text-green-500" />
+                      <span>Secure payment processing</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Check className="w-4 h-4 mr-2 text-green-500" />
+                      <span>24/7 customer support</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Check className="w-4 h-4 mr-2 text-green-500" />
+                      <span>Free cancellation up to 30 days</span>
+                    </div>
+                    <div className="flex items-center">
+                      <Check className="w-4 h-4 mr-2 text-green-500" />
+                      <span>Quality guarantee</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
       </main>
       <Footer />
-    </>
+    </div>
   )
 }
