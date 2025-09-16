@@ -1,6 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import crypto from 'crypto';
-import speakeasy from 'speakeasy';
 
 export interface ITwoFactorAuth extends Document {
   userId: mongoose.Types.ObjectId;
