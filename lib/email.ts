@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer'
 
 // Email configuration
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_SERVER_HOST,
   port: parseInt(process.env.EMAIL_SERVER_PORT || '587'),
   secure: false,
