@@ -203,7 +203,7 @@ export function ReelsSection({ onReelClick }: ReelsSectionProps) {
   const handleShareReel = (reel: Reel) => {
     toast({
       title: "Reel shared",
-      description: `Shared ${reel.author.name}'s reel`,
+      description: `Shared ${reel.author?.name || 'Unknown'}'s reel`,
     });
   };
 
@@ -337,11 +337,11 @@ export function ReelsSection({ onReelClick }: ReelsSectionProps) {
                       <Avatar className="h-6 w-6">
                         <AvatarImage src={reel.author.avatar} />
                         <AvatarFallback className="text-xs">
-                          {getInitials(reel.author.name)}
+                          {getInitials(reel.author?.name || 'Unknown')}
                         </AvatarFallback>
                       </Avatar>
                       <span className="font-semibold text-sm truncate">
-                        {reel.author.name}
+                        {reel.author?.name || 'Unknown User'}
                       </span>
                       {reel.author.verified && (
                         <Badge variant="secondary" className="text-xs">
@@ -375,7 +375,7 @@ export function ReelsSection({ onReelClick }: ReelsSectionProps) {
                       <div className="flex items-center space-x-1 text-xs text-gray-500 mb-2">
                         <Music className="h-3 w-3" />
                         <span className="truncate">
-                          {reel.audio.name} - {reel.audio.artist}
+                          {reel.audio?.name || 'Unknown'} - {reel.audio?.artist || 'Unknown Artist'}
                         </span>
                       </div>
                     )}

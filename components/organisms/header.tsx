@@ -3,16 +3,19 @@
 import React, { useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
+import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/molecules/theme-toggle"
 import { NavigationMenu } from "@/components/molecules/navigation-menu"
 import { MobileMenu } from "@/components/molecules/mobile-menu"
 import { Logo } from "@/components/atoms/logo"
 import { NotificationDropdown } from "@/components/organisms/notification-dropdown"
+import { LogoutButton } from "@/components/molecules/logout-button"
 import { Menu, X } from "lucide-react"
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { data: session, status } = useSession()
 
   return (
     <motion.header
@@ -35,15 +38,25 @@ export function Header() {
             <NotificationDropdown />
 
             <div className="hidden md:flex items-center space-x-2">
-              <Button variant="ghost" asChild>
-                <Link href="/login">Sign In</Link>
-              </Button>
-              <Button
-                asChild
-                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
-              >
-                <Link href="/register">Get Started</Link>
-              </Button>
+              {status === 'loading' ? (
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
+                </div>
+              ) : session?.user ? (
+                <LogoutButton user={session.user} />
+              ) : (
+                <>
+                  <Button variant="ghost" asChild>
+                    <Link href="/auth/signin">Sign In</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
+                  >
+                    <Link href="/auth/signup">Get Started</Link>
+                  </Button>
+                </>
+              )}
             </div>
 
             <Button

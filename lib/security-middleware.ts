@@ -155,15 +155,18 @@ export class SecurityMiddleware {
     headers['Referrer-Policy'] = 'strict-origin-when-cross-origin';
 
     if (this.config.headers.csp) {
-      headers['Content-Security-Policy'] = [
-        "default-src 'self'",
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-        "style-src 'self' 'unsafe-inline'",
-        "img-src 'self' data: https:",
-        "font-src 'self'",
-        "connect-src 'self'",
-        "frame-ancestors 'none'"
-      ].join('; ');
+        headers['Content-Security-Policy'] = [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' 'inline-speculation-rules' chrome-extension://* data: blob:",
+          "style-src 'self' 'unsafe-inline' data: blob:",
+          "img-src 'self' data: https: blob:",
+          "font-src 'self' data: https:",
+          "connect-src 'self' https: wss:",
+          "frame-src 'self'",
+          "object-src 'none'",
+          "base-uri 'self'",
+          "form-action 'self'"
+        ].join('; ');
     }
 
     headers['Permissions-Policy'] = [

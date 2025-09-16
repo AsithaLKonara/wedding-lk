@@ -1,391 +1,426 @@
-"use client"
+'use client';
 
-import { useState, useEffect } from "react"
-import { useSession } from "next-auth/react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Separator } from "@/components/ui/separator"
-import { User, Mail, Phone, MapPin, Calendar, Edit, Save, X } from "lucide-react"
-import { formatDate } from "@/lib/utils/format"
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { 
+  User, 
+  Mail, 
+  Phone, 
+  MapPin, 
+  Calendar, 
+  Camera, 
+  Save, 
+  Edit3,
+  Shield,
+  Heart,
+  Star,
+  MessageSquare,
+  CreditCard,
+  Settings
+} from 'lucide-react';
+import { Header } from '@/components/organisms/header';
+import { Footer } from '@/components/organisms/footer';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface UserProfile {
-  id: string
-  name: string
-  email: string
-  phone: string
-  role: string
-  location: {
-    country: string
-    state: string
-    city: string
-    zipCode?: string
-  }
-  preferences: {
-    language: string
-    currency: string
-    timezone: string
-    notifications: {
-      email: boolean
-      sms: boolean
-      push: boolean
-    }
-    marketing: {
-      email: boolean
-      sms: boolean
-      push: boolean
-    }
-  }
-  isVerified: boolean
-  isActive: boolean
-  createdAt: string
-  updatedAt: string
+  _id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  avatar?: string;
+  role: string;
+  status: string;
+  isEmailVerified: boolean;
+  location?: {
+    city: string;
+    state: string;
+    country: string;
+  };
+  dateOfBirth?: string;
+  gender?: string;
+  bio?: string;
+  createdAt: string;
+  lastLogin?: string;
 }
 
 export default function ProfilePage() {
-  const { data: session } = useSession()
-  const [profile, setProfile] = useState<UserProfile | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [editing, setEditing] = useState(false)
-  const [editForm, setEditForm] = useState<Partial<UserProfile>>({})
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    bio: '',
+    city: '',
+    state: '',
+    country: '',
+    gender: ''
+  });
 
   useEffect(() => {
-    fetchProfile()
-  }, [])
+    if (status === 'loading') return;
+    
+    if (!session?.user) {
+      router.push('/auth/signin');
+      return;
+    }
+
+    fetchProfile();
+  }, [session, status, router]);
 
   const fetchProfile = async () => {
     try {
-      setLoading(true)
-      const response = await fetch('/api/dashboard/user/profile')
+      const response = await fetch('/api/user/profile');
       if (response.ok) {
-        const data = await response.json()
-        if (data.success) {
-          const userData = data.user
-          setProfile({
-            id: userData._id,
-            name: userData.name || "User",
-            email: userData.email || "",
-            phone: userData.phone || "",
-            role: userData.role || "user",
-            location: {
-              country: userData.location?.country || "Sri Lanka",
-              state: userData.location?.province || "Western Province",
-              city: userData.location?.city || "Colombo",
-              zipCode: userData.location?.zipCode || "00300"
-            },
-            preferences: {
-              language: userData.preferences?.language || "en",
-              currency: userData.preferences?.currency || "LKR",
-              timezone: userData.preferences?.timezone || "Asia/Colombo",
-              notifications: {
-                email: userData.preferences?.notifications?.email ?? true,
-                sms: userData.preferences?.notifications?.sms ?? false,
-                push: userData.preferences?.notifications?.push ?? true
-              },
-              marketing: {
-                email: userData.preferences?.marketing?.email ?? false,
-                sms: userData.preferences?.marketing?.sms ?? false,
-                push: userData.preferences?.marketing?.push ?? false
-              }
-            },
-            isVerified: userData.isVerified || false,
-            isActive: userData.isActive || true,
-            createdAt: userData.createdAt || new Date().toISOString(),
-            updatedAt: userData.updatedAt || new Date().toISOString()
-          })
-        }
+        const data = await response.json();
+        setProfile(data.user);
+        setFormData({
+          name: data.user.name || '',
+          phone: data.user.phone || '',
+          bio: data.user.bio || '',
+          city: data.user.location?.city || '',
+          state: data.user.location?.state || '',
+          country: data.user.location?.country || '',
+          gender: data.user.gender || ''
+        });
       }
     } catch (error) {
-      console.error('Error fetching profile:', error)
-      // Fallback to session data if API fails
-      if (session?.user) {
-        setProfile({
-          id: session.user.id || "user",
-          name: session.user.name || "User",
-          email: session.user.email || "",
-          phone: "",
-          role: session.user.role || "user",
-          location: {
-            country: "Sri Lanka",
-            state: "Western Province",
-            city: "Colombo",
-            zipCode: "00300"
-          },
-          preferences: {
-            language: "en",
-            currency: "LKR",
-            timezone: "Asia/Colombo",
-            notifications: { email: true, sms: false, push: true },
-            marketing: { email: false, sms: false, push: false }
-          },
-          isVerified: true,
-          isActive: true,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        })
-      }
+      console.error('Error fetching profile:', error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const handleEdit = () => {
-    setEditForm(profile || {})
-    setEditing(true)
-  }
+  const handleSave = async () => {
+    try {
+      const response = await fetch('/api/user/profile', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-  const handleSave = () => {
-    if (profile) {
-      setProfile({ ...profile, ...editForm })
-      setEditing(false)
-      setEditForm({})
+      if (response.ok) {
+        await fetchProfile();
+        setEditing(false);
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
     }
-  }
+  };
 
-  const handleCancel = () => {
-    setEditing(false)
-    setEditForm({})
-  }
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
 
-  const getRoleDisplayName = (role: string) => {
-    switch (role) {
-      case "admin": return "Administrator"
-      case "vendor": return "Vendor"
-      case "wedding_planner": return "Wedding Planner"
-      case "user": return "User"
-      default: return "User"
-    }
-  }
-
-  if (loading) {
+  if (status === 'loading' || loading) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading your profile...</p>
-          </div>
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
         </div>
+        <Footer />
       </div>
-    )
+    );
   }
 
-  if (!profile) {
-    return (
-      <div className="container mx-auto p-6">
-        <Card>
-          <CardContent className="text-center py-12">
-            <User className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Profile not found</h3>
-            <p className="text-gray-600">Unable to load your profile information.</p>
-          </CardContent>
-        </Card>
-      </div>
-    )
+  if (!session?.user || !profile) {
+    return null;
   }
 
   return (
-    <div className="container mx-auto p-6 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">My Profile</h1>
-        <p className="text-gray-600">Manage your account information and preferences</p>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Profile Overview */}
-        <div className="lg:col-span-1">
-          <Card>
-            <CardHeader className="text-center">
-              <Avatar className="h-24 w-24 mx-auto mb-4">
-                <AvatarImage src="/images/user-1-avatar.jpg" />
-                <AvatarFallback>{profile.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <CardTitle className="text-xl">{profile.name}</CardTitle>
-              <CardDescription>
-                <Badge variant={profile.isVerified ? "default" : "secondary"}>
-                  {profile.isVerified ? "Verified" : "Unverified"}
-                </Badge>
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center text-sm text-gray-600">
-                  <Mail className="h-4 w-4 mr-2" />
-                  {profile.email}
-                </div>
-                <div className="flex items-center text-sm text-gray-600">
-                  <Phone className="h-4 w-4 mr-2" />
-                  {profile.phone}
-                </div>
-                <div className="flex items-center text-sm text-gray-600">
-                  <MapPin className="h-4 w-4 mr-2" />
-                  {profile.location.city}, {profile.location.state}
-                </div>
-                <div className="flex items-center text-sm text-gray-600">
-                  <User className="h-4 w-4 mr-2" />
-                  {getRoleDisplayName(profile.role)}
-                </div>
-                <div className="flex items-center text-sm text-gray-600">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Joined {formatDate(profile.createdAt)}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="p-3 bg-purple-100 rounded-lg">
+              <User className="w-6 h-6 text-purple-600" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
+              <p className="text-gray-600">Manage your personal information and preferences</p>
+            </div>
+          </div>
         </div>
 
-        {/* Profile Details */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Personal Information */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Personal Information</CardTitle>
-                {!editing && (
-                  <Button variant="outline" size="sm" onClick={handleEdit}>
-                    <Edit className="h-4 w-4 mr-2" />
-                    Edit
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Profile Overview */}
+          <div className="lg:col-span-1">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <User className="w-5 h-5" />
+                  <span>Profile Overview</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Avatar */}
+                <div className="text-center">
+                  <div className="relative inline-block">
+                    {profile.avatar ? (
+                      <img
+                        src={profile.avatar}
+                        alt={profile.name}
+                        className="w-24 h-24 rounded-full object-cover mx-auto"
+                      />
+                    ) : (
+                      <div className="w-24 h-24 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
+                        <User className="w-12 h-12 text-purple-600" />
+                      </div>
+                    )}
+                    <button className="absolute bottom-0 right-0 p-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors">
+                      <Camera className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <h3 className="text-xl font-semibold mt-4">{profile.name}</h3>
+                  <p className="text-gray-500 capitalize">{profile.role.replace('_', ' ')}</p>
+                </div>
+
+                {/* Status */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">Account Status</span>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      profile.status === 'active' ? 'bg-green-100 text-green-800' :
+                      profile.status === 'pending_verification' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {profile.status.replace('_', ' ')}
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">Email Verified</span>
+                    <div className="flex items-center space-x-1">
+                      {profile.isEmailVerified ? (
+                        <>
+                          <Shield className="w-4 h-4 text-green-500" />
+                          <span className="text-sm text-green-600">Verified</span>
+                        </>
+                      ) : (
+                        <>
+                          <Shield className="w-4 h-4 text-red-500" />
+                          <span className="text-sm text-red-600">Unverified</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick Stats */}
+                <div className="space-y-3 pt-4 border-t">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">Member Since</span>
+                    <span className="text-sm font-medium">
+                      {new Date(profile.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                  
+                  {profile.lastLogin && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-600">Last Login</span>
+                      <span className="text-sm font-medium">
+                        {new Date(profile.lastLogin).toLocaleDateString()}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Profile Details */}
+          <div className="lg:col-span-2">
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="flex items-center space-x-2">
+                    <Edit3 className="w-5 h-5" />
+                    <span>Profile Information</span>
+                  </CardTitle>
+                  <Button
+                    variant={editing ? "default" : "outline"}
+                    onClick={() => editing ? handleSave() : setEditing(true)}
+                    className="flex items-center space-x-2"
+                  >
+                    {editing ? (
+                      <>
+                        <Save className="w-4 h-4" />
+                        <span>Save Changes</span>
+                      </>
+                    ) : (
+                      <>
+                        <Edit3 className="w-4 h-4" />
+                        <span>Edit Profile</span>
+                      </>
+                    )}
                   </Button>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent>
-              {editing ? (
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="name">Full Name</Label>
-                    <Input
-                      id="name"
-                      value={editForm.name || ""}
-                      onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input
-                      id="phone"
-                      value={editForm.phone || ""}
-                      onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="city">City</Label>
-                    <Input
-                      id="city"
-                      value={editForm.location?.city || ""}
-                      onChange={(e) => setEditForm({ 
-                        ...editForm, 
-                        location: { ...editForm.location, city: e.target.value, country: editForm.location?.country || 'Sri Lanka', state: editForm.location?.state || 'Western Province' }
-                      })}
-                    />
-                  </div>
-                  <div className="flex gap-2">
-                    <Button onClick={handleSave}>
-                      <Save className="h-4 w-4 mr-2" />
-                      Save
-                    </Button>
-                    <Button variant="outline" onClick={handleCancel}>
-                      <X className="h-4 w-4 mr-2" />
-                      Cancel
-                    </Button>
-                  </div>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  <div>
-                    <Label className="text-sm font-medium text-gray-500">Full Name</Label>
-                    <p className="text-lg">{profile.name}</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-gray-500">Phone Number</Label>
-                    <p className="text-lg">{profile.phone}</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-gray-500">Location</Label>
-                    <p className="text-lg">{profile.location.city}, {profile.location.state}, {profile.location.country}</p>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Basic Information */}
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Full Name
+                      </label>
+                      {editing ? (
+                        <input
+                          type="text"
+                          value={formData.name}
+                          onChange={(e) => handleInputChange('name', e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        />
+                      ) : (
+                        <p className="text-gray-900">{profile.name}</p>
+                      )}
+                    </div>
 
-          {/* Preferences */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Preferences</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-sm font-medium text-gray-500">Language</Label>
-                    <p className="text-lg">{profile.preferences.language.toUpperCase()}</p>
-                  </div>
-                  <div>
-                    <Label className="text-sm font-medium text-gray-500">Currency</Label>
-                    <p className="text-lg">{profile.preferences.currency}</p>
-                  </div>
-                </div>
-                <Separator />
-                <div>
-                  <Label className="text-sm font-medium text-gray-500 mb-2 block">Notifications</Label>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span>Email Notifications</span>
-                      <Badge variant={profile.preferences.notifications.email ? "default" : "secondary"}>
-                        {profile.preferences.notifications.email ? "Enabled" : "Disabled"}
-                      </Badge>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address
+                      </label>
+                      <div className="flex items-center space-x-2">
+                        <Mail className="w-4 h-4 text-gray-400" />
+                        <p className="text-gray-900">{profile.email}</p>
+                        {profile.isEmailVerified && (
+                          <Shield className="w-4 h-4 text-green-500" />
+                        )}
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span>SMS Notifications</span>
-                      <Badge variant={profile.preferences.notifications.sms ? "default" : "secondary"}>
-                        {profile.preferences.notifications.sms ? "Enabled" : "Disabled"}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Push Notifications</span>
-                      <Badge variant={profile.preferences.notifications.push ? "default" : "secondary"}>
-                        {profile.preferences.notifications.push ? "Enabled" : "Disabled"}
-                      </Badge>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
-          {/* Account Status */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Account Status</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span>Account Status</span>
-                  <Badge variant={profile.isActive ? "default" : "destructive"}>
-                    {profile.isActive ? "Active" : "Inactive"}
-                  </Badge>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Phone Number
+                      </label>
+                      {editing ? (
+                        <input
+                          type="tel"
+                          value={formData.phone}
+                          onChange={(e) => handleInputChange('phone', e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        />
+                      ) : (
+                        <div className="flex items-center space-x-2">
+                          <Phone className="w-4 h-4 text-gray-400" />
+                          <p className="text-gray-900">{profile.phone || 'Not provided'}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Gender
+                      </label>
+                      {editing ? (
+                        <select
+                          value={formData.gender}
+                          onChange={(e) => handleInputChange('gender', e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        >
+                          <option value="">Select gender</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="other">Other</option>
+                          <option value="prefer_not_to_say">Prefer not to say</option>
+                        </select>
+                      ) : (
+                        <p className="text-gray-900 capitalize">{profile.gender || 'Not specified'}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Location Information */}
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        City
+                      </label>
+                      {editing ? (
+                        <input
+                          type="text"
+                          value={formData.city}
+                          onChange={(e) => handleInputChange('city', e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        />
+                      ) : (
+                        <div className="flex items-center space-x-2">
+                          <MapPin className="w-4 h-4 text-gray-400" />
+                          <p className="text-gray-900">{profile.location?.city || 'Not specified'}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        State/Province
+                      </label>
+                      {editing ? (
+                        <input
+                          type="text"
+                          value={formData.state}
+                          onChange={(e) => handleInputChange('state', e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        />
+                      ) : (
+                        <p className="text-gray-900">{profile.location?.state || 'Not specified'}</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Country
+                      </label>
+                      {editing ? (
+                        <input
+                          type="text"
+                          value={formData.country}
+                          onChange={(e) => handleInputChange('country', e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        />
+                      ) : (
+                        <p className="text-gray-900">{profile.location?.country || 'Not specified'}</p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Bio
+                      </label>
+                      {editing ? (
+                        <textarea
+                          value={formData.bio}
+                          onChange={(e) => handleInputChange('bio', e.target.value)}
+                          rows={3}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          placeholder="Tell us about yourself..."
+                        />
+                      ) : (
+                        <p className="text-gray-900">{profile.bio || 'No bio provided'}</p>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span>Verification Status</span>
-                  <Badge variant={profile.isVerified ? "default" : "secondary"}>
-                    {profile.isVerified ? "Verified" : "Unverified"}
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Last Updated</span>
-                  <span className="text-sm text-gray-600">{formatDate(profile.updatedAt)}</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
+      
+      <Footer />
     </div>
-  )
+  );
 }

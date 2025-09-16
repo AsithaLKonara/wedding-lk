@@ -1,145 +1,104 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/db';
-import { Favorite } from '@/lib/models/favorite';
-import { withAuth, requireUser } from '@/lib/middleware/auth-middleware';
-import { withRateLimit, rateLimitConfigs } from '@/lib/middleware/rate-limit-middleware';
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { connectDB } from '@/lib/mongodb'
+import { Favorite } from '@/lib/models'
 
-async function getFavorites(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const type = searchParams.get('type'); // 'venue' or 'vendor'
+    const session = await getServerSession(authOptions)
     
-    // Get user from authenticated request
-    const user = (request as any).user;
-    const userId = user.id;
-
-    await connectDB();
-
-    let query: any = { userId };
-    if (type) {
-      query.type = type;
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const favorites = await Favorite.find(query)
+    await connectDB()
+
+    const favorites = await Favorite.find({ userId: session.user.id })
       .populate('itemId')
       .sort({ createdAt: -1 })
-      .lean();
 
-    return NextResponse.json({
-      success: true,
-      favorites
-    });
-
+    return NextResponse.json({ success: true, favorites })
   } catch (error) {
-    console.error('Error fetching favorites:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'Failed to fetch favorites'
-    }, { status: 500 });
+    console.error('Error fetching favorites:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
-export const GET = withRateLimit(
-  rateLimitConfigs.api,
-  withAuth(getFavorites, requireUser())
-);
-
-async function addFavorite(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const { itemId, type } = await request.json();
+    const session = await getServerSession(authOptions)
     
-    // Get user from authenticated request
-    const user = (request as any).user;
-    const userId = user.id;
-
-    if (!itemId || !type) {
-      return NextResponse.json({
-        success: false,
-        error: 'Missing required fields'
-      }, { status: 400 });
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    await connectDB();
+    const { itemId, itemType } = await request.json()
+
+    if (!itemId || !itemType) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    }
+
+    await connectDB()
 
     // Check if already favorited
-    const existingFavorite = await Favorite.findOne({ userId, itemId, type });
+    const existingFavorite = await Favorite.findOne({
+      userId: session.user.id,
+      itemId,
+      itemType
+    })
+
     if (existingFavorite) {
-      return NextResponse.json({
-        success: false,
-        error: 'Item already in favorites'
-      }, { status: 400 });
+      return NextResponse.json({ error: 'Already favorited' }, { status: 400 })
     }
 
     const favorite = new Favorite({
-      userId,
+      userId: session.user.id,
       itemId,
-      type
-    });
+      itemType,
+      createdAt: new Date()
+    })
 
-    await favorite.save();
+    await favorite.save()
 
-    return NextResponse.json({
-      success: true,
-      favorite
-    });
-
+    return NextResponse.json({ success: true, favorite })
   } catch (error) {
-    console.error('Error adding favorite:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'Failed to add favorite'
-    }, { status: 500 });
+    console.error('Error adding favorite:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
-export const POST = withRateLimit(
-  rateLimitConfigs.api,
-  withAuth(addFavorite, requireUser())
-);
-
-async function deleteFavorite(request: NextRequest) {
+export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const itemId = searchParams.get('itemId');
-    const type = searchParams.get('type');
+    const session = await getServerSession(authOptions)
     
-    // Get user from authenticated request
-    const user = (request as any).user;
-    const userId = user.id;
-
-    if (!itemId || !type) {
-      return NextResponse.json({
-        success: false,
-        error: 'Missing required parameters'
-      }, { status: 400 });
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    await connectDB();
+    const { searchParams } = new URL(request.url)
+    const itemId = searchParams.get('itemId')
+    const itemType = searchParams.get('itemType')
 
-    const favorite = await Favorite.findOneAndDelete({ userId, itemId, type });
-
-    if (!favorite) {
-      return NextResponse.json({
-        success: false,
-        error: 'Favorite not found'
-      }, { status: 404 });
+    if (!itemId || !itemType) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    return NextResponse.json({
-      success: true,
-      message: 'Favorite removed successfully'
-    });
+    await connectDB()
 
+    const result = await Favorite.deleteOne({
+      userId: session.user.id,
+      itemId,
+      itemType
+    })
+
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: 'Favorite not found' }, { status: 404 })
+    }
+
+    return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error removing favorite:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'Failed to remove favorite'
-    }, { status: 500 });
+    console.error('Error removing favorite:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
-
-export const DELETE = withRateLimit(
-  rateLimitConfigs.api,
-  withAuth(deleteFavorite, requireUser())
-);

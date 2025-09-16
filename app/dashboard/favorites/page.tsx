@@ -1,204 +1,410 @@
-"use client"
+'use client';
 
-import { useState, useEffect } from "react"
-import { useSession } from "next-auth/react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Heart, MapPin, Star, Phone, Mail } from "lucide-react"
-import { formatCurrency } from "@/lib/utils/format"
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { 
+  Heart, 
+  Search, 
+  Filter, 
+  MapPin, 
+  Star, 
+  Phone, 
+  Mail,
+  ExternalLink,
+  Trash2,
+  Calendar,
+  Users,
+  Camera
+} from 'lucide-react';
+import { Header } from '@/components/organisms/header';
+import { Footer } from '@/components/organisms/footer';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-interface Favorite {
-  id: string
-  type: 'vendor' | 'venue'
-  name: string
-  description: string
-  location: string
-  rating: number
-  price: number
-  image: string
-  category: string
-  phone?: string
-  email?: string
+interface FavoriteVendor {
+  _id: string;
+  name: string;
+  businessName: string;
+  category: string;
+  location: {
+    city: string;
+    state: string;
+    country: string;
+  };
+  rating: number;
+  reviewCount: number;
+  avatar?: string;
+  coverImage?: string;
+  description: string;
+  phone?: string;
+  email?: string;
+  priceRange: string;
+  services: string[];
+  addedAt: string;
+}
+
+interface FavoriteVenue {
+  _id: string;
+  name: string;
+  location: {
+    city: string;
+    state: string;
+    country: string;
+  };
+  capacity: number;
+  rating: number;
+  reviewCount: number;
+  avatar?: string;
+  coverImage?: string;
+  description: string;
+  priceRange: string;
+  amenities: string[];
+  addedAt: string;
 }
 
 export default function FavoritesPage() {
-  const { data: session } = useSession()
-  const [favorites, setFavorites] = useState<Favorite[]>([])
-  const [loading, setLoading] = useState(true)
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [favoriteVendors, setFavoriteVendors] = useState<FavoriteVendor[]>([]);
+  const [favoriteVenues, setFavoriteVenues] = useState<FavoriteVenue[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'vendors' | 'venues'>('vendors');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
 
   useEffect(() => {
-    fetchFavorites()
-  }, [])
+    if (status === 'loading') return;
+    
+    if (!session?.user) {
+      router.push('/auth/signin');
+      return;
+    }
+
+    fetchFavorites();
+  }, [session, status, router]);
 
   const fetchFavorites = async () => {
     try {
-      setLoading(true)
-      const response = await fetch('/api/favorites')
+      const response = await fetch('/api/user/favorites');
       if (response.ok) {
-        const data = await response.json()
-        if (data.success) {
-          const allFavorites: Favorite[] = []
-          
-          // Add venues
-          if (data.favorites.venues) {
-            data.favorites.venues.forEach((venue: any) => {
-              allFavorites.push({
-                id: venue._id,
-                type: "venue",
-                name: venue.name,
-                description: venue.description || "Beautiful wedding venue",
-                location: venue.location?.city || "Unknown",
-                rating: venue.rating?.average || 0,
-                price: venue.pricing?.basePrice || 0,
-                image: venue.images?.[0] || "/placeholder.svg",
-                category: "Venue",
-                phone: venue.contact?.phone || "",
-                email: venue.contact?.email || ""
-              })
-            })
-          }
-          
-          // Add vendors
-          if (data.favorites.vendors) {
-            data.favorites.vendors.forEach((vendor: any) => {
-              allFavorites.push({
-                id: vendor._id,
-                type: "vendor",
-                name: vendor.name,
-                description: vendor.description || "Professional wedding service",
-                location: vendor.location?.city || "Unknown",
-                rating: vendor.rating?.average || 0,
-                price: vendor.pricing?.startingPrice || 0,
-                image: vendor.portfolio?.[0] || "/placeholder.svg",
-                category: vendor.category || "Service",
-                phone: vendor.contact?.phone || "",
-                email: vendor.contact?.email || ""
-              })
-            })
-          }
-          
-          setFavorites(allFavorites)
+        const data = await response.json();
+        setFavoriteVendors(data.vendors || []);
+        setFavoriteVenues(data.venues || []);
+      }
+    } catch (error) {
+      console.error('Error fetching favorites:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRemoveFavorite = async (type: 'vendor' | 'venue', id: string) => {
+    try {
+      const response = await fetch('/api/user/favorites', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ type, id }),
+      });
+
+      if (response.ok) {
+        if (type === 'vendor') {
+          setFavoriteVendors(prev => prev.filter(v => v._id !== id));
+        } else {
+          setFavoriteVenues(prev => prev.filter(v => v._id !== id));
         }
       }
     } catch (error) {
-      console.error('Error fetching favorites:', error)
-      // Fallback to empty array if API fails
-      setFavorites([])
-    } finally {
-      setLoading(false)
+      console.error('Error removing favorite:', error);
     }
-  }
+  };
 
-  const removeFavorite = (id: string) => {
-    setFavorites(favorites.filter(fav => fav.id !== id))
-  }
+  const filteredVendors = favoriteVendors.filter(vendor => {
+    const matchesSearch = vendor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         vendor.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         vendor.category.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = categoryFilter === 'all' || vendor.category === categoryFilter;
+    return matchesSearch && matchesCategory;
+  });
 
-  if (loading) {
+  const filteredVenues = favoriteVenues.filter(venue => {
+    const matchesSearch = venue.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         venue.location.city.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSearch;
+  });
+
+  if (status === 'loading' || loading) {
     return (
-      <div className="container mx-auto p-6">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading your favorites...</p>
-          </div>
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
         </div>
+        <Footer />
       </div>
-    )
+    );
+  }
+
+  if (!session?.user) {
+    return null;
   }
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">My Favorites</h1>
-        <p className="text-gray-600">Your saved vendors and venues for your special day</p>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center space-x-3 mb-4">
+            <div className="p-3 bg-red-100 rounded-lg">
+              <Heart className="w-6 h-6 text-red-600" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">My Favorites</h1>
+              <p className="text-gray-600">Your saved vendors and venues</p>
+            </div>
+          </div>
+          
+          {/* Tabs */}
+          <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
+            <button
+              onClick={() => setActiveTab('vendors')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                activeTab === 'vendors'
+                  ? 'bg-white text-purple-600 shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Vendors ({favoriteVendors.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('venues')}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                activeTab === 'venues'
+                  ? 'bg-white text-purple-600 shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Venues ({favoriteVenues.length})
+            </button>
+          </div>
+        </div>
 
-      {favorites.length === 0 ? (
-        <Card>
-          <CardContent className="text-center py-12">
-            <Heart className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No favorites yet</h3>
-            <p className="text-gray-600 mb-6">Start exploring vendors and venues to add them to your favorites!</p>
-            <Button asChild>
-              <a href="/vendors">Explore Vendors</a>
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {favorites.map((favorite) => (
-            <Card key={favorite.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+        {/* Search and Filter */}
+        <div className="mb-6">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="relative">
-                <img
-                  src={favorite.image}
-                  alt={favorite.name}
-                  className="w-full h-48 object-cover"
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="Search favorites..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
-                <Badge className="absolute top-3 left-3 bg-pink-500 text-white">
-                  {favorite.type === 'vendor' ? 'Vendor' : 'Venue'}
-                </Badge>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="absolute top-3 right-3 bg-white/80 hover:bg-white"
-                  onClick={() => removeFavorite(favorite.id)}
-                >
-                  <Heart className="h-4 w-4 fill-red-500 text-red-500" />
-                </Button>
               </div>
               
-              <CardHeader>
-                <CardTitle className="text-lg">{favorite.name}</CardTitle>
-                <CardDescription className="line-clamp-2">
-                  {favorite.description}
-                </CardDescription>
-              </CardHeader>
+              {activeTab === 'vendors' && (
+                <select
+                  value={categoryFilter}
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                >
+                  <option value="all">All Categories</option>
+                  <option value="photography">Photography</option>
+                  <option value="catering">Catering</option>
+                  <option value="music">Music</option>
+                  <option value="flowers">Flowers</option>
+                  <option value="transportation">Transportation</option>
+                  <option value="beauty">Beauty</option>
+                </select>
+              )}
               
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <MapPin className="h-4 w-4 mr-2" />
-                    {favorite.location}
-                  </div>
-                  
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Star className="h-4 w-4 mr-2 fill-yellow-400 text-yellow-400" />
-                    {favorite.rating} ({favorite.category})
-                  </div>
-                  
-                  <div className="text-lg font-semibold text-pink-600">
-                    From {formatCurrency(favorite.price)}
-                  </div>
-                  
-                  {favorite.phone && (
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Phone className="h-4 w-4 mr-2" />
-                      {favorite.phone}
-                    </div>
-                  )}
-                  
-                  {favorite.email && (
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Mail className="h-4 w-4 mr-2" />
-                      {favorite.email}
-                    </div>
-                  )}
-                  
-                  <div className="flex gap-2 pt-2">
-                    <Button size="sm" className="flex-1">
-                      View Details
-                    </Button>
-                    <Button size="sm" variant="outline">
-                      Contact
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+              <Button
+                onClick={fetchFavorites}
+                variant="outline"
+                className="flex items-center space-x-2"
+              >
+                <Filter className="w-4 h-4" />
+                <span>Refresh</span>
+              </Button>
+            </div>
+          </div>
         </div>
-      )}
+
+        {/* Content */}
+        {activeTab === 'vendors' ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredVendors.map((vendor) => (
+              <Card key={vendor._id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <div className="relative">
+                  {vendor.coverImage ? (
+                    <img
+                      src={vendor.coverImage}
+                      alt={vendor.name}
+                      className="w-full h-48 object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-48 bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
+                      <Camera className="w-12 h-12 text-purple-400" />
+                    </div>
+                  )}
+                  <button
+                    onClick={() => handleRemoveFavorite('vendor', vendor._id)}
+                    className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-red-50 hover:text-red-600 transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                
+                <CardContent className="p-4">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <h3 className="font-semibold text-lg text-gray-900">{vendor.name}</h3>
+                      <p className="text-sm text-gray-600">{vendor.businessName}</p>
+                    </div>
+                    <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
+                      {vendor.category}
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center space-x-1 mb-2">
+                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                    <span className="text-sm font-medium">{vendor.rating}</span>
+                    <span className="text-sm text-gray-500">({vendor.reviewCount} reviews)</span>
+                  </div>
+                  
+                  <div className="flex items-center space-x-1 mb-3">
+                    <MapPin className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm text-gray-600">
+                      {vendor.location.city}, {vendor.location.state}
+                    </span>
+                  </div>
+                  
+                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                    {vendor.description}
+                  </p>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-green-600">
+                      {vendor.priceRange}
+                    </span>
+                    <Button
+                      size="sm"
+                      onClick={() => router.push(`/vendors/${vendor._id}`)}
+                      className="flex items-center space-x-1"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      <span>View</span>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+            
+            {filteredVendors.length === 0 && (
+              <div className="col-span-full text-center py-12">
+                <Heart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No favorite vendors yet</h3>
+                <p className="text-gray-500 mb-4">Start exploring vendors and add them to your favorites!</p>
+                <Button onClick={() => router.push('/vendors')}>
+                  Browse Vendors
+                </Button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredVenues.map((venue) => (
+              <Card key={venue._id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <div className="relative">
+                  {venue.coverImage ? (
+                    <img
+                      src={venue.coverImage}
+                      alt={venue.name}
+                      className="w-full h-48 object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-48 bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center">
+                      <Camera className="w-12 h-12 text-blue-400" />
+                    </div>
+                  )}
+                  <button
+                    onClick={() => handleRemoveFavorite('venue', venue._id)}
+                    className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-red-50 hover:text-red-600 transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                
+                <CardContent className="p-4">
+                  <div className="flex items-start justify-between mb-2">
+                    <h3 className="font-semibold text-lg text-gray-900">{venue.name}</h3>
+                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                      Venue
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center space-x-1 mb-2">
+                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                    <span className="text-sm font-medium">{venue.rating}</span>
+                    <span className="text-sm text-gray-500">({venue.reviewCount} reviews)</span>
+                  </div>
+                  
+                  <div className="flex items-center space-x-1 mb-3">
+                    <MapPin className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm text-gray-600">
+                      {venue.location.city}, {venue.location.state}
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center space-x-1 mb-3">
+                    <Users className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm text-gray-600">
+                      Up to {venue.capacity} guests
+                    </span>
+                  </div>
+                  
+                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                    {venue.description}
+                  </p>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-green-600">
+                      {venue.priceRange}
+                    </span>
+                    <Button
+                      size="sm"
+                      onClick={() => router.push(`/venues/${venue._id}`)}
+                      className="flex items-center space-x-1"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      <span>View</span>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+            
+            {filteredVenues.length === 0 && (
+              <div className="col-span-full text-center py-12">
+                <Heart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No favorite venues yet</h3>
+                <p className="text-gray-500 mb-4">Start exploring venues and add them to your favorites!</p>
+                <Button onClick={() => router.push('/venues')}>
+                  Browse Venues
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+      
+      <Footer />
     </div>
-  )
+  );
 }

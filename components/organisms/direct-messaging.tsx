@@ -244,7 +244,7 @@ export function DirectMessaging({ currentUserId, onMessageSent }: DirectMessagin
 
   const filteredConversations = conversations.filter(conv =>
     conv.participants.some(participant => 
-      participant.name.toLowerCase().includes(searchQuery.toLowerCase())
+      participant?.name?.toLowerCase().includes(searchQuery.toLowerCase())
     )
   );
 

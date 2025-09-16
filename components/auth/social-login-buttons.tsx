@@ -118,70 +118,48 @@ export function SocialLoginButtons({
   ];
 
   return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">Welcome to WeddingLK</CardTitle>
-      {showDescription && (
-          <CardDescription>
-            Sign in with your social account to get started
-          </CardDescription>
-        )}
-      </CardHeader>
-      
-      <CardContent className="space-y-4">
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+    <div className="space-y-4">
+      {error && (
+        <Alert variant="destructive" className="backdrop-blur-md bg-red-50/90 dark:bg-red-900/90 border-red-200 dark:border-red-800">
+          <AlertDescription className="text-red-800 dark:text-red-200">{error}</AlertDescription>
+        </Alert>
+      )}
 
-        <div className="space-y-3">
-          {socialProviders.map((provider) => {
-            const Icon = provider.icon;
-            const isLoading = loading === provider.id;
-          
-          return (
-                <Button
-                key={provider.id}
-                variant="outline"
-                className={`w-full ${provider.color} ${provider.textColor} border-0`}
-                onClick={() => handleSocialLogin(provider.id)}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <FaSpinner className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Icon className="mr-2 h-4 w-4" />
-                )}
-                {isLoading ? 'Signing in...' : `Continue with ${provider.name}`}
-                </Button>
-          );
-        })}
+      <div className="space-y-3">
+        {socialProviders.map((provider) => {
+          const Icon = provider.icon;
+          const isLoading = loading === provider.id;
+        
+        return (
+              <Button
+              key={provider.id}
+              variant="outline"
+              className={`w-full ${provider.color} ${provider.textColor} border-0 shadow-lg hover:shadow-xl transition-all duration-300 py-3 font-semibold`}
+              onClick={() => handleSocialLogin(provider.id)}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <FaSpinner className="mr-2 h-5 w-5 animate-spin" />
+              ) : (
+                <Icon className="mr-2 h-5 w-5" />
+              )}
+              {isLoading ? 'Signing in...' : `Continue with ${provider.name}`}
+              </Button>
+        );
+      })}
+    </div>
+
+      <div className="text-center text-sm text-gray-600 dark:text-gray-300">
+        By signing in, you agree to our{' '}
+        <a href="/terms" className="text-purple-600 hover:text-purple-500 font-medium">
+          Terms of Service
+        </a>{' '}
+        and{' '}
+        <a href="/privacy" className="text-purple-600 hover:text-purple-500 font-medium">
+          Privacy Policy
+        </a>
       </div>
-
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <Separator className="w-full" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with email
-            </span>
-          </div>
-      </div>
-
-        <div className="text-center text-sm text-muted-foreground">
-          By signing in, you agree to our{' '}
-          <a href="/terms" className="underline underline-offset-4 hover:text-primary">
-            Terms of Service
-          </a>{' '}
-          and{' '}
-          <a href="/privacy" className="underline underline-offset-4 hover:text-primary">
-            Privacy Policy
-          </a>
-        </div>
-          </CardContent>
-        </Card>
+    </div>
   );
 } 
 

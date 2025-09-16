@@ -1,398 +1,244 @@
-"use client"
+import { Metadata } from 'next'
+import Header from '@/components/organisms/header'
+import Footer from '@/components/organisms/footer'
+import { Sparkles, Brain, Zap, Target, Users, Shield } from 'lucide-react'
 
-import React from "react"
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { motion } from "framer-motion"
-
-import { Brain, Camera, MessageCircle, Sparkles, Wand2, Eye, Palette, Users, Star } from "lucide-react"
-
-// Card will be imported above => <div className="animate-pulse bg-gray-100 dark:bg-gray-800 h-32 rounded-lg" /> })
-
-// CardContent will be imported above => <div className="animate-pulse bg-gray-100 dark:bg-gray-800 h-32 rounded-lg" /> })
-
-// CardHeader will be imported above => <div className="animate-pulse bg-gray-100 dark:bg-gray-800 h-32 rounded-lg" /> })
-
-// CardTitle will be imported above => <div className="animate-pulse bg-gray-100 dark:bg-gray-800 h-32 rounded-lg" /> })
-
-// Button will be imported above => <div className="animate-pulse bg-gray-100 dark:bg-gray-800 h-32 rounded-lg" /> })
-
-// Badge will be imported above => <div className="animate-pulse bg-gray-100 dark:bg-gray-800 h-32 rounded-lg" /> })
-
-// Tabs will be imported above => <div className="animate-pulse bg-gray-100 dark:bg-gray-800 h-32 rounded-lg" /> })
-
-// TabsContent will be imported above => <div className="animate-pulse bg-gray-100 dark:bg-gray-800 h-32 rounded-lg" /> })
-
-// TabsList will be imported above => <div className="animate-pulse bg-gray-100 dark:bg-gray-800 h-32 rounded-lg" /> })
-
-// TabsTrigger will be imported above => <div className="animate-pulse bg-gray-100 dark:bg-gray-800 h-32 rounded-lg" /> })
-
-export default function AIEnhancementsPage() {
-  const [selectedDemo, setSelectedDemo] = useState("style-matcher")
-
-  const aiFeatures = [
-    {
-      id: "style-matcher",
-      title: "AI Wedding Style Matcher",
-      description: "Analyze preferences and suggest perfect wedding themes",
-      icon: Palette,
-      demo: {
-        input: "I love vintage aesthetics, outdoor settings, and warm colors",
-        output: {
-          style: "Rustic Vintage",
-          confidence: 94,
-          suggestions: [
-            "Barn venue with string lights",
-            "Burlap and lace decorations",
-            "Warm amber lighting",
-            "Vintage wooden furniture",
-          ],
-        },
-      },
-    },
-    {
-      id: "budget-optimizer",
-      title: "Smart Budget Optimizer",
-      description: "AI-powered budget allocation recommendations",
-      icon: Brain,
-      demo: {
-        input: "Total budget: LKR 1,500,000 for 200 guests",
-        output: {
-          allocations: [
-            { category: "Venue", percentage: 40, amount: 600000 },
-            { category: "Catering", percentage: 30, amount: 450000 },
-            { category: "Photography", percentage: 15, amount: 225000 },
-            { category: "Decorations", percentage: 10, amount: 150000 },
-            { category: "Other", percentage: 5, amount: 75000 },
-          ],
-        },
-      },
-    },
-    {
-      id: "vendor-matcher",
-      title: "Intelligent Vendor Matching",
-      description: "ML-based vendor recommendations",
-      icon: Users,
-      demo: {
-        input: "Beach wedding, 150 guests, photography style: candid",
-        output: {
-          matches: [
-            { name: "Ocean View Photography", score: 96, specialty: "Beach weddings" },
-            { name: "Coastal Catering Co.", score: 92, specialty: "Outdoor events" },
-            { name: "Seaside Decorators", score: 89, specialty: "Beach themes" },
-          ],
-        },
-      },
-    },
-    {
-      id: "photo-generator",
-      title: "AI Photo Style Generator",
-      description: "Generate wedding mood boards from descriptions",
-      icon: Camera,
-      demo: {
-        input: "Elegant garden wedding with soft pastels",
-        output: {
-          moodboard: "/placeholder.svg?height=300&width=400",
-          elements: ["Soft pink roses", "Garden archway", "Flowing fabrics", "Natural lighting"],
-        },
-      },
-    },
-  ]
-
-  const advancedFeatures = [
-    {
-      title: "Computer Vision for Venue Analysis",
-      description: "Automatically analyze venue photos to extract features, capacity, and style",
-      capabilities: [
-        "Automatic venue categorization",
-        "Capacity estimation from photos",
-        "Style and theme detection",
-        "Accessibility feature identification",
-      ],
-    },
-    {
-      title: "Natural Language Processing",
-      description: "Understand complex wedding requirements in natural language",
-      capabilities: [
-        "Parse wedding descriptions",
-        "Extract preferences and requirements",
-        "Sentiment analysis of reviews",
-        "Automated content generation",
-      ],
-    },
-    {
-      title: "Predictive Analytics",
-      description: "Predict trends, pricing, and availability",
-      capabilities: [
-        "Seasonal pricing predictions",
-        "Venue availability forecasting",
-        "Wedding trend analysis",
-        "Demand prediction modeling",
-      ],
-    },
-    {
-      title: "Personalization Engine",
-      description: "Learn user preferences for hyper-personalized recommendations",
-      capabilities: [
-        "Behavioral pattern analysis",
-        "Preference learning algorithms",
-        "Dynamic content personalization",
-        "Recommendation optimization",
-      ],
-    },
-  ]
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-blue-900/20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
-        >
-          <div className="inline-flex items-center bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-6 py-3 mb-6">
-            <Brain className="h-5 w-5 text-blue-500 mr-2" />
-            <span className="font-medium text-gray-700 dark:text-gray-300">AI-Powered Features</span>
-          </div>
-
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-            Intelligent Wedding
-            <span className="block bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              Planning Assistant
-            </span>
-          </h1>
-
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Transform your platform with cutting-edge AI that understands weddings like a human expert
-          </p>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">
-            &ldquo;AI is not just about automation, it&apos;s about enhancing human creativity and making wedding planning more intuitive and personalized.&rdquo;
-          </p>
-        </motion.div>
-
-        {/* AI Feature Demos */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-12"
-        >
-          <Tabs value={selectedDemo} onValueChange={setSelectedDemo} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8">
-              {aiFeatures.map((feature) => (
-                <TabsTrigger key={feature.id} value={feature.id} className="text-xs">
-                  {feature.title.split(" ")[0]}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-
-            {aiFeatures.map((feature) => {
-              const IconComponent = feature.icon
-              return (
-                <TabsContent key={feature.id} value={feature.id}>
-                  <Card className="border-0 shadow-xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-md">
-                    <CardHeader>
-                      <div className="flex items-center gap-3">
-                        <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg">
-                          <IconComponent className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                          <CardTitle className="text-2xl">{feature.title}</CardTitle>
-                          <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {/* Input Demo */}
-                        <div>
-                          <h3 className="font-semibold text-lg mb-4 flex items-center">
-                            <Wand2 className="h-5 w-5 mr-2 text-blue-500" />
-                            User Input
-                          </h3>
-                          <Card className="bg-blue-50 dark:bg-blue-900/20 border-blue-200">
-                            <CardContent className="p-4">
-                              <p className="text-gray-700 dark:text-gray-300 italic">"{feature.demo.input}"</p>
-                            </CardContent>
-                          </Card>
-                        </div>
-
-                        {/* AI Output */}
-                        <div>
-                          <h3 className="font-semibold text-lg mb-4 flex items-center">
-                            <Sparkles className="h-5 w-5 mr-2 text-purple-500" />
-                            AI Analysis
-                          </h3>
-                          <Card className="bg-purple-50 dark:bg-purple-900/20 border-purple-200">
-                            <CardContent className="p-4">
-                              {feature.id === "style-matcher" && (
-                                <div className="space-y-3">
-                                  <div className="flex items-center justify-between">
-                                    <span className="font-medium">Recommended Style:</span>
-                                    <Badge className="bg-purple-100 text-purple-800">{feature.demo.output.style}</Badge>
-                                  </div>
-                                  <div className="flex items-center justify-between">
-                                    <span className="font-medium">Confidence:</span>
-                                    <span className="text-green-600 font-bold">{feature.demo.output.confidence}%</span>
-                                  </div>
-                                  <div>
-                                    <span className="font-medium block mb-2">Suggestions:</span>
-                                    <ul className="space-y-1">
-                                      {feature.demo.output.suggestions?.map((suggestion, index) => (
-                                        <li
-                                          key={index}
-                                          className="text-sm text-gray-600 dark:text-gray-400 flex items-center"
-                                        >
-                                          <Star className="h-3 w-3 mr-2 text-yellow-500" />
-                                          {suggestion}
-                                        </li>
-                                      )) || []}
-                                    </ul>
-                                  </div>
-                                </div>
-                              )}
-
-                              {feature.id === "budget-optimizer" && (
-                                <div className="space-y-3">
-                                  {feature.demo.output.allocations?.map((allocation, index) => (
-                                    <div key={index} className="flex items-center justify-between">
-                                      <span className="font-medium">{allocation.category}:</span>
-                                      <div className="text-right">
-                                        <div className="font-bold">LKR {allocation.amount.toLocaleString()}</div>
-                                        <div className="text-sm text-gray-500">{allocation.percentage}%</div>
-                                      </div>
-                                    </div>
-                                  )) || []}
-                                </div>
-                              )}
-
-                              {feature.id === "vendor-matcher" && (
-                                <div className="space-y-3">
-                                  {feature.demo.output.matches?.map((match, index) => (
-                                    <div key={index} className="flex items-center justify-between">
-                                      <div>
-                                        <div className="font-medium">{match.name}</div>
-                                        <div className="text-sm text-gray-500">{match.specialty}</div>
-                                      </div>
-                                      <Badge className="bg-green-100 text-green-800">{match.score}% match</Badge>
-                                    </div>
-                                  )) || []}
-                                </div>
-                              )}
-
-                              {feature.id === "photo-generator" && (
-                                <div className="space-y-3">
-                                  <img
-                                    src={feature.demo.output.moodboard || "/placeholder.svg"}
-                                    alt="Generated mood board"
-                                    className="w-full rounded-lg"
-                                  />
-                                  <div>
-                                    <span className="font-medium block mb-2">Generated Elements:</span>
-                                    <div className="flex flex-wrap gap-2">
-                                      {feature.demo.output.elements?.map((element, index) => (
-                                        <Badge key={index} variant="outline">
-                                          {element}
-                                        </Badge>
-                                      )) || []}
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
-                            </CardContent>
-                          </Card>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              )
-            })}
-          </Tabs>
-        </motion.div>
-
-        {/* Advanced AI Capabilities */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          <Card className="border-0 shadow-xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-md">
-            <CardHeader>
-              <CardTitle className="flex items-center text-2xl">
-                <Eye className="h-6 w-6 text-green-500 mr-3" />
-                Advanced AI Capabilities
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {advancedFeatures.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                  >
-                    <Card className="h-full border-l-4 border-l-green-500">
-                      <CardContent className="p-6">
-                        <h3 className="font-semibold text-lg mb-3">{feature.title}</h3>
-                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{feature.description}</p>
-                        <div className="space-y-2">
-                          {feature.capabilities.map((capability, capIndex) => (
-                            <div key={capIndex} className="flex items-center gap-2">
-                              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                              <span className="text-sm text-gray-700 dark:text-gray-300">{capability}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Implementation CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-12 text-center"
-        >
-          <Card className="border-0 shadow-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-            <CardContent className="p-8">
-              <h2 className="text-3xl font-bold mb-4">Ready to Add AI Intelligence?</h2>
-              <p className="text-lg mb-6 opacity-90">
-                Transform your platform with AI that understands weddings like a human expert
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" variant="secondary" className="text-blue-600">
-                  <Brain className="mr-2 h-5 w-5" />
-                  Start AI Integration
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white text-white hover:bg-white hover:text-blue-600"
-                >
-                  <MessageCircle className="mr-2 h-5 w-5" />
-                  Discuss AI Strategy
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
-    </div>
-  )
+export const metadata: Metadata = {
+  title: 'AI-Powered Wedding Planning | WeddingLK',
+  description: 'Discover how our advanced AI technology revolutionizes wedding planning with intelligent recommendations, automated assistance, and personalized experiences.',
 }
 
-// Force dynamic rendering
-export const dynamic = 'force-dynamic'
+const features = [
+  {
+    icon: Brain,
+    title: 'Intelligent Vendor Matching',
+    description: 'Our AI analyzes your preferences, budget, and style to recommend the perfect vendors for your wedding.',
+    benefits: [
+      'Personalized vendor recommendations',
+      'Budget-optimized suggestions',
+      'Style compatibility matching',
+      'Real-time availability checking'
+    ]
+  },
+  {
+    icon: Target,
+    title: 'Smart Budget Optimization',
+    description: 'AI-powered budget analysis helps you allocate funds efficiently across all wedding categories.',
+    benefits: [
+      'Automatic budget allocation',
+      'Cost-saving recommendations',
+      'Price trend analysis',
+      'Budget tracking and alerts'
+    ]
+  },
+  {
+    icon: Users,
+    title: 'Guest Experience Enhancement',
+    description: 'AI-driven guest management ensures every attendee has an unforgettable experience.',
+    benefits: [
+      'Intelligent seating arrangements',
+      'Dietary preference management',
+      'Transportation optimization',
+      'Personalized welcome messages'
+    ]
+  },
+  {
+    icon: Zap,
+    title: 'Automated Timeline Management',
+    description: 'AI creates and manages your wedding timeline, ensuring everything runs smoothly.',
+    benefits: [
+      'Dynamic timeline generation',
+      'Vendor coordination',
+      'Real-time schedule updates',
+      'Conflict resolution'
+    ]
+  },
+  {
+    icon: Shield,
+    title: 'Risk Assessment & Mitigation',
+    description: 'AI identifies potential issues and provides proactive solutions for a stress-free wedding.',
+    benefits: [
+      'Weather contingency planning',
+      'Vendor backup recommendations',
+      'Timeline risk analysis',
+      'Emergency response protocols'
+    ]
+  }
+]
+
+const stats = [
+  { number: '95%', label: 'Planning Accuracy' },
+  { number: '40%', label: 'Time Saved' },
+  { number: '85%', label: 'Budget Optimization' },
+  { number: '98%', label: 'Guest Satisfaction' }
+]
+
+export default function AIEnhancementsPage() {
+  return (
+    <>
+      <Header />
+      <main className="min-h-screen">
+        {/* Hero Section */}
+        <section className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 text-white py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-4xl mx-auto">
+              <div className="flex justify-center mb-6">
+                <div className="p-4 bg-white/10 rounded-full backdrop-blur-sm">
+                  <Sparkles className="w-12 h-12 text-yellow-400" />
+                </div>
+              </div>
+              <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                AI-Powered Wedding Planning
+              </h1>
+              <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
+                Experience the future of wedding planning with our advanced artificial intelligence technology that makes your dream wedding a reality.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                  Try AI Planning
+                </button>
+                <button className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300">
+                  Watch Demo
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="py-20 bg-gray-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Revolutionary AI Features
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Our AI technology transforms every aspect of wedding planning, from vendor selection to guest management.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {features.map((feature, index) => (
+                <div key={index} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                  <div className="flex items-center mb-6">
+                    <div className="p-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl text-white">
+                      <feature.icon className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 ml-4">
+                      {feature.title}
+                    </h3>
+                  </div>
+                  <p className="text-gray-600 mb-6 leading-relaxed">
+                    {feature.description}
+                  </p>
+                  <ul className="space-y-2">
+                    {feature.benefits.map((benefit, benefitIndex) => (
+                      <li key={benefitIndex} className="flex items-center text-sm text-gray-700">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Proven Results
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Our AI technology delivers measurable improvements in wedding planning efficiency and satisfaction.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-5xl md:text-6xl font-bold text-purple-600 mb-2">
+                    {stat.number}
+                  </div>
+                  <div className="text-lg text-gray-600 font-medium">
+                    {stat.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works Section */}
+        <section className="py-20 bg-gradient-to-br from-purple-50 to-blue-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                How Our AI Works
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Our AI learns from thousands of successful weddings to provide you with the most accurate recommendations.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-white font-bold text-xl">1</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Data Collection</h3>
+                <p className="text-gray-600">
+                  We analyze your preferences, budget, style, and requirements to understand your vision.
+                </p>
+              </div>
+
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-white font-bold text-xl">2</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">AI Analysis</h3>
+                <p className="text-gray-600">
+                  Our AI processes your data against our database of successful weddings and vendor performance.
+                </p>
+              </div>
+
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <span className="text-white font-bold text-xl">3</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Smart Recommendations</h3>
+                <p className="text-gray-600">
+                  Receive personalized recommendations for vendors, timelines, and budget allocation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-20 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Ready to Experience AI-Powered Planning?
+            </h2>
+            <p className="text-xl text-purple-100 mb-8 max-w-3xl mx-auto">
+              Join thousands of couples who have already discovered the power of AI-assisted wedding planning.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="bg-white text-purple-600 hover:bg-gray-100 px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                Start Planning Now
+              </button>
+              <button className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300">
+                Learn More
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  )
+}

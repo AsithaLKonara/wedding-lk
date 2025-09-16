@@ -79,6 +79,26 @@ export interface IUser extends Document {
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
   
+  // Email Verification
+  emailVerificationToken?: string;
+  emailVerificationExpires?: Date;
+  
+  // Wedding Details
+  weddingDetails?: {
+    weddingDate?: Date;
+    venue?: string;
+    guestCount?: number;
+    budget?: number;
+    theme?: string;
+    colors?: string[];
+  };
+  
+  // Favorites
+  favorites?: {
+    vendors: mongoose.Types.ObjectId[];
+    venues: mongoose.Types.ObjectId[];
+  };
+  
   // Timestamps
   createdAt: Date;
   updatedAt: Date;
@@ -156,15 +176,18 @@ const UserSchema: Schema = new Schema(
     location: {
       country: {
         type: String,
-        required: true,
+        required: false,
+        default: 'Sri Lanka',
       },
       state: {
         type: String,
-        required: true,
+        required: false,
+        default: 'Western Province',
       },
       city: {
         type: String,
-        required: true,
+        required: false,
+        default: 'Colombo',
       },
       zipCode: {
         type: String,
@@ -303,6 +326,48 @@ const UserSchema: Schema = new Schema(
     },
     resetPasswordExpires: {
       type: Date,
+    },
+    
+    // Email Verification
+    emailVerificationToken: {
+      type: String,
+    },
+    emailVerificationExpires: {
+      type: Date,
+    },
+    
+    // Wedding Details
+    weddingDetails: {
+      weddingDate: {
+        type: Date,
+      },
+      venue: {
+        type: String,
+      },
+      guestCount: {
+        type: Number,
+      },
+      budget: {
+        type: Number,
+      },
+      theme: {
+        type: String,
+      },
+      colors: [{
+        type: String,
+      }],
+    },
+    
+    // Favorites
+    favorites: {
+      vendors: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Vendor',
+      }],
+      venues: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Venue',
+      }],
     },
   },
   {

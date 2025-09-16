@@ -45,7 +45,7 @@ export function FeedStories() {
           venuesData.venues?.slice(0, 3).forEach((venue: any, index: number) => {
             storiesData.push({
               _id: venue._id,
-              name: venue.name,
+              name: venue?.name || 'Unknown Venue',
               hasStory: true,
               isLive: index === 0, // First venue is live
               likes: Math.floor(Math.random() * 50) + 10,
@@ -59,7 +59,7 @@ export function FeedStories() {
           vendorsData.vendors?.slice(0, 2).forEach((vendor: any) => {
             storiesData.push({
               _id: vendor._id,
-              name: vendor.businessName || vendor.name,
+              name: vendor?.businessName || vendor?.name || 'Unknown Vendor',
               hasStory: true,
               likes: Math.floor(Math.random() * 30) + 5,
               isLiked: false
@@ -89,7 +89,7 @@ export function FeedStories() {
       // Handle viewing story - could open story viewer modal
       toast({
         title: "View Story",
-        description: `Viewing story from ${story.name}`,
+        description: `Viewing story from ${story?.name || 'Unknown'}`,
       })
     }
   }
@@ -173,8 +173,8 @@ export function FeedStories() {
                         : ""
                   }`}
                 >
-                  <AvatarImage src={story.avatar || "/placeholder.svg"} alt={story.name} />
-                  <AvatarFallback>{story.name[0]}</AvatarFallback>
+                  <AvatarImage src={story.avatar || "/placeholder.svg"} alt={story?.name || 'Unknown'} />
+                  <AvatarFallback>{(story?.name || 'U')[0]}</AvatarFallback>
                 </Avatar>
                 
                 {story.isOwn && !story.hasStory && (
@@ -206,7 +206,7 @@ export function FeedStories() {
               
               <div className="text-center">
                 <span className="text-xs text-gray-700 dark:text-gray-300 truncate w-full block">
-                  {story.name}
+                  {story.author?.name || 'Unknown User'}
                 </span>
                 {story.hasStory && story.likes && story.likes > 0 && (
                   <span className="text-xs text-gray-500 dark:text-gray-400">

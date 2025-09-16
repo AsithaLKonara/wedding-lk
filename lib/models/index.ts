@@ -38,6 +38,26 @@ import VendorPackage from './vendorPackage';
 import Comment from './comment';
 import { MetaAdsCampaign, MetaAdsAdSet, MetaAdsCreative, MetaAdsAccount } from './metaAds';
 import Testimonial from './testimonial';
+import { PlanningTask } from './planningTask';
+import { UserPreferences } from './userPreferences';
+import { UserVerification } from './userVerification';
+import { PasswordReset } from './passwordReset';
+import { VendorService } from './vendorServices';
+import { VendorPortfolio } from './vendorPortfolios';
+import { VendorAvailability } from './vendorAvailability';
+import { BookingRequest } from './bookingRequests';
+import { Reaction } from './reactions';
+import { Follower } from './followers';
+import { UserSession } from './userSessions';
+import { TwoFactorAuth } from './twoFactorAuth';
+import { BookingModification } from './bookingModifications';
+import { PaymentMethod } from './paymentMethods';
+import { Share } from './shares';
+import { Bookmark } from './bookmarks';
+import { Hashtag } from './hashtags';
+import { Mention } from './mentions';
+import { MessageAttachment } from './messageAttachments';
+import { NotificationPreferences } from './notificationPreferences';
 
 // Export all models
 export {
@@ -82,6 +102,26 @@ export {
   MetaAdsCreative,
   MetaAdsAccount,
   Testimonial,
+  PlanningTask,
+  UserPreferences,
+  UserVerification,
+  PasswordReset,
+  VendorService,
+  VendorPortfolio,
+  VendorAvailability,
+  BookingRequest,
+  Reaction,
+  Follower,
+  UserSession,
+  TwoFactorAuth,
+  BookingModification,
+  PaymentMethod,
+  Share,
+  Bookmark,
+  Hashtag,
+  Mention,
+  MessageAttachment,
+  NotificationPreferences,
 };
 
 // Export VenueBoost as default

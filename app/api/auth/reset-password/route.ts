@@ -5,22 +5,21 @@ import bcrypt from 'bcryptjs';
 
 export async function POST(request: NextRequest) {
   try {
-    const { token, password, confirmPassword } = await request.json();
+    await connectDB();
 
-    if (!token || !password || !confirmPassword) {
+    const { token, password } = await request.json();
+
+    console.log('🔐 Password reset attempt:', { token: token ? 'provided' : 'missing' });
+
+    // Validate required fields
+    if (!token || !password) {
       return NextResponse.json(
-        { error: 'Token, password, and confirm password are required' },
+        { error: 'Reset token and new password are required' },
         { status: 400 }
       );
     }
 
-    if (password !== confirmPassword) {
-      return NextResponse.json(
-        { error: 'Passwords do not match' },
-        { status: 400 }
-      );
-    }
-
+    // Validate password strength
     if (password.length < 8) {
       return NextResponse.json(
         { error: 'Password must be at least 8 characters long' },
@@ -28,10 +27,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Connect to database
-    await connectDB();
-
-    // Find user by reset token and check if it's not expired
+    // Find user with valid reset token
     const user = await User.findOne({
       resetPasswordToken: token,
       resetPasswordExpires: { $gt: new Date() }
@@ -44,32 +40,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash the new password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     // Update user password and clear reset token
     user.password = hashedPassword;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
-    user.loginAttempts = 0; // Reset login attempts
-    user.lockedUntil = undefined; // Unlock account if locked
     await user.save();
 
     console.log(`✅ Password reset successful for user: ${user.email}`);
 
-    return NextResponse.json(
-      { message: 'Password has been reset successfully' },
-      { status: 200 }
-    );
+    return NextResponse.json({
+      success: true,
+      message: 'Password reset successful'
+    });
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('❌ Reset password error:', error);
+    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
     );
   }
 }
-
-

@@ -16,8 +16,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Connect to database
-    const db = await connectDB();
-    const errorsCollection = db.collection('error_logs');
+    let db, errorsCollection;
+    try {
+      db = await connectDB();
+      errorsCollection = db.collection('error_logs');
+    } catch (dbError) {
+      console.error('Database connection failed:', dbError);
+      // Return success even if DB fails to avoid infinite error loops
+      return NextResponse.json({ 
+        success: true, 
+        message: 'Error logged (database unavailable)',
+        errorId: errorData.errorId 
+      });
+    }
 
     // Add additional metadata
     const enrichedErrorData = {

@@ -30,6 +30,14 @@ interface WeddingPackageCardProps {
 export function WeddingPackageCard({ package: pkg }: WeddingPackageCardProps) {
   const router = useRouter()
 
+  const handleBookNow = () => {
+    router.push(`/booking/${pkg.id}`)
+  }
+
+  const handleViewDetails = () => {
+    router.push(`/packages/${pkg.id}`)
+  }
+
   const handleSave = (packageId: number) => {
     try {
       // Get existing saved packages from localStorage
@@ -158,14 +166,14 @@ export function WeddingPackageCard({ package: pkg }: WeddingPackageCardProps) {
                 <div key={index} className="relative group">
                   <Image
                     src={venue.image || "/placeholder.svg"}
-                    alt={venue.name}
+                    alt={venue?.name || 'Venue'}
                     width={150}
                     height={100}
                     className="w-full h-16 object-cover rounded-lg"
                   />
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
                     <div className="text-white text-center">
-                      <div className="text-xs font-medium">{venue.name}</div>
+                      <div className="text-xs font-medium">{venue?.name || 'Venue'}</div>
                       <div className="flex items-center justify-center text-xs">
                         <Star className="h-3 w-3 text-yellow-400 fill-current mr-1" />
                         {venue.rating}
@@ -186,10 +194,10 @@ export function WeddingPackageCard({ package: pkg }: WeddingPackageCardProps) {
                   <div className="flex items-center space-x-2">
                     <Avatar className="h-6 w-6">
                       <AvatarImage src="/placeholder.svg" />
-                      <AvatarFallback className="text-xs">{vendor.name[0]}</AvatarFallback>
+                      <AvatarFallback className="text-xs">{vendor?.name?.[0] || 'V'}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">{vendor.name}</div>
+                      <div className="text-sm font-medium text-gray-900 dark:text-white">{vendor?.name || 'Vendor'}</div>
                       <div className="text-xs text-gray-500">{vendor.category}</div>
                     </div>
                   </div>
@@ -206,12 +214,12 @@ export function WeddingPackageCard({ package: pkg }: WeddingPackageCardProps) {
           <div className="space-y-3 pt-4">
             <Button
               className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700"
-              onClick={() => router.push(`/packages/${pkg.id}/book`)}
+              onClick={handleBookNow}
             >
               Book This Package
             </Button>
             <div className="flex space-x-2">
-              <Button variant="outline" size="sm" className="flex-1" onClick={() => router.push(`/packages/${pkg.id}`)}>
+              <Button variant="outline" size="sm" className="flex-1" onClick={handleViewDetails}>
                 <Eye className="h-4 w-4 mr-1" />
                 View Details
               </Button>

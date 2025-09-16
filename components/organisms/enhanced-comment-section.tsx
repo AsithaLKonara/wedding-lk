@@ -333,12 +333,12 @@ export function EnhancedCommentSection({ postId, isOpen, onClose }: EnhancedComm
       <div className="flex space-x-3">
         <Avatar className="h-8 w-8">
           <AvatarImage src={comment.author.avatar} />
-          <AvatarFallback>{getInitials(comment.author.name)}</AvatarFallback>
+          <AvatarFallback>{getInitials(comment.author?.name || 'Unknown')}</AvatarFallback>
         </Avatar>
         
         <div className="flex-1 space-y-2">
           <div className="flex items-center space-x-2">
-            <span className="font-medium text-sm">{comment.author.name}</span>
+            <span className="font-medium text-sm">{comment.author?.name || 'Unknown User'}</span>
             {getAuthorIcon(comment.author.type)}
             {comment.author.verified && (
               <Badge variant="secondary" className="text-xs">
@@ -458,7 +458,7 @@ export function EnhancedCommentSection({ postId, isOpen, onClose }: EnhancedComm
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     className="min-h-[60px]"
-                    placeholder={`Reply to ${comment.author.name}...`}
+                    placeholder={`Reply to ${comment.author?.name || 'Unknown User'}...`}
                   />
                   <div className="flex space-x-2">
                     <Button

@@ -201,12 +201,12 @@ export function ExplorePage({ userId, userPreferences }: ExplorePageProps) {
           <div className="flex items-center space-x-2">
             <img
               src={item.author.avatar}
-              alt={item.author.name}
+              alt={item.author?.name || 'User'}
               className="w-8 h-8 rounded-full"
             />
             <div>
               <div className="flex items-center space-x-1">
-                <span className="font-medium text-sm">{item.author.name}</span>
+                <span className="font-medium text-sm">{item.author?.name || 'Unknown User'}</span>
                 {item.author.verified && (
                   <Badge variant="outline" className="text-xs px-1 py-0">
                     ✓
@@ -372,7 +372,7 @@ export function ExplorePage({ userId, userPreferences }: ExplorePageProps) {
               className="whitespace-nowrap"
             >
               <span className="mr-1">{category.icon}</span>
-              {category.name}
+              {category?.name || 'Category'}
             </Button>
           ))}
         </div>

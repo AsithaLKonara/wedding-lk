@@ -340,11 +340,11 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
                 <div className="flex items-center space-x-3">
                   <Avatar className="h-10 w-10">
                     <AvatarImage src={post.author.avatar} />
-                    <AvatarFallback>{getInitials(post.author.name)}</AvatarFallback>
+                    <AvatarFallback>{getInitials(post.author?.name || 'Unknown')}</AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h3 className="font-semibold">{post.author.name}</h3>
+                      <h3 className="font-semibold">{post.author?.name || 'Unknown User'}</h3>
                       {getAuthorIcon(post.author.type)}
                       {post.author.verified && (
                         <Badge variant="secondary" className="text-xs">
@@ -413,13 +413,13 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
                   {post.groupId && (
                     <div className="flex items-center">
                       <Users className="h-4 w-4 mr-1" />
-                      {post.groupId.name}
+                      {post.groupId?.name || 'Unknown Group'}
                     </div>
                   )}
                   {post.eventId && (
                     <div className="flex items-center">
                       <Calendar className="h-4 w-4 mr-1" />
-                      {post.eventId.title}
+                      {post.eventId?.title || 'Unknown Event'}
                     </div>
                   )}
                 </div>

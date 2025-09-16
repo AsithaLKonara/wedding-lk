@@ -1,607 +1,363 @@
-'use client';
+"use client"
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Progress } from '@/components/ui/progress';
-import { Plus, Edit, Trash2, Eye, Play, Pause, DollarSign, Target, TrendingUp, Calendar, Users, BarChart3 } from 'lucide-react';
+import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { Plus, TrendingUp, Eye, Edit, Trash2, Play, Pause, DollarSign, Users, Calendar } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 
-interface Campaign {
-  id: string;
-  name: string;
-  description: string;
-  type: 'featured' | 'sponsored' | 'premium';
-  status: 'draft' | 'active' | 'paused' | 'completed' | 'cancelled';
-  budget: number;
-  spent: number;
-  duration: number;
-  startDate: string;
-  endDate: string;
-  targetAudience: string;
-  impressions: number;
-  clicks: number;
-  conversions: number;
-  ctr: number;
-  cpc: number;
-  createdAt: string;
-  updatedAt: string;
+interface BoostCampaign {
+  id: string
+  name: string
+  type: 'venue' | 'service' | 'package'
+  status: 'active' | 'paused' | 'completed' | 'draft'
+  budget: number
+  spent: number
+  impressions: number
+  clicks: number
+  conversions: number
+  startDate: string
+  endDate: string
+  targetAudience: string
+  createdAt: string
 }
 
-export default function VendorBoostCampaignsPage() {
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
-  const [filterStatus, setFilterStatus] = useState<string>('all');
-  const [filterType, setFilterType] = useState<string>('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCampaigns, setSelectedCampaigns] = useState<string[]>([]);
-  const [formData, setFormData] = useState<{
-    name: string;
-    description: string;
-    type: 'featured' | 'premium' | 'sponsored';
-    budget: number;
-    duration: number;
-    startDate: string;
-    endDate: string;
-    targetAudience: string;
-  }>({
-    name: '',
-    description: '',
-    type: 'featured',
-    budget: 0,
-    duration: 30,
-    startDate: '',
-    endDate: '',
-    targetAudience: ''
-  });
-
-  const campaignTypes = [
-    { value: 'featured', label: 'Featured Listing', description: 'Highlight your service in search results' },
-    { value: 'sponsored', label: 'Sponsored Content', description: 'Promote your service in targeted placements' },
-    { value: 'premium', label: 'Premium Placement', description: 'Top-tier visibility and priority placement' }
-  ];
-
-  const statuses = [
-    { value: 'draft', label: 'Draft', color: 'bg-gray-100 text-gray-800' },
-    { value: 'active', label: 'Active', color: 'bg-green-100 text-green-800' },
-    { value: 'paused', label: 'Paused', color: 'bg-yellow-100 text-yellow-800' },
-    { value: 'completed', label: 'Completed', color: 'bg-blue-100 text-blue-800' },
-    { value: 'cancelled', label: 'Cancelled', color: 'bg-red-100 text-red-800' }
-  ];
+export default function BoostCampaignsPage() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  const [campaigns, setCampaigns] = useState<BoostCampaign[]>([])
+  const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState<'all' | 'active' | 'paused' | 'completed' | 'draft'>('all')
 
   useEffect(() => {
-    fetchCampaigns();
-  }, []);
+    if (status === 'loading') return
 
-  const fetchCampaigns = async () => {
-    try {
-      setLoading(true);
-      // Mock data - replace with actual API call
-      const mockCampaigns: Campaign[] = [
-        {
-          id: '1',
-          name: 'Summer Wedding Photography Boost',
-          description: 'Promote photography services for summer wedding season',
-          type: 'featured',
-          status: 'active',
-          budget: 500,
-          spent: 125,
-          duration: 30,
-          startDate: '2024-06-01',
-          endDate: '2024-06-30',
-          targetAudience: 'Couples planning summer weddings',
-          impressions: 15420,
-          clicks: 234,
-          conversions: 12,
-          ctr: 1.52,
-          cpc: 0.53,
-          createdAt: '2024-05-25',
-          updatedAt: '2024-06-15'
-        },
-        {
-          id: '2',
-          name: 'Catering Services Sponsored Campaign',
-          description: 'Targeted promotion for catering services',
-          type: 'sponsored',
-          status: 'paused',
-          budget: 300,
-          spent: 180,
-          duration: 14,
-          startDate: '2024-06-10',
-          endDate: '2024-06-24',
-          targetAudience: 'Event planners and couples',
-          impressions: 8750,
-          clicks: 156,
-          conversions: 8,
-          ctr: 1.78,
-          cpc: 1.15,
-          createdAt: '2024-06-05',
-          updatedAt: '2024-06-18'
-        }
-      ];
-      setCampaigns(mockCampaigns);
-    } catch (error) {
-      console.error('Error fetching campaigns:', error);
-    } finally {
-      setLoading(false);
+    if (!session?.user) {
+      router.push('/auth/signin')
+      return
     }
-  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      if (editingCampaign) {
-        // Update existing campaign
-        setCampaigns(prev => prev.map(campaign => 
-          campaign.id === editingCampaign.id 
-            ? { 
-                ...campaign, 
-                ...formData,
-                updatedAt: new Date().toISOString().split('T')[0]
-              }
-            : campaign
-        ));
-      } else {
-        // Create new campaign
-        const newCampaign: Campaign = {
-          id: Date.now().toString(),
-          ...formData,
-          status: 'draft',
-          spent: 0,
-          impressions: 0,
-          clicks: 0,
-          conversions: 0,
-          ctr: 0,
-          cpc: 0,
-          createdAt: new Date().toISOString().split('T')[0],
-          updatedAt: new Date().toISOString().split('T')[0]
-        };
-        setCampaigns(prev => [...prev, newCampaign]);
+    if (session.user.role !== 'vendor') {
+      router.push('/unauthorized')
+      return
+    }
+
+    // Mock data - replace with actual API call
+    setCampaigns([
+      {
+        id: '1',
+        name: 'Wedding Photography Promotion',
+        type: 'service',
+        status: 'active',
+        budget: 50000,
+        spent: 12500,
+        impressions: 15420,
+        clicks: 342,
+        conversions: 8,
+        startDate: '2024-01-15',
+        endDate: '2024-02-15',
+        targetAudience: 'Couples planning weddings',
+        createdAt: '2024-01-10'
+      },
+      {
+        id: '2',
+        name: 'Venue Showcase Campaign',
+        type: 'venue',
+        status: 'paused',
+        budget: 75000,
+        spent: 25000,
+        impressions: 22300,
+        clicks: 567,
+        conversions: 12,
+        startDate: '2024-01-01',
+        endDate: '2024-03-01',
+        targetAudience: 'Wedding planners and couples',
+        createdAt: '2023-12-20'
+      },
+      {
+        id: '3',
+        name: 'Bridal Package Special',
+        type: 'package',
+        status: 'completed',
+        budget: 30000,
+        spent: 30000,
+        impressions: 18900,
+        clicks: 234,
+        conversions: 15,
+        startDate: '2023-12-01',
+        endDate: '2023-12-31',
+        targetAudience: 'Brides-to-be',
+        createdAt: '2023-11-25'
       }
-      
-      setIsDialogOpen(false);
-      setEditingCampaign(null);
-      setFormData({
-        name: '',
-        description: '',
-        type: 'featured',
-        budget: 0,
-        duration: 30,
-        startDate: '',
-        endDate: '',
-        targetAudience: ''
-      });
-    } catch (error) {
-      console.error('Error saving campaign:', error);
-    }
-  };
+    ])
+    setLoading(false)
+  }, [session, status, router])
 
-  const handleEdit = (campaign: Campaign) => {
-    setEditingCampaign(campaign);
-    setFormData({
-      name: campaign.name,
-      description: campaign.description,
-      type: campaign.type,
-      budget: campaign.budget,
-      duration: campaign.duration,
-      startDate: campaign.startDate,
-      endDate: campaign.endDate,
-      targetAudience: campaign.targetAudience
-    });
-    setIsDialogOpen(true);
-  };
-
-  const handleDelete = (campaignId: string) => {
-    if (confirm('Are you sure you want to delete this campaign?')) {
-      setCampaigns(prev => prev.filter(campaign => campaign.id !== campaignId));
-    }
-  };
-
-  const handleStatusChange = (campaignId: string, newStatus: string) => {
-    setCampaigns(prev => prev.map(campaign => 
-      campaign.id === campaignId 
-        ? { ...campaign, status: newStatus as any, updatedAt: new Date().toISOString().split('T')[0] }
-        : campaign
-    ));
-  };
-
-  const handleBulkAction = (action: string) => {
-    if (selectedCampaigns.length === 0) return;
-    
-    switch (action) {
-      case 'activate':
-        selectedCampaigns.forEach(id => handleStatusChange(id, 'active'));
-        break;
-      case 'pause':
-        selectedCampaigns.forEach(id => handleStatusChange(id, 'paused'));
-        break;
-      case 'delete':
-        if (confirm(`Are you sure you want to delete ${selectedCampaigns.length} campaigns?`)) {
-          setCampaigns(prev => prev.filter(campaign => !selectedCampaigns.includes(campaign.id)));
-        }
-        break;
-    }
-    setSelectedCampaigns([]);
-  };
+  const filteredCampaigns = campaigns.filter(campaign => {
+    if (filter === 'all') return true
+    return campaign.status === filter
+  })
 
   const getStatusColor = (status: string) => {
-    const statusObj = statuses.find(s => s.value === status);
-    return statusObj?.color || 'bg-gray-100 text-gray-800';
-  };
+    switch (status) {
+      case 'active': return 'bg-green-100 text-green-800'
+      case 'paused': return 'bg-yellow-100 text-yellow-800'
+      case 'completed': return 'bg-blue-100 text-blue-800'
+      case 'draft': return 'bg-gray-100 text-gray-800'
+      default: return 'bg-gray-100 text-gray-800'
+    }
+  }
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'featured': return 'bg-blue-100 text-blue-800';
-      case 'sponsored': return 'bg-purple-100 text-purple-800';
-      case 'premium': return 'bg-gold-100 text-gold-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'venue': return 'bg-purple-100 text-purple-800'
+      case 'service': return 'bg-blue-100 text-blue-800'
+      case 'package': return 'bg-green-100 text-green-800'
+      default: return 'bg-gray-100 text-gray-800'
     }
-  };
+  }
 
-  const filteredCampaigns = campaigns.filter(campaign => {
-    const statusMatch = filterStatus === 'all' || campaign.status === filterStatus;
-    const typeMatch = filterType === 'all' || campaign.type === filterType;
-    const searchMatch = campaign.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                       campaign.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return statusMatch && typeMatch && searchMatch;
-  });
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('en-LK', {
+      style: 'currency',
+      currency: 'LKR',
+      minimumFractionDigits: 0
+    }).format(price)
+  }
 
-  const getCampaignStats = () => {
-    const total = campaigns.length;
-    const active = campaigns.filter(c => c.status === 'active').length;
-    const totalBudget = campaigns.reduce((sum, campaign) => sum + campaign.budget, 0);
-    const totalSpent = campaigns.reduce((sum, campaign) => sum + campaign.spent, 0);
-    const totalImpressions = campaigns.reduce((sum, campaign) => sum + campaign.impressions, 0);
-    const totalClicks = campaigns.reduce((sum, campaign) => sum + campaign.clicks, 0);
-    const totalConversions = campaigns.reduce((sum, campaign) => sum + campaign.conversions, 0);
-    
-    return { total, active, totalBudget, totalSpent, totalImpressions, totalClicks, totalConversions };
-  };
-
-  const stats = getCampaignStats();
+  const calculateROI = (spent: number, conversions: number, avgBookingValue: number = 100000) => {
+    if (spent === 0) return 0
+    const revenue = conversions * avgBookingValue
+    return ((revenue - spent) / spent) * 100
+  }
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading campaigns...</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
       </div>
-    );
+    )
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Boost Campaigns</h1>
-          <p className="text-gray-600">Promote your services and increase visibility</p>
-        </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => {
-              setEditingCampaign(null);
-              setFormData({
-                name: '',
-                description: '',
-                type: 'featured',
-                budget: 0,
-                duration: 30,
-                startDate: '',
-                endDate: '',
-                targetAudience: ''
-              });
-            }}>
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Boost Campaigns</h1>
+              <p className="text-gray-600">Manage your venue and service promotion campaigns</p>
+            </div>
+            <Button 
+              onClick={() => router.push('/dashboard/vendor/boost-campaigns/create')}
+              className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+            >
               <Plus className="w-4 h-4 mr-2" />
               Create Campaign
             </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>
-                {editingCampaign ? 'Edit Campaign' : 'Create New Campaign'}
-              </DialogTitle>
-              <DialogDescription>
-                {editingCampaign ? 'Update your campaign details' : 'Create a new boost campaign to promote your services'}
-              </DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="name">Campaign Name</Label>
-                  <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="type">Campaign Type</Label>
-                  <Select
-                    value={formData.type}
-                    onValueChange={(value: 'featured' | 'sponsored' | 'premium') => setFormData(prev => ({ ...prev, type: value }))}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {campaignTypes.map(type => (
-                        <SelectItem key={type.value} value={type.value}>
-                          <div>
-                            <div className="font-medium">{type.label}</div>
-                            <div className="text-sm text-gray-500">{type.description}</div>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              
-              <div>
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                  rows={3}
-                />
-              </div>
-              
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <Label htmlFor="budget">Budget ($)</Label>
-                  <Input
-                    id="budget"
-                    type="number"
-                    value={formData.budget}
-                    onChange={(e) => setFormData(prev => ({ ...prev, budget: parseInt(e.target.value) || 0 }))}
-                    min="0"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="duration">Duration (days)</Label>
-                  <Input
-                    id="duration"
-                    type="number"
-                    value={formData.duration}
-                    onChange={(e) => setFormData(prev => ({ ...prev, duration: parseInt(e.target.value) || 0 }))}
-                    min="1"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="startDate">Start Date</Label>
-                  <Input
-                    id="startDate"
-                    type="date"
-                    value={formData.startDate}
-                    onChange={(e) => setFormData(prev => ({ ...prev, startDate: e.target.value }))}
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <Label htmlFor="targetAudience">Target Audience</Label>
-                <Input
-                  id="targetAudience"
-                  value={formData.targetAudience}
-                  onChange={(e) => setFormData(prev => ({ ...prev, targetAudience: e.target.value }))}
-                  placeholder="Describe your target audience"
-                />
-              </div>
-              
-              <div className="flex justify-end space-x-2">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button type="submit">
-                  {editingCampaign ? 'Update Campaign' : 'Create Campaign'}
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </div>
+          </div>
+        </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center">
-              <Target className="h-8 w-8 text-blue-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Campaigns</p>
-                <p className="text-2xl font-bold">{stats.total}</p>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <TrendingUp className="w-8 h-8 text-purple-600" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Campaigns</p>
+                  <p className="text-2xl font-bold text-gray-900">{campaigns.length}</p>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center">
-              <Play className="h-8 w-8 text-green-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Active</p>
-                <p className="text-2xl font-bold">{stats.active}</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <DollarSign className="w-8 h-8 text-green-600" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Spent</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {formatPrice(campaigns.reduce((sum, campaign) => sum + campaign.spent, 0))}
+                  </p>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center">
-              <DollarSign className="h-8 w-8 text-green-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Spent</p>
-                <p className="text-2xl font-bold">${stats.totalSpent.toLocaleString()}</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <Users className="w-8 h-8 text-blue-600" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Conversions</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {campaigns.reduce((sum, campaign) => sum + campaign.conversions, 0)}
+                  </p>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center">
-              <TrendingUp className="h-8 w-8 text-purple-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Conversions</p>
-                <p className="text-2xl font-bold">{stats.totalConversions}</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <Eye className="w-8 h-8 text-yellow-600" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Impressions</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {campaigns.reduce((sum, campaign) => sum + campaign.impressions, 0).toLocaleString()}
+                  </p>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </div>
 
-      {/* Campaigns Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Campaign Directory</CardTitle>
-          <CardDescription>Manage your boost campaigns and track performance</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-12">
-                  <Checkbox
-                    checked={selectedCampaigns.length === filteredCampaigns.length}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedCampaigns(filteredCampaigns.map(c => c.id));
-                      } else {
-                        setSelectedCampaigns([]);
-                      }
-                    }}
-                  />
-                </TableHead>
-                <TableHead>Campaign</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Budget</TableHead>
-                <TableHead>Performance</TableHead>
-                <TableHead>Duration</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredCampaigns.map((campaign) => (
-                <TableRow key={campaign.id}>
-                  <TableCell>
-                    <Checkbox
-                      checked={selectedCampaigns.includes(campaign.id)}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          setSelectedCampaigns(prev => [...prev, campaign.id]);
-                        } else {
-                          setSelectedCampaigns(prev => prev.filter(id => id !== campaign.id));
-                        }
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell>
+        {/* Filters */}
+        <div className="mb-6">
+          <div className="flex space-x-2">
+            {['all', 'active', 'paused', 'completed', 'draft'].map((filterType) => (
+              <Button
+                key={filterType}
+                variant={filter === filterType ? 'default' : 'outline'}
+                onClick={() => setFilter(filterType as any)}
+                className="capitalize"
+              >
+                {filterType}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        {/* Campaigns Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredCampaigns.map((campaign) => (
+            <Card key={campaign.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <CardTitle className="text-lg mb-2">{campaign.name}</CardTitle>
+                    <div className="flex space-x-2 mb-2">
+                      <Badge className={getTypeColor(campaign.type)}>
+                        {campaign.type}
+                      </Badge>
+                      <Badge className={getStatusColor(campaign.status)}>
+                        {campaign.status}
+                      </Badge>
+                    </div>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button variant="ghost" size="sm">
+                      <Eye className="w-4 h-4" />
+                    </Button>
+                    <Button variant="ghost" size="sm">
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {/* Budget Progress */}
+                  <div>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-500">Budget Usage</span>
+                      <span className="font-medium">
+                        {formatPrice(campaign.spent)} / {formatPrice(campaign.budget)}
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full"
+                        style={{width: `${(campaign.spent / campaign.budget) * 100}%`}}
+                      ></div>
+                    </div>
+                  </div>
+
+                  {/* Campaign Stats */}
+                  <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <p className="font-medium">{campaign.name}</p>
-                      <p className="text-sm text-gray-500">{campaign.description}</p>
-                      <p className="text-xs text-gray-400 mt-1">{campaign.targetAudience}</p>
+                      <div className="text-gray-500">Impressions</div>
+                      <div className="font-medium">{campaign.impressions.toLocaleString()}</div>
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge className={getTypeColor(campaign.type)}>
-                      {campaignTypes.find(t => t.value === campaign.type)?.label}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Badge className={getStatusColor(campaign.status)}>
-                      {statuses.find(s => s.value === campaign.status)?.label}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
                     <div>
-                      <div className="flex items-center">
-                        <DollarSign className="h-4 w-4 text-green-600 mr-1" />
-                        <span className="font-medium">{campaign.spent.toLocaleString()}</span>
-                        <span className="text-gray-500">/ {campaign.budget.toLocaleString()}</span>
-                      </div>
-                      <Progress 
-                        value={(campaign.spent / campaign.budget) * 100} 
-                        className="h-2 mt-1" 
-                      />
+                      <div className="text-gray-500">Clicks</div>
+                      <div className="font-medium">{campaign.clicks}</div>
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="space-y-1">
-                      <div className="flex items-center text-sm">
-                        <Eye className="h-3 w-3 text-gray-400 mr-1" />
-                        <span>{campaign.impressions.toLocaleString()}</span>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <Target className="h-3 w-3 text-gray-400 mr-1" />
-                        <span>{campaign.clicks} clicks</span>
-                      </div>
-                      <div className="flex items-center text-sm">
-                        <TrendingUp className="h-3 w-3 text-gray-400 mr-1" />
-                        <span>{campaign.conversions} conversions</span>
+                    <div>
+                      <div className="text-gray-500">Conversions</div>
+                      <div className="font-medium">{campaign.conversions}</div>
+                    </div>
+                    <div>
+                      <div className="text-gray-500">ROI</div>
+                      <div className="font-medium text-green-600">
+                        {calculateROI(campaign.spent, campaign.conversions).toFixed(1)}%
                       </div>
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 text-gray-400 mr-1" />
-                      <span className="text-sm">{campaign.duration} days</span>
+                  </div>
+
+                  {/* Campaign Dates */}
+                  <div className="pt-4 border-t">
+                    <div className="flex items-center text-sm text-gray-500">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      {new Date(campaign.startDate).toLocaleDateString()} - {new Date(campaign.endDate).toLocaleDateString()}
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEdit(campaign)}
-                      >
-                        <Edit className="h-4 w-4" />
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex space-x-2 pt-4">
+                    {campaign.status === 'active' ? (
+                      <Button variant="outline" size="sm" className="flex-1">
+                        <Pause className="w-4 h-4 mr-2" />
+                        Pause
                       </Button>
-                      {campaign.status === 'active' ? (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleStatusChange(campaign.id, 'paused')}
-                        >
-                          <Pause className="h-4 w-4" />
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleStatusChange(campaign.id, 'active')}
-                        >
-                          <Play className="h-4 w-4" />
-                        </Button>
-                      )}
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDelete(campaign.id)}
-                        className="text-red-600 hover:text-red-700"
-                      >
-                        <Trash2 className="h-4 w-4" />
+                    ) : campaign.status === 'paused' ? (
+                      <Button variant="outline" size="sm" className="flex-1">
+                        <Play className="w-4 h-4 mr-2" />
+                        Resume
                       </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+                    ) : null}
+                    <Button variant="outline" size="sm" className="flex-1">
+                      <Edit className="w-4 h-4 mr-2" />
+                      Edit
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {filteredCampaigns.length === 0 && (
+          <div className="text-center py-12">
+            <TrendingUp className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No campaigns found</h3>
+            <p className="text-gray-600 mb-6">
+              {filter === 'all' 
+                ? "You haven't created any boost campaigns yet. Get started by creating your first campaign."
+                : `No campaigns with status "${filter}" found.`
+              }
+            </p>
+            {filter === 'all' && (
+              <Button 
+                onClick={() => router.push('/dashboard/vendor/boost-campaigns/create')}
+                className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Create Your First Campaign
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
     </div>
-  );
+  )
 }

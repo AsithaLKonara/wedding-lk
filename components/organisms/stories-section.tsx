@@ -274,7 +274,7 @@ export function StoriesSection({ groupId }: StoriesSectionProps) {
                     <Avatar className="w-full h-full">
                       <AvatarImage src={story.author.avatar} />
                       <AvatarFallback className="bg-white">
-                        {getInitials(story.author.name)}
+                        {getInitials(story.author?.name || 'Unknown')}
                       </AvatarFallback>
                     </Avatar>
                   </div>
@@ -286,7 +286,7 @@ export function StoriesSection({ groupId }: StoriesSectionProps) {
                 </div>
                 <div className="text-center">
                   <p className="text-xs font-medium truncate max-w-[60px]">
-                    {story.author.name}
+                    {story.author?.name || 'Unknown User'}
                   </p>
                   <p className="text-xs text-gray-500">
                     {formatTimeAgo(story.createdAt)}
@@ -366,13 +366,13 @@ export function StoriesSection({ groupId }: StoriesSectionProps) {
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={selectedStory.author.avatar} />
                     <AvatarFallback>
-                      {getInitials(selectedStory.author.name)}
+                      {getInitials(selectedStory.author?.name || 'Unknown')}
                     </AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="flex items-center space-x-2">
                       <span className="text-white font-medium text-sm">
-                        {selectedStory.author.name}
+                        {selectedStory.author?.name || 'Unknown User'}
                       </span>
                       {getAuthorIcon(selectedStory.author.type)}
                       {selectedStory.author.verified && (
