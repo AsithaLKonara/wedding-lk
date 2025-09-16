@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import Header from '@/components/organisms/header'
 import Footer from '@/components/organisms/footer'
+import { Badge } from '@/components/ui/badge'
 import { Shield, Lock, Eye, Key, Database, AlertTriangle, CheckCircle, Users } from 'lucide-react'
 
 export const metadata: Metadata = {
