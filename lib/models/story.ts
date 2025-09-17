@@ -79,7 +79,7 @@ const StorySchema = new Schema<IStory>({
     id: {
       type: Schema.Types.ObjectId,
       required: true,
-      refPath: 'author.type'
+      ref: 'User'
     },
     name: {
       type: String,
