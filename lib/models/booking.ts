@@ -15,15 +15,24 @@ const BookingSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId, 
       ref: "Venue" 
     },
-    date: { 
+    planner: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: "User" 
+    },
+    service: {
+      name: String,
+      description: String,
+      price: Number
+    },
+    eventDate: { 
       type: Date, 
       required: true 
     },
-    startTime: { 
+    eventTime: { 
       type: String 
     },
-    endTime: { 
-      type: String 
+    duration: { 
+      type: Number 
     },
     guestCount: { 
       type: Number, 
@@ -31,26 +40,17 @@ const BookingSchema = new mongoose.Schema(
     },
     status: { 
       type: String, 
-      enum: ["pending", "confirmed", "cancelled", "completed"], 
+      enum: ["pending", "confirmed", "cancelled", "completed", "in_progress"], 
       default: "pending" 
     },
-    totalAmount: { 
-      type: Number, 
-      required: true, 
-      min: 0 
-    },
-    depositAmount: { 
-      type: Number, 
-      min: 0 
-    },
-    depositPaid: { 
-      type: Boolean, 
-      default: false 
+    payment: {
+      amount: { type: Number, required: true, min: 0 },
+      currency: { type: String, default: 'LKR' },
+      status: { type: String, enum: ['pending', 'completed', 'failed', 'refunded'], default: 'pending' },
+      method: { type: String, enum: ['bank_transfer', 'card', 'cash'], default: 'bank_transfer' },
+      transactionId: String
     },
     notes: { 
-      type: String 
-    },
-    specialRequirements: { 
       type: String 
     },
     isActive: { 
@@ -64,11 +64,11 @@ const BookingSchema = new mongoose.Schema(
 )
 
 // Indexes for efficient queries
-BookingSchema.index({ user: 1, date: -1 })
-BookingSchema.index({ vendor: 1, date: -1 })
-BookingSchema.index({ venue: 1, date: -1 })
+BookingSchema.index({ user: 1, eventDate: -1 })
+BookingSchema.index({ vendor: 1, eventDate: -1 })
+BookingSchema.index({ venue: 1, eventDate: -1 })
 BookingSchema.index({ status: 1 })
-BookingSchema.index({ date: 1 })
+BookingSchema.index({ eventDate: 1 })
 
 export const Booking = mongoose.models.Booking || mongoose.model("Booking", BookingSchema)
 
@@ -76,16 +76,25 @@ export interface IBooking extends mongoose.Document {
   user: mongoose.Types.ObjectId
   vendor?: mongoose.Types.ObjectId
   venue?: mongoose.Types.ObjectId
-  date: Date
-  startTime?: string
-  endTime?: string
+  planner?: mongoose.Types.ObjectId
+  service?: {
+    name: string
+    description: string
+    price: number
+  }
+  eventDate: Date
+  eventTime?: string
+  duration?: number
   guestCount?: number
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
-  totalAmount: number
-  depositAmount?: number
-  depositPaid: boolean
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed' | 'in_progress'
+  payment: {
+    amount: number
+    currency: string
+    status: 'pending' | 'completed' | 'failed' | 'refunded'
+    method: 'bank_transfer' | 'card' | 'cash'
+    transactionId?: string
+  }
   notes?: string
-  specialRequirements?: string
   isActive: boolean
   createdAt: Date
   updatedAt: Date

@@ -63,14 +63,17 @@ export async function POST(request: NextRequest) {
     const booking = new Booking({
       user: session.user.id,
       vendor: primaryVendor,
-      date: new Date(eventDate),
-      startTime: eventTime,
+      eventDate: new Date(eventDate),
+      eventTime: eventTime,
       guestCount: parseInt(guestCount),
-      totalAmount: parseFloat(totalPrice),
-      notes: `Contact: ${contactPhone}, Email: ${contactEmail}`,
-      specialRequirements: specialRequests || '',
-      status: 'pending',
-      depositPaid: false
+      payment: {
+        amount: parseFloat(totalPrice),
+        currency: 'LKR',
+        status: 'pending',
+        method: 'bank_transfer'
+      },
+      notes: `Contact: ${contactPhone}, Email: ${contactEmail}. Special Requests: ${specialRequests || 'None'}`,
+      status: 'pending'
     })
 
     await booking.save()
