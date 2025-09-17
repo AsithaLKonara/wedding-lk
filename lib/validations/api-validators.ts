@@ -171,7 +171,7 @@ export const venueSchemas = {
     }),
     amenities: z.array(z.string()).optional(),
     images: z.array(z.string().url('Invalid image URL')).optional(),
-    vendor: z.string().min(1, 'Vendor ID is required')
+    owner: z.string().min(1, 'Owner ID is required')
   }),
   update: z.object({
     name: z.string().min(2, 'Venue name is required').optional(),
