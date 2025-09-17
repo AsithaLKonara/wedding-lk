@@ -4,7 +4,7 @@ const BASE_URL = 'https://wedding-lkcom.vercel.app';
 
 function makeRequest(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
+    const req = https.get(url, { timeout: 10000 }, (res) => {
       let data = '';
       res.on('data', (chunk) => {
         data += chunk;
@@ -17,8 +17,15 @@ function makeRequest(url) {
           resolve({ status: res.statusCode, data: data });
         }
       });
-    }).on('error', (error) => {
+    });
+    
+    req.on('error', (error) => {
       reject(error);
+    });
+    
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('Request timeout'));
     });
   });
 }
@@ -68,6 +75,18 @@ async function testAllEndpoints() {
         } else if (result.data && result.data.packages && Array.isArray(result.data.packages)) {
           status = '✅ PASS';
           details = `${result.data.packages.length} packages found`;
+        } else if (result.data && result.data.stories && Array.isArray(result.data.stories)) {
+          status = '✅ PASS';
+          details = `${result.data.stories.length} stories found`;
+        } else if (result.data && result.data.reels && Array.isArray(result.data.reels)) {
+          status = '✅ PASS';
+          details = `${result.data.reels.length} reels found`;
+        } else if (result.data && result.data.reviews && Array.isArray(result.data.reviews)) {
+          status = '✅ PASS';
+          details = `${result.data.reviews.length} reviews found`;
+        } else if (result.data && result.data.success === true) {
+          status = '✅ PASS';
+          details = 'API working correctly';
         } else {
           status = '⚠️  PARTIAL';
           details = 'Data structure unexpected';
