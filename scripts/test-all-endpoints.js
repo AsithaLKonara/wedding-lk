@@ -4,7 +4,15 @@ const BASE_URL = 'https://wedding-lkcom.vercel.app';
 
 function makeRequest(url) {
   return new Promise((resolve, reject) => {
-    const req = https.get(url, { timeout: 10000 }, (res) => {
+    const options = {
+      timeout: 10000,
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'WeddingLK-Test-Script/1.0'
+      }
+    };
+    
+    const req = https.get(url, options, (res) => {
       let data = '';
       res.on('data', (chunk) => {
         data += chunk;
