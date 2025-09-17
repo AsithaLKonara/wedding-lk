@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     // Verify booking exists and belongs to user
     const booking = await Booking.findById(bookingId)
-    if (!booking || booking.userId !== session.user.id) {
+    if (!booking || booking.user.toString() !== session.user.id) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 })
     }
 
@@ -47,8 +47,8 @@ export async function POST(request: NextRequest) {
 
     // Create payment record
     const payment = new Payment({
-      userId: session.user.id,
-      bookingId: bookingId,
+      user: session.user.id,
+      booking: bookingId,
       amount: amount,
       currency: currency,
       status: 'pending',

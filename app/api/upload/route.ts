@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from '@/lib/auth-utils';
-import { connectDB } from "@/lib/db"
-import { User } from "@/lib/models/user"
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { connectDB } from "@/lib/mongodb"
+import { User } from "@/lib/models"
 
 // Conditionally import and configure Cloudinary
 let cloudinary: any = null;
@@ -36,7 +37,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Cloudinary not configured" }, { status: 503 })
     }
     
-    const session = await getServerSession()
+    const session = await getServerSession(authOptions)
     if (!session?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -143,7 +144,7 @@ export async function POST(request: NextRequest) {
 // GET /api/upload - Get upload gallery
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession()
+    const session = await getServerSession(authOptions)
     if (!session?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -218,7 +219,7 @@ export async function GET(request: NextRequest) {
 // DELETE /api/upload - Delete uploaded file
 export async function DELETE(request: NextRequest) {
   try {
-    const session = await getServerSession()
+    const session = await getServerSession(authOptions)
     if (!session?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -279,7 +280,7 @@ export async function DELETE(request: NextRequest) {
 // PUT /api/upload - Update file metadata
 export async function PUT(request: NextRequest) {
   try {
-    const session = await getServerSession()
+    const session = await getServerSession(authOptions)
     if (!session?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }

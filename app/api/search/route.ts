@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from '@/lib/mongodb'
-import { Vendor, Venue, ServicePackage } from '@/lib/models'
+import { Vendor, Venue, Package } from '@/lib/models'
 
 export async function GET(request: NextRequest) {
   try {
@@ -88,13 +88,13 @@ export async function GET(request: NextRequest) {
     }
 
     if (type === 'all' || type === 'packages') {
-      const packageResults = await ServicePackage.find(searchCriteria)
+      const packageResults = await Package.find(searchCriteria)
         .populate('vendorId', 'name email image')
         .limit(limit)
         .skip((page - 1) * limit)
         .sort(getSortCriteria(sortBy))
 
-      const packageCount = await ServicePackage.countDocuments(searchCriteria)
+      const packageCount = await Package.countDocuments(searchCriteria)
       
       results = results.concat(packageResults.map(pkg => ({
         ...pkg.toObject(),
