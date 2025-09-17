@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { connectDB } from '@/lib/mongodb'
-import { Booking } from '@/lib/models'
+import { connectDB } from '@/lib/db'
+import { Booking, Package } from '@/lib/models'
 
 export async function GET(request: NextRequest) {
   try {
@@ -14,10 +14,10 @@ export async function GET(request: NextRequest) {
 
     await connectDB()
 
-    const bookings = await Booking.find({ userId: session.user.id })
-      .populate('packageId')
-      .populate('vendorId')
-      .sort({ createdAt: -1 })
+    const bookings = await Booking.find({ user: session.user.id })
+      .populate('vendor')
+      .populate('venue')
+        .sort({ createdAt: -1 })
 
     return NextResponse.json({ success: true, bookings })
   } catch (error) {
@@ -51,20 +51,26 @@ export async function POST(request: NextRequest) {
 
     await connectDB()
 
+    // Get package details to find vendor
+    const packageData = await Package.findById(packageId).populate('vendors')
+    if (!packageData) {
+      return NextResponse.json({ error: 'Package not found' }, { status: 404 })
+    }
+
+    // Use the first vendor from the package
+    const primaryVendor = packageData.vendors && packageData.vendors.length > 0 ? packageData.vendors[0] : null
+
     const booking = new Booking({
-      userId: session.user.id,
-      packageId,
-      vendorId: 'mock-vendor-id', // Replace with actual vendor ID from package
-      eventDate: new Date(eventDate),
-      eventTime,
-      guestCount,
-      contactPhone,
-      contactEmail,
-      specialRequests: specialRequests || '',
-      totalPrice,
+      user: session.user.id,
+      vendor: primaryVendor,
+      date: new Date(eventDate),
+      startTime: eventTime,
+      guestCount: parseInt(guestCount),
+      totalAmount: parseFloat(totalPrice),
+      notes: `Contact: ${contactPhone}, Email: ${contactEmail}`,
+      specialRequirements: specialRequests || '',
       status: 'pending',
-      paymentStatus: 'pending',
-      createdAt: new Date()
+      depositPaid: false
     })
 
     await booking.save()
