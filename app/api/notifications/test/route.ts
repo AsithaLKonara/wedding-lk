@@ -8,8 +8,8 @@ export async function GET() {
 
     // Test notification creation
     const testNotification = new Notification({
-      userId: 'test-user-id',
-      type: 'test',
+      userId: new (require('mongoose')).Types.ObjectId(),
+      type: 'booking',
       title: 'Test Notification',
       message: 'This is a test notification to verify the system is working',
       read: false,

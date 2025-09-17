@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
     // Search based on type
     if (type === 'all' || type === 'vendors') {
       const vendorResults = await Vendor.find(searchCriteria)
-        .populate('userId', 'name email image')
+        .populate('user', 'name email image')
         .limit(limit)
         .skip((page - 1) * limit)
         .sort(getSortCriteria(sortBy))
@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
 
     if (type === 'all' || type === 'venues') {
       const venueResults = await Venue.find(searchCriteria)
-        .populate('userId', 'name email image')
+        .populate('owner', 'name email image')
         .limit(limit)
         .skip((page - 1) * limit)
         .sort(getSortCriteria(sortBy))
@@ -89,7 +89,7 @@ export async function GET(request: NextRequest) {
 
     if (type === 'all' || type === 'packages') {
       const packageResults = await Package.find(searchCriteria)
-        .populate('vendorId', 'name email image')
+        .populate('vendors', 'name email image')
         .limit(limit)
         .skip((page - 1) * limit)
         .sort(getSortCriteria(sortBy))
