@@ -97,6 +97,7 @@ export function RegisterForm() {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader className="space-y-1">
+        <h1 className="text-2xl font-bold text-center text-gray-900 dark:text-white">Create Account</h1>
         <CardTitle className="text-2xl font-bold text-center">Create Account</CardTitle>
         <CardDescription className="text-center">
           Join thousands of couples planning their perfect wedding

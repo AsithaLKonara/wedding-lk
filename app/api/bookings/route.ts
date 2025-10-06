@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
 
     const bookings = await (Booking as any).find({}).sort({ createdAt: -1 }).limit(50)
 
-    return NextResponse.json({ success: true, data: bookings, count: bookings.length })
+    return NextResponse.json(bookings)
   } catch (error) {
     console.error("Get bookings error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })

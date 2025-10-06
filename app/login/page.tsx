@@ -27,6 +27,7 @@ export default function LoginPage() {
         >
           <Card className="border-0 shadow-2xl bg-white/80 backdrop-blur-sm dark:bg-gray-900/80">
             <CardHeader className="text-center">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Sign In</h1>
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-rose-500 to-purple-600">
                 <Heart className="h-6 w-6 text-white fill-current" />
               </div>

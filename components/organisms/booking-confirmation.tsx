@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, Calendar, Users, MapPin, Phone, Mail, Download, Share2 } from "lucide-react"
@@ -22,17 +23,80 @@ interface BookingConfirmationProps {
 }
 
 export function BookingConfirmation({ booking }: BookingConfirmationProps) {
-  const handleDownloadReceipt = () => {
-    console.log("Downloading receipt for booking:", booking.id)
+  const [bookingData, setBookingData] = useState(booking)
+  const [loading, setLoading] = useState(false)
+
+  // Fetch booking details from API if needed
+  useEffect(() => {
+    const fetchBookingDetails = async () => {
+      if (!booking.id) return
+      
+      try {
+        setLoading(true)
+        const response = await fetch(`/api/bookings/${booking.id}`)
+        if (response.ok) {
+          const data = await response.json()
+          if (data.success && data.data) {
+            setBookingData({
+              ...booking,
+              ...data.data,
+              venueName: data.data.venueName || booking.venueName,
+              status: data.data.status || booking.status
+            })
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching booking details:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchBookingDetails()
+  }, [booking.id])
+
+  const handleDownloadReceipt = async () => {
+    try {
+      const response = await fetch(`/api/bookings/${bookingData.id}/receipt`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/pdf',
+        },
+      })
+      
+      if (response.ok) {
+        const blob = await response.blob()
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.style.display = 'none'
+        a.href = url
+        a.download = `booking-receipt-${bookingData.id}.pdf`
+        document.body.appendChild(a)
+        a.click()
+        window.URL.revokeObjectURL(url)
+      } else {
+        console.log("Receipt generation not available, using mock download")
+      }
+    } catch (error) {
+      console.error('Error downloading receipt:', error)
+      // Fallback to console log
+      console.log("Downloading receipt for booking:", bookingData.id)
+    }
   }
 
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
         title: "Wedding Venue Booking Confirmed",
-        text: `My wedding venue booking at ${booking.venueName} has been confirmed!`,
+        text: `My wedding venue booking at ${bookingData.venueName} has been confirmed!`,
         url: window.location.href,
       })
+    } else {
+      // Fallback: copy to clipboard
+      navigator.clipboard.writeText(
+        `My wedding venue booking at ${bookingData.venueName} has been confirmed! Booking ID: ${bookingData.id}`
+      )
+      alert('Booking details copied to clipboard!')
     }
   }
 
@@ -62,7 +126,7 @@ export function BookingConfirmation({ booking }: BookingConfirmationProps) {
               <div className="flex items-center space-x-3">
                 <MapPin className="h-5 w-5 text-gray-400" />
                 <div>
-                  <p className="font-medium">{booking.venueName}</p>
+                  <p className="font-medium">{bookingData.venueName}</p>
                   <p className="text-sm text-gray-600">Wedding Venue</p>
                 </div>
               </div>
@@ -70,7 +134,7 @@ export function BookingConfirmation({ booking }: BookingConfirmationProps) {
               <div className="flex items-center space-x-3">
                 <Calendar className="h-5 w-5 text-gray-400" />
                 <div>
-                  <p className="font-medium">{new Date(booking.date).toLocaleDateString()}</p>
+                  <p className="font-medium">{new Date(bookingData.date).toLocaleDateString()}</p>
                   <p className="text-sm text-gray-600">Wedding Date</p>
                 </div>
               </div>
@@ -78,7 +142,7 @@ export function BookingConfirmation({ booking }: BookingConfirmationProps) {
               <div className="flex items-center space-x-3">
                 <Users className="h-5 w-5 text-gray-400" />
                 <div>
-                  <p className="font-medium">{booking.guests} Guests</p>
+                  <p className="font-medium">{bookingData.guests} Guests</p>
                   <p className="text-sm text-gray-600">Expected Attendance</p>
                 </div>
               </div>
@@ -88,7 +152,7 @@ export function BookingConfirmation({ booking }: BookingConfirmationProps) {
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-gray-400" />
                 <div>
-                  <p className="font-medium">{booking.contactInfo.email}</p>
+                  <p className="font-medium">{bookingData.contactInfo.email}</p>
                   <p className="text-sm text-gray-600">Contact Email</p>
                 </div>
               </div>
@@ -96,14 +160,14 @@ export function BookingConfirmation({ booking }: BookingConfirmationProps) {
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-gray-400" />
                 <div>
-                  <p className="font-medium">{booking.contactInfo.phone}</p>
+                  <p className="font-medium">{bookingData.contactInfo.phone}</p>
                   <p className="text-sm text-gray-600">Contact Phone</p>
                 </div>
               </div>
 
               <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <p className="text-sm text-gray-600">Booking ID</p>
-                <p className="font-mono font-medium">{booking.id}</p>
+                <p className="font-mono font-medium">{bookingData.id}</p>
               </div>
             </div>
           </div>
@@ -111,7 +175,7 @@ export function BookingConfirmation({ booking }: BookingConfirmationProps) {
           <div className="border-t pt-4">
             <div className="flex justify-between items-center">
               <span className="text-lg font-medium">Total Amount</span>
-              <span className="text-2xl font-bold text-green-600">LKR {booking.totalAmount.toLocaleString()}</span>
+              <span className="text-2xl font-bold text-green-600">LKR {bookingData.totalAmount.toLocaleString()}</span>
             </div>
             <p className="text-sm text-gray-600 mt-1">Payment will be processed separately</p>
           </div>

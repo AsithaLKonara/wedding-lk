@@ -1,0 +1,52 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - heading "Search Results" [level=1] [ref=e5]
+      - generic [ref=e7]:
+        - textbox "Search venues, vendors, packages..." [ref=e8]
+        - button "Search" [ref=e9] [cursor=pointer]:
+          - img
+          - text: Search
+      - generic [ref=e10]:
+        - generic [ref=e12]:
+          - img [ref=e13]
+          - text: Filters
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - generic [ref=e18]: Type
+            - combobox [ref=e19] [cursor=pointer]:
+              - generic: All Types
+              - img [ref=e20] [cursor=pointer]
+          - generic [ref=e22]:
+            - generic [ref=e23]: Category
+            - combobox [ref=e24] [cursor=pointer]:
+              - generic: All Categories
+              - img [ref=e25] [cursor=pointer]
+          - generic [ref=e27]:
+            - generic [ref=e28]: Location
+            - combobox [ref=e29] [cursor=pointer]:
+              - generic: All Locations
+              - img [ref=e30] [cursor=pointer]
+          - generic [ref=e32]:
+            - generic [ref=e33]: Price Range
+            - combobox [ref=e34] [cursor=pointer]:
+              - generic: All Prices
+              - img [ref=e35] [cursor=pointer]
+          - generic [ref=e37]:
+            - generic [ref=e38]: Rating
+            - combobox [ref=e39] [cursor=pointer]:
+              - generic: All Ratings
+              - img [ref=e40] [cursor=pointer]
+    - generic [ref=e44]:
+      - img [ref=e45]
+      - heading "No Results Found" [level=3] [ref=e48]
+      - paragraph [ref=e49]: Try adjusting your search terms or filters to find what you're looking for.
+      - button "Clear Search" [ref=e50] [cursor=pointer]
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e56] [cursor=pointer]:
+    - img [ref=e57] [cursor=pointer]
+  - alert [ref=e60]
+```
