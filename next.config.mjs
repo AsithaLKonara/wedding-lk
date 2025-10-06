@@ -1,6 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Performance optimizations
+  
+  // Build optimizations
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  
+  // Performance optimizations
   experimental: {
     optimizePackageImports: [
       'lucide-react',
@@ -13,14 +23,6 @@ const nextConfig = {
       'recharts',
       'sonner',
     ],
-  },
-  
-  // Build optimizations
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
   },
   
   // Image optimizations
