@@ -40,7 +40,11 @@
     "build:analyze": "cross-env ANALYZE=true npm run build",
     "performance": "node scripts/monitor-performance.mjs",
     "bundle-analyzer": "npm run build && npx @next/bundle-analyzer",
-    "cache-clear": "rm -rf .next && rm -rf node_modules/.cache"
+    "cache-clear": "rm -rf .next && rm -rf node_modules/.cache",
+    "socket:dev": "node server/socket-server.js",
+    "socket:start": "NODE_ENV=production node server/socket-server.js",
+    "dev:full": "concurrently \"npm run dev\" \"npm run socket:dev\"",
+    "start:full": "concurrently \"npm run start\" \"npm run socket:start\""
   },
   "dependencies": {
     "@auth/core": "^0.34.2",
@@ -106,6 +110,7 @@
     "react-resizable-panels": "^2.1.7",
     "recharts": "2.15.0",
     "snappy": "latest",
+    "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "socks": "latest",
     "sonner": "^1.7.1",
@@ -115,6 +120,7 @@
     "zod": "latest"
   },
   "devDependencies": {
+    "@playwright/test": "^1.55.1",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -123,6 +129,7 @@
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^8.2.2",
     "eslint": "^9.30.0",
     "jest": "^30.0.3",
     "jest-environment-jsdom": "^30.0.2",

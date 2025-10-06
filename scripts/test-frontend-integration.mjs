@@ -76,8 +76,8 @@ class FrontendIntegrationTester {
       { path: 'components/organisms/booking-confirmation.tsx', name: 'Booking Confirmation Component' },
       { path: 'components/organisms/payment-form.tsx', name: 'Payment Form Component' },
       { path: 'components/organisms/dashboard-header.tsx', name: 'Dashboard Header Component' },
-      { path: 'components/molecules/venue-card.tsx', name: 'Venue Card Component' },
-      { path: 'components/molecules/vendor-card.tsx', name: 'Vendor Card Component' },
+      { path: 'components/organisms/venue-card.tsx', name: 'Venue Card Component' },
+      { path: 'components/organisms/vendor-card.tsx', name: 'Vendor Card Component' },
       { path: 'components/auth/login-form.tsx', name: 'Login Form Component' },
       { path: 'components/auth/register-form.tsx', name: 'Register Form Component' }
     ];

@@ -1,0 +1,46 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - heading "Write a Review" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Share your experience to help others make informed decisions
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: Review Details
+        - generic [ref=e11]: Please provide honest feedback about your experience
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - generic [ref=e14]: Overall Rating
+          - generic [ref=e15]:
+            - button [ref=e16] [cursor=pointer]:
+              - img [ref=e17] [cursor=pointer]
+            - button [ref=e19] [cursor=pointer]:
+              - img [ref=e20] [cursor=pointer]
+            - button [ref=e22] [cursor=pointer]:
+              - img [ref=e23] [cursor=pointer]
+            - button [ref=e25] [cursor=pointer]:
+              - img [ref=e26] [cursor=pointer]
+            - button [ref=e28] [cursor=pointer]:
+              - img [ref=e29] [cursor=pointer]
+            - generic [ref=e31]: Select rating
+        - generic [ref=e32]:
+          - generic [ref=e33]: Review Title
+          - textbox "Review Title" [ref=e34]
+        - generic [ref=e35]:
+          - generic [ref=e36]: Review Content
+          - textbox "Review Content" [ref=e37]
+        - generic [ref=e38]:
+          - generic [ref=e39]: Photos (Optional)
+          - button "Upload Photos" [ref=e41] [cursor=pointer]:
+            - img
+            - text: Upload Photos
+        - generic [ref=e42]:
+          - checkbox "Submit anonymously" [ref=e43]
+          - generic [ref=e44]: Submit anonymously
+        - generic [ref=e45]:
+          - button "Submit Review" [disabled]
+          - button "Cancel" [ref=e46] [cursor=pointer]
+  - region "Notifications alt+T"
+```

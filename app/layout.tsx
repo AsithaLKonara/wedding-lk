@@ -3,7 +3,10 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/providers/theme-provider"
-import { ErrorBoundary } from "@/components/organisms/error-boundary"
+import { ErrorBoundary } from "@/components/ui/error-boundary"
+import { Suspense } from "react"
+import { PageLoading } from "@/components/ui/loading"
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -23,7 +26,10 @@ export default function RootLayout({
       <body className={inter.className} suppressHydrationWarning>
         <ErrorBoundary>
           <ThemeProvider>
-            {children}
+            <Suspense fallback={<PageLoading />}>
+              {children}
+            </Suspense>
+            <Toaster />
           </ThemeProvider>
         </ErrorBoundary>
       </body>

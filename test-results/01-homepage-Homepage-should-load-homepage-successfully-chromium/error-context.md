@@ -1,0 +1,90 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "Wedding.lk" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8] [cursor=pointer]
+          - generic [ref=e10] [cursor=pointer]: Wedding.lk
+        - navigation [ref=e12]:
+          - link "Venues" [ref=e14] [cursor=pointer]:
+            - /url: /venues
+          - link "Vendors" [ref=e16] [cursor=pointer]:
+            - /url: /vendors
+          - link "Feed" [ref=e18] [cursor=pointer]:
+            - /url: /feed
+          - link "Gallery" [ref=e20] [cursor=pointer]:
+            - /url: /gallery
+          - link "About" [ref=e22] [cursor=pointer]:
+            - /url: /about
+        - generic [ref=e23]:
+          - button "Toggle theme" [ref=e24] [cursor=pointer]:
+            - generic [ref=e25] [cursor=pointer]:
+              - img
+              - img
+            - generic [ref=e26] [cursor=pointer]: Toggle theme
+          - button [ref=e27] [cursor=pointer]:
+            - img
+          - generic [ref=e28]:
+            - link "Sign In" [ref=e29] [cursor=pointer]:
+              - /url: /login
+            - link "Get Started" [ref=e30] [cursor=pointer]:
+              - /url: /register
+    - main [ref=e31]
+    - contentinfo [ref=e61]:
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - link "Wedding.lk" [ref=e65] [cursor=pointer]:
+              - /url: /
+              - img [ref=e67] [cursor=pointer]
+              - generic [ref=e69] [cursor=pointer]: Wedding.lk
+            - paragraph [ref=e70]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+            - generic [ref=e71]:
+              - button [ref=e72] [cursor=pointer]:
+                - img
+              - button [ref=e73] [cursor=pointer]:
+                - img
+              - button [ref=e74] [cursor=pointer]:
+                - img
+              - button [ref=e75] [cursor=pointer]:
+                - img
+          - generic [ref=e76]:
+            - heading "Services" [level=3] [ref=e77]
+            - list [ref=e78]:
+              - listitem [ref=e79]:
+                - link "Venues" [ref=e80] [cursor=pointer]:
+                  - /url: /venues
+              - listitem [ref=e81]:
+                - link "Vendors" [ref=e82] [cursor=pointer]:
+                  - /url: /vendors
+              - listitem [ref=e83]:
+                - link "Planning Tools" [ref=e84] [cursor=pointer]:
+                  - /url: /planning
+              - listitem [ref=e85]:
+                - link "Gallery" [ref=e86] [cursor=pointer]:
+                  - /url: /gallery
+          - generic [ref=e87]:
+            - heading "Company" [level=3] [ref=e88]
+            - list [ref=e89]:
+              - listitem [ref=e90]:
+                - link "About" [ref=e91] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e92]:
+                - link "Contact" [ref=e93] [cursor=pointer]:
+                  - /url: /contact
+              - listitem [ref=e94]:
+                - link "Privacy" [ref=e95] [cursor=pointer]:
+                  - /url: /privacy
+              - listitem [ref=e96]:
+                - link "Terms" [ref=e97] [cursor=pointer]:
+                  - /url: /terms
+        - paragraph [ref=e99]: © 2024 Wedding.lk. All rights reserved.
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e105] [cursor=pointer]:
+    - img [ref=e106] [cursor=pointer]
+  - alert [ref=e109]
+```
