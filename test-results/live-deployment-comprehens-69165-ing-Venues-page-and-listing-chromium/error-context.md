@@ -16,6 +16,6 @@
       - button "Go Home" [ref=e14] [cursor=pointer]:
         - img
         - text: Go Home
-    - paragraph [ref=e15]: "Error ID: error_1760814026768_a9cvldmer"
+    - paragraph [ref=e15]: "Error ID: error_1760814624222_xjuq1on9x"
   - alert [ref=e16]
 ```
