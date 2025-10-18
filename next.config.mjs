@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Performance optimizations
-  
   // Build optimizations
   eslint: {
     ignoreDuringBuilds: true,
