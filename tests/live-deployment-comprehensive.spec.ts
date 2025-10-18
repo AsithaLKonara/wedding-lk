@@ -10,7 +10,7 @@ test.describe('🌐 Live Deployment Comprehensive Testing', () => {
       await expect(page.locator('h1')).toContainText(/Find Your Perfect|Wedding Experience/);
       
       // Test AI Search functionality
-      const aiSearchInput = page.locator('input[placeholder*="Describe your dream wedding"]');
+      const aiSearchInput = page.locator('input[placeholder*="beach wedding"]');
       await expect(aiSearchInput).toBeVisible();
       await aiSearchInput.fill('Beach wedding in Galle for 150 guests with photographer');
       await expect(aiSearchInput).toHaveValue('Beach wedding in Galle for 150 guests with photographer');
@@ -69,7 +69,7 @@ test.describe('🌐 Live Deployment Comprehensive Testing', () => {
       await page.goto('/');
       
       // Check services section
-      await expect(page.locator('text=Event Planning, text=Venue Discovery, text=Vendor Network')).toBeVisible();
+      await expect(page.locator('text=Venues, text=Photography, text=Catering')).toBeVisible();
       
       // Check statistics section
       await expect(page.locator('text=10,000+, text=500+, text=2,000+')).toBeVisible();
