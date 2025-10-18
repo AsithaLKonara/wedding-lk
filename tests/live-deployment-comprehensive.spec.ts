@@ -109,7 +109,7 @@ test.describe('🌐 Live Deployment Comprehensive Testing', () => {
       await expect(page.locator('h1')).toContainText(/Venues|Find Venues/);
       
       // Check venue cards exist
-      const venueCards = page.locator('[class*="card"], [class*="venue"]');
+      const venueCards = page.locator('.bg-white.rounded-lg.shadow-sm.overflow-hidden');
       await expect(venueCards.first()).toBeVisible();
       
       // Test venue search
@@ -156,7 +156,7 @@ test.describe('🌐 Live Deployment Comprehensive Testing', () => {
       await expect(page.locator('h1')).toContainText(/Vendors|Find Vendors/);
       
       // Check vendor cards exist
-      const vendorCards = page.locator('[class*="card"], [class*="vendor"]');
+      const vendorCards = page.locator('.bg-white.rounded-lg.shadow-sm.overflow-hidden');
       await expect(vendorCards.first()).toBeVisible();
       
       // Test category filtering

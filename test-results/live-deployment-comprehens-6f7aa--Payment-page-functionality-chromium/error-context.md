@@ -1,0 +1,124 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "Wedding.lk" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8] [cursor=pointer]
+          - generic [ref=e10] [cursor=pointer]: Wedding.lk
+        - navigation [ref=e12]:
+          - link "Venues" [ref=e14] [cursor=pointer]:
+            - /url: /venues
+          - link "Vendors" [ref=e16] [cursor=pointer]:
+            - /url: /vendors
+          - link "Feed" [ref=e18] [cursor=pointer]:
+            - /url: /feed
+          - link "Gallery" [ref=e20] [cursor=pointer]:
+            - /url: /gallery
+          - link "About" [ref=e22] [cursor=pointer]:
+            - /url: /about
+        - generic [ref=e23]:
+          - button "Toggle theme" [ref=e24] [cursor=pointer]:
+            - generic [ref=e25] [cursor=pointer]:
+              - img
+              - img
+            - generic [ref=e26] [cursor=pointer]: Toggle theme
+          - button [ref=e27] [cursor=pointer]:
+            - img
+          - generic [ref=e28]:
+            - link "Sign In" [ref=e29] [cursor=pointer]:
+              - /url: /login
+            - link "Get Started" [ref=e30] [cursor=pointer]:
+              - /url: /register
+    - main [ref=e31]:
+      - generic [ref=e34]:
+        - generic [ref=e36]: Payment Details
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - generic [ref=e40]: Payment Method
+            - generic [ref=e41]:
+              - button "Card" [ref=e42] [cursor=pointer]:
+                - img [ref=e43] [cursor=pointer]
+                - generic [ref=e45] [cursor=pointer]: Card
+              - button "Mobile" [ref=e46] [cursor=pointer]:
+                - img [ref=e47] [cursor=pointer]
+                - generic [ref=e49] [cursor=pointer]: Mobile
+              - button "Bank" [ref=e50] [cursor=pointer]:
+                - img [ref=e51] [cursor=pointer]
+                - generic [ref=e54] [cursor=pointer]: Bank
+          - generic [ref=e55]:
+            - generic [ref=e56]:
+              - generic [ref=e57]: Card Number
+              - textbox "Card Number" [ref=e58]
+            - generic [ref=e59]:
+              - generic [ref=e60]:
+                - generic [ref=e61]: Expiry Date
+                - textbox "Expiry Date" [ref=e62]
+              - generic [ref=e63]:
+                - generic [ref=e64]: CVV
+                - textbox "CVV" [ref=e65]
+            - generic [ref=e66]:
+              - generic [ref=e67]: Cardholder Name
+              - textbox "Cardholder Name" [ref=e68]
+          - generic [ref=e69]:
+            - generic [ref=e70]: Amount (LKR)
+            - spinbutton "Amount (LKR)" [ref=e71]
+          - generic [ref=e72]:
+            - generic [ref=e73]: Description
+            - textbox "Description" [ref=e74]
+          - button "Process Payment" [ref=e75] [cursor=pointer]
+    - contentinfo [ref=e76]:
+      - generic [ref=e77]:
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - link "Wedding.lk" [ref=e80] [cursor=pointer]:
+              - /url: /
+              - img [ref=e82] [cursor=pointer]
+              - generic [ref=e84] [cursor=pointer]: Wedding.lk
+            - paragraph [ref=e85]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+            - generic [ref=e86]:
+              - button [ref=e87] [cursor=pointer]:
+                - img
+              - button [ref=e88] [cursor=pointer]:
+                - img
+              - button [ref=e89] [cursor=pointer]:
+                - img
+              - button [ref=e90] [cursor=pointer]:
+                - img
+          - generic [ref=e91]:
+            - heading "Services" [level=3] [ref=e92]
+            - list [ref=e93]:
+              - listitem [ref=e94]:
+                - link "Venues" [ref=e95] [cursor=pointer]:
+                  - /url: /venues
+              - listitem [ref=e96]:
+                - link "Vendors" [ref=e97] [cursor=pointer]:
+                  - /url: /vendors
+              - listitem [ref=e98]:
+                - link "Planning Tools" [ref=e99] [cursor=pointer]:
+                  - /url: /planning
+              - listitem [ref=e100]:
+                - link "Gallery" [ref=e101] [cursor=pointer]:
+                  - /url: /gallery
+          - generic [ref=e102]:
+            - heading "Company" [level=3] [ref=e103]
+            - list [ref=e104]:
+              - listitem [ref=e105]:
+                - link "About" [ref=e106] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e107]:
+                - link "Contact" [ref=e108] [cursor=pointer]:
+                  - /url: /contact
+              - listitem [ref=e109]:
+                - link "Privacy" [ref=e110] [cursor=pointer]:
+                  - /url: /privacy
+              - listitem [ref=e111]:
+                - link "Terms" [ref=e112] [cursor=pointer]:
+                  - /url: /terms
+        - paragraph [ref=e114]: © 2024 Wedding.lk. All rights reserved.
+  - region "Notifications alt+T"
+  - alert [ref=e115]
+```
