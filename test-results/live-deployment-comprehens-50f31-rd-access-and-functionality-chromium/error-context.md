@@ -1,0 +1,44 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - img [ref=e7]
+          - heading "Dashboard" [level=2] [ref=e9]
+        - button [ref=e11] [cursor=pointer]:
+          - img
+      - generic [ref=e13]:
+        - generic [ref=e14]:
+          - img "Avatar" [ref=e15]
+          - generic [ref=e16]: U
+        - generic [ref=e17]:
+          - paragraph
+          - generic [ref=e18]: User
+      - navigation [ref=e19]
+      - button "Logout" [ref=e21] [cursor=pointer]:
+        - img
+        - generic [ref=e22] [cursor=pointer]: Logout
+    - generic [ref=e23]:
+      - banner [ref=e24]:
+        - generic [ref=e25]:
+          - generic [ref=e26]:
+            - generic [ref=e27]:
+              - img "Avatar" [ref=e28]
+              - generic [ref=e29]: U
+            - generic [ref=e30]:
+              - heading "Welcome back, !" [level=1] [ref=e31]
+              - paragraph [ref=e32]: User Dashboard
+          - generic [ref=e33]:
+            - button "Notifications" [ref=e34] [cursor=pointer]:
+              - img
+              - text: Notifications
+            - button "Settings" [ref=e35] [cursor=pointer]:
+              - img
+              - text: Settings
+      - main [ref=e36]:
+        - paragraph [ref=e40]: Loading your wedding dashboard...
+  - alert [ref=e43]
+```
