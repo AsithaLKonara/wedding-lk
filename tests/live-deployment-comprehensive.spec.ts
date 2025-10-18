@@ -55,7 +55,8 @@ test.describe('🌐 Live Deployment Comprehensive Testing', () => {
       ];
 
       for (const link of navLinks) {
-        const navElement = page.locator(`a[href="${link.href}"]`).first();
+        // Use footer links since header is hidden with opacity:0
+        const navElement = page.locator(`footer a[href="${link.href}"]`);
         await expect(navElement).toBeVisible();
         await navElement.click();
         await expect(page).toHaveURL(new RegExp(`.*${link.href.replace('/', '')}`));
