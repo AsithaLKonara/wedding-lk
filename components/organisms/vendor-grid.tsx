@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useEffect } from 'react'
@@ -177,7 +176,7 @@ export default function VendorGrid({ category, filters }: VendorGridProps) {
               </button>
             </div>
           </div>
-      </div>
+        </div>
       ))}
     </div>
   );

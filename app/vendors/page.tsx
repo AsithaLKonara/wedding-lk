@@ -1,17 +1,11 @@
 "use client"
 
-import dynamic from "next/dynamic"
-
 import { useState } from "react"
 import { MainLayout } from "@/components/templates/main-layout"
-
 import { motion } from "framer-motion"
-
-const VendorFilters = dynamic(() => import("@/components/organisms/vendor-filters"), { ssr: false })
-
-const VendorGrid = dynamic(() => import("@/components/organisms/vendor-grid"), { ssr: false })
-
-const VendorCategories = dynamic(() => import("@/components/organisms/vendor-categories"), { ssr: false })
+import VendorFilters from "@/components/organisms/vendor-filters"
+import VendorGrid from "@/components/organisms/vendor-grid"
+import VendorCategories from "@/components/organisms/vendor-categories"
 
 export default function VendorsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all")

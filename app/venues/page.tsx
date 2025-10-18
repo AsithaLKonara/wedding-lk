@@ -1,17 +1,11 @@
 "use client"
 
-import dynamic from "next/dynamic"
-
 import { useState } from "react"
 import { MainLayout } from "@/components/templates/main-layout"
-
 import { motion } from "framer-motion"
-
-const VenueFilters = dynamic(() => import("@/components/organisms/venue-filters"))
-
-const VenueGrid = dynamic(() => import("@/components/organisms/venue-grid"))
-
-const SearchHeader = dynamic(() => import("@/components/organisms/search-header"))
+import VenueFilters from "@/components/organisms/venue-filters"
+import VenueGrid from "@/components/organisms/venue-grid"
+import SearchHeader from "@/components/organisms/search-header"
 
 export default function VenuesPage() {
   const [filters, setFilters] = useState({
