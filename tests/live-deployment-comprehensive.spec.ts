@@ -45,11 +45,11 @@ test.describe('🌐 Live Deployment Comprehensive Testing', () => {
     test('Navigation menu - All links work', async ({ page }) => {
       await page.goto('/');
       
-      // Test all navigation links
+      // Test all navigation links (only footer links that exist)
       const navLinks = [
         { text: 'Venues', href: '/venues' },
         { text: 'Vendors', href: '/vendors' },
-        { text: 'Feed', href: '/feed' },
+        { text: 'Planning', href: '/planning' },
         { text: 'Gallery', href: '/gallery' },
         { text: 'About', href: '/about' }
       ];
