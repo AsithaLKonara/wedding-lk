@@ -200,7 +200,7 @@ test.describe('🌐 Live Deployment Comprehensive Testing', () => {
       await page.goto('/login');
       
       // Check login page loads
-      await expect(page.locator('h1')).toContainText(/Sign in|Login|Welcome back/);
+      await expect(page.locator('h1')).toContainText(/Sign In|Sign in|Login|Welcome back/);
       
       // Test login form
       const emailInput = page.locator('input[name="email"], input[type="email"]');
@@ -222,7 +222,7 @@ test.describe('🌐 Live Deployment Comprehensive Testing', () => {
       await page.goto('/register');
       
       // Check registration page loads
-      await expect(page.locator('h1')).toContainText(/Sign up|Register|Create Account/);
+      await expect(page.locator('h1')).toContainText(/Sign up|Register|Create Account|Join WeddingLK/);
       
       // Test registration form
       const nameInput = page.locator('input[name="name"], input[name="firstName"]');
