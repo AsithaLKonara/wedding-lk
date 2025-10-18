@@ -488,7 +488,7 @@ test.describe('🌐 Live Deployment Comprehensive Testing', () => {
       
       // Test login
       await page.goto('/login');
-      await expect(page.locator('h1')).toContainText(/Sign in|Login/);
+      await expect(page.locator('h1')).toContainText(/Sign In|Login/);
     });
   });
 });
