@@ -1,4 +1,6 @@
 
+"use client"
+
 interface VendorCategoriesProps {
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
