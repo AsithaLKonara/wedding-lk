@@ -34,7 +34,7 @@ export default function AISearchPage() {
     setIsSearching(true)
     
     // Simulate AI search processing
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise(resolve => setTimeout(resolve, 500))
     
     // Mock search results
     const mockResults = [
