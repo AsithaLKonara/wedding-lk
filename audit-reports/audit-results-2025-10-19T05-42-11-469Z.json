@@ -1,0 +1,102 @@
+{
+  "timestamp": "2025-10-19T05-42-11-469Z",
+  "deployUrl": "https://wedding-lkcom.vercel.app",
+  "checks": {
+    "ESLint Check": {
+      "status": "FAILED",
+      "error": "Command failed: npm run lint\nInvalid Options:\n- Unknown options: useEslintrc, extensions, resolvePluginsRelativeTo, rulePaths, ignorePath, reportUnusedDisableDirectives\n- 'extensions' has been removed.\n- 'resolvePluginsRelativeTo' has been removed.\n- 'ignorePath' has been removed.\n- 'rulePaths' has been removed. Please define your rules using plugins.\n- 'reportUnusedDisableDirectives' has been removed. Please use the 'overrideConfig.linterOptions.reportUnusedDisableDirectives' option instead.\n",
+      "output": "\n> weddinglk-next@1.0.0 lint\n> next lint\n\n",
+      "description": "Check for JavaScript/TypeScript linting issues"
+    },
+    "TypeScript Check": {
+      "status": "FAILED",
+      "error": "spawnSync /bin/sh ETIMEDOUT",
+      "output": "",
+      "description": "Check for TypeScript compilation errors"
+    },
+    "Build Check": {
+      "status": "FAILED",
+      "error": "spawnSync /bin/sh ETIMEDOUT",
+      "output": "\n> weddinglk-next@1.0.0 build\n> next build\n\n  ▲ Next.js 14.2.33\n  - Environments: .env.local, .env.production\n\n   Creating an optimized production build ...\n",
+      "description": "Verify production build succeeds"
+    },
+    "NPM Audit": {
+      "status": "FAILED",
+      "error": "Command failed: npm audit --production\nnpm warn config production Use `--omit=dev` instead.\n",
+      "output": "# npm audit report\n\nbrace-expansion  2.0.0 - 2.0.1\nbrace-expansion Regular Expression Denial of Service vulnerability - https://github.com/advisories/GHSA-v6h2-p8h4-qcjw\nfix available via `npm audit fix`\nnode_modules/brace-expansion\n\ncookie  <0.7.0\ncookie accepts cookie name, path, and domain with out of bounds characters - https://github.com/advisories/GHSA-pxg6-pf52-xh8x\nfix available via `npm audit fix --force`\nWill install @auth/core@0.41.0, which is a breaking change\nnode_modules/@auth/core/node_modules/cookie\nnode_modules/@sentry/node/node_modules/cookie\n  @auth/core  *\n  Depends on vulnerable versions of cookie\n  Depends on vulnerable versions of nodemailer\n  node_modules/@auth/core\n    next-auth  <=0.0.0-semantically-released || 1.1.0 - 1.5.0 || >=2.0.0-beta.0\n    Depends on vulnerable versions of @auth/core\n    Depends on vulnerable versions of nodemailer\n    node_modules/next-auth\n  @sentry/node  4.0.0-beta.0 - 7.74.2-alpha.1\n  Depends on vulnerable versions of cookie\n  node_modules/@sentry/node\n    lighthouse  9.4.0-dev.20220216 - 12.2.1\n    Depends on vulnerable versions of @sentry/node\n    node_modules/lighthouse\n\nnodemailer  <7.0.7\nSeverity: moderate\nNodemailer: Email to an unintended domain can occur due to Interpretation Conflict - https://github.com/advisories/GHSA-mm7p-fcc7-pg87\nfix available via `npm audit fix --force`\nWill install nodemailer@7.0.9, which is a breaking change\nnode_modules/nodemailer\n\ntar-fs  2.0.0 - 2.1.3 || 3.0.0 - 3.1.0\nSeverity: high\ntar-fs has a symlink validation bypass if destination directory is predictable with a specific tarball - https://github.com/advisories/GHSA-vj76-c3g6-qr5v\ntar-fs has a symlink validation bypass if destination directory is predictable with a specific tarball - https://github.com/advisories/GHSA-vj76-c3g6-qr5v\nfix available via `npm audit fix`\nnode_modules/@puppeteer/browsers/node_modules/tar-fs\nnode_modules/tar-fs\n\n8 vulnerabilities (4 low, 3 moderate, 1 high)\n\nTo address issues that do not require attention, run:\n  npm audit fix\n\nTo address all issues (including breaking changes), run:\n  npm audit fix --force\n",
+      "description": "Check for known security vulnerabilities in dependencies"
+    },
+    "Dependency Check": {
+      "status": "WARNING",
+      "error": "spawnSync /bin/sh ETIMEDOUT",
+      "output": "npm warn exec The following package was not found and will be installed: depcheck@1.4.7\n",
+      "description": "Check for unused dependencies"
+    },
+    "Outdated Packages": {
+      "status": "WARNING",
+      "error": "spawnSync /bin/sh ETIMEDOUT",
+      "output": "",
+      "description": "Check for outdated package versions"
+    },
+    "Git Secrets Scan": {
+      "status": "WARNING",
+      "error": "Command failed: npx gitleaks detect -s . --no-git\nnpm error could not determine executable to run\nnpm error A complete log of this run can be found in: /Users/asithalakmal/.npm/_logs/2025-10-19T05_43_54_125Z-debug-0.log\n",
+      "output": "npm error could not determine executable to run\nnpm error A complete log of this run can be found in: /Users/asithalakmal/.npm/_logs/2025-10-19T05_43_54_125Z-debug-0.log\n",
+      "description": "Scan for accidentally committed secrets"
+    },
+    "Semgrep Security Scan": {
+      "status": "WARNING",
+      "error": "Command failed: npx semgrep --config=p/javascript --json\nnpm error could not determine executable to run\nnpm error A complete log of this run can be found in: /Users/asithalakmal/.npm/_logs/2025-10-19T05_43_58_488Z-debug-0.log\n",
+      "output": "npm error could not determine executable to run\nnpm error A complete log of this run can be found in: /Users/asithalakmal/.npm/_logs/2025-10-19T05_43_58_488Z-debug-0.log\n",
+      "description": "Static security analysis with Semgrep"
+    },
+    "Playwright Installation": {
+      "status": "PASSED",
+      "output": "You are using a frozen ffmpeg browser which does not receive updates anymore on mac12. Please update to the latest version of your operating system to test up-to-date browsers.\n",
+      "description": "Install Playwright browsers"
+    },
+    "Playwright Comprehensive Tests": {
+      "status": "FAILED",
+      "error": "spawnSync /bin/sh ETIMEDOUT",
+      "output": "",
+      "description": "Run comprehensive E2E tests against live deployment"
+    },
+    "Lighthouse Performance": {
+      "status": "WARNING",
+      "error": "spawnSync /bin/sh ETIMEDOUT",
+      "output": "Sun, 19 Oct 2025 05:44:41 GMT LH:ChromeLauncher Waiting for browser.\nSun, 19 Oct 2025 05:44:41 GMT LH:ChromeLauncher Waiting for browser...\nSun, 19 Oct 2025 05:44:42 GMT LH:ChromeLauncher Waiting for browser.....\nSun, 19 Oct 2025 05:44:42 GMT LH:ChromeLauncher Waiting for browser.......\nSun, 19 Oct 2025 05:44:43 GMT LH:ChromeLauncher Waiting for browser.........\nSun, 19 Oct 2025 05:44:43 GMT LH:ChromeLauncher Waiting for browser...........\nSun, 19 Oct 2025 05:44:43 GMT LH:ChromeLauncher Waiting for browser...........\u001b[32m✓\u001b[0m\nSun, 19 Oct 2025 05:44:48 GMT LH:status Connecting to browser\nSun, 19 Oct 2025 05:44:48 GMT LH:status Navigating to about:blank\nSun, 19 Oct 2025 05:44:48 GMT LH:status Benchmarking machine\n",
+      "description": "Run Lighthouse performance audit"
+    },
+    "API /api/venues": {
+      "status": "WARNING",
+      "output": "200",
+      "description": "Test API endpoint /api/venues availability"
+    },
+    "API /api/vendors": {
+      "status": "WARNING",
+      "output": "200",
+      "description": "Test API endpoint /api/vendors availability"
+    },
+    "API /api/services": {
+      "status": "WARNING",
+      "output": "404",
+      "description": "Test API endpoint /api/services availability"
+    },
+    "API /api/bookings": {
+      "status": "WARNING",
+      "output": "401",
+      "description": "Test API endpoint /api/bookings availability"
+    },
+    "API /api/users": {
+      "status": "WARNING",
+      "output": "200",
+      "description": "Test API endpoint /api/users availability"
+    }
+  },
+  "summary": {
+    "total": 16,
+    "passed": 1,
+    "failed": 5,
+    "warnings": 10
+  }
+}
