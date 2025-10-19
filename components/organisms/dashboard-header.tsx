@@ -145,7 +145,7 @@ export function DashboardHeader() {
             </Button>
 
             <Avatar>
-              <AvatarImage src={userProfile.avatar || "/placeholder.svg?height=40&width=40"} />
+              <AvatarImage src={userProfile.avatar || "/placeholder.svg?height=40&width=40"} alt={userProfile.name} />
               <AvatarFallback>{getInitials(userProfile.name)}</AvatarFallback>
             </Avatar>
           </div>
