@@ -453,7 +453,10 @@ export default function BookingFlowPage() {
                     <div className="flex items-center justify-between">
                       <div>
                         <CardTitle className="flex items-center gap-2">
-                          {React.createElement(steps[currentStep - 1].icon, { className: "h-5 w-5" })}
+                          {(() => {
+                            const IconComponent = steps[currentStep - 1].icon
+                            return <IconComponent className="h-5 w-5" />
+                          })()}
                           Step {currentStep}: {steps[currentStep - 1].title}
                         </CardTitle>
                         <p className="text-gray-600 dark:text-gray-400 mt-1">
