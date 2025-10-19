@@ -232,19 +232,34 @@ export default function NotificationsPage() {
                   </div>
                   
                   <div className="flex gap-2">
-                    <select
-                      value={filterType}
-                      onChange={(e) => setFilterType(e.target.value as any)}
-                      className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    <Button
+                      variant="outline"
+                      onClick={() => setFilterType('all')}
+                      className={filterType === 'all' ? 'bg-blue-500 text-white' : ''}
                     >
-                      <option value="all">All Notifications</option>
-                      <option value="unread">Unread Only</option>
-                      <option value="booking">Bookings</option>
-                      <option value="message">Messages</option>
-                      <option value="reminder">Reminders</option>
-                      <option value="promotion">Promotions</option>
-                      <option value="system">System</option>
-                    </select>
+                      All
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setFilterType('unread')}
+                      className={filterType === 'unread' ? 'bg-blue-500 text-white' : ''}
+                    >
+                      Unread
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setFilterType('booking')}
+                      className={filterType === 'booking' ? 'bg-blue-500 text-white' : ''}
+                    >
+                      Bookings
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setFilterType('message')}
+                      className={filterType === 'message' ? 'bg-blue-500 text-white' : ''}
+                    >
+                      Messages
+                    </Button>
                   </div>
                 </div>
               </CardContent>

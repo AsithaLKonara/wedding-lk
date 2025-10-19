@@ -1,0 +1,728 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "Wedding.lk" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8] [cursor=pointer]
+          - generic [ref=e10] [cursor=pointer]: Wedding.lk
+        - navigation [ref=e12]:
+          - link "Venues" [ref=e14] [cursor=pointer]:
+            - /url: /venues
+          - link "Vendors" [ref=e16] [cursor=pointer]:
+            - /url: /vendors
+          - link "Feed" [ref=e18] [cursor=pointer]:
+            - /url: /feed
+          - link "Gallery" [ref=e20] [cursor=pointer]:
+            - /url: /gallery
+          - link "AI Search" [ref=e22] [cursor=pointer]:
+            - /url: /ai-search
+          - link "Chat" [ref=e24] [cursor=pointer]:
+            - /url: /chat
+          - link "About" [ref=e26] [cursor=pointer]:
+            - /url: /about
+        - generic [ref=e27]:
+          - button "Toggle theme" [ref=e28] [cursor=pointer]:
+            - generic [ref=e29] [cursor=pointer]:
+              - img
+              - img
+            - generic [ref=e30] [cursor=pointer]: Toggle theme
+          - button [ref=e31] [cursor=pointer]:
+            - img
+          - generic [ref=e32]:
+            - link "Sign In" [ref=e33] [cursor=pointer]:
+              - /url: /login
+            - link "Get Started" [ref=e34] [cursor=pointer]:
+              - /url: /register
+    - main [ref=e35]:
+      - generic [ref=e36]:
+        - generic [ref=e42]:
+          - generic [ref=e43]:
+            - generic [ref=e44]:
+              - img [ref=e45]
+              - generic [ref=e47]: AI-Powered Wedding Search
+            - heading "Find Your Perfect Wedding Experience" [level=1] [ref=e48]:
+              - text: Find Your Perfect
+              - generic [ref=e49]: Wedding Experience
+            - paragraph [ref=e50]: Describe your dream wedding in natural language and let our AI find the perfect venues, vendors, and packages for you
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e56]:
+                - img [ref=e57]
+                - generic [ref=e59]: Describe your dream wedding
+              - generic [ref=e60]:
+                - textbox "e.g., 'I want a beach wedding in Galle for 200 guests with traditional Sri Lankan cuisine and live music'" [ref=e61]
+                - button [ref=e62] [cursor=pointer]:
+                  - img
+            - generic [ref=e63]:
+              - generic [ref=e64]: "Quick searches:"
+              - generic [ref=e65] [cursor=pointer]: Beach wedding venues in Galle
+              - generic [ref=e66] [cursor=pointer]: Garden wedding under 200k
+              - generic [ref=e67] [cursor=pointer]: Luxury hotel ballrooms Colombo
+              - generic [ref=e68] [cursor=pointer]: Mountain view venues for 150 guests
+              - generic [ref=e69] [cursor=pointer]: Traditional wedding venues Kandy
+            - generic [ref=e70]:
+              - generic [ref=e71]:
+                - generic [ref=e72]: Location
+                - combobox [ref=e73] [cursor=pointer]:
+                  - generic [ref=e74] [cursor=pointer]:
+                    - img
+                    - text: Select location
+                  - img
+              - generic [ref=e75]:
+                - generic [ref=e76]: Wedding Date
+                - generic [ref=e77]:
+                  - img [ref=e78]
+                  - textbox [ref=e80]
+              - generic [ref=e81]:
+                - generic [ref=e82]: Guest Count
+                - generic [ref=e83]:
+                  - img [ref=e84]
+                  - textbox "Number of guests" [ref=e89]
+            - button "Find My Perfect Wedding" [ref=e90] [cursor=pointer]:
+              - img
+              - text: Find My Perfect Wedding
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - generic [ref=e95]:
+              - img [ref=e96]
+              - generic [ref=e98]: AI-Curated Packages
+            - heading "Complete Wedding Packages" [level=2] [ref=e99]
+            - paragraph [ref=e100]: Carefully curated packages featuring top-rated venues and vendors based on your preferences and budget
+          - generic [ref=e101]:
+            - generic [ref=e104]:
+              - generic [ref=e105]: Most Popular
+              - generic [ref=e106]:
+                - generic [ref=e107]:
+                  - img [ref=e109]
+                  - generic [ref=e111]:
+                    - heading "Premium Elite Package" [level=3] [ref=e112]
+                    - paragraph [ref=e113]: Top-rated venues & vendors
+                - generic [ref=e114]:
+                  - generic [ref=e115]:
+                    - img [ref=e116]
+                    - generic [ref=e118]: "4.9"
+                  - generic [ref=e119]: (156 reviews)
+                - generic [ref=e120]:
+                  - generic [ref=e121]:
+                    - generic [ref=e122]: LKR 850,000
+                    - generic [ref=e123]: LKR 1,200,000
+                  - generic [ref=e124]:
+                    - generic [ref=e125]: Save 29%
+                    - generic [ref=e126]: You save LKR 350,000
+              - generic [ref=e127]:
+                - generic [ref=e128]:
+                  - heading "Package Includes:" [level=4] [ref=e129]
+                  - generic [ref=e130]:
+                    - generic [ref=e131]:
+                      - img [ref=e132]
+                      - generic [ref=e134]: 5-star luxury venue (4.8+ rating)
+                    - generic [ref=e135]:
+                      - img [ref=e136]
+                      - generic [ref=e138]: Award-winning photographer
+                    - generic [ref=e139]:
+                      - img [ref=e140]
+                      - generic [ref=e142]: Premium catering (50+ menu options)
+                    - generic [ref=e143]:
+                      - img [ref=e144]
+                      - generic [ref=e146]: Live band & DJ services
+                    - generic [ref=e147]:
+                      - img [ref=e148]
+                      - generic [ref=e150]: Bridal suite & decoration
+                    - generic [ref=e151]:
+                      - img [ref=e152]
+                      - generic [ref=e154]: Wedding coordinator
+                    - generic [ref=e155]: +2 more features
+                - generic [ref=e156]:
+                  - heading "Featured Venues:" [level=4] [ref=e157]
+                  - generic [ref=e158]:
+                    - generic [ref=e159]:
+                      - img "Grand Ballroom Hotel" [ref=e160]
+                      - generic [ref=e162]:
+                        - generic [ref=e163]: Grand Ballroom Hotel
+                        - generic [ref=e164]:
+                          - img [ref=e165]
+                          - text: "4.9"
+                    - generic [ref=e167]:
+                      - img "Royal Garden Resort" [ref=e168]
+                      - generic [ref=e170]:
+                        - generic [ref=e171]: Royal Garden Resort
+                        - generic [ref=e172]:
+                          - img [ref=e173]
+                          - text: "4.8"
+                    - generic [ref=e175]:
+                      - img "Ocean View Palace" [ref=e176]
+                      - generic [ref=e178]:
+                        - generic [ref=e179]: Ocean View Palace
+                        - generic [ref=e180]:
+                          - img [ref=e181]
+                          - text: "4.9"
+                - generic [ref=e183]:
+                  - heading "Top Vendors:" [level=4] [ref=e184]
+                  - generic [ref=e185]:
+                    - generic [ref=e186]:
+                      - generic [ref=e187]:
+                        - img [ref=e189]
+                        - generic [ref=e190]:
+                          - generic [ref=e191]: Perfect Moments Photography
+                          - generic [ref=e192]: Photography
+                      - generic [ref=e193]:
+                        - img [ref=e194]
+                        - generic [ref=e196]: "4.9"
+                    - generic [ref=e197]:
+                      - generic [ref=e198]:
+                        - img [ref=e200]
+                        - generic [ref=e201]:
+                          - generic [ref=e202]: Elite Catering Co.
+                          - generic [ref=e203]: Catering
+                      - generic [ref=e204]:
+                        - img [ref=e205]
+                        - generic [ref=e207]: "4.8"
+                    - generic [ref=e208]:
+                      - generic [ref=e209]:
+                        - img [ref=e211]
+                        - generic [ref=e212]:
+                          - generic [ref=e213]: Harmony Live Band
+                          - generic [ref=e214]: Entertainment
+                      - generic [ref=e215]:
+                        - img [ref=e216]
+                        - generic [ref=e218]: "4.9"
+                - generic [ref=e219]:
+                  - button "Book This Package" [ref=e220] [cursor=pointer]
+                  - generic [ref=e221]:
+                    - button "View Details" [ref=e222] [cursor=pointer]:
+                      - img
+                      - text: View Details
+                    - button "Save" [ref=e223] [cursor=pointer]:
+                      - img
+                      - text: Save
+                    - button "Share" [ref=e224] [cursor=pointer]:
+                      - img
+                      - text: Share
+            - generic [ref=e227]:
+              - generic [ref=e228]: Best Value
+              - generic [ref=e229]:
+                - generic [ref=e230]:
+                  - img [ref=e232]
+                  - generic [ref=e234]:
+                    - heading "Luxury Complete Package" [level=3] [ref=e235]
+                    - paragraph [ref=e236]: High-rated premium experience
+                - generic [ref=e237]:
+                  - generic [ref=e238]:
+                    - img [ref=e239]
+                    - generic [ref=e241]: "4.7"
+                  - generic [ref=e242]: (203 reviews)
+                - generic [ref=e243]:
+                  - generic [ref=e244]:
+                    - generic [ref=e245]: LKR 650,000
+                    - generic [ref=e246]: LKR 900,000
+                  - generic [ref=e247]:
+                    - generic [ref=e248]: Save 28%
+                    - generic [ref=e249]: You save LKR 250,000
+              - generic [ref=e250]:
+                - generic [ref=e251]:
+                  - heading "Package Includes:" [level=4] [ref=e252]
+                  - generic [ref=e253]:
+                    - generic [ref=e254]:
+                      - img [ref=e255]
+                      - generic [ref=e257]: 4-star venue (4.5+ rating)
+                    - generic [ref=e258]:
+                      - img [ref=e259]
+                      - generic [ref=e261]: Professional photographer
+                    - generic [ref=e262]:
+                      - img [ref=e263]
+                      - generic [ref=e265]: Quality catering service
+                    - generic [ref=e266]:
+                      - img [ref=e267]
+                      - generic [ref=e269]: DJ & sound system
+                    - generic [ref=e270]:
+                      - img [ref=e271]
+                      - generic [ref=e273]: Basic decoration package
+                    - generic [ref=e274]:
+                      - img [ref=e275]
+                      - generic [ref=e277]: Wedding planning assistance
+                    - generic [ref=e278]: +2 more features
+                - generic [ref=e279]:
+                  - heading "Featured Venues:" [level=4] [ref=e280]
+                  - generic [ref=e281]:
+                    - generic [ref=e282]:
+                      - img "City Center Ballroom" [ref=e283]
+                      - generic [ref=e285]:
+                        - generic [ref=e286]: City Center Ballroom
+                        - generic [ref=e287]:
+                          - img [ref=e288]
+                          - text: "4.7"
+                    - generic [ref=e290]:
+                      - img "Garden Paradise Resort" [ref=e291]
+                      - generic [ref=e293]:
+                        - generic [ref=e294]: Garden Paradise Resort
+                        - generic [ref=e295]:
+                          - img [ref=e296]
+                          - text: "4.6"
+                    - generic [ref=e298]:
+                      - img "Lakeside Pavilion" [ref=e299]
+                      - generic [ref=e301]:
+                        - generic [ref=e302]: Lakeside Pavilion
+                        - generic [ref=e303]:
+                          - img [ref=e304]
+                          - text: "4.8"
+                - generic [ref=e306]:
+                  - heading "Top Vendors:" [level=4] [ref=e307]
+                  - generic [ref=e308]:
+                    - generic [ref=e309]:
+                      - generic [ref=e310]:
+                        - img [ref=e312]
+                        - generic [ref=e313]:
+                          - generic [ref=e314]: Creative Lens Studio
+                          - generic [ref=e315]: Photography
+                      - generic [ref=e316]:
+                        - img [ref=e317]
+                        - generic [ref=e319]: "4.7"
+                    - generic [ref=e320]:
+                      - generic [ref=e321]:
+                        - img [ref=e323]
+                        - generic [ref=e324]:
+                          - generic [ref=e325]: Delicious Catering
+                          - generic [ref=e326]: Catering
+                      - generic [ref=e327]:
+                        - img [ref=e328]
+                        - generic [ref=e330]: "4.6"
+                    - generic [ref=e331]:
+                      - generic [ref=e332]:
+                        - img [ref=e334]
+                        - generic [ref=e335]:
+                          - generic [ref=e336]: Party DJ Services
+                          - generic [ref=e337]: Entertainment
+                      - generic [ref=e338]:
+                        - img [ref=e339]
+                        - generic [ref=e341]: "4.7"
+                - generic [ref=e342]:
+                  - button "Book This Package" [ref=e343] [cursor=pointer]
+                  - generic [ref=e344]:
+                    - button "View Details" [ref=e345] [cursor=pointer]:
+                      - img
+                      - text: View Details
+                    - button "Save" [ref=e346] [cursor=pointer]:
+                      - img
+                      - text: Save
+                    - button "Share" [ref=e347] [cursor=pointer]:
+                      - img
+                      - text: Share
+            - generic [ref=e350]:
+              - generic [ref=e351]: Great Start
+              - generic [ref=e352]:
+                - generic [ref=e353]:
+                  - img [ref=e355]
+                  - generic [ref=e358]:
+                    - heading "Essential Wedding Package" [level=3] [ref=e359]
+                    - paragraph [ref=e360]: Quality venues & trusted vendors
+                - generic [ref=e361]:
+                  - generic [ref=e362]:
+                    - img [ref=e363]
+                    - generic [ref=e365]: "4.5"
+                  - generic [ref=e366]: (89 reviews)
+                - generic [ref=e367]:
+                  - generic [ref=e368]:
+                    - generic [ref=e369]: LKR 450,000
+                    - generic [ref=e370]: LKR 650,000
+                  - generic [ref=e371]:
+                    - generic [ref=e372]: Save 31%
+                    - generic [ref=e373]: You save LKR 200,000
+              - generic [ref=e374]:
+                - generic [ref=e375]:
+                  - heading "Package Includes:" [level=4] [ref=e376]
+                  - generic [ref=e377]:
+                    - generic [ref=e378]:
+                      - img [ref=e379]
+                      - generic [ref=e381]: Good venue (4.0+ rating)
+                    - generic [ref=e382]:
+                      - img [ref=e383]
+                      - generic [ref=e385]: Experienced photographer
+                    - generic [ref=e386]:
+                      - img [ref=e387]
+                      - generic [ref=e389]: Standard catering menu
+                    - generic [ref=e390]:
+                      - img [ref=e391]
+                      - generic [ref=e393]: Music & sound system
+                    - generic [ref=e394]:
+                      - img [ref=e395]
+                      - generic [ref=e397]: Simple decoration
+                    - generic [ref=e398]:
+                      - img [ref=e399]
+                      - generic [ref=e401]: Basic planning support
+                    - generic [ref=e402]: +2 more features
+                - generic [ref=e403]:
+                  - heading "Featured Venues:" [level=4] [ref=e404]
+                  - generic [ref=e405]:
+                    - generic [ref=e406]:
+                      - img "Community Hall Deluxe" [ref=e407]
+                      - generic [ref=e409]:
+                        - generic [ref=e410]: Community Hall Deluxe
+                        - generic [ref=e411]:
+                          - img [ref=e412]
+                          - text: "4.5"
+                    - generic [ref=e414]:
+                      - img "Suburban Garden Venue" [ref=e415]
+                      - generic [ref=e417]:
+                        - generic [ref=e418]: Suburban Garden Venue
+                        - generic [ref=e419]:
+                          - img [ref=e420]
+                          - text: "4.3"
+                    - generic [ref=e422]:
+                      - img "Heritage Banquet Hall" [ref=e423]
+                      - generic [ref=e425]:
+                        - generic [ref=e426]: Heritage Banquet Hall
+                        - generic [ref=e427]:
+                          - img [ref=e428]
+                          - text: "4.6"
+                - generic [ref=e430]:
+                  - heading "Top Vendors:" [level=4] [ref=e431]
+                  - generic [ref=e432]:
+                    - generic [ref=e433]:
+                      - generic [ref=e434]:
+                        - img [ref=e436]
+                        - generic [ref=e437]:
+                          - generic [ref=e438]: Moments Photography
+                          - generic [ref=e439]: Photography
+                      - generic [ref=e440]:
+                        - img [ref=e441]
+                        - generic [ref=e443]: "4.5"
+                    - generic [ref=e444]:
+                      - generic [ref=e445]:
+                        - img [ref=e447]
+                        - generic [ref=e448]:
+                          - generic [ref=e449]: Tasty Treats Catering
+                          - generic [ref=e450]: Catering
+                      - generic [ref=e451]:
+                        - img [ref=e452]
+                        - generic [ref=e454]: "4.4"
+                    - generic [ref=e455]:
+                      - generic [ref=e456]:
+                        - img [ref=e458]
+                        - generic [ref=e459]:
+                          - generic [ref=e460]: Sound & Music Co.
+                          - generic [ref=e461]: Entertainment
+                      - generic [ref=e462]:
+                        - img [ref=e463]
+                        - generic [ref=e465]: "4.5"
+                - generic [ref=e466]:
+                  - button "Book This Package" [ref=e467] [cursor=pointer]
+                  - generic [ref=e468]:
+                    - button "View Details" [ref=e469] [cursor=pointer]:
+                      - img
+                      - text: View Details
+                    - button "Save" [ref=e470] [cursor=pointer]:
+                      - img
+                      - text: Save
+                    - button "Share" [ref=e471] [cursor=pointer]:
+                      - img
+                      - text: Share
+          - generic [ref=e472]:
+            - button "Compare All Packages" [ref=e473] [cursor=pointer]
+            - button "Create Custom Package" [ref=e474] [cursor=pointer]
+        - generic [ref=e477]:
+          - generic [ref=e478]:
+            - heading "Everything You Need for Your Wedding" [level=2] [ref=e479]
+            - paragraph [ref=e480]: From venues to vendors, we have everything to make your wedding day perfect
+          - generic [ref=e481]:
+            - generic [ref=e485]:
+              - img [ref=e487]
+              - generic [ref=e490]:
+                - generic [ref=e491]:
+                  - heading "Venues" [level=3] [ref=e492]
+                  - generic [ref=e493]: 500+
+                - paragraph [ref=e494]: Find the perfect location for your special day
+            - generic [ref=e498]:
+              - img [ref=e500]
+              - generic [ref=e503]:
+                - generic [ref=e504]:
+                  - heading "Photography" [level=3] [ref=e505]
+                  - generic [ref=e506]: 200+
+                - paragraph [ref=e507]: Capture every precious moment beautifully
+            - generic [ref=e511]:
+              - img [ref=e513]
+              - generic [ref=e516]:
+                - generic [ref=e517]:
+                  - heading "Catering" [level=3] [ref=e518]
+                  - generic [ref=e519]: 150+
+                - paragraph [ref=e520]: Delicious food for your guests to enjoy
+            - generic [ref=e524]:
+              - img [ref=e526]
+              - generic [ref=e530]:
+                - generic [ref=e531]:
+                  - heading "Entertainment" [level=3] [ref=e532]
+                  - generic [ref=e533]: 100+
+                - paragraph [ref=e534]: DJs, bands, and entertainment services
+            - generic [ref=e538]:
+              - img [ref=e540]
+              - generic [ref=e547]:
+                - generic [ref=e548]:
+                  - heading "Decoration" [level=3] [ref=e549]
+                  - generic [ref=e550]: 180+
+                - paragraph [ref=e551]: Beautiful decorations and floral arrangements
+            - generic [ref=e555]:
+              - img [ref=e557]
+              - generic [ref=e562]:
+                - generic [ref=e563]:
+                  - heading "Planning" [level=3] [ref=e564]
+                  - generic [ref=e565]: 50+
+                - paragraph [ref=e566]: Professional wedding planning services
+        - generic [ref=e569]:
+          - generic [ref=e570]:
+            - heading "Browse by Category" [level=2] [ref=e571]
+            - paragraph [ref=e572]: Find the perfect vendors for every aspect of your wedding
+          - generic [ref=e573]:
+            - generic [ref=e576] [cursor=pointer]:
+              - generic [ref=e577] [cursor=pointer]:
+                - img "Photography & Videography" [ref=e578] [cursor=pointer]
+                - generic [ref=e581] [cursor=pointer]: 200+ vendors
+              - generic [ref=e583] [cursor=pointer]:
+                - generic [ref=e584] [cursor=pointer]:
+                  - heading "Photography & Videography" [level=3] [ref=e585] [cursor=pointer]
+                  - paragraph [ref=e586] [cursor=pointer]: Professional photographers and videographers
+                - img [ref=e587] [cursor=pointer]
+            - generic [ref=e591] [cursor=pointer]:
+              - generic [ref=e592] [cursor=pointer]:
+                - img "Catering Services" [ref=e593] [cursor=pointer]
+                - generic [ref=e596] [cursor=pointer]: 150+ vendors
+              - generic [ref=e598] [cursor=pointer]:
+                - generic [ref=e599] [cursor=pointer]:
+                  - heading "Catering Services" [level=3] [ref=e600] [cursor=pointer]
+                  - paragraph [ref=e601] [cursor=pointer]: Delicious catering for all tastes
+                - img [ref=e602] [cursor=pointer]
+            - generic [ref=e606] [cursor=pointer]:
+              - generic [ref=e607] [cursor=pointer]:
+                - img "Wedding Decorations" [ref=e608] [cursor=pointer]
+                - generic [ref=e611] [cursor=pointer]: 180+ vendors
+              - generic [ref=e613] [cursor=pointer]:
+                - generic [ref=e614] [cursor=pointer]:
+                  - heading "Wedding Decorations" [level=3] [ref=e615] [cursor=pointer]
+                  - paragraph [ref=e616] [cursor=pointer]: Beautiful decorations and flowers
+                - img [ref=e617] [cursor=pointer]
+            - generic [ref=e621] [cursor=pointer]:
+              - generic [ref=e622] [cursor=pointer]:
+                - img "Entertainment" [ref=e623] [cursor=pointer]
+                - generic [ref=e626] [cursor=pointer]: 100+ vendors
+              - generic [ref=e628] [cursor=pointer]:
+                - generic [ref=e629] [cursor=pointer]:
+                  - heading "Entertainment" [level=3] [ref=e630] [cursor=pointer]
+                  - paragraph [ref=e631] [cursor=pointer]: DJs, bands, and live entertainment
+                - img [ref=e632] [cursor=pointer]
+        - region "Venue Social Feed" [ref=e637]:
+          - generic [ref=e639]:
+            - img [ref=e640]
+            - text: Social Feed
+            - generic [ref=e642]: 3 posts
+          - generic [ref=e643]:
+            - generic [ref=e644]:
+              - generic [ref=e645]:
+                - img "Sarah & Mike" [ref=e647]
+                - generic [ref=e648]:
+                  - generic [ref=e649]:
+                    - heading "Sarah & Mike" [level=4] [ref=e650]
+                    - generic [ref=e651]: Verified
+                  - generic [ref=e652]:
+                    - img [ref=e653]
+                    - text: 2 days ago
+                    - generic [ref=e655]: •
+                    - img [ref=e656]
+                    - text: Grand Ballroom Hotel
+              - paragraph [ref=e659]: "Just had our dream wedding at this amazing venue! The staff was incredible and everything was perfect. Highly recommend! 💕 #WeddingDay #DreamVenue"
+              - generic [ref=e660]:
+                - generic [ref=e661]: "#WeddingDay"
+                - generic [ref=e662]: "#DreamVenue"
+                - generic [ref=e663]: "#PerfectDay"
+              - generic [ref=e665]:
+                - img "Post image 1" [ref=e666] [cursor=pointer]
+                - img [ref=e667]
+              - generic [ref=e671]:
+                - generic [ref=e672]:
+                  - button "Like post" [ref=e673] [cursor=pointer]:
+                    - img
+                    - generic [ref=e674] [cursor=pointer]: "156"
+                  - button "View 23 comments" [ref=e675] [cursor=pointer]:
+                    - img
+                    - generic [ref=e676] [cursor=pointer]: "23"
+                  - button "Share post" [ref=e677] [cursor=pointer]:
+                    - img
+                    - generic [ref=e678] [cursor=pointer]: "8"
+                - button "Add to bookmarks" [ref=e679] [cursor=pointer]:
+                  - img
+            - generic [ref=e680]:
+              - generic [ref=e681]:
+                - img "Priya & David" [ref=e683]
+                - generic [ref=e684]:
+                  - generic [ref=e685]:
+                    - heading "Priya & David" [level=4] [ref=e686]
+                    - generic [ref=e687]: Verified
+                  - generic [ref=e688]:
+                    - img [ref=e689]
+                    - text: 1 week ago
+                    - generic [ref=e691]: •
+                    - img [ref=e692]
+                    - text: Grand Ballroom Hotel
+              - paragraph [ref=e695]: Our wedding photos turned out absolutely stunning! The venue provided the perfect backdrop for our special day. Thank you for making it magical! ✨
+              - generic [ref=e696]:
+                - generic [ref=e697]: "#WeddingPhotos"
+                - generic [ref=e698]: "#MagicalDay"
+                - generic [ref=e699]: "#PerfectBackdrop"
+              - generic [ref=e700]:
+                - generic [ref=e701]:
+                  - img "Post image 1" [ref=e702] [cursor=pointer]
+                  - img [ref=e703]
+                - generic [ref=e707]:
+                  - img "Post image 2" [ref=e708] [cursor=pointer]
+                  - img [ref=e709]
+              - generic [ref=e713]:
+                - generic [ref=e714]:
+                  - button "Unlike post" [ref=e715] [cursor=pointer]:
+                    - img
+                    - generic [ref=e716] [cursor=pointer]: "89"
+                  - button "View 12 comments" [ref=e717] [cursor=pointer]:
+                    - img
+                    - generic [ref=e718] [cursor=pointer]: "12"
+                  - button "Share post" [ref=e719] [cursor=pointer]:
+                    - img
+                    - generic [ref=e720] [cursor=pointer]: "5"
+                - button "Remove from bookmarks" [ref=e721] [cursor=pointer]:
+                  - img
+            - generic [ref=e722]:
+              - generic [ref=e723]:
+                - img "Emma & James" [ref=e725]
+                - generic [ref=e726]:
+                  - heading "Emma & James" [level=4] [ref=e728]
+                  - generic [ref=e729]:
+                    - img [ref=e730]
+                    - text: 2 weeks ago
+                    - generic [ref=e732]: •
+                    - img [ref=e733]
+                    - text: Grand Ballroom Hotel
+              - paragraph [ref=e736]: "Just booked our wedding venue! Can't wait to start planning. The team was so helpful during our tour. #WeddingPlanning #Excited"
+              - generic [ref=e737]:
+                - generic [ref=e738]: "#WeddingPlanning"
+                - generic [ref=e739]: "#Excited"
+                - generic [ref=e740]: "#NewlyEngaged"
+              - generic [ref=e741]:
+                - generic [ref=e742]:
+                  - button "Like post" [ref=e743] [cursor=pointer]:
+                    - img
+                    - generic [ref=e744] [cursor=pointer]: "45"
+                  - button "View 8 comments" [ref=e745] [cursor=pointer]:
+                    - img
+                    - generic [ref=e746] [cursor=pointer]: "8"
+                  - button "Share post" [ref=e747] [cursor=pointer]:
+                    - img
+                    - generic [ref=e748] [cursor=pointer]: "3"
+                - button "Add to bookmarks" [ref=e749] [cursor=pointer]:
+                  - img
+            - button "Load More Posts" [ref=e751] [cursor=pointer]
+        - generic [ref=e754]:
+          - generic [ref=e755]:
+            - heading "Happy Couples" [level=2] [ref=e756]
+            - paragraph [ref=e757]: See what our couples have to say about their experience
+          - generic [ref=e758]:
+            - generic [ref=e762]:
+              - generic [ref=e763]:
+                - img [ref=e764]
+                - img [ref=e766]
+                - img [ref=e768]
+                - img [ref=e770]
+                - img [ref=e772]
+              - paragraph [ref=e774]: "\"Wedding.lk made our dream wedding a reality. The platform was so easy to use and helped us stay organized throughout the entire planning process.\""
+              - generic [ref=e775]:
+                - img "Sarah & Michael" [ref=e777]
+                - generic [ref=e778]:
+                  - paragraph [ref=e779]: Sarah & Michael
+                  - paragraph [ref=e780]: Married June 2024
+            - generic [ref=e784]:
+              - generic [ref=e785]:
+                - img [ref=e786]
+                - img [ref=e788]
+                - img [ref=e790]
+                - img [ref=e792]
+                - img [ref=e794]
+              - paragraph [ref=e796]: "\"The vendor network was incredible. We found our photographer, caterer, and decorator all through the platform. Highly recommended!\""
+              - generic [ref=e797]:
+                - img "Priya & Raj" [ref=e799]
+                - generic [ref=e800]:
+                  - paragraph [ref=e801]: Priya & Raj
+                  - paragraph [ref=e802]: Married August 2024
+            - generic [ref=e806]:
+              - generic [ref=e807]:
+                - img [ref=e808]
+                - img [ref=e810]
+                - img [ref=e812]
+                - img [ref=e814]
+                - img [ref=e816]
+              - paragraph [ref=e818]: "\"From venue booking to guest management, everything was seamless. Our wedding day was perfect thanks to Wedding.lk!\""
+              - generic [ref=e819]:
+                - img "Emma & David" [ref=e821]
+                - generic [ref=e822]:
+                  - paragraph [ref=e823]: Emma & David
+                  - paragraph [ref=e824]: Married September 2024
+        - generic [ref=e830]:
+          - img [ref=e831]
+          - heading "Ready to Start Planning?" [level=2] [ref=e833]
+          - paragraph [ref=e834]: Join thousands of couples who have planned their perfect wedding with us
+          - generic [ref=e835]:
+            - link "Get Started Free" [ref=e836] [cursor=pointer]:
+              - /url: /register
+              - text: Get Started Free
+              - img
+            - link "Contact Us" [ref=e837] [cursor=pointer]:
+              - /url: /contact
+    - contentinfo [ref=e838]:
+      - generic [ref=e839]:
+        - generic [ref=e840]:
+          - generic [ref=e841]:
+            - link "Wedding.lk" [ref=e842] [cursor=pointer]:
+              - /url: /
+              - img [ref=e844] [cursor=pointer]
+              - generic [ref=e846] [cursor=pointer]: Wedding.lk
+            - paragraph [ref=e847]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+            - generic [ref=e848]:
+              - button [ref=e849] [cursor=pointer]:
+                - img
+              - button [ref=e850] [cursor=pointer]:
+                - img
+              - button [ref=e851] [cursor=pointer]:
+                - img
+              - button [ref=e852] [cursor=pointer]:
+                - img
+          - generic [ref=e853]:
+            - heading "Services" [level=3] [ref=e854]
+            - list [ref=e855]:
+              - listitem [ref=e856]:
+                - link "Venues" [ref=e857] [cursor=pointer]:
+                  - /url: /venues
+              - listitem [ref=e858]:
+                - link "Vendors" [ref=e859] [cursor=pointer]:
+                  - /url: /vendors
+              - listitem [ref=e860]:
+                - link "Planning Tools" [ref=e861] [cursor=pointer]:
+                  - /url: /planning
+              - listitem [ref=e862]:
+                - link "Gallery" [ref=e863] [cursor=pointer]:
+                  - /url: /gallery
+          - generic [ref=e864]:
+            - heading "Company" [level=3] [ref=e865]
+            - list [ref=e866]:
+              - listitem [ref=e867]:
+                - link "About" [ref=e868] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e869]:
+                - link "Contact" [ref=e870] [cursor=pointer]:
+                  - /url: /contact
+              - listitem [ref=e871]:
+                - link "Privacy" [ref=e872] [cursor=pointer]:
+                  - /url: /privacy
+              - listitem [ref=e873]:
+                - link "Terms" [ref=e874] [cursor=pointer]:
+                  - /url: /terms
+        - paragraph [ref=e876]: © 2024 Wedding.lk. All rights reserved.
+  - region "Notifications alt+T"
+  - alert [ref=e877]
+```
