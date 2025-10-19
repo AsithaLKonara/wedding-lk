@@ -1,0 +1,334 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "Wedding.lk" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8] [cursor=pointer]
+          - generic [ref=e10] [cursor=pointer]: Wedding.lk
+        - navigation [ref=e12]:
+          - link "Venues" [ref=e14] [cursor=pointer]:
+            - /url: /venues
+          - link "Vendors" [ref=e16] [cursor=pointer]:
+            - /url: /vendors
+          - link "Feed" [ref=e18] [cursor=pointer]:
+            - /url: /feed
+          - link "Gallery" [ref=e20] [cursor=pointer]:
+            - /url: /gallery
+          - link "AI Search" [ref=e22] [cursor=pointer]:
+            - /url: /ai-search
+          - link "Chat" [ref=e24] [cursor=pointer]:
+            - /url: /chat
+          - link "About" [ref=e26] [cursor=pointer]:
+            - /url: /about
+        - generic [ref=e27]:
+          - button "Toggle theme" [ref=e28] [cursor=pointer]:
+            - generic [ref=e29] [cursor=pointer]:
+              - img
+              - img
+            - generic [ref=e30] [cursor=pointer]: Toggle theme
+          - button [ref=e31] [cursor=pointer]:
+            - img
+          - generic [ref=e32]:
+            - link "Sign In" [ref=e33] [cursor=pointer]:
+              - /url: /login
+            - link "Get Started" [ref=e34] [cursor=pointer]:
+              - /url: /register
+    - main [ref=e35]:
+      - generic [ref=e36]:
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - heading "Find Your Perfect Venue" [level=1] [ref=e40]
+            - paragraph [ref=e41]: Discover beautiful wedding venues across Sri Lanka. From beachfront locations to traditional halls, find the perfect setting for your special day.
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - img [ref=e44]
+              - textbox "Search venues by name, location, or description..." [ref=e47]
+            - generic [ref=e48]:
+              - button "Grid" [ref=e49] [cursor=pointer]
+              - button "List" [ref=e50] [cursor=pointer]
+          - generic [ref=e51]:
+            - button "all" [ref=e52] [cursor=pointer]
+            - button "colombo" [ref=e53] [cursor=pointer]
+            - button "kandy" [ref=e54] [cursor=pointer]
+            - button "galle" [ref=e55] [cursor=pointer]
+            - button "bentota" [ref=e56] [cursor=pointer]
+            - button "nuwara eliya" [ref=e57] [cursor=pointer]
+            - button "anuradhapura" [ref=e58] [cursor=pointer]
+            - button "polonnaruwa" [ref=e59] [cursor=pointer]
+        - generic [ref=e61]:
+          - generic [ref=e63]:
+            - heading "Filter Venues" [level=3] [ref=e64]
+            - generic [ref=e65]:
+              - generic [ref=e66]: Price Range (LKR)
+              - generic [ref=e67]:
+                - spinbutton [ref=e68]: "0"
+                - spinbutton [ref=e69]: "500000"
+            - generic [ref=e70]:
+              - generic [ref=e71]: Guest Capacity
+              - generic [ref=e72]:
+                - spinbutton [ref=e73]: "0"
+                - spinbutton [ref=e74]: "500"
+            - generic [ref=e75]:
+              - generic [ref=e76]: Amenities
+              - generic [ref=e77]:
+                - generic [ref=e78]:
+                  - checkbox "parking" [ref=e79]
+                  - generic [ref=e80]: parking
+                - generic [ref=e81]:
+                  - checkbox "air conditioning" [ref=e82]
+                  - generic [ref=e83]: air conditioning
+                - generic [ref=e84]:
+                  - checkbox "catering" [ref=e85]
+                  - generic [ref=e86]: catering
+                - generic [ref=e87]:
+                  - checkbox "decorations" [ref=e88]
+                  - generic [ref=e89]: decorations
+                - generic [ref=e90]:
+                  - checkbox "sound system" [ref=e91]
+                  - generic [ref=e92]: sound system
+                - generic [ref=e93]:
+                  - checkbox "photography" [ref=e94]
+                  - generic [ref=e95]: photography
+                - generic [ref=e96]:
+                  - checkbox "bridal suite" [ref=e97]
+                  - generic [ref=e98]: bridal suite
+                - generic [ref=e99]:
+                  - checkbox "garden" [ref=e100]
+                  - generic [ref=e101]: garden
+                - generic [ref=e102]:
+                  - checkbox "beach access" [ref=e103]
+                  - generic [ref=e104]: beach access
+                - generic [ref=e105]:
+                  - checkbox "traditional hall" [ref=e106]
+                  - generic [ref=e107]: traditional hall
+            - button "Clear All Filters" [ref=e108] [cursor=pointer]
+          - generic [ref=e109]:
+            - paragraph [ref=e111]: Showing 6 of 6 venues
+            - generic [ref=e112]:
+              - generic [ref=e113]:
+                - generic [ref=e114]:
+                  - img "Grand Ballroom Hotel - Wedding venue in colombo" [ref=e115]
+                  - generic [ref=e116]: Featured
+                  - button [ref=e117] [cursor=pointer]:
+                    - img
+                - generic [ref=e118]:
+                  - heading "Grand Ballroom Hotel" [level=3] [ref=e119]
+                  - generic [ref=e120]:
+                    - img [ref=e121]
+                    - text: 123 Galle Road, Colombo 03
+                  - generic [ref=e124]:
+                    - img [ref=e125]
+                    - text: Up to 300 guests
+                  - generic [ref=e130]:
+                    - generic [ref=e131]:
+                      - img [ref=e132]
+                      - generic [ref=e134]: 4.8 (127 reviews)
+                    - generic [ref=e135]: LKR 150,000 - 250,000
+                  - paragraph [ref=e136]: Elegant ballroom with panoramic city views, perfect for grand celebrations.
+                  - generic [ref=e137]:
+                    - generic [ref=e138]: parking
+                    - generic [ref=e139]: air conditioning
+                    - generic [ref=e140]: catering
+                    - generic [ref=e141]: +1 more
+                  - generic [ref=e142]:
+                    - button "View Details" [ref=e143] [cursor=pointer]
+                    - button [ref=e144] [cursor=pointer]:
+                      - img
+              - generic [ref=e145]:
+                - generic [ref=e146]:
+                  - img "Garden Paradise Resort - Wedding venue in kandy" [ref=e147]
+                  - button [ref=e148] [cursor=pointer]:
+                    - img
+                - generic [ref=e149]:
+                  - heading "Garden Paradise Resort" [level=3] [ref=e150]
+                  - generic [ref=e151]:
+                    - img [ref=e152]
+                    - text: 45 Temple Road, Kandy
+                  - generic [ref=e155]:
+                    - img [ref=e156]
+                    - text: Up to 250 guests
+                  - generic [ref=e161]:
+                    - generic [ref=e162]:
+                      - img [ref=e163]
+                      - generic [ref=e165]: 4.9 (89 reviews)
+                    - generic [ref=e166]: LKR 120,000 - 200,000
+                  - paragraph [ref=e167]: Beautiful garden setting with traditional architecture and modern amenities.
+                  - generic [ref=e168]:
+                    - generic [ref=e169]: garden
+                    - generic [ref=e170]: parking
+                    - generic [ref=e171]: catering
+                    - generic [ref=e172]: +2 more
+                  - generic [ref=e173]:
+                    - button "View Details" [ref=e174] [cursor=pointer]
+                    - button [ref=e175] [cursor=pointer]:
+                      - img
+              - generic [ref=e176]:
+                - generic [ref=e177]:
+                  - img "Beachfront Villa - Wedding venue in bentota" [ref=e178]
+                  - generic [ref=e179]: Featured
+                  - button [ref=e180] [cursor=pointer]:
+                    - img
+                - generic [ref=e181]:
+                  - heading "Beachfront Villa" [level=3] [ref=e182]
+                  - generic [ref=e183]:
+                    - img [ref=e184]
+                    - text: Beach Road, Bentota
+                  - generic [ref=e187]:
+                    - img [ref=e188]
+                    - text: Up to 200 guests
+                  - generic [ref=e193]:
+                    - generic [ref=e194]:
+                      - img [ref=e195]
+                      - generic [ref=e197]: 4.7 (156 reviews)
+                    - generic [ref=e198]: LKR 100,000 - 180,000
+                  - paragraph [ref=e199]: Stunning beachfront location with ocean views and tropical atmosphere.
+                  - generic [ref=e200]:
+                    - generic [ref=e201]: beach access
+                    - generic [ref=e202]: parking
+                    - generic [ref=e203]: air conditioning
+                    - generic [ref=e204]: +1 more
+                  - generic [ref=e205]:
+                    - button "View Details" [ref=e206] [cursor=pointer]
+                    - button [ref=e207] [cursor=pointer]:
+                      - img
+              - generic [ref=e208]:
+                - generic [ref=e209]:
+                  - img "Traditional Kandyan Hall - Wedding venue in kandy" [ref=e210]
+                  - button [ref=e211] [cursor=pointer]:
+                    - img
+                - generic [ref=e212]:
+                  - heading "Traditional Kandyan Hall" [level=3] [ref=e213]
+                  - generic [ref=e214]:
+                    - img [ref=e215]
+                    - text: 78 Peradeniya Road, Kandy
+                  - generic [ref=e218]:
+                    - img [ref=e219]
+                    - text: Up to 400 guests
+                  - generic [ref=e224]:
+                    - generic [ref=e225]:
+                      - img [ref=e226]
+                      - generic [ref=e228]: 4.6 (203 reviews)
+                    - generic [ref=e229]: LKR 80,000 - 150,000
+                  - paragraph [ref=e230]: Authentic traditional venue with cultural significance and heritage charm.
+                  - generic [ref=e231]:
+                    - generic [ref=e232]: traditional hall
+                    - generic [ref=e233]: parking
+                    - generic [ref=e234]: sound system
+                    - generic [ref=e235]: +1 more
+                  - generic [ref=e236]:
+                    - button "View Details" [ref=e237] [cursor=pointer]
+                    - button [ref=e238] [cursor=pointer]:
+                      - img
+              - generic [ref=e239]:
+                - generic [ref=e240]:
+                  - img "Luxury Colombo Hotel - Wedding venue in colombo" [ref=e241]
+                  - generic [ref=e242]: Featured
+                  - button [ref=e243] [cursor=pointer]:
+                    - img
+                - generic [ref=e244]:
+                  - heading "Luxury Colombo Hotel" [level=3] [ref=e245]
+                  - generic [ref=e246]:
+                    - img [ref=e247]
+                    - text: 200 Independence Avenue, Colombo 07
+                  - generic [ref=e250]:
+                    - img [ref=e251]
+                    - text: Up to 500 guests
+                  - generic [ref=e256]:
+                    - generic [ref=e257]:
+                      - img [ref=e258]
+                      - generic [ref=e260]: 4.9 (95 reviews)
+                    - generic [ref=e261]: LKR 200,000 - 400,000
+                  - paragraph [ref=e262]: Premium luxury hotel with world-class facilities and impeccable service.
+                  - generic [ref=e263]:
+                    - generic [ref=e264]: parking
+                    - generic [ref=e265]: air conditioning
+                    - generic [ref=e266]: catering
+                    - generic [ref=e267]: +2 more
+                  - generic [ref=e268]:
+                    - button "View Details" [ref=e269] [cursor=pointer]
+                    - button [ref=e270] [cursor=pointer]:
+                      - img
+              - generic [ref=e271]:
+                - generic [ref=e272]:
+                  - img "Hill Country Estate - Wedding venue in nuwara-eliya" [ref=e273]
+                  - button [ref=e274] [cursor=pointer]:
+                    - img
+                - generic [ref=e275]:
+                  - heading "Hill Country Estate" [level=3] [ref=e276]
+                  - generic [ref=e277]:
+                    - img [ref=e278]
+                    - text: Estate Road, Nuwara Eliya
+                  - generic [ref=e281]:
+                    - img [ref=e282]
+                    - text: Up to 150 guests
+                  - generic [ref=e287]:
+                    - generic [ref=e288]:
+                      - img [ref=e289]
+                      - generic [ref=e291]: 4.8 (67 reviews)
+                    - generic [ref=e292]: LKR 90,000 - 160,000
+                  - paragraph [ref=e293]: Charming hill country estate with cool climate and scenic mountain views.
+                  - generic [ref=e294]:
+                    - generic [ref=e295]: garden
+                    - generic [ref=e296]: parking
+                    - generic [ref=e297]: catering
+                    - generic [ref=e298]: +1 more
+                  - generic [ref=e299]:
+                    - button "View Details" [ref=e300] [cursor=pointer]
+                    - button [ref=e301] [cursor=pointer]:
+                      - img
+    - contentinfo [ref=e302]:
+      - generic [ref=e303]:
+        - generic [ref=e304]:
+          - generic [ref=e305]:
+            - link "Wedding.lk" [ref=e306] [cursor=pointer]:
+              - /url: /
+              - img [ref=e308] [cursor=pointer]
+              - generic [ref=e310] [cursor=pointer]: Wedding.lk
+            - paragraph [ref=e311]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+            - generic [ref=e312]:
+              - button [ref=e313] [cursor=pointer]:
+                - img
+              - button [ref=e314] [cursor=pointer]:
+                - img
+              - button [ref=e315] [cursor=pointer]:
+                - img
+              - button [ref=e316] [cursor=pointer]:
+                - img
+          - generic [ref=e317]:
+            - heading "Services" [level=3] [ref=e318]
+            - list [ref=e319]:
+              - listitem [ref=e320]:
+                - link "Venues" [ref=e321] [cursor=pointer]:
+                  - /url: /venues
+              - listitem [ref=e322]:
+                - link "Vendors" [ref=e323] [cursor=pointer]:
+                  - /url: /vendors
+              - listitem [ref=e324]:
+                - link "Planning Tools" [ref=e325] [cursor=pointer]:
+                  - /url: /planning
+              - listitem [ref=e326]:
+                - link "Gallery" [ref=e327] [cursor=pointer]:
+                  - /url: /gallery
+          - generic [ref=e328]:
+            - heading "Company" [level=3] [ref=e329]
+            - list [ref=e330]:
+              - listitem [ref=e331]:
+                - link "About" [ref=e332] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e333]:
+                - link "Contact" [ref=e334] [cursor=pointer]:
+                  - /url: /contact
+              - listitem [ref=e335]:
+                - link "Privacy" [ref=e336] [cursor=pointer]:
+                  - /url: /privacy
+              - listitem [ref=e337]:
+                - link "Terms" [ref=e338] [cursor=pointer]:
+                  - /url: /terms
+        - paragraph [ref=e340]: © 2024 Wedding.lk. All rights reserved.
+  - region "Notifications alt+T"
+  - alert [ref=e341]
+```
