@@ -15,8 +15,8 @@ export default function PaymentSuccessPage() {
             <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
               View Booking Details
             </button>
-          </div>
-        </div>
+                </div>
+              </div>
       </div>
     </div>
   )
