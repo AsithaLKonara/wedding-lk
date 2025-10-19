@@ -349,7 +349,7 @@ export default function VenuesPage() {
                       <div className="relative">
                         <img
                           src={venue.images[0]}
-                          alt={venue.name}
+                          alt={`${venue.name} - Wedding venue in ${venue.location}`}
                           className="w-full h-48 object-cover"
                         />
                         {venue.featured && (
@@ -431,7 +431,7 @@ export default function VenuesPage() {
                         <div className="relative w-48 h-32 flex-shrink-0">
                           <img
                             src={venue.images[0]}
-                            alt={venue.name}
+                            alt={`${venue.name} - Wedding venue in ${venue.location}`}
                             className="w-full h-full object-cover"
                           />
                           {venue.featured && (
