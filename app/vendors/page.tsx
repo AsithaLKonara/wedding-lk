@@ -1,499 +1,438 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Search, Filter, MapPin, Users, Star, Heart, Share2, Camera, Music, Utensils, Flower } from "lucide-react"
+import { Search, MapPin, Star, Heart, Share2, Filter, Grid, List, Camera, Music, Utensils, Car } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import Link from "next/link"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function VendorsPage() {
   const [vendors, setVendors] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('all')
-  const [selectedLocation, setSelectedLocation] = useState('all')
-  const [priceRange, setPriceRange] = useState([0, 200000])
-  const [favorites, setFavorites] = useState<number[]>([])
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
-
-  const categories = [
-    { id: 'all', name: 'All', icon: null },
-    { id: 'photography', name: 'Photography', icon: Camera },
-    { id: 'music', name: 'Music & DJ', icon: Music },
-    { id: 'catering', name: 'Catering', icon: Utensils },
-    { id: 'flowers', name: 'Flowers', icon: Flower },
-    { id: 'decorations', name: 'Decorations', icon: null },
-    { id: 'transportation', name: 'Transportation', icon: null },
-    { id: 'makeup', name: 'Makeup & Hair', icon: null },
-    { id: 'planning', name: 'Planning', icon: null }
-  ]
-
-  const locations = [
-    'all', 'colombo', 'kandy', 'galle', 'bentota', 'nuwara-eliya', 'anuradhapura', 'polonnaruwa'
-  ]
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("")
+  const [selectedLocation, setSelectedLocation] = useState("")
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [favorites, setFavorites] = useState<Set<string>>(new Set())
 
   useEffect(() => {
-    // Mock vendor data - replace with API call
-    const mockVendors = [
-      {
-        id: 1,
-        name: "Elegant Photography Studio",
-        category: "photography",
-        location: "colombo",
-        address: "123 Galle Road, Colombo 03",
-        rating: 4.8,
-        reviewCount: 127,
-        priceRange: [50000, 150000],
-        experience: "8+ years",
-        portfolio: ["https://images.unsplash.com/photo-1519167758481-83f29c0c0b8a?w=400&h=300&fit=crop"],
-        featured: true,
-        description: "Professional wedding photography with a modern artistic approach."
-      },
-      {
-        id: 2,
-        name: "Blissful Blooms",
-        category: "flowers",
-        location: "kandy",
-        address: "45 Temple Road, Kandy",
-        rating: 4.9,
-        reviewCount: 89,
-        priceRange: [30000, 100000],
-        experience: "12+ years",
-        portfolio: ["https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=300&fit=crop"],
-        featured: false,
-        description: "Beautiful floral arrangements with fresh, locally sourced flowers."
-      },
-      {
-        id: 3,
-        name: "Royal Catering Services",
-        category: "catering",
-        location: "colombo",
-        address: "78 Main Street, Colombo 02",
-        rating: 4.7,
-        reviewCount: 156,
-        priceRange: [40000, 120000],
-        experience: "15+ years",
-        portfolio: ["https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=300&fit=crop"],
-        featured: true,
-        description: "Premium catering services with authentic Sri Lankan and international cuisine."
-      },
-      {
-        id: 4,
-        name: "Melody Masters",
-        category: "music",
-        location: "colombo",
-        address: "56 Music Lane, Colombo 05",
-        rating: 4.6,
-        reviewCount: 73,
-        priceRange: [25000, 80000],
-        experience: "10+ years",
-        portfolio: ["https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400&h=300&fit=crop"],
-        featured: false,
-        description: "Professional DJ and live music services for all wedding celebrations."
-      },
-      {
-        id: 5,
-        name: "Glamour Makeup Studio",
-        category: "makeup",
-        location: "kandy",
-        address: "34 Beauty Street, Kandy",
-        rating: 4.8,
-        reviewCount: 94,
-        priceRange: [15000, 50000],
-        experience: "6+ years",
-        portfolio: ["https://images.unsplash.com/photo-1519167758481-83f29c0c0b8a?w=400&h=300&fit=crop"],
-        featured: true,
-        description: "Professional makeup and hair styling for brides and wedding parties."
-      },
-      {
-        id: 6,
-        name: "Dream Decorations",
-        category: "decorations",
-        location: "colombo",
-        address: "89 Decor Avenue, Colombo 04",
-        rating: 4.7,
-        reviewCount: 112,
-        priceRange: [35000, 90000],
-        experience: "9+ years",
-        portfolio: ["https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=300&fit=crop"],
-        featured: false,
-        description: "Creative wedding decorations and event styling services."
-      }
-    ]
-    
-    // Simulate API call delay
-    setTimeout(() => {
+    // Simulate API call with timeout
+    const timer = setTimeout(() => {
+      const mockVendors = [
+        {
+          id: "1",
+          name: "Perfect Moments Photography",
+          category: "Photography",
+          location: "Colombo",
+          rating: 4.9,
+          reviews: 156,
+          price: "LKR 75,000 - 150,000",
+          image: "/placeholder.svg?height=300&width=400",
+          description: "Award-winning wedding photographers specializing in candid and artistic shots.",
+          services: ["Wedding Photography", "Engagement Shoots", "Pre-wedding", "Post-wedding"],
+          availability: "Available"
+        },
+        {
+          id: "2",
+          name: "Melody Makers DJ",
+          category: "Entertainment",
+          location: "Kandy",
+          rating: 4.8,
+          reviews: 89,
+          price: "LKR 50,000 - 100,000",
+          image: "/placeholder.svg?height=300&width=400",
+          description: "Professional DJ services with state-of-the-art sound systems and lighting.",
+          services: ["DJ Services", "Sound System", "Lighting", "MC Services"],
+          availability: "Available"
+        },
+        {
+          id: "3",
+          name: "Dream Catering",
+          category: "Catering",
+          location: "Galle",
+          rating: 4.7,
+          reviews: 124,
+          price: "LKR 2,500 - 5,000",
+          image: "/placeholder.svg?height=300&width=400",
+          description: "Premium catering services with traditional and international cuisine options.",
+          services: ["Traditional Cuisine", "International Menu", "Beverages", "Service Staff"],
+          availability: "Limited"
+        },
+        {
+          id: "4",
+          name: "Luxury Transport",
+          category: "Transportation",
+          location: "Colombo",
+          rating: 4.6,
+          reviews: 67,
+          price: "LKR 25,000 - 75,000",
+          image: "/placeholder.svg?height=300&width=400",
+          description: "Elegant transportation services for your special day with luxury vehicles.",
+          services: ["Wedding Cars", "Guest Transport", "Airport Transfer", "City Tours"],
+          availability: "Available"
+        },
+        {
+          id: "5",
+          name: "Blissful Blooms",
+          category: "Floral Design",
+          location: "Bentota",
+          rating: 4.8,
+          reviews: 92,
+          price: "LKR 15,000 - 50,000",
+          image: "/placeholder.svg?height=300&width=400",
+          description: "Creative floral arrangements and decorations for your wedding day.",
+          services: ["Bridal Bouquets", "Ceremony Decor", "Reception Centerpieces", "Venue Styling"],
+          availability: "Available"
+        },
+        {
+          id: "6",
+          name: "Elegant Makeup Studio",
+          category: "Beauty & Makeup",
+          location: "Colombo",
+          rating: 4.9,
+          reviews: 178,
+          price: "LKR 12,000 - 25,000",
+          image: "/placeholder.svg?height=300&width=400",
+          description: "Professional makeup artists specializing in bridal and wedding party styling.",
+          services: ["Bridal Makeup", "Hair Styling", "Bridal Party", "Trial Sessions"],
+          availability: "Limited"
+        }
+      ]
       setVendors(mockVendors)
-      setLoading(false)
-    }, 1000)
+    }, 100)
+
+    return () => clearTimeout(timer)
   }, [])
 
   const filteredVendors = vendors.filter(vendor => {
     const matchesSearch = vendor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         vendor.description.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = selectedCategory === 'all' || vendor.category === selectedCategory
-    const matchesLocation = selectedLocation === 'all' || vendor.location === selectedLocation
-    const matchesPrice = vendor.priceRange[0] >= priceRange[0] && vendor.priceRange[1] <= priceRange[1]
+                         vendor.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         vendor.location.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesCategory = !selectedCategory || vendor.category === selectedCategory
+    const matchesLocation = !selectedLocation || vendor.location.includes(selectedLocation)
     
-    return matchesSearch && matchesCategory && matchesLocation && matchesPrice
+    return matchesSearch && matchesCategory && matchesLocation
   })
 
-  const toggleFavorite = (id: number) => {
-    setFavorites(prev => 
-      prev.includes(id) 
-        ? prev.filter(fav => fav !== id)
-        : [...prev, id]
-    )
+  const toggleFavorite = (vendorId: string) => {
+    const newFavorites = new Set(favorites)
+    if (newFavorites.has(vendorId)) {
+      newFavorites.delete(vendorId)
+    } else {
+      newFavorites.add(vendorId)
+    }
+    setFavorites(newFavorites)
   }
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-8">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-8"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
-                  <div className="h-48 bg-gray-200 dark:bg-gray-700"></div>
-                  <div className="p-6">
-                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
-                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
-                    <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+  const categories = ["Photography", "Entertainment", "Catering", "Transportation", "Floral Design", "Beauty & Makeup"]
+  const locations = ["Colombo", "Kandy", "Galle", "Bentota", "Nuwara Eliya"]
+
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case "Photography": return Camera
+      case "Entertainment": return Music
+      case "Catering": return Utensils
+      case "Transportation": return Car
+      default: return Star
+    }
   }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Simple Header */}
-      <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md dark:bg-gray-900/95 border-b border-gray-200 dark:border-gray-700">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <Link href="/" className="flex items-center space-x-2">
-              <Heart className="h-8 w-8 text-rose-500 fill-current" />
-              <span className="text-xl font-bold text-gray-900 dark:text-white">Wedding.lk</span>
-            </Link>
+      {/* Header */}
+      <header className="bg-white dark:bg-gray-800 shadow-sm">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                Wedding Vendors
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400 mt-2">
+                Find the best wedding vendors for your special day
+              </p>
+            </div>
             
-            <nav className="hidden lg:block">
-              <div className="flex justify-center space-x-8 px-4 sm:px-6 lg:px-8">
-                <Link href="/venues" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">Venues</Link>
-                <Link href="/vendors" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">Vendors</Link>
-                <Link href="/feed" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">Feed</Link>
-                <Link href="/gallery" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">Gallery</Link>
-                <Link href="/ai-search" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">AI Search</Link>
-                <Link href="/chat" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">Chat</Link>
-                <Link href="/about" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">About</Link>
-              </div>
-            </nav>
-            
-            <div className="flex items-center space-x-3">
-              <div className="hidden md:flex items-center space-x-2">
-                <Link href="/login" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Sign In</Link>
-                <Link href="/register" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700">Get Started</Link>
+            {/* Search Bar */}
+            <div className="flex-1 max-w-md">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  type="text"
+                  placeholder="Search vendors, categories, or locations..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="flex-1">
-        {/* Header Section */}
-        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-          <div className="container mx-auto px-4 py-8">
-            <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                Find Your Perfect Vendors
-              </h1>
-              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Discover talented wedding vendors across Sri Lanka. From photographers to caterers, 
-                find the perfect professionals to make your wedding day unforgettable.
-              </p>
-            </div>
-
-            {/* Search Bar */}
-            <div className="flex flex-col lg:flex-row gap-4 mb-6">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  placeholder="Search vendors by name, category, or description..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Filters Sidebar */}
+          <div className="lg:w-1/4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 sticky top-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                Filter Vendors
+              </h3>
               
-              <div className="flex gap-2">
-                <Button
-                  variant={viewMode === 'grid' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setViewMode('grid')}
+              {/* Category Filter */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Category
+                </label>
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 >
-                  Grid
-                </Button>
-                <Button
-                  variant={viewMode === 'list' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setViewMode('list')}
-                >
-                  List
-                </Button>
+                  <option value="">All Categories</option>
+                  {categories.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
               </div>
-            </div>
 
-            {/* Category Filters */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {categories.map((category) => {
-                const IconComponent = category.icon
-                return (
-                  <Button
-                    key={category.id}
-                    variant={selectedCategory === category.id ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setSelectedCategory(category.id)}
-                    className="capitalize"
-                  >
-                    {IconComponent && <IconComponent className="w-4 h-4 mr-2" />}
-                    {category.name}
-                  </Button>
-                )
-              })}
-            </div>
-
-            {/* Location Filters */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {locations.map((location) => (
-                <Button
-                  key={location}
-                  variant={selectedLocation === location ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSelectedLocation(location)}
-                  className="capitalize"
+              {/* Location Filter */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Location
+                </label>
+                <select
+                  value={selectedLocation}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
+                  className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 >
-                  {location.replace('-', ' ')}
-                </Button>
-              ))}
-            </div>
-          </div>
-        </div>
+                  <option value="">All Locations</option>
+                  {locations.map(location => (
+                    <option key={location} value={location}>{location}</option>
+                  ))}
+                </select>
+              </div>
 
-        {/* Content */}
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex justify-between items-center mb-6">
-            <p className="text-gray-600 dark:text-gray-400">
-              Showing {filteredVendors.length} of {vendors.length} vendors
-            </p>
-          </div>
-
-          {viewMode === 'grid' ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredVendors.map((vendor) => (
-                <div key={vendor.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                  <div className="relative">
-                    <img
-                      src={vendor.portfolio[0]}
-                      alt={`${vendor.name} - ${vendor.category} vendor`}
-                      className="w-full h-48 object-cover"
-                    />
-                    {vendor.featured && (
-                      <Badge className="absolute top-2 left-2 bg-red-500">
-                        Featured
-                      </Badge>
-                    )}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="absolute top-2 right-2 bg-white/80 hover:bg-white"
-                      onClick={() => toggleFavorite(vendor.id)}
-                    >
-                      <Heart 
-                        className={`w-4 h-4 ${favorites.includes(vendor.id) ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} 
-                      />
-                    </Button>
-                  </div>
-                  
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                        {vendor.name}
-                      </h3>
-                      <Badge variant="secondary" className="capitalize">
-                        {vendor.category}
-                      </Badge>
-                    </div>
-                    
-                    <div className="flex items-center text-gray-600 dark:text-gray-400 text-sm mb-2">
-                      <MapPin className="w-4 h-4 mr-1" />
-                      {vendor.address}
-                    </div>
-                    
-                    <div className="flex justify-between items-center mb-3">
-                      <div className="flex items-center">
-                        <Star className="w-4 h-4 text-yellow-500 mr-1" />
-                        <span className="text-gray-600 dark:text-gray-400 text-sm">
-                          {vendor.rating} ({vendor.reviewCount} reviews)
-                        </span>
-                      </div>
-                      <span className="text-blue-600 font-medium text-sm">
-                        {vendor.experience}
-                      </span>
-                    </div>
-                    
-                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-                      {vendor.description}
-                    </p>
-                    
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-green-600 font-medium">
-                        LKR {vendor.priceRange[0].toLocaleString()} - {vendor.priceRange[1].toLocaleString()}
-                      </span>
-                    </div>
-                    
-                    <div className="flex gap-2">
-                      <Button size="sm" className="flex-1">
-                        View Profile
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Share2 className="w-3 h-3" />
-                      </Button>
-                    </div>
+              {/* Price Range */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Price Range (LKR)
+                </label>
+                <div className="space-y-2">
+                  <input
+                    type="range"
+                    min="0"
+                    max="200000"
+                    step="10000"
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                    <span>LKR 0</span>
+                    <span>LKR 200,000</span>
                   </div>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {filteredVendors.map((vendor) => (
-                <div key={vendor.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                  <div className="flex">
-                    <div className="relative w-48 h-32 flex-shrink-0">
-                      <img
-                        src={vendor.portfolio[0]}
-                        alt={`${vendor.name} - ${vendor.category} vendor`}
-                        className="w-full h-full object-cover"
-                      />
-                      {vendor.featured && (
-                        <Badge className="absolute top-2 left-2 bg-red-500 text-xs">
-                          Featured
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    <div className="flex-1 p-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                            {vendor.name}
-                          </h3>
-                          <Badge variant="secondary" className="capitalize text-xs">
-                            {vendor.category}
-                          </Badge>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => toggleFavorite(vendor.id)}
-                        >
-                          <Heart 
-                            className={`w-4 h-4 ${favorites.includes(vendor.id) ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} 
-                          />
-                        </Button>
-                      </div>
-                      
-                      <div className="flex items-center text-gray-600 dark:text-gray-400 text-sm mb-1">
-                        <MapPin className="w-3 h-3 mr-1" />
-                        {vendor.address}
-                      </div>
-                      
-                      <div className="flex justify-between items-center mb-2">
-                        <div className="flex items-center">
-                          <Star className="w-3 h-3 text-yellow-500 mr-1" />
-                          <span className="text-gray-600 dark:text-gray-400 text-sm">
-                            {vendor.rating} ({vendor.reviewCount} reviews)
-                          </span>
-                        </div>
-                        <span className="text-blue-600 font-medium text-sm">
-                          {vendor.experience}
-                        </span>
-                      </div>
-                      
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">
-                        {vendor.description}
-                      </p>
-                      
-                      <div className="flex justify-between items-center">
-                        <span className="text-green-600 font-medium text-sm">
-                          LKR {vendor.priceRange[0].toLocaleString()} - {vendor.priceRange[1].toLocaleString()}
-                        </span>
-                        <Button size="sm">View Profile</Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+              </div>
 
-          {filteredVendors.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-500 dark:text-gray-400 text-lg">
-                No vendors found matching your criteria.
-              </p>
-              <Button 
-                variant="outline" 
-                className="mt-4"
-                onClick={() => {
-                  setSearchQuery('')
-                  setSelectedCategory('all')
-                  setSelectedLocation('all')
-                  setPriceRange([0, 200000])
-                }}
-              >
-                Clear All Filters
+              <Button className="w-full">
+                <Filter className="h-4 w-4 mr-2" />
+                Apply Filters
               </Button>
             </div>
-          )}
-        </div>
-      </main>
+          </div>
 
-      {/* Simple Footer */}
-      <footer className="bg-gray-900 text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Vendors Grid/List */}
+          <div className="lg:w-3/4">
+            <div className="flex justify-between items-center mb-6">
+              <p className="text-gray-600 dark:text-gray-400">
+                Showing {filteredVendors.length} of {vendors.length} vendors
+              </p>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant={viewMode === "grid" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setViewMode("grid")}
+                >
+                  <Grid className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant={viewMode === "list" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setViewMode("list")}
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+
+            <AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className={viewMode === "grid" 
+                  ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+                  : "space-y-6"
+                }
+              >
+                {filteredVendors.map((vendor, index) => {
+                  const CategoryIcon = getCategoryIcon(vendor.category)
+                  return (
+                    <motion.div
+                      key={vendor.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-200 ${
+                        viewMode === "list" ? "flex" : ""
+                      }`}
+                    >
+                      <div className={`relative ${viewMode === "list" ? "w-1/3" : "w-full"}`}>
+                        <img
+                          src={vendor.image}
+                          alt={vendor.name}
+                          className={`object-cover ${viewMode === "list" ? "h-48" : "h-48 w-full"}`}
+                        />
+                        <button
+                          onClick={() => toggleFavorite(vendor.id)}
+                          className="absolute top-3 right-3 p-2 bg-white dark:bg-gray-800 rounded-full shadow-sm hover:shadow-md transition-shadow"
+                        >
+                          <Heart 
+                            className={`h-4 w-4 ${
+                              favorites.has(vendor.id) 
+                                ? "fill-red-500 text-red-500" 
+                                : "text-gray-400 hover:text-red-500"
+                            }`} 
+                          />
+                        </button>
+                        <Badge 
+                          variant={vendor.availability === "Available" ? "default" : "secondary"}
+                          className="absolute top-3 left-3"
+                        >
+                          {vendor.availability}
+                        </Badge>
+                        <div className="absolute bottom-3 left-3">
+                          <div className="flex items-center bg-white dark:bg-gray-800 rounded-lg px-2 py-1 shadow-sm">
+                            <CategoryIcon className="h-4 w-4 text-gray-600 dark:text-gray-400 mr-1" />
+                            <span className="text-xs font-medium text-gray-900 dark:text-white">
+                              {vendor.category}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className={`p-6 ${viewMode === "list" ? "flex-1" : ""}`}>
+                        <div className="flex items-start justify-between mb-2">
+                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                            {vendor.name}
+                          </h3>
+                          <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                            <Share2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                        
+                        <div className="flex items-center text-gray-600 dark:text-gray-400 mb-2">
+                          <MapPin className="h-4 w-4 mr-1" />
+                          <span>{vendor.location}</span>
+                        </div>
+                        
+                        <div className="flex items-center mb-3">
+                          <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
+                          <span className="text-sm font-medium text-gray-900 dark:text-white">
+                            {vendor.rating}
+                          </span>
+                          <span className="text-sm text-gray-600 dark:text-gray-400 ml-1">
+                            ({vendor.reviews} reviews)
+                          </span>
+                        </div>
+                        
+                        <p className="text-gray-700 dark:text-gray-300 mb-4 text-sm">
+                          {vendor.description}
+                        </p>
+                        
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {vendor.services.slice(0, 2).map(service => (
+                            <Badge key={service} variant="secondary" className="text-xs">
+                              {service}
+                            </Badge>
+                          ))}
+                          {vendor.services.length > 2 && (
+                            <Badge variant="outline" className="text-xs">
+                              +{vendor.services.length - 2} more
+                            </Badge>
+                          )}
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                              {vendor.price}
+                            </p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                              per service
+                            </p>
+                          </div>
+                          <Button>
+                            View Details
+                          </Button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )
+                })}
+              </motion.div>
+            </AnimatePresence>
+
+            {filteredVendors.length === 0 && (
+              <div className="text-center py-12">
+                <div className="text-gray-400 mb-4">
+                  <Search className="h-12 w-12 mx-auto" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                  No vendors found
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Try adjusting your search criteria or filters
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12 mt-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <Link href="/" className="flex items-center space-x-2">
-                <Heart className="h-8 w-8 text-rose-500 fill-current" />
-                <span className="text-xl font-bold text-white">Wedding.lk</span>
-              </Link>
-              <p className="mt-4 text-gray-400 max-w-md">
-                Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Wedding.lk</h3>
+              <p className="text-gray-400 text-sm">
+                Your one-stop destination for planning the perfect wedding in Sri Lanka.
               </p>
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-4">Services</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/venues" className="hover:text-white transition-colors">Venues</Link></li>
-                <li><Link href="/vendors" className="hover:text-white transition-colors">Vendors</Link></li>
-                <li><Link href="/planning" className="hover:text-white transition-colors">Planning Tools</Link></li>
-                <li><Link href="/gallery" className="hover:text-white transition-colors">Gallery</Link></li>
+              <h4 className="font-medium mb-4">Services</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>Venues</li>
+                <li>Vendors</li>
+                <li>Planning Tools</li>
+                <li>Inspiration</li>
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
-                <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link></li>
-                <li><Link href="/terms" className="hover:text-white transition-colors">Terms</Link></li>
+              <h4 className="font-medium mb-4">Support</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>Help Center</li>
+                <li>Contact Us</li>
+                <li>FAQ</li>
+                <li>Community</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium mb-4">Connect</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>Facebook</li>
+                <li>Instagram</li>
+                <li>Twitter</li>
+                <li>YouTube</li>
               </ul>
             </div>
           </div>

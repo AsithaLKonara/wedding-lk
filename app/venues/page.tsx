@@ -1,591 +1,439 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Search, Filter, MapPin, Users, Star, Heart, Share2 } from "lucide-react"
+import { Search, MapPin, Users, Star, Heart, Share2, Filter, Grid, List } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import Link from "next/link"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function VenuesPage() {
   const [venues, setVenues] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedLocation, setSelectedLocation] = useState('all')
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedLocation, setSelectedLocation] = useState("")
+  const [selectedCapacity, setSelectedCapacity] = useState("")
   const [priceRange, setPriceRange] = useState([0, 500000])
-  const [capacityRange, setCapacityRange] = useState([0, 500])
-  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([])
-  const [favorites, setFavorites] = useState<number[]>([])
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
-
-  const locations = [
-    'all', 'colombo', 'kandy', 'galle', 'bentota', 'nuwara-eliya', 'anuradhapura', 'polonnaruwa'
-  ]
-
-  const amenities = [
-    'parking', 'air-conditioning', 'catering', 'decorations', 'sound-system', 
-    'photography', 'bridal-suite', 'garden', 'beach-access', 'traditional-hall'
-  ]
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [favorites, setFavorites] = useState<Set<string>>(new Set())
 
   useEffect(() => {
-    // Mock venue data - replace with API call
-    const mockVenues = [
-      {
-        id: 1,
-        name: "Grand Ballroom Hotel",
-        location: "colombo",
-        address: "123 Galle Road, Colombo 03",
-        capacity: 300,
-        priceRange: [150000, 250000],
-        rating: 4.8,
-        reviewCount: 127,
-        amenities: ['parking', 'air-conditioning', 'catering', 'sound-system'],
-        images: ["https://images.unsplash.com/photo-1519167758481-83f29c0c0b8a?w=400&h=300&fit=crop"],
-        featured: true,
-        description: "Elegant ballroom with panoramic city views, perfect for grand celebrations."
-      },
-      {
-        id: 2,
-        name: "Garden Paradise Resort",
-        location: "kandy",
-        address: "45 Temple Road, Kandy",
-        capacity: 250,
-        priceRange: [120000, 200000],
-        rating: 4.9,
-        reviewCount: 89,
-        amenities: ['garden', 'parking', 'catering', 'decorations', 'bridal-suite'],
-        images: ["https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=300&fit=crop"],
-        featured: false,
-        description: "Beautiful garden setting with traditional architecture and modern amenities."
-      },
-      {
-        id: 3,
-        name: "Beachfront Villa",
-        location: "bentota",
-        address: "Beach Road, Bentota",
-        capacity: 200,
-        priceRange: [100000, 180000],
-        rating: 4.7,
-        reviewCount: 156,
-        amenities: ['beach-access', 'parking', 'air-conditioning', 'photography'],
-        images: ["https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=300&fit=crop"],
-        featured: true,
-        description: "Stunning beachfront location with ocean views and tropical atmosphere."
-      },
-      {
-        id: 4,
-        name: "Traditional Kandyan Hall",
-        location: "kandy",
-        address: "78 Peradeniya Road, Kandy",
-        capacity: 400,
-        priceRange: [80000, 150000],
-        rating: 4.6,
-        reviewCount: 203,
-        amenities: ['traditional-hall', 'parking', 'sound-system', 'decorations'],
-        images: ["https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400&h=300&fit=crop"],
-        featured: false,
-        description: "Authentic traditional venue with cultural significance and heritage charm."
-      },
-      {
-        id: 5,
-        name: "Luxury Colombo Hotel",
-        location: "colombo",
-        address: "200 Independence Avenue, Colombo 07",
-        capacity: 500,
-        priceRange: [200000, 400000],
-        rating: 4.9,
-        reviewCount: 95,
-        amenities: ['parking', 'air-conditioning', 'catering', 'bridal-suite', 'sound-system'],
-        images: ["https://images.unsplash.com/photo-1519167758481-83f29c0c0b8a?w=400&h=300&fit=crop"],
-        featured: true,
-        description: "Premium luxury hotel with world-class facilities and impeccable service."
-      },
-      {
-        id: 6,
-        name: "Hill Country Estate",
-        location: "nuwara-eliya",
-        address: "Estate Road, Nuwara Eliya",
-        capacity: 150,
-        priceRange: [90000, 160000],
-        rating: 4.8,
-        reviewCount: 67,
-        amenities: ['garden', 'parking', 'catering', 'photography'],
-        images: ["https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=300&fit=crop"],
-        featured: false,
-        description: "Charming hill country estate with cool climate and scenic mountain views."
-      }
-    ]
-    
-    // Simulate API call delay
-    setTimeout(() => {
+    // Simulate API call with timeout
+    const timer = setTimeout(() => {
+      const mockVenues = [
+        {
+          id: "1",
+          name: "Grand Ballroom Hotel",
+          location: "Colombo 07",
+          capacity: "500-1000",
+          price: "LKR 450,000 - 800,000",
+          rating: 4.8,
+          reviews: 124,
+          image: "/placeholder.svg?height=300&width=400",
+          description: "Elegant ballroom with crystal chandeliers and marble floors, perfect for grand weddings.",
+          amenities: ["Air Conditioning", "Parking", "Catering", "Sound System"],
+          availability: "Available"
+        },
+        {
+          id: "2", 
+          name: "Beachfront Bliss Resort",
+          location: "Bentota",
+          capacity: "200-400",
+          price: "LKR 300,000 - 600,000",
+          rating: 4.9,
+          reviews: 89,
+          image: "/placeholder.svg?height=300&width=400",
+          description: "Stunning beachfront venue with ocean views and tropical gardens.",
+          amenities: ["Beach Access", "Garden", "Catering", "Photography Spots"],
+          availability: "Available"
+        },
+        {
+          id: "3",
+          name: "Garden Pavilion",
+          location: "Kandy",
+          capacity: "150-300",
+          price: "LKR 200,000 - 400,000", 
+          rating: 4.7,
+          reviews: 67,
+          image: "/placeholder.svg?height=300&width=400",
+          description: "Beautiful garden venue surrounded by lush greenery and mountain views.",
+          amenities: ["Garden", "Parking", "Catering", "Natural Scenery"],
+          availability: "Limited"
+        },
+        {
+          id: "4",
+          name: "Royal Palace Hall",
+          location: "Galle",
+          capacity: "300-600",
+          price: "LKR 350,000 - 700,000",
+          rating: 4.6,
+          reviews: 92,
+          image: "/placeholder.svg?height=300&width=400",
+          description: "Historic venue with colonial architecture and traditional charm.",
+          amenities: ["Historic Setting", "Air Conditioning", "Parking", "Cultural Heritage"],
+          availability: "Available"
+        },
+        {
+          id: "5",
+          name: "Mountain View Resort",
+          location: "Nuwara Eliya",
+          capacity: "100-250",
+          price: "LKR 250,000 - 500,000",
+          rating: 4.8,
+          reviews: 45,
+          image: "/placeholder.svg?height=300&width=400",
+          description: "Scenic mountain venue with cool climate and breathtaking views.",
+          amenities: ["Mountain Views", "Cool Climate", "Parking", "Natural Beauty"],
+          availability: "Available"
+        },
+        {
+          id: "6",
+          name: "Luxury City Venue",
+          location: "Colombo 03",
+          capacity: "400-800",
+          price: "LKR 500,000 - 1,000,000",
+          rating: 4.9,
+          reviews: 156,
+          image: "/placeholder.svg?height=300&width=400",
+          description: "Premium urban venue with modern amenities and city skyline views.",
+          amenities: ["City Views", "Air Conditioning", "Valet Parking", "Premium Catering"],
+          availability: "Limited"
+        }
+      ]
       setVenues(mockVenues)
-      setLoading(false)
-    }, 1000)
+    }, 100)
+
+    return () => clearTimeout(timer)
   }, [])
 
   const filteredVenues = venues.filter(venue => {
     const matchesSearch = venue.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         venue.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         venue.description.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesLocation = selectedLocation === 'all' || venue.location === selectedLocation
-    const matchesPrice = venue.priceRange[0] >= priceRange[0] && venue.priceRange[1] <= priceRange[1]
-    const matchesCapacity = venue.capacity >= capacityRange[0] && venue.capacity <= capacityRange[1]
-    const matchesAmenities = selectedAmenities.length === 0 || 
-                           selectedAmenities.every(amenity => venue.amenities.includes(amenity))
+                         venue.location.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesLocation = !selectedLocation || venue.location.includes(selectedLocation)
+    const matchesCapacity = !selectedCapacity || venue.capacity.includes(selectedCapacity)
     
-    return matchesSearch && matchesLocation && matchesPrice && matchesCapacity && matchesAmenities
+    return matchesSearch && matchesLocation && matchesCapacity
   })
 
-  const toggleFavorite = (id: number) => {
-    setFavorites(prev => 
-      prev.includes(id) 
-        ? prev.filter(fav => fav !== id)
-        : [...prev, id]
-    )
+  const toggleFavorite = (venueId: string) => {
+    const newFavorites = new Set(favorites)
+    if (newFavorites.has(venueId)) {
+      newFavorites.delete(venueId)
+    } else {
+      newFavorites.add(venueId)
+    }
+    setFavorites(newFavorites)
   }
 
-  const toggleAmenity = (amenity: string) => {
-    setSelectedAmenities(prev => 
-      prev.includes(amenity)
-        ? prev.filter(a => a !== amenity)
-        : [...prev, amenity]
-    )
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 py-8">
-          <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
-            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-8"></div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
-                  <div className="h-48 bg-gray-200 dark:bg-gray-700"></div>
-                  <div className="p-6">
-                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
-                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
-                    <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  const locations = ["Colombo", "Bentota", "Kandy", "Galle", "Nuwara Eliya"]
+  const capacities = ["100-250", "200-400", "300-600", "400-800", "500-1000"]
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Simple Header */}
-      <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md dark:bg-gray-900/95 border-b border-gray-200 dark:border-gray-700">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <Link href="/" className="flex items-center space-x-2">
-              <Heart className="h-8 w-8 text-rose-500 fill-current" />
-              <span className="text-xl font-bold text-gray-900 dark:text-white">Wedding.lk</span>
-            </Link>
+      {/* Header */}
+      <header className="bg-white dark:bg-gray-800 shadow-sm">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                Wedding Venues
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400 mt-2">
+                Find the perfect venue for your special day
+              </p>
+            </div>
             
-            <nav className="hidden lg:block">
-              <div className="flex justify-center space-x-8 px-4 sm:px-6 lg:px-8">
-                <Link href="/venues" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">Venues</Link>
-                <Link href="/vendors" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">Vendors</Link>
-                <Link href="/feed" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">Feed</Link>
-                <Link href="/gallery" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">Gallery</Link>
-                <Link href="/ai-search" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">AI Search</Link>
-                <Link href="/chat" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">Chat</Link>
-                <Link href="/about" className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors">About</Link>
-              </div>
-            </nav>
-            
-            <div className="flex items-center space-x-3">
-              <div className="hidden md:flex items-center space-x-2">
-                <Link href="/login" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Sign In</Link>
-                <Link href="/register" className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700">Get Started</Link>
+            {/* Search Bar */}
+            <div className="flex-1 max-w-md">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  type="text"
+                  placeholder="Search venues or locations..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="flex-1">
-        {/* Header Section */}
-        <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-          <div className="container mx-auto px-4 py-8">
-            <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                Find Your Perfect Venue
-              </h1>
-              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Discover beautiful wedding venues across Sri Lanka. From beachfront locations 
-                to traditional halls, find the perfect setting for your special day.
-              </p>
-            </div>
-
-            {/* Search Bar */}
-            <div className="flex flex-col lg:flex-row gap-4 mb-6">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  placeholder="Search venues by name, location, or description..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Filters Sidebar */}
+          <div className="lg:w-1/4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 sticky top-4">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                Filter Venues
+              </h3>
               
-              <div className="flex gap-2">
-                <Button
-                  variant={viewMode === 'grid' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setViewMode('grid')}
+              {/* Location Filter */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Location
+                </label>
+                <select
+                  value={selectedLocation}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
+                  className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 >
-                  Grid
-                </Button>
-                <Button
-                  variant={viewMode === 'list' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setViewMode('list')}
-                >
-                  List
-                </Button>
+                  <option value="">All Locations</option>
+                  {locations.map(location => (
+                    <option key={location} value={location}>{location}</option>
+                  ))}
+                </select>
               </div>
-            </div>
 
-            {/* Location Filters */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {locations.map((location) => (
-                <Button
-                  key={location}
-                  variant={selectedLocation === location ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSelectedLocation(location)}
-                  className="capitalize"
+              {/* Capacity Filter */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Capacity
+                </label>
+                <select
+                  value={selectedCapacity}
+                  onChange={(e) => setSelectedCapacity(e.target.value)}
+                  className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 >
-                  {location.replace('-', ' ')}
-                </Button>
-              ))}
+                  <option value="">Any Capacity</option>
+                  {capacities.map(capacity => (
+                    <option key={capacity} value={capacity}>{capacity} guests</option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Price Range */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Price Range (LKR)
+                </label>
+                <div className="space-y-2">
+                  <input
+                    type="range"
+                    min="0"
+                    max="1000000"
+                    step="50000"
+                    value={priceRange[1]}
+                    onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                    <span>LKR {priceRange[0].toLocaleString()}</span>
+                    <span>LKR {priceRange[1].toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Amenities Filter */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Amenities
+                </label>
+                <div className="space-y-2">
+                  {["Air Conditioning", "Parking", "Catering", "Garden", "Beach Access"].map(amenity => (
+                    <label key={amenity} className="flex items-center">
+                      <input type="checkbox" className="mr-2" />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">{amenity}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <Button className="w-full">
+                <Filter className="h-4 w-4 mr-2" />
+                Apply Filters
+              </Button>
             </div>
           </div>
-        </div>
 
-        {/* Filters Sidebar and Content */}
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Filters Sidebar */}
-            <div className="lg:w-1/4">
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 sticky top-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                  Filter Venues
-                </h3>
-                
-                {/* Price Range */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Price Range (LKR)
-                  </label>
-                  <div className="flex gap-2">
-                    <Input
-                      type="number"
-                      placeholder="Min"
-                      value={priceRange[0]}
-                      onChange={(e) => setPriceRange([parseInt(e.target.value) || 0, priceRange[1]])}
-                      className="text-sm"
-                    />
-                    <Input
-                      type="number"
-                      placeholder="Max"
-                      value={priceRange[1]}
-                      onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value) || 500000])}
-                      className="text-sm"
-                    />
-                  </div>
-                </div>
-
-                {/* Capacity Range */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Guest Capacity
-                  </label>
-                  <div className="flex gap-2">
-                    <Input
-                      type="number"
-                      placeholder="Min"
-                      value={capacityRange[0]}
-                      onChange={(e) => setCapacityRange([parseInt(e.target.value) || 0, capacityRange[1]])}
-                      className="text-sm"
-                    />
-                    <Input
-                      type="number"
-                      placeholder="Max"
-                      value={capacityRange[1]}
-                      onChange={(e) => setCapacityRange([capacityRange[0], parseInt(e.target.value) || 500])}
-                      className="text-sm"
-                    />
-                  </div>
-                </div>
-
-                {/* Amenities */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Amenities
-                  </label>
-                  <div className="space-y-2">
-                    {amenities.map((amenity) => (
-                      <label key={amenity} className="flex items-center">
-                        <input
-                          type="checkbox"
-                          checked={selectedAmenities.includes(amenity)}
-                          onChange={() => toggleAmenity(amenity)}
-                          className="mr-2"
-                        />
-                        <span className="text-sm text-gray-600 dark:text-gray-400 capitalize">
-                          {amenity.replace('-', ' ')}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-
+          {/* Venues Grid/List */}
+          <div className="lg:w-3/4">
+            <div className="flex justify-between items-center mb-6">
+              <p className="text-gray-600 dark:text-gray-400">
+                Showing {filteredVenues.length} of {venues.length} venues
+              </p>
+              <div className="flex items-center gap-2">
                 <Button
-                  variant="outline"
+                  variant={viewMode === "grid" ? "default" : "outline"}
                   size="sm"
-                  onClick={() => {
-                    setSearchQuery('')
-                    setSelectedLocation('all')
-                    setPriceRange([0, 500000])
-                    setCapacityRange([0, 500])
-                    setSelectedAmenities([])
-                  }}
-                  className="w-full"
+                  onClick={() => setViewMode("grid")}
                 >
-                  Clear All Filters
+                  <Grid className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant={viewMode === "list" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setViewMode("list")}
+                >
+                  <List className="h-4 w-4" />
                 </Button>
               </div>
             </div>
 
-            {/* Venues Grid/List */}
-            <div className="lg:w-3/4">
-              <div className="flex justify-between items-center mb-6">
-                <p className="text-gray-600 dark:text-gray-400">
-                  Showing {filteredVenues.length} of {venues.length} venues
-                </p>
-              </div>
-
-              {viewMode === 'grid' ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {filteredVenues.map((venue) => (
-                    <div key={venue.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                      <div className="relative">
-                        <img
-                          src={venue.images[0]}
-                          alt={`${venue.name} - Wedding venue in ${venue.location}`}
-                          className="w-full h-48 object-cover"
+            <AnimatePresence>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className={viewMode === "grid" 
+                  ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+                  : "space-y-6"
+                }
+              >
+                {filteredVenues.map((venue, index) => (
+                  <motion.div
+                    key={venue.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-200 ${
+                      viewMode === "list" ? "flex" : ""
+                    }`}
+                  >
+                    <div className={`relative ${viewMode === "list" ? "w-1/3" : "w-full"}`}>
+                      <img
+                        src={venue.image}
+                        alt={venue.name}
+                        className={`object-cover ${viewMode === "list" ? "h-48" : "h-48 w-full"}`}
+                      />
+                      <button
+                        onClick={() => toggleFavorite(venue.id)}
+                        className="absolute top-3 right-3 p-2 bg-white dark:bg-gray-800 rounded-full shadow-sm hover:shadow-md transition-shadow"
+                      >
+                        <Heart 
+                          className={`h-4 w-4 ${
+                            favorites.has(venue.id) 
+                              ? "fill-red-500 text-red-500" 
+                              : "text-gray-400 hover:text-red-500"
+                          }`} 
                         />
-                        {venue.featured && (
-                          <Badge className="absolute top-2 left-2 bg-red-500">
-                            Featured
-                          </Badge>
-                        )}
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="absolute top-2 right-2 bg-white/80 hover:bg-white"
-                          onClick={() => toggleFavorite(venue.id)}
-                        >
-                          <Heart 
-                            className={`w-4 h-4 ${favorites.includes(venue.id) ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} 
-                          />
-                        </Button>
-                      </div>
-                      
-                      <div className="p-6">
-                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                      </button>
+                      <Badge 
+                        variant={venue.availability === "Available" ? "default" : "secondary"}
+                        className="absolute top-3 left-3"
+                      >
+                        {venue.availability}
+                      </Badge>
+                    </div>
+                    
+                    <div className={`p-6 ${viewMode === "list" ? "flex-1" : ""}`}>
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                           {venue.name}
                         </h3>
-                        <div className="flex items-center text-gray-600 dark:text-gray-400 text-sm mb-2">
-                          <MapPin className="w-4 h-4 mr-1" />
-                          {venue.address}
-                        </div>
-                        <div className="flex items-center text-gray-600 dark:text-gray-400 text-sm mb-3">
-                          <Users className="w-4 h-4 mr-1" />
-                          Up to {venue.capacity} guests
-                        </div>
-                        
-                        <div className="flex justify-between items-center mb-3">
-                          <div className="flex items-center">
-                            <Star className="w-4 h-4 text-yellow-500 mr-1" />
-                            <span className="text-gray-600 dark:text-gray-400 text-sm">
-                              {venue.rating} ({venue.reviewCount} reviews)
-                            </span>
-                          </div>
-                          <span className="text-blue-600 font-medium">
-                            LKR {venue.priceRange[0].toLocaleString()} - {venue.priceRange[1].toLocaleString()}
-                          </span>
-                        </div>
-                        
-                        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-                          {venue.description}
-                        </p>
-                        
-                        <div className="flex gap-2 mb-4">
-                          {venue.amenities.slice(0, 3).map((amenity: string) => (
-                            <Badge key={amenity} variant="secondary" className="text-xs">
-                              {amenity.replace('-', ' ')}
-                            </Badge>
-                          ))}
-                          {venue.amenities.length > 3 && (
-                            <Badge variant="secondary" className="text-xs">
-                              +{venue.amenities.length - 3} more
-                            </Badge>
-                          )}
-                        </div>
-                        
-                        <div className="flex gap-2">
-                          <Button size="sm" className="flex-1">
-                            View Details
-                          </Button>
-                          <Button variant="outline" size="sm">
-                            <Share2 className="w-3 h-3" />
-                          </Button>
-                        </div>
+                        <button className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                          <Share2 className="h-4 w-4" />
+                        </button>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {filteredVenues.map((venue) => (
-                    <div key={venue.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                      <div className="flex">
-                        <div className="relative w-48 h-32 flex-shrink-0">
-                          <img
-                            src={venue.images[0]}
-                            alt={`${venue.name} - Wedding venue in ${venue.location}`}
-                            className="w-full h-full object-cover"
-                          />
-                          {venue.featured && (
-                            <Badge className="absolute top-2 left-2 bg-red-500 text-xs">
-                              Featured
-                            </Badge>
-                          )}
-                        </div>
-                        
-                        <div className="flex-1 p-4">
-                          <div className="flex justify-between items-start mb-2">
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                              {venue.name}
-                            </h3>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => toggleFavorite(venue.id)}
-                            >
-                              <Heart 
-                                className={`w-4 h-4 ${favorites.includes(venue.id) ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} 
-                              />
-                            </Button>
-                          </div>
-                          
-                          <div className="flex items-center text-gray-600 dark:text-gray-400 text-sm mb-1">
-                            <MapPin className="w-3 h-3 mr-1" />
-                            {venue.address}
-                          </div>
-                          <div className="flex items-center text-gray-600 dark:text-gray-400 text-sm mb-2">
-                            <Users className="w-3 h-3 mr-1" />
-                            Up to {venue.capacity} guests
-                          </div>
-                          
-                          <div className="flex justify-between items-center mb-2">
-                            <div className="flex items-center">
-                              <Star className="w-3 h-3 text-yellow-500 mr-1" />
-                              <span className="text-gray-600 dark:text-gray-400 text-sm">
-                                {venue.rating} ({venue.reviewCount} reviews)
-                              </span>
-                            </div>
-                            <span className="text-blue-600 font-medium text-sm">
-                              LKR {venue.priceRange[0].toLocaleString()} - {venue.priceRange[1].toLocaleString()}
-                            </span>
-                          </div>
-                          
-                          <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">
-                            {venue.description}
+                      
+                      <div className="flex items-center text-gray-600 dark:text-gray-400 mb-2">
+                        <MapPin className="h-4 w-4 mr-1" />
+                        <span>{venue.location}</span>
+                      </div>
+                      
+                      <div className="flex items-center text-gray-600 dark:text-gray-400 mb-2">
+                        <Users className="h-4 w-4 mr-1" />
+                        <span>Up to {venue.capacity.split('-')[1]} guests</span>
+                      </div>
+                      
+                      <div className="flex items-center mb-3">
+                        <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">
+                          {venue.rating}
+                        </span>
+                        <span className="text-sm text-gray-600 dark:text-gray-400 ml-1">
+                          ({venue.reviews} reviews)
+                        </span>
+                      </div>
+                      
+                      <p className="text-gray-700 dark:text-gray-300 mb-4 text-sm">
+                        {venue.description}
+                      </p>
+                      
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {venue.amenities.slice(0, 3).map(amenity => (
+                          <Badge key={amenity} variant="secondary" className="text-xs">
+                            {amenity}
+                          </Badge>
+                        ))}
+                        {venue.amenities.length > 3 && (
+                          <Badge variant="outline" className="text-xs">
+                            +{venue.amenities.length - 3} more
+                          </Badge>
+                        )}
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                            {venue.price}
                           </p>
-                          
-                          <div className="flex justify-between items-center">
-                            <div className="flex gap-1">
-                              {venue.amenities.slice(0, 4).map((amenity: string) => (
-                                <Badge key={amenity} variant="secondary" className="text-xs">
-                                  {amenity.replace('-', ' ')}
-                                </Badge>
-                              ))}
-                            </div>
-                            <Button size="sm">View Details</Button>
-                          </div>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            per event
+                          </p>
                         </div>
+                        <Button>
+                          View Details
+                        </Button>
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
+                  </motion.div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
 
-              {filteredVenues.length === 0 && (
-                <div className="text-center py-12">
-                  <p className="text-gray-500 dark:text-gray-400 text-lg">
-                    No venues found matching your criteria.
-                  </p>
-                  <Button 
-                    variant="outline" 
-                    className="mt-4"
-                    onClick={() => {
-                      setSearchQuery('')
-                      setSelectedLocation('all')
-                      setPriceRange([0, 500000])
-                      setCapacityRange([0, 500])
-                      setSelectedAmenities([])
-                    }}
-                  >
-                    Clear All Filters
-                  </Button>
+            {filteredVenues.length === 0 && (
+              <div className="text-center py-12">
+                <div className="text-gray-400 mb-4">
+                  <Search className="h-12 w-12 mx-auto" />
                 </div>
-              )}
-            </div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                  No venues found
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Try adjusting your search criteria or filters
+                </p>
+              </div>
+            )}
           </div>
         </div>
-      </main>
+      </div>
 
-      {/* Simple Footer */}
-      <footer className="bg-gray-900 text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12 mt-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <Link href="/" className="flex items-center space-x-2">
-                <Heart className="h-8 w-8 text-rose-500 fill-current" />
-                <span className="text-xl font-bold text-white">Wedding.lk</span>
-              </Link>
-              <p className="mt-4 text-gray-400 max-w-md">
-                Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Wedding.lk</h3>
+              <p className="text-gray-400 text-sm">
+                Your one-stop destination for planning the perfect wedding in Sri Lanka.
               </p>
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-4">Services</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/venues" className="hover:text-white transition-colors">Venues</Link></li>
-                <li><Link href="/vendors" className="hover:text-white transition-colors">Vendors</Link></li>
-                <li><Link href="/planning" className="hover:text-white transition-colors">Planning Tools</Link></li>
-                <li><Link href="/gallery" className="hover:text-white transition-colors">Gallery</Link></li>
+              <h4 className="font-medium mb-4">Services</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>Venues</li>
+                <li>Vendors</li>
+                <li>Planning Tools</li>
+                <li>Inspiration</li>
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-lg mb-4">Company</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
-                <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
-                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link></li>
-                <li><Link href="/terms" className="hover:text-white transition-colors">Terms</Link></li>
+              <h4 className="font-medium mb-4">Support</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>Help Center</li>
+                <li>Contact Us</li>
+                <li>FAQ</li>
+                <li>Community</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium mb-4">Connect</h4>
+              <ul className="space-y-2 text-sm text-gray-400">
+                <li>Facebook</li>
+                <li>Instagram</li>
+                <li>Twitter</li>
+                <li>YouTube</li>
               </ul>
             </div>
           </div>

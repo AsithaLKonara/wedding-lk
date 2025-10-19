@@ -350,7 +350,7 @@ export default function RegisterPage() {
                   <Link href="/login" className="text-blue-600 hover:underline font-medium">
                     Sign in
                   </Link>
-                </div>
+        </div>
               </form>
             </CardContent>
           </Card>
