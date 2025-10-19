@@ -149,7 +149,7 @@ export function WeddingPackageCard({ package: pkg }: WeddingPackageCardProps) {
                 <div key={index} className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Avatar className="h-6 w-6">
-                      <AvatarImage src="/placeholder.svg" />
+                      <AvatarImage src="/placeholder.svg" alt={vendor.name} />
                       <AvatarFallback className="text-xs">{vendor.name[0]}</AvatarFallback>
                     </Avatar>
                     <div>
