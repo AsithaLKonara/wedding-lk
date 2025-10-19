@@ -1,0 +1,296 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "Wedding.lk" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8] [cursor=pointer]
+          - generic [ref=e10] [cursor=pointer]: Wedding.lk
+        - navigation [ref=e12]:
+          - link "Venues" [ref=e14] [cursor=pointer]:
+            - /url: /venues
+          - link "Vendors" [ref=e16] [cursor=pointer]:
+            - /url: /vendors
+          - link "Feed" [ref=e18] [cursor=pointer]:
+            - /url: /feed
+          - link "Gallery" [ref=e20] [cursor=pointer]:
+            - /url: /gallery
+          - link "AI Search" [ref=e22] [cursor=pointer]:
+            - /url: /ai-search
+          - link "Chat" [ref=e24] [cursor=pointer]:
+            - /url: /chat
+          - link "About" [ref=e26] [cursor=pointer]:
+            - /url: /about
+        - generic [ref=e27]:
+          - button "Toggle theme" [ref=e28] [cursor=pointer]:
+            - generic [ref=e29] [cursor=pointer]:
+              - img
+              - img
+            - generic [ref=e30] [cursor=pointer]: Toggle theme
+          - button [ref=e31] [cursor=pointer]:
+            - img
+          - generic [ref=e32]:
+            - link "Sign In" [ref=e33] [cursor=pointer]:
+              - /url: /login
+            - link "Get Started" [ref=e34] [cursor=pointer]:
+              - /url: /register
+    - main [ref=e35]:
+      - generic [ref=e38]:
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - heading "Vendor Dashboard" [level=1] [ref=e41]
+            - paragraph [ref=e42]: Manage your business, track performance, and grow your wedding service
+          - generic [ref=e43]:
+            - button "Settings" [ref=e44] [cursor=pointer]:
+              - img
+              - text: Settings
+            - button "Add Service" [ref=e45] [cursor=pointer]:
+              - img
+              - text: Add Service
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - generic [ref=e48]:
+              - img [ref=e49]
+              - generic [ref=e53]:
+                - heading "Complete Your Profile" [level=3] [ref=e54]
+                - paragraph [ref=e55]: 85% complete. Complete your profile to get more bookings.
+            - button "Complete Profile" [ref=e56] [cursor=pointer]
+          - progressbar [ref=e57]
+        - generic [ref=e59]:
+          - generic [ref=e61]:
+            - generic [ref=e62]:
+              - generic [ref=e63]:
+                - paragraph [ref=e64]: Total Views
+                - paragraph [ref=e65]: 1,247
+              - img [ref=e66]
+            - generic [ref=e69]:
+              - img [ref=e70]
+              - generic [ref=e73]: +12% from last month
+          - generic [ref=e75]:
+            - generic [ref=e76]:
+              - generic [ref=e77]:
+                - paragraph [ref=e78]: Inquiries
+                - paragraph [ref=e79]: "89"
+              - img [ref=e80]
+            - generic [ref=e82]:
+              - img [ref=e83]
+              - generic [ref=e86]: +8% from last month
+          - generic [ref=e88]:
+            - generic [ref=e89]:
+              - generic [ref=e90]:
+                - paragraph [ref=e91]: Bookings
+                - paragraph [ref=e92]: "23"
+              - img [ref=e93]
+            - generic [ref=e98]:
+              - img [ref=e99]
+              - generic [ref=e102]: +15% from last month
+          - generic [ref=e104]:
+            - generic [ref=e105]:
+              - generic [ref=e106]:
+                - paragraph [ref=e107]: Rating
+                - paragraph [ref=e108]: "4.7"
+              - img [ref=e109]
+            - generic [ref=e112]: 156 reviews
+        - generic [ref=e113]:
+          - generic [ref=e114]:
+            - generic [ref=e115]:
+              - generic [ref=e117]:
+                - img [ref=e118]
+                - text: Recent Inquiries
+              - generic [ref=e121]:
+                - generic [ref=e122]:
+                  - generic [ref=e123]:
+                    - generic [ref=e124]:
+                      - heading "Sarah & John" [level=4] [ref=e125]
+                      - paragraph [ref=e126]: "Wedding Date: 6/15/2024"
+                    - generic [ref=e127]: new
+                  - paragraph [ref=e128]: Hi, we're interested in your photography services for our beach wedding in Galle. Could you please share your portfolio and pricing?
+                  - generic [ref=e129]:
+                    - generic [ref=e130]:
+                      - generic [ref=e131]:
+                        - img [ref=e132]
+                        - text: sarah.john@email.com
+                      - generic [ref=e135]:
+                        - img [ref=e136]
+                        - text: +94 77 123 4567
+                    - generic [ref=e138]:
+                      - button "Reply" [ref=e139] [cursor=pointer]:
+                        - img
+                        - text: Reply
+                      - button "View Details" [ref=e140] [cursor=pointer]
+                - generic [ref=e141]:
+                  - generic [ref=e142]:
+                    - generic [ref=e143]:
+                      - heading "Priya & Raj" [level=4] [ref=e144]
+                      - paragraph [ref=e145]: "Wedding Date: 7/22/2024"
+                    - generic [ref=e146]: contacted
+                  - paragraph [ref=e147]: We love your work! Could you tell us about your traditional wedding photography packages?
+                  - generic [ref=e148]:
+                    - generic [ref=e149]:
+                      - generic [ref=e150]:
+                        - img [ref=e151]
+                        - text: priya.raj@email.com
+                      - generic [ref=e154]:
+                        - img [ref=e155]
+                        - text: +94 71 987 6543
+                    - generic [ref=e157]:
+                      - button "Reply" [ref=e158] [cursor=pointer]:
+                        - img
+                        - text: Reply
+                      - button "View Details" [ref=e159] [cursor=pointer]
+                - generic [ref=e160]:
+                  - generic [ref=e161]:
+                    - generic [ref=e162]:
+                      - heading "Lisa & Mike" [level=4] [ref=e163]
+                      - paragraph [ref=e164]: "Wedding Date: 8/10/2024"
+                    - generic [ref=e165]: quoted
+                  - paragraph [ref=e166]: Thank you for the quote. We'd like to book you for our wedding. What are the next steps?
+                  - generic [ref=e167]:
+                    - generic [ref=e168]:
+                      - generic [ref=e169]:
+                        - img [ref=e170]
+                        - text: lisa.mike@email.com
+                      - generic [ref=e173]:
+                        - img [ref=e174]
+                        - text: +94 76 555 7777
+                    - generic [ref=e176]:
+                      - button "Reply" [ref=e177] [cursor=pointer]:
+                        - img
+                        - text: Reply
+                      - button "View Details" [ref=e178] [cursor=pointer]
+            - generic [ref=e179]:
+              - generic [ref=e181]:
+                - img [ref=e182]
+                - text: Upcoming Bookings
+              - generic [ref=e188]:
+                - generic [ref=e189]:
+                  - generic [ref=e190]:
+                    - heading "Emma & David" [level=4] [ref=e191]
+                    - generic [ref=e192]: confirmed
+                  - generic [ref=e193]:
+                    - generic [ref=e194]:
+                      - paragraph [ref=e195]: Wedding Photography
+                      - paragraph [ref=e196]: 3/15/2024
+                    - generic [ref=e197]:
+                      - paragraph [ref=e198]: LKR 120,000
+                      - button "View Details" [ref=e199] [cursor=pointer]
+                - generic [ref=e200]:
+                  - generic [ref=e201]:
+                    - heading "Nisha & Kumar" [level=4] [ref=e202]
+                    - generic [ref=e203]: confirmed
+                  - generic [ref=e204]:
+                    - generic [ref=e205]:
+                      - paragraph [ref=e206]: Pre-wedding + Wedding Photography
+                      - paragraph [ref=e207]: 3/22/2024
+                    - generic [ref=e208]:
+                      - paragraph [ref=e209]: LKR 180,000
+                      - button "View Details" [ref=e210] [cursor=pointer]
+                - generic [ref=e211]:
+                  - generic [ref=e212]:
+                    - heading "Anna & Tom" [level=4] [ref=e213]
+                    - generic [ref=e214]: pending
+                  - generic [ref=e215]:
+                    - generic [ref=e216]:
+                      - paragraph [ref=e217]: Wedding Photography
+                      - paragraph [ref=e218]: 4/5/2024
+                    - generic [ref=e219]:
+                      - paragraph [ref=e220]: LKR 95,000
+                      - button "View Details" [ref=e221] [cursor=pointer]
+          - generic [ref=e222]:
+            - generic [ref=e223]:
+              - generic [ref=e225]: Quick Actions
+              - generic [ref=e226]:
+                - button "Add New Service" [ref=e227] [cursor=pointer]:
+                  - img
+                  - text: Add New Service
+                - button "Update Portfolio" [ref=e228] [cursor=pointer]:
+                  - img
+                  - text: Update Portfolio
+                - button "Edit Profile" [ref=e229] [cursor=pointer]:
+                  - img
+                  - text: Edit Profile
+                - button "View Analytics" [ref=e230] [cursor=pointer]:
+                  - img
+                  - text: View Analytics
+            - generic [ref=e231]:
+              - generic [ref=e233]: Performance
+              - generic [ref=e234]:
+                - generic [ref=e235]:
+                  - generic [ref=e236]:
+                    - generic [ref=e237]: Conversion Rate
+                    - generic [ref=e238]: 25.8%
+                  - progressbar [ref=e239]
+                - generic [ref=e241]:
+                  - generic [ref=e242]:
+                    - generic [ref=e243]: Response Time
+                    - generic [ref=e244]: 2.3 hours
+                  - progressbar [ref=e245]
+                - generic [ref=e247]:
+                  - generic [ref=e248]:
+                    - generic [ref=e249]: Customer Satisfaction
+                    - generic [ref=e250]: 4.7/5
+                  - progressbar [ref=e251]
+            - generic [ref=e253]:
+              - generic [ref=e255]: Tips & Resources
+              - generic [ref=e256]:
+                - generic [ref=e257]:
+                  - heading "💡 Tip of the Day" [level=4] [ref=e258]
+                  - paragraph [ref=e259]: Respond to inquiries within 2 hours to increase booking chances by 40%.
+                - generic [ref=e260]:
+                  - heading "📈 Performance" [level=4] [ref=e261]
+                  - paragraph [ref=e262]: Your conversion rate is above average! Keep up the great work.
+    - contentinfo [ref=e263]:
+      - generic [ref=e264]:
+        - generic [ref=e265]:
+          - generic [ref=e266]:
+            - link "Wedding.lk" [ref=e267] [cursor=pointer]:
+              - /url: /
+              - img [ref=e269] [cursor=pointer]
+              - generic [ref=e271] [cursor=pointer]: Wedding.lk
+            - paragraph [ref=e272]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+            - generic [ref=e273]:
+              - button [ref=e274] [cursor=pointer]:
+                - img
+              - button [ref=e275] [cursor=pointer]:
+                - img
+              - button [ref=e276] [cursor=pointer]:
+                - img
+              - button [ref=e277] [cursor=pointer]:
+                - img
+          - generic [ref=e278]:
+            - heading "Services" [level=3] [ref=e279]
+            - list [ref=e280]:
+              - listitem [ref=e281]:
+                - link "Venues" [ref=e282] [cursor=pointer]:
+                  - /url: /venues
+              - listitem [ref=e283]:
+                - link "Vendors" [ref=e284] [cursor=pointer]:
+                  - /url: /vendors
+              - listitem [ref=e285]:
+                - link "Planning Tools" [ref=e286] [cursor=pointer]:
+                  - /url: /planning
+              - listitem [ref=e287]:
+                - link "Gallery" [ref=e288] [cursor=pointer]:
+                  - /url: /gallery
+          - generic [ref=e289]:
+            - heading "Company" [level=3] [ref=e290]
+            - list [ref=e291]:
+              - listitem [ref=e292]:
+                - link "About" [ref=e293] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e294]:
+                - link "Contact" [ref=e295] [cursor=pointer]:
+                  - /url: /contact
+              - listitem [ref=e296]:
+                - link "Privacy" [ref=e297] [cursor=pointer]:
+                  - /url: /privacy
+              - listitem [ref=e298]:
+                - link "Terms" [ref=e299] [cursor=pointer]:
+                  - /url: /terms
+        - paragraph [ref=e301]: © 2024 Wedding.lk. All rights reserved.
+  - region "Notifications alt+T"
+  - alert [ref=e302]
+```

@@ -97,7 +97,7 @@ test.describe('Dashboard CRUD Operations & RBAC Testing', () => {
     
     // Test performance metrics
     console.log('📈 Testing performance metrics...')
-    await expect(page.locator('text=Conversion Rate')).toBeVisible()
+    await expect(page.locator('text=Conversion Rate').first()).toBeVisible()
     await expect(page.locator('text=Response Time')).toBeVisible()
     await expect(page.locator('text=Customer Satisfaction')).toBeVisible()
     
