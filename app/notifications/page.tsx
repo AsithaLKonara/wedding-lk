@@ -23,7 +23,7 @@ import {
   Clock,
   Settings,
   Trash2,
-  MarkAsRead
+  CheckCircle2
 } from "lucide-react"
 
 interface Notification {
@@ -204,7 +204,7 @@ export default function NotificationsPage() {
               <div className="flex gap-3">
                 {unreadCount > 0 && (
                   <Button variant="outline" onClick={markAllAsRead}>
-                    <MarkAsRead className="h-4 w-4 mr-2" />
+                    <CheckCircle2 className="h-4 w-4 mr-2" />
                     Mark All Read
                   </Button>
                 )}
