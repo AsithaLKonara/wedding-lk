@@ -1,6 +1,6 @@
 "use client"
 
-import { MainLayout } from "@/components/templates/main-layout"
+import { SimpleLayout } from "@/components/templates/simple-layout"
 import { useState, useEffect } from "react"
 import { Search, Filter, MapPin, Users, Star, Heart, Share2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -151,7 +151,7 @@ export default function VenuesPage() {
 
   if (loading) {
     return (
-      <MainLayout>
+      <SimpleLayout>
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
           <div className="container mx-auto px-4 py-8">
             <div className="animate-pulse">
@@ -172,12 +172,12 @@ export default function VenuesPage() {
             </div>
           </div>
         </div>
-      </MainLayout>
+      </SimpleLayout>
     )
   }
 
   return (
-    <MainLayout>
+    <SimpleLayout>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {/* Header Section */}
         <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
@@ -523,6 +523,6 @@ export default function VenuesPage() {
           </div>
         </div>
       </div>
-    </MainLayout>
+    </SimpleLayout>
   )
 }
