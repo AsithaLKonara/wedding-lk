@@ -94,7 +94,7 @@ test.describe('🌐 Live Deployment Comprehensive Testing', () => {
       await page.goto('/venues');
       
       // Check venues page loads
-      await expect(page.locator('h1')).toContainText(/Venues|Find Venues/);
+      await expect(page.locator('h1')).toContainText(/Find Your Perfect Venue|Venues/);
       
       // Check venue cards exist
       const venueCards = page.locator('.bg-white.rounded-lg.shadow-sm.overflow-hidden');
@@ -136,12 +136,48 @@ test.describe('🌐 Live Deployment Comprehensive Testing', () => {
     });
   });
 
+  test.describe('Gallery - Complete Feature Testing', () => {
+    test('Gallery page and functionality', async ({ page }) => {
+      await page.goto('/gallery');
+      
+      // Check gallery page loads
+      await expect(page.locator('h1')).toContainText(/Wedding Gallery/);
+      
+      // Check search functionality
+      const searchInput = page.locator('input[placeholder*="Search weddings"]');
+      await expect(searchInput).toBeVisible();
+      await searchInput.fill('Beach wedding');
+      await page.waitForTimeout(1000);
+      
+      // Check category filters
+      const categoryButtons = page.locator('button:has-text("ceremony"), button:has-text("reception"), button:has-text("traditional")');
+      if (await categoryButtons.first().isVisible()) {
+        await categoryButtons.first().click();
+        await page.waitForTimeout(1000);
+      }
+      
+      // Check view mode toggle
+      const gridButton = page.locator('button:has-text("Grid")');
+      const listButton = page.locator('button:has-text("List")');
+      if (await gridButton.isVisible() && await listButton.isVisible()) {
+        await listButton.click();
+        await page.waitForTimeout(1000);
+        await gridButton.click();
+        await page.waitForTimeout(1000);
+      }
+      
+      // Check gallery items exist
+      const galleryItems = page.locator('.bg-white.rounded-lg.shadow-sm.overflow-hidden');
+      await expect(galleryItems.first()).toBeVisible();
+    });
+  });
+
   test.describe('Vendors - Complete CRUD Testing', () => {
     test('Vendors page and listing', async ({ page }) => {
       await page.goto('/vendors');
       
       // Check vendors page loads
-      await expect(page.locator('h1')).toContainText(/Vendors|Find Vendors/);
+      await expect(page.locator('h1')).toContainText(/Find Wedding Vendors|Vendors/);
       
       // Check vendor cards exist
       const vendorCards = page.locator('.bg-white.rounded-lg.shadow-sm.overflow-hidden');
