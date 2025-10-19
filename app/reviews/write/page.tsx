@@ -9,7 +9,7 @@ export default function WriteReviewPage() {
         
         <div className="bg-white rounded-lg shadow-sm p-6">
           <form className="space-y-6">
-            <div>
+              <div>
               <label htmlFor="rating" className="block text-sm font-medium text-gray-700 mb-2">
                 Rating
               </label>
@@ -25,9 +25,9 @@ export default function WriteReviewPage() {
                 <option value="2">2 Stars - Fair</option>
                 <option value="1">1 Star - Poor</option>
               </select>
-            </div>
-            
-            <div>
+              </div>
+
+              <div>
               <label htmlFor="review" className="block text-sm font-medium text-gray-700 mb-2">
                 Your Review
               </label>
@@ -37,17 +37,17 @@ export default function WriteReviewPage() {
                 rows={4}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Share your experience..."
-              />
-            </div>
-            
-            <button
+                />
+              </div>
+
+                          <button
               type="submit"
               className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
-            >
+                          >
               Submit Review
-            </button>
+                          </button>
           </form>
-        </div>
+              </div>
       </div>
     </div>
   )
