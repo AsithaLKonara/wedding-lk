@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-const BASE_URL = 'https://wedding-c4ztttsai-asithalkonaras-projects.vercel.app'
+const BASE_URL = process.env.DEPLOYMENT_URL || 'https://wedding-jwzcatr3d-asithalkonaras-projects.vercel.app'
 
 test.describe('🚀 Production Deployment Tests', () => {
   test.beforeEach(async ({ page }) => {
