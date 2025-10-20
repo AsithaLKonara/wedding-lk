@@ -178,16 +178,21 @@ export function LoginForm() {
         ) : (
           <form onSubmit={handle2FASubmit} className="space-y-4">
             <Label htmlFor="otp">Enter 2FA Code</Label>
-            <InputOTP
-              value={otp}
-              onChange={setOtp}
-              maxLength={6}
-              className="mb-2"
-            >
+            <div className="flex gap-2 mb-2">
               {Array.from({ length: 6 }).map((_, i) => (
-                <InputOTPSlot key={i} index={i} />
+                <Input
+                  key={i}
+                  value={otp[i] || ''}
+                  onChange={(e) => {
+                    const newOtp = otp.split('')
+                    newOtp[i] = e.target.value
+                    setOtp(newOtp.join(''))
+                  }}
+                  maxLength={1}
+                  className="w-10 h-10 text-center"
+                />
               ))}
-            </InputOTP>
+            </div>
             <Button type="submit" className="w-full bg-gradient-to-r from-rose-500 to-pink-600" disabled={isLoading}>
               {isLoading ? "Verifying..." : "Verify & Sign In"}
             </Button>
@@ -198,3 +203,6 @@ export function LoginForm() {
     </Card>
   )
 }
+
+
+export default LoginForm;

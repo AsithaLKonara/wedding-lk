@@ -693,3 +693,6 @@ export function WeddingTimeline() {
     </div>
   )
 }
+
+
+export default WeddingTimeline;

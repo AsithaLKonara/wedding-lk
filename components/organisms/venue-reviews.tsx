@@ -434,3 +434,6 @@ export function VenueReviews({ venueId }: VenueReviewsProps) {
     </Card>
   )
 }
+
+
+export default VenueReviews;

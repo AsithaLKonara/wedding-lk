@@ -6,14 +6,49 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { motion, AnimatePresence } from "framer-motion"
+import { MainLayout } from "@/components/templates/main-layout"
 
 export default function VendorsPage() {
   const [vendors, setVendors] = useState<any[]>([])
+  const [filteredVendors, setFilteredVendors] = useState<any[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("")
   const [selectedLocation, setSelectedLocation] = useState("")
+  const [priceRange, setPriceRange] = useState([0, 200000])
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [favorites, setFavorites] = useState<Set<string>>(new Set())
+
+  // Filter vendors based on search criteria
+  useEffect(() => {
+    let filtered = vendors.filter(vendor => {
+      // Search query filter
+      if (searchQuery && !vendor.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
+          !vendor.location.toLowerCase().includes(searchQuery.toLowerCase()) &&
+          !vendor.category.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false
+      }
+      
+      // Category filter
+      if (selectedCategory && vendor.category !== selectedCategory) {
+        return false
+      }
+      
+      // Location filter
+      if (selectedLocation && !vendor.location.toLowerCase().includes(selectedLocation.toLowerCase())) {
+        return false
+      }
+      
+      // Price range filter
+      const vendorPrice = parseInt(vendor.price.replace(/[^\d]/g, ''))
+      if (vendorPrice < priceRange[0] || vendorPrice > priceRange[1]) {
+        return false
+      }
+      
+      return true
+    })
+    
+    setFilteredVendors(filtered)
+  }, [vendors, searchQuery, selectedCategory, selectedLocation, priceRange])
 
   useEffect(() => {
     // Simulate API call with timeout
@@ -27,7 +62,7 @@ export default function VendorsPage() {
           rating: 4.9,
           reviews: 156,
           price: "LKR 75,000 - 150,000",
-          image: "/placeholder.svg?height=300&width=400",
+          image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop",
           description: "Award-winning wedding photographers specializing in candid and artistic shots.",
           services: ["Wedding Photography", "Engagement Shoots", "Pre-wedding", "Post-wedding"],
           availability: "Available"
@@ -40,7 +75,7 @@ export default function VendorsPage() {
           rating: 4.8,
           reviews: 89,
           price: "LKR 50,000 - 100,000",
-          image: "/placeholder.svg?height=300&width=400",
+          image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop",
           description: "Professional DJ services with state-of-the-art sound systems and lighting.",
           services: ["DJ Services", "Sound System", "Lighting", "MC Services"],
           availability: "Available"
@@ -53,7 +88,7 @@ export default function VendorsPage() {
           rating: 4.7,
           reviews: 124,
           price: "LKR 2,500 - 5,000",
-          image: "/placeholder.svg?height=300&width=400",
+          image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop",
           description: "Premium catering services with traditional and international cuisine options.",
           services: ["Traditional Cuisine", "International Menu", "Beverages", "Service Staff"],
           availability: "Limited"
@@ -66,7 +101,7 @@ export default function VendorsPage() {
           rating: 4.6,
           reviews: 67,
           price: "LKR 25,000 - 75,000",
-          image: "/placeholder.svg?height=300&width=400",
+          image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop",
           description: "Elegant transportation services for your special day with luxury vehicles.",
           services: ["Wedding Cars", "Guest Transport", "Airport Transfer", "City Tours"],
           availability: "Available"
@@ -79,7 +114,7 @@ export default function VendorsPage() {
           rating: 4.8,
           reviews: 92,
           price: "LKR 15,000 - 50,000",
-          image: "/placeholder.svg?height=300&width=400",
+          image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop",
           description: "Creative floral arrangements and decorations for your wedding day.",
           services: ["Bridal Bouquets", "Ceremony Decor", "Reception Centerpieces", "Venue Styling"],
           availability: "Available"
@@ -92,7 +127,7 @@ export default function VendorsPage() {
           rating: 4.9,
           reviews: 178,
           price: "LKR 12,000 - 25,000",
-          image: "/placeholder.svg?height=300&width=400",
+          image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop",
           description: "Professional makeup artists specializing in bridal and wedding party styling.",
           services: ["Bridal Makeup", "Hair Styling", "Bridal Party", "Trial Sessions"],
           availability: "Limited"
@@ -103,16 +138,6 @@ export default function VendorsPage() {
 
     return () => clearTimeout(timer)
   }, [])
-
-  const filteredVendors = vendors.filter(vendor => {
-    const matchesSearch = vendor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         vendor.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         vendor.location.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = !selectedCategory || vendor.category === selectedCategory
-    const matchesLocation = !selectedLocation || vendor.location.includes(selectedLocation)
-    
-    return matchesSearch && matchesCategory && matchesLocation
-  })
 
   const toggleFavorite = (vendorId: string) => {
     const newFavorites = new Set(favorites)
@@ -138,7 +163,8 @@ export default function VendorsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <MainLayout>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <header className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -223,11 +249,13 @@ export default function VendorsPage() {
                     min="0"
                     max="200000"
                     step="10000"
+                    value={priceRange[1]}
+                    onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
                     className="w-full"
                   />
                   <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                    <span>LKR 0</span>
-                    <span>LKR 200,000</span>
+                    <span>LKR {priceRange[0].toLocaleString()}</span>
+                    <span>LKR {priceRange[1].toLocaleString()}</span>
                   </div>
                 </div>
               </div>
@@ -349,7 +377,7 @@ export default function VendorsPage() {
                         </p>
                         
                         <div className="flex flex-wrap gap-2 mb-4">
-                          {vendor.services.slice(0, 2).map(service => (
+                          {vendor.services.slice(0, 2).map((service: string) => (
                             <Badge key={service} variant="secondary" className="text-xs">
                               {service}
                             </Badge>
@@ -441,6 +469,7 @@ export default function VendorsPage() {
           </div>
         </div>
       </footer>
-    </div>
+      </div>
+    </MainLayout>
   )
 }

@@ -292,7 +292,7 @@ test.describe('⚡ Performance & Security Testing', () => {
         await page.waitForSelector('[data-testid="slow-loading-element"]', { timeout: 1000 });
       } catch (error) {
         // Should handle timeout gracefully
-        expect(error.message).toContain('timeout');
+        expect((error as Error).message).toContain('timeout');
       }
       
       // Reset timeout

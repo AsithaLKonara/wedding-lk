@@ -140,7 +140,7 @@ test.describe('WeddingLK Comprehensive Audit', () => {
       }
       
       // Check venue cards load or any content
-      await expect(page.locator('.bg-white, .venue-card, [data-testid="venue-card"], .card, main')).toHaveCount({ min: 1 })
+      await expect(page.locator('.bg-white, .venue-card, [data-testid="venue-card"], .card, main')).toHaveCount(1)
     })
 
     test('Individual venue page loads', async ({ page }) => {
@@ -172,7 +172,7 @@ test.describe('WeddingLK Comprehensive Audit', () => {
       }
       
       // Check vendor cards load
-      await expect(page.locator('.bg-white.rounded-lg.shadow-sm, .vendor-card, [data-testid="vendor-card"]')).toHaveCount({ min: 1 })
+      await expect(page.locator('.bg-white.rounded-lg.shadow-sm, .vendor-card, [data-testid="vendor-card"]')).toHaveCount(1)
     })
 
     test('Individual vendor page loads', async ({ page }) => {
@@ -204,7 +204,7 @@ test.describe('WeddingLK Comprehensive Audit', () => {
       }
       
       // Check gallery items load
-      await expect(page.locator('img')).toHaveCount({ min: 1 })
+      await expect(page.locator('img')).toHaveCount(1)
     })
   })
 
@@ -215,7 +215,7 @@ test.describe('WeddingLK Comprehensive Audit', () => {
       await expect(page.locator('h1')).toContainText(/feed/i)
       
       // Check for feed content
-      await expect(page.locator('.feed-item, .story, .post')).toHaveCount({ min: 1 })
+      await expect(page.locator('.feed-item, .story, .post')).toHaveCount(1)
     })
   })
 

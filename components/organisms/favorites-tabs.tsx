@@ -22,3 +22,5 @@ export function FavoritesTabs() {
     </Tabs>
   )
 } 
+
+export default FavoritesTabs;

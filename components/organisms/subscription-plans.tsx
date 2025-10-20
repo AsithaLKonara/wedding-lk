@@ -299,3 +299,6 @@ export function SubscriptionPlans() {
     </section>
   )
 }
+
+
+export default SubscriptionPlans;

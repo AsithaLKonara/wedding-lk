@@ -17,6 +17,10 @@ declare module "next-auth" {
       twoFactorPending?: boolean
     }
   }
+  
+  interface User {
+    role?: string
+  }
 }
 
 export const authOptions: NextAuthOptions = {

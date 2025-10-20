@@ -1,6 +1,7 @@
 "use client"
 
 import { MainLayout } from "@/components/templates/main-layout"
+import { FeedStories } from "@/components/organisms/feed-stories"
 import { useState } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -13,7 +14,6 @@ import {
   Filter, 
   TrendingUp, 
   Clock, 
-  Plus,
   MapPin,
   Star
 } from "lucide-react"
@@ -30,34 +30,7 @@ export default function FeedPage() {
     { id: "liked", label: "Most Liked", icon: Heart },
   ]
 
-  const stories = [
-    {
-      id: 1,
-      name: "Your Story",
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=60&h=60&fit=crop&crop=face",
-      isOwn: true,
-      hasStory: false,
-    },
-    {
-      id: 2,
-      name: "Grand Ballroom",
-      avatar: "https://images.unsplash.com/photo-1519167758481-83f29c0c0b8a?w=60&h=60&fit=crop",
-      hasStory: true,
-      isLive: true,
-    },
-    {
-      id: 3,
-      name: "Perfect Moments",
-      avatar: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=60&h=60&fit=crop",
-      hasStory: true,
-    },
-    {
-      id: 4,
-      name: "Garden Paradise",
-      avatar: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=60&h=60&fit=crop",
-      hasStory: true,
-    },
-  ]
+  // Stories are rendered via the reusable FeedStories component
 
   const feedPosts = [
     {
@@ -138,43 +111,7 @@ export default function FeedPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
-                  <CardContent className="p-4">
-                    <div className="flex space-x-4 overflow-x-auto pb-2">
-                      {stories.map((story) => (
-                        <div key={story.id} className="flex flex-col items-center space-y-2 min-w-[70px] cursor-pointer">
-                          <div className="relative">
-                            <Avatar
-                              className={`h-16 w-16 ${
-                                story.hasStory
-                                  ? "ring-2 ring-pink-500 ring-offset-2"
-                                  : story.isOwn
-                                    ? "ring-2 ring-gray-300 ring-offset-2"
-                                    : ""
-                              }`}
-                            >
-                              <AvatarImage src={story.avatar} alt={story.name} />
-                              <AvatarFallback>{story.name[0]}</AvatarFallback>
-                            </Avatar>
-                            {story.isOwn && !story.hasStory && (
-                              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                                <Plus className="h-3 w-3 text-white" />
-                              </div>
-                            )}
-                            {story.isLive && (
-                              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
-                                LIVE
-                              </div>
-                            )}
-                          </div>
-                          <span className="text-xs text-center text-gray-700 dark:text-gray-300 truncate w-full">
-                            {story.name}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                <FeedStories />
               </motion.div>
 
               {/* Filter Tabs */}

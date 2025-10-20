@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server"
 import { connectDB } from "@/lib/db"
 import { User } from "@/lib/models/user"
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   await connectDB()
   const token = request.nextUrl.searchParams.get("token")

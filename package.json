@@ -31,6 +31,12 @@
     "test:frontend": "node scripts/test-frontend-integration.mjs",
     "test:404": "node scripts/check-404-errors.mjs",
     "test:all": "node scripts/run-all-tests.mjs",
+    "test:critical": "npx playwright test tests/critical-user-journeys.spec.ts --reporter=list",
+    "test:qa": "node scripts/qa-execution.mjs",
+    "test:qa:phase": "node scripts/qa-execution.mjs --phase",
+    "audit:performance": "node scripts/performance-audit.mjs",
+    "audit:security": "node scripts/security-audit.mjs",
+    "audit:full": "npm run audit:performance && npm run audit:security",
     "fix:api": "node scripts/fix-api-endpoints.mjs",
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
@@ -81,6 +87,7 @@
     "@radix-ui/react-toggle-group": "1.1.1",
     "@radix-ui/react-tooltip": "1.1.6",
     "@stripe/stripe-js": "^7.4.0",
+    "@types/ioredis": "^4.28.10",
     "autoprefixer": "^10.4.20",
     "bcryptjs": "latest",
     "class-variance-authority": "^0.7.1",
@@ -90,9 +97,10 @@
     "date-fns": "4.1.0",
     "dotenv": "^17.0.0",
     "embla-carousel-react": "8.5.1",
-    "framer-motion": "latest",
+    "framer-motion": "^12.23.24",
     "gcp-metadata": "latest",
     "input-otp": "1.4.1",
+    "ioredis": "^5.8.1",
     "kerberos": "latest",
     "lighthouse": "^11.7.1",
     "lucide-react": "^0.454.0",
@@ -138,5 +146,6 @@
     "ts-node": "^10.9.2",
     "typescript": "^5"
   },
-  "type": "module"
+  "type": "module",
+  "packageManager": "npm@10.9.0"
 }

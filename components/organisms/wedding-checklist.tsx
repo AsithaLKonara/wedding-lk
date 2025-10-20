@@ -337,3 +337,6 @@ export function WeddingChecklist() {
     </div>
   )
 }
+
+
+export default WeddingChecklist;

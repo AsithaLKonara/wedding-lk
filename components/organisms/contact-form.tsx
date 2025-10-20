@@ -137,3 +137,6 @@ export function ContactForm() {
     </Card>
   )
 }
+
+
+export default ContactForm;

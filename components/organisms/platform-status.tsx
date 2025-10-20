@@ -97,3 +97,6 @@ export function PlatformStatus() {
     </Card>
   )
 }
+
+
+export default PlatformStatus;

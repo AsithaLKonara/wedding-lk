@@ -34,3 +34,6 @@ export function ProfileTabs() {
     </Tabs>
   )
 }
+
+
+export default ProfileTabs;

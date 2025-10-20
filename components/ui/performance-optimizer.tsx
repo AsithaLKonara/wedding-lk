@@ -46,6 +46,7 @@ export function PerformanceOptimizer({
       const timer = setTimeout(() => setIsLoaded(true), 50)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [isVisible])
 
   return (

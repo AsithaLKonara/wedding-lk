@@ -6,15 +6,63 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { motion, AnimatePresence } from "framer-motion"
+import { MainLayout } from "@/components/templates/main-layout"
 
 export default function VenuesPage() {
   const [venues, setVenues] = useState<any[]>([])
+  const [filteredVenues, setFilteredVenues] = useState<any[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedLocation, setSelectedLocation] = useState("")
   const [selectedCapacity, setSelectedCapacity] = useState("")
   const [priceRange, setPriceRange] = useState([0, 500000])
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([])
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [favorites, setFavorites] = useState<Set<string>>(new Set())
+
+  // Filter venues based on search criteria
+  useEffect(() => {
+    let filtered = venues.filter(venue => {
+      // Search query filter
+      if (searchQuery && !venue.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
+          !venue.location.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false
+      }
+      
+      // Location filter
+      if (selectedLocation && !venue.location.toLowerCase().includes(selectedLocation.toLowerCase())) {
+        return false
+      }
+      
+      // Capacity filter
+      if (selectedCapacity) {
+        const [min, max] = selectedCapacity.split('-').map(Number)
+        const venueCapacity = venue.capacity.split('-').map(Number)
+        if (venueCapacity[0] > max || venueCapacity[1] < min) {
+          return false
+        }
+      }
+      
+      // Price range filter
+      const venuePrice = parseInt(venue.price.replace(/[^\d]/g, ''))
+      if (venuePrice < priceRange[0] || venuePrice > priceRange[1]) {
+        return false
+      }
+      
+      // Amenities filter
+      if (selectedAmenities.length > 0) {
+        const hasAllAmenities = selectedAmenities.every(amenity => 
+          venue.amenities.includes(amenity)
+        )
+        if (!hasAllAmenities) {
+          return false
+        }
+      }
+      
+      return true
+    })
+    
+    setFilteredVenues(filtered)
+  }, [venues, searchQuery, selectedLocation, selectedCapacity, priceRange, selectedAmenities])
 
   useEffect(() => {
     // Simulate API call with timeout
@@ -28,7 +76,7 @@ export default function VenuesPage() {
           price: "LKR 450,000 - 800,000",
           rating: 4.8,
           reviews: 124,
-          image: "/placeholder.svg?height=300&width=400",
+          image: "https://images.unsplash.com/photo-1519167758481-83f29c0c0b8a?w=800&h=600&fit=crop",
           description: "Elegant ballroom with crystal chandeliers and marble floors, perfect for grand weddings.",
           amenities: ["Air Conditioning", "Parking", "Catering", "Sound System"],
           availability: "Available"
@@ -41,7 +89,7 @@ export default function VenuesPage() {
           price: "LKR 300,000 - 600,000",
           rating: 4.9,
           reviews: 89,
-          image: "/placeholder.svg?height=300&width=400",
+          image: "https://images.unsplash.com/photo-1519167758481-83f29c0c0b8a?w=800&h=600&fit=crop",
           description: "Stunning beachfront venue with ocean views and tropical gardens.",
           amenities: ["Beach Access", "Garden", "Catering", "Photography Spots"],
           availability: "Available"
@@ -54,7 +102,7 @@ export default function VenuesPage() {
           price: "LKR 200,000 - 400,000", 
           rating: 4.7,
           reviews: 67,
-          image: "/placeholder.svg?height=300&width=400",
+          image: "https://images.unsplash.com/photo-1519167758481-83f29c0c0b8a?w=800&h=600&fit=crop",
           description: "Beautiful garden venue surrounded by lush greenery and mountain views.",
           amenities: ["Garden", "Parking", "Catering", "Natural Scenery"],
           availability: "Limited"
@@ -67,7 +115,7 @@ export default function VenuesPage() {
           price: "LKR 350,000 - 700,000",
           rating: 4.6,
           reviews: 92,
-          image: "/placeholder.svg?height=300&width=400",
+          image: "https://images.unsplash.com/photo-1519167758481-83f29c0c0b8a?w=800&h=600&fit=crop",
           description: "Historic venue with colonial architecture and traditional charm.",
           amenities: ["Historic Setting", "Air Conditioning", "Parking", "Cultural Heritage"],
           availability: "Available"
@@ -80,7 +128,7 @@ export default function VenuesPage() {
           price: "LKR 250,000 - 500,000",
           rating: 4.8,
           reviews: 45,
-          image: "/placeholder.svg?height=300&width=400",
+          image: "https://images.unsplash.com/photo-1519167758481-83f29c0c0b8a?w=800&h=600&fit=crop",
           description: "Scenic mountain venue with cool climate and breathtaking views.",
           amenities: ["Mountain Views", "Cool Climate", "Parking", "Natural Beauty"],
           availability: "Available"
@@ -93,7 +141,7 @@ export default function VenuesPage() {
           price: "LKR 500,000 - 1,000,000",
           rating: 4.9,
           reviews: 156,
-          image: "/placeholder.svg?height=300&width=400",
+          image: "https://images.unsplash.com/photo-1519167758481-83f29c0c0b8a?w=800&h=600&fit=crop",
           description: "Premium urban venue with modern amenities and city skyline views.",
           amenities: ["City Views", "Air Conditioning", "Valet Parking", "Premium Catering"],
           availability: "Limited"
@@ -104,15 +152,6 @@ export default function VenuesPage() {
 
     return () => clearTimeout(timer)
   }, [])
-
-  const filteredVenues = venues.filter(venue => {
-    const matchesSearch = venue.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         venue.location.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesLocation = !selectedLocation || venue.location.includes(selectedLocation)
-    const matchesCapacity = !selectedCapacity || venue.capacity.includes(selectedCapacity)
-    
-    return matchesSearch && matchesLocation && matchesCapacity
-  })
 
   const toggleFavorite = (venueId: string) => {
     const newFavorites = new Set(favorites)
@@ -128,7 +167,8 @@ export default function VenuesPage() {
   const capacities = ["100-250", "200-400", "300-600", "400-800", "500-1000"]
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <MainLayout>
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
       <header className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -232,7 +272,18 @@ export default function VenuesPage() {
                 <div className="space-y-2">
                   {["Air Conditioning", "Parking", "Catering", "Garden", "Beach Access"].map(amenity => (
                     <label key={amenity} className="flex items-center">
-                      <input type="checkbox" className="mr-2" />
+                      <input 
+                        type="checkbox" 
+                        className="mr-2"
+                        checked={selectedAmenities.includes(amenity)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedAmenities([...selectedAmenities, amenity])
+                          } else {
+                            setSelectedAmenities(selectedAmenities.filter(a => a !== amenity))
+                          }
+                        }}
+                      />
                       <span className="text-sm text-gray-700 dark:text-gray-300">{amenity}</span>
                     </label>
                   ))}
@@ -351,7 +402,7 @@ export default function VenuesPage() {
                       </p>
                       
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {venue.amenities.slice(0, 3).map(amenity => (
+                        {venue.amenities.slice(0, 3).map((amenity: string) => (
                           <Badge key={amenity} variant="secondary" className="text-xs">
                             {amenity}
                           </Badge>
@@ -442,6 +493,7 @@ export default function VenuesPage() {
           </div>
         </div>
       </footer>
-    </div>
+      </div>
+    </MainLayout>
   )
 }

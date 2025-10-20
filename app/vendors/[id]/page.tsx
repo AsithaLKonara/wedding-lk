@@ -12,13 +12,13 @@ const VendorContact = dynamic(() => import("@/components/organisms/vendor-contac
 import { motion } from "framer-motion"
 
 interface VendorPageProps {
-  params: Promise<{
+  params: {
     id: string
-  }>
+  }
 }
 
 export default async function VendorPage({ params }: VendorPageProps) {
-  const { id } = await params
+  const { id } = params
   
   const vendor = {
     id,
@@ -48,7 +48,7 @@ export default async function VendorPage({ params }: VendorPageProps) {
   return (
     <MainLayout>
       <div className="min-h-screen bg-white dark:bg-gray-900">
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <VendorProfile vendor={vendor} />

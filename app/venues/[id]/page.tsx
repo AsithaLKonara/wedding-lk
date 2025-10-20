@@ -14,13 +14,13 @@ const VenueBooking = dynamic(() => import("@/components/organisms/venue-booking"
 import { motion } from "framer-motion"
 
 interface VenuePageProps {
-  params: Promise<{
+  params: {
     id: string
-  }>
+  }
 }
 
 export default async function VenuePage({ params }: VenuePageProps) {
-  const { id } = await params
+  const { id } = params
   
   const venue = {
     id,

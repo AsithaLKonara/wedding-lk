@@ -9,6 +9,9 @@ import { Venue } from '@/lib/models/venue'
 import { Review } from '@/lib/models/review'
 import { Package } from '@/lib/models/package'
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -505,6 +508,7 @@ async function calculateConversionRate(startDate: Date, endDate: Date) {
   
   return totalUsers > 0 ? (totalBookings / totalUsers) * 100 : 0
 }
+
 
 
 

@@ -43,3 +43,5 @@ export function ContactInfo() {
     </Card>
   )
 } 
+
+export default ContactInfo;

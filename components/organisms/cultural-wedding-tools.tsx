@@ -273,3 +273,6 @@ export function CulturalWeddingTools() {
     </section>
   )
 }
+
+
+export default CulturalWeddingTools;

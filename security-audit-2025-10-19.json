@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-10-19T19:54:34.428Z",
+  "score": 33,
+  "securityChecks": [
+    {
+      "category": "Environment",
+      "issues": 0,
+      "status": "Pass"
+    },
+    {
+      "category": "Code Security",
+      "issues": 34,
+      "status": "Fail"
+    },
+    {
+      "category": "Authentication",
+      "issues": 1,
+      "status": "Fail"
+    }
+  ],
+  "vulnerabilities": [],
+  "recommendations": [
+    {
+      "priority": "High",
+      "category": "Code Security",
+      "issue": "Security vulnerabilities in code",
+      "recommendation": "Review and fix security issues in source code"
+    },
+    {
+      "priority": "Medium",
+      "category": "Security Headers",
+      "issue": "Missing security headers",
+      "recommendation": "Add security headers in next.config.mjs"
+    }
+  ],
+  "summary": {
+    "totalChecks": 3,
+    "passedChecks": 1,
+    "totalRecommendations": 2,
+    "criticalIssues": 0
+  }
+}

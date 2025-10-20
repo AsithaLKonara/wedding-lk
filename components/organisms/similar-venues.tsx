@@ -270,3 +270,6 @@ export function SimilarVenues({ currentVenueId, currentVenueLocation, currentVen
     </Card>
   )
 }
+
+
+export default SimilarVenues;

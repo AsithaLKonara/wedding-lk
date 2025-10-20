@@ -134,7 +134,7 @@ export default function ChatPage() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
             {/* Chat Interface */}
             <div className="lg:col-span-3">
-              <Card className="h-[600px] flex flex-col">
+              <Card className="h-[calc(100vh-260px)] max-h-[800px] flex flex-col">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center gap-2">

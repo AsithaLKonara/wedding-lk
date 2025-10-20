@@ -5,6 +5,9 @@ import { Message } from '@/lib/models/message'
 import { ChatRoom } from '@/lib/models/chat-room'
 import { connectDB } from '@/lib/db'
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -71,3 +74,4 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
+

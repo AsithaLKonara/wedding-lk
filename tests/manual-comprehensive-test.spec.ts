@@ -558,15 +558,4 @@ test.describe('Manual Comprehensive Testing - Live Deployment', () => {
     console.log('✅ Performance & accessibility testing completed')
   })
 })
-    console.log('✅ Performance & accessibility testing completed')
-  })
-})
-
-    console.log('✅ Performance & accessibility testing completed')
-  })
-})
-
-    console.log('✅ Performance & accessibility testing completed')
-  })
-})
 

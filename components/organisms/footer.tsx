@@ -41,6 +41,11 @@ export function Footer() {
                   Gallery
                 </Link>
               </li>
+              <li>
+                <Link href="/packages" className="hover:text-white transition-colors">
+                  Packages
+                </Link>
+              </li>
             </ul>
           </div>
 

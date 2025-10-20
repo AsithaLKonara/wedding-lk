@@ -1,0 +1,646 @@
+{
+  "timestamp": "2025-10-19T20:49:34.644Z",
+  "lighthouse": {
+    "performance": 34,
+    "accessibility": 79,
+    "bestPractices": 96,
+    "seo": 83
+  },
+  "bundle": [
+    {
+      "name": "vendors-574deac8841417d2.js",
+      "path": ".next/static/chunks/vendors-574deac8841417d2.js",
+      "size": 613689
+    },
+    {
+      "name": "common-48eba63d7b8ebd42.js",
+      "path": ".next/static/chunks/common-48eba63d7b8ebd42.js",
+      "size": 498960
+    },
+    {
+      "name": "polyfills-42372ed130431b0a.js",
+      "path": ".next/static/chunks/polyfills-42372ed130431b0a.js",
+      "size": 112594
+    },
+    {
+      "name": "439cafdd70c2419c.css",
+      "path": ".next/static/css/439cafdd70c2419c.css",
+      "size": 98888
+    },
+    {
+      "name": "120.c1c05cff83742ca9.js",
+      "path": ".next/static/chunks/120.c1c05cff83742ca9.js",
+      "size": 20890
+    },
+    {
+      "name": "page-950027ec37069b09.js",
+      "path": ".next/static/chunks/app/dashboard/vendor/onboarding/page-950027ec37069b09.js",
+      "size": 20077
+    },
+    {
+      "name": "1777.960f938f985f535c.js",
+      "path": ".next/static/chunks/1777.960f938f985f535c.js",
+      "size": 18882
+    },
+    {
+      "name": "4306.dd0eb023acf80fd5.js",
+      "path": ".next/static/chunks/4306.dd0eb023acf80fd5.js",
+      "size": 14595
+    },
+    {
+      "name": "3096.8c9c77b85a2efea4.js",
+      "path": ".next/static/chunks/3096.8c9c77b85a2efea4.js",
+      "size": 13811
+    },
+    {
+      "name": "page-e56090dce94e795d.js",
+      "path": ".next/static/chunks/app/dashboard/settings/page-e56090dce94e795d.js",
+      "size": 13793
+    },
+    {
+      "name": "page-754dbfb8f0c336c8.js",
+      "path": ".next/static/chunks/app/roadmap/page-754dbfb8f0c336c8.js",
+      "size": 13740
+    },
+    {
+      "name": "5842.418055233489d79d.js",
+      "path": ".next/static/chunks/5842.418055233489d79d.js",
+      "size": 12930
+    },
+    {
+      "name": "page-04c86cf361529fe7.js",
+      "path": ".next/static/chunks/app/booking/flow/page-04c86cf361529fe7.js",
+      "size": 12430
+    },
+    {
+      "name": "page-43c81e3e107c6503.js",
+      "path": ".next/static/chunks/app/venues/page-43c81e3e107c6503.js",
+      "size": 12412
+    },
+    {
+      "name": "page-f7d1c32cef6b3449.js",
+      "path": ".next/static/chunks/app/vendors/page-f7d1c32cef6b3449.js",
+      "size": 12321
+    },
+    {
+      "name": "page-b2e2c40e4f3253df.js",
+      "path": ".next/static/chunks/app/test/comprehensive/page-b2e2c40e4f3253df.js",
+      "size": 11622
+    },
+    {
+      "name": "page-6fa226c073251b24.js",
+      "path": ".next/static/chunks/app/dashboard/vendor/page-6fa226c073251b24.js",
+      "size": 11254
+    },
+    {
+      "name": "5759.e5d9ff54d00c747a.js",
+      "path": ".next/static/chunks/5759.e5d9ff54d00c747a.js",
+      "size": 11001
+    },
+    {
+      "name": "page-3eefb5ffba895eb1.js",
+      "path": ".next/static/chunks/app/features/ai-enhancements/page-3eefb5ffba895eb1.js",
+      "size": 10860
+    },
+    {
+      "name": "page-1312dabfb057bed9.js",
+      "path": ".next/static/chunks/app/dashboard/admin/page-1312dabfb057bed9.js",
+      "size": 10852
+    },
+    {
+      "name": "2741.c2eee2136ef88d1d.js",
+      "path": ".next/static/chunks/2741.c2eee2136ef88d1d.js",
+      "size": 10478
+    },
+    {
+      "name": "9637.124dfa2aa4999991.js",
+      "path": ".next/static/chunks/9637.124dfa2aa4999991.js",
+      "size": 10475
+    },
+    {
+      "name": "3866.7d16473fb3cb4841.js",
+      "path": ".next/static/chunks/3866.7d16473fb3cb4841.js",
+      "size": 9856
+    },
+    {
+      "name": "page-b44d7c89ff62008c.js",
+      "path": ".next/static/chunks/app/features/mobile-app/page-b44d7c89ff62008c.js",
+      "size": 9637
+    },
+    {
+      "name": "page-949983e05fc39456.js",
+      "path": ".next/static/chunks/app/packages/[id]/page-949983e05fc39456.js",
+      "size": 9597
+    },
+    {
+      "name": "page-634580dd2c7fb909.js",
+      "path": ".next/static/chunks/app/profile/[id]/page-634580dd2c7fb909.js",
+      "size": 9472
+    },
+    {
+      "name": "page-efcb62749cd811ff.js",
+      "path": ".next/static/chunks/app/feed/page-efcb62749cd811ff.js",
+      "size": 9388
+    },
+    {
+      "name": "page-be09471dd4b0ee86.js",
+      "path": ".next/static/chunks/app/test-demo/page-be09471dd4b0ee86.js",
+      "size": 9369
+    },
+    {
+      "name": "page-689e5327628daaa3.js",
+      "path": ".next/static/chunks/app/dashboard/page-689e5327628daaa3.js",
+      "size": 9233
+    },
+    {
+      "name": "page-1c4b06deb92ef685.js",
+      "path": ".next/static/chunks/app/dashboard/planner/page-1c4b06deb92ef685.js",
+      "size": 9100
+    },
+    {
+      "name": "page-eb6a720add3bf6bd.js",
+      "path": ".next/static/chunks/app/notifications/page-eb6a720add3bf6bd.js",
+      "size": 8990
+    },
+    {
+      "name": "page-8c74a5fa18aeacff.js",
+      "path": ".next/static/chunks/app/register/page-8c74a5fa18aeacff.js",
+      "size": 8884
+    },
+    {
+      "name": "1824.7279d11592ac2886.js",
+      "path": ".next/static/chunks/1824.7279d11592ac2886.js",
+      "size": 8814
+    },
+    {
+      "name": "page-34e9e23815c08cd5.js",
+      "path": ".next/static/chunks/app/chat/page-34e9e23815c08cd5.js",
+      "size": 8727
+    },
+    {
+      "name": "page-542a9f8fe8a7b5a8.js",
+      "path": ".next/static/chunks/app/packages/[id]/book/page-542a9f8fe8a7b5a8.js",
+      "size": 8716
+    },
+    {
+      "name": "4437.98d7652ecb2655b1.js",
+      "path": ".next/static/chunks/4437.98d7652ecb2655b1.js",
+      "size": 8676
+    },
+    {
+      "name": "4771.aef5535bb1c16e71.js",
+      "path": ".next/static/chunks/4771.aef5535bb1c16e71.js",
+      "size": 8634
+    },
+    {
+      "name": "page-f81dce6f593b607c.js",
+      "path": ".next/static/chunks/app/blog/[id]/page-f81dce6f593b607c.js",
+      "size": 8575
+    },
+    {
+      "name": "page-8b61408b76184f0e.js",
+      "path": ".next/static/chunks/app/debug/issues/page-8b61408b76184f0e.js",
+      "size": 8343
+    },
+    {
+      "name": "page-60cf2ab91d01f9c1.js",
+      "path": ".next/static/chunks/app/gallery/page-60cf2ab91d01f9c1.js",
+      "size": 8150
+    },
+    {
+      "name": "7220.e8f1eaa200534b0c.js",
+      "path": ".next/static/chunks/7220.e8f1eaa200534b0c.js",
+      "size": 7824
+    },
+    {
+      "name": "5609.71f560d7d8d52d97.js",
+      "path": ".next/static/chunks/5609.71f560d7d8d52d97.js",
+      "size": 7750
+    },
+    {
+      "name": "2488.e1abf5dcf41d7646.js",
+      "path": ".next/static/chunks/2488.e1abf5dcf41d7646.js",
+      "size": 7639
+    },
+    {
+      "name": "page-d38cd7a9b8ff4568.js",
+      "path": ".next/static/chunks/app/ai-search/page-d38cd7a9b8ff4568.js",
+      "size": 7292
+    },
+    {
+      "name": "4179.8019f4fb7094c1ae.js",
+      "path": ".next/static/chunks/4179.8019f4fb7094c1ae.js",
+      "size": 7067
+    },
+    {
+      "name": "page-1a4401d3a8d04966.js",
+      "path": ".next/static/chunks/app/test/page-1a4401d3a8d04966.js",
+      "size": 7014
+    },
+    {
+      "name": "page-bacf00f29e3236cb.js",
+      "path": ".next/static/chunks/app/payment/page-bacf00f29e3236cb.js",
+      "size": 6162
+    },
+    {
+      "name": "page-583c0e78037dde99.js",
+      "path": ".next/static/chunks/app/packages/custom/page-583c0e78037dde99.js",
+      "size": 5612
+    },
+    {
+      "name": "page-6b6b24aa1599c088.js",
+      "path": ".next/static/chunks/app/dashboard/payments/page-6b6b24aa1599c088.js",
+      "size": 5402
+    },
+    {
+      "name": "5325.2093fe2400b7d9bb.js",
+      "path": ".next/static/chunks/5325.2093fe2400b7d9bb.js",
+      "size": 5221
+    },
+    {
+      "name": "8547.bdb9f0bd39aae202.js",
+      "path": ".next/static/chunks/8547.bdb9f0bd39aae202.js",
+      "size": 5176
+    },
+    {
+      "name": "page-69b3d1b57f0f25cf.js",
+      "path": ".next/static/chunks/app/dashboard/bookings/page-69b3d1b57f0f25cf.js",
+      "size": 4845
+    },
+    {
+      "name": "webpack-7e3e4c5529f31954.js",
+      "path": ".next/static/chunks/webpack-7e3e4c5529f31954.js",
+      "size": 4797
+    },
+    {
+      "name": "7290.7e3904bce0ed7066.js",
+      "path": ".next/static/chunks/7290.7e3904bce0ed7066.js",
+      "size": 4502
+    },
+    {
+      "name": "page-f95564257c20ad68.js",
+      "path": ".next/static/chunks/app/login/page-f95564257c20ad68.js",
+      "size": 4439
+    },
+    {
+      "name": "page-8b2722c743f790e2.js",
+      "path": ".next/static/chunks/app/reset-password/page-8b2722c743f790e2.js",
+      "size": 4340
+    },
+    {
+      "name": "page-3764979468c29cfc.js",
+      "path": ".next/static/chunks/app/community/page-3764979468c29cfc.js",
+      "size": 3774
+    },
+    {
+      "name": "page-1db08af0b9d4e1ee.js",
+      "path": ".next/static/chunks/app/packages/compare/page-1db08af0b9d4e1ee.js",
+      "size": 3745
+    },
+    {
+      "name": "layout-6ec9c53f49329833.js",
+      "path": ".next/static/chunks/app/layout-6ec9c53f49329833.js",
+      "size": 3674
+    },
+    {
+      "name": "page-2fa5a0279ba4a97a.js",
+      "path": ".next/static/chunks/app/blog/page-2fa5a0279ba4a97a.js",
+      "size": 3320
+    },
+    {
+      "name": "page-d846fb57a45d617d.js",
+      "path": ".next/static/chunks/app/dashboard/subscription/page-d846fb57a45d617d.js",
+      "size": 3234
+    },
+    {
+      "name": "4663.8dc866a3d179cf0d.js",
+      "path": ".next/static/chunks/4663.8dc866a3d179cf0d.js",
+      "size": 3178
+    },
+    {
+      "name": "page-e57b0b3e992119ca.js",
+      "path": ".next/static/chunks/app/admin/analytics/page-e57b0b3e992119ca.js",
+      "size": 2960
+    },
+    {
+      "name": "2661.b450b2bc8c6223f0.js",
+      "path": ".next/static/chunks/2661.b450b2bc8c6223f0.js",
+      "size": 2952
+    },
+    {
+      "name": "2943.9f30be4d5df2ee9a.js",
+      "path": ".next/static/chunks/2943.9f30be4d5df2ee9a.js",
+      "size": 2946
+    },
+    {
+      "name": "9096.b5fb8bfe73e2f6b4.js",
+      "path": ".next/static/chunks/9096.b5fb8bfe73e2f6b4.js",
+      "size": 2935
+    },
+    {
+      "name": "page-f9feb0f081dcb8cf.js",
+      "path": ".next/static/chunks/app/venues/[id]/page-f9feb0f081dcb8cf.js",
+      "size": 2887
+    },
+    {
+      "name": "602.5c7322b95f457fbf.js",
+      "path": ".next/static/chunks/602.5c7322b95f457fbf.js",
+      "size": 2829
+    },
+    {
+      "name": "page-148efdafa84f7478.js",
+      "path": ".next/static/chunks/app/forgot-password/page-148efdafa84f7478.js",
+      "size": 2782
+    },
+    {
+      "name": "1169.f1e199be31fba400.js",
+      "path": ".next/static/chunks/1169.f1e199be31fba400.js",
+      "size": 2701
+    },
+    {
+      "name": "page-767d764e5485f005.js",
+      "path": ".next/static/chunks/app/status/page-767d764e5485f005.js",
+      "size": 2476
+    },
+    {
+      "name": "6349.af473a412808d5fb.js",
+      "path": ".next/static/chunks/6349.af473a412808d5fb.js",
+      "size": 2450
+    },
+    {
+      "name": "page-77d62a746edde7f5.js",
+      "path": ".next/static/chunks/app/page-77d62a746edde7f5.js",
+      "size": 2448
+    },
+    {
+      "name": "page-a053dc4d38a05618.js",
+      "path": ".next/static/chunks/app/vendors/[id]/page-a053dc4d38a05618.js",
+      "size": 2333
+    },
+    {
+      "name": "page-01d11d749299c99e.js",
+      "path": ".next/static/chunks/app/planning/page-01d11d749299c99e.js",
+      "size": 2228
+    },
+    {
+      "name": "7cca8e2c5137bd71.css",
+      "path": ".next/static/css/7cca8e2c5137bd71.css",
+      "size": 2153
+    },
+    {
+      "name": "9560.68ed660fd1206d95.js",
+      "path": ".next/static/chunks/9560.68ed660fd1206d95.js",
+      "size": 2067
+    },
+    {
+      "name": "page-13daeb4858622657.js",
+      "path": ".next/static/chunks/app/verify-email/page-13daeb4858622657.js",
+      "size": 1998
+    },
+    {
+      "name": "page-152359153959a3f2.js",
+      "path": ".next/static/chunks/app/reviews/write/page-152359153959a3f2.js",
+      "size": 1959
+    },
+    {
+      "name": "7234.6179aa1c1392d861.js",
+      "path": ".next/static/chunks/7234.6179aa1c1392d861.js",
+      "size": 1834
+    },
+    {
+      "name": "3976.93fd40833ec676f5.js",
+      "path": ".next/static/chunks/3976.93fd40833ec676f5.js",
+      "size": 1718
+    },
+    {
+      "name": "6862.350266eb560ae783.js",
+      "path": ".next/static/chunks/6862.350266eb560ae783.js",
+      "size": 1634
+    },
+    {
+      "name": "page-c943b3acfbb581b4.js",
+      "path": ".next/static/chunks/app/subscription/page-c943b3acfbb581b4.js",
+      "size": 1576
+    },
+    {
+      "name": "649.593787e426ef643a.js",
+      "path": ".next/static/chunks/649.593787e426ef643a.js",
+      "size": 1494
+    },
+    {
+      "name": "page-6f2ded7fbd21e64d.js",
+      "path": ".next/static/chunks/app/contact/page-6f2ded7fbd21e64d.js",
+      "size": 1345
+    },
+    {
+      "name": "page-2ea68b7a8e09405c.js",
+      "path": ".next/static/chunks/app/favorites/page-2ea68b7a8e09405c.js",
+      "size": 1324
+    },
+    {
+      "name": "page-e4929ae2ad0d80ec.js",
+      "path": ".next/static/chunks/app/about/page-e4929ae2ad0d80ec.js",
+      "size": 1313
+    },
+    {
+      "name": "2277.a03a6df527a6b9dd.js",
+      "path": ".next/static/chunks/2277.a03a6df527a6b9dd.js",
+      "size": 1126
+    },
+    {
+      "name": "page-05eb267214ff4f86.js",
+      "path": ".next/static/chunks/app/payment/success/page-05eb267214ff4f86.js",
+      "size": 1078
+    },
+    {
+      "name": "page-37aa48eddee4bd5f.js",
+      "path": ".next/static/chunks/app/payment/cancel/page-37aa48eddee4bd5f.js",
+      "size": 1054
+    },
+    {
+      "name": "page-91035a8924e97fb7.js",
+      "path": ".next/static/chunks/app/payment/failed/page-91035a8924e97fb7.js",
+      "size": 1048
+    },
+    {
+      "name": "page-2417a14d1e4a3025.js",
+      "path": ".next/static/chunks/app/profile/page-2417a14d1e4a3025.js",
+      "size": 941
+    },
+    {
+      "name": "page-0a990675acc6843b.js",
+      "path": ".next/static/chunks/app/premium/page-0a990675acc6843b.js",
+      "size": 745
+    },
+    {
+      "name": "9527.80b568c6f16ff483.js",
+      "path": ".next/static/chunks/9527.80b568c6f16ff483.js",
+      "size": 738
+    },
+    {
+      "name": "5563.a3de9e4aeb3058c0.js",
+      "path": ".next/static/chunks/5563.a3de9e4aeb3058c0.js",
+      "size": 591
+    },
+    {
+      "name": "1391.08be80d68d04863c.js",
+      "path": ".next/static/chunks/1391.08be80d68d04863c.js",
+      "size": 583
+    },
+    {
+      "name": "2634.7bdcca1cb25a08f9.js",
+      "path": ".next/static/chunks/2634.7bdcca1cb25a08f9.js",
+      "size": 577
+    },
+    {
+      "name": "3361.1c2f5c07462ab228.js",
+      "path": ".next/static/chunks/3361.1c2f5c07462ab228.js",
+      "size": 571
+    },
+    {
+      "name": "6539.ae73c90db845b9b4.js",
+      "path": ".next/static/chunks/6539.ae73c90db845b9b4.js",
+      "size": 550
+    },
+    {
+      "name": "8410.095a32a59f3aa0ed.js",
+      "path": ".next/static/chunks/8410.095a32a59f3aa0ed.js",
+      "size": 495
+    },
+    {
+      "name": "page-15c6440b58405812.js",
+      "path": ".next/static/chunks/app/debug/page-15c6440b58405812.js",
+      "size": 489
+    },
+    {
+      "name": "9498.316721132da7b71b.js",
+      "path": ".next/static/chunks/9498.316721132da7b71b.js",
+      "size": 471
+    },
+    {
+      "name": "main-app-4a99291c7f087359.js",
+      "path": ".next/static/chunks/main-app-4a99291c7f087359.js",
+      "size": 466
+    },
+    {
+      "name": "_app-c59025e0e20f0307.js",
+      "path": ".next/static/chunks/pages/_app-c59025e0e20f0307.js",
+      "size": 286
+    },
+    {
+      "name": "_error-394cd807e5dfa81b.js",
+      "path": ".next/static/chunks/pages/_error-394cd807e5dfa81b.js",
+      "size": 253
+    },
+    {
+      "name": "_buildManifest.js",
+      "path": ".next/static/qElUPOrP3uqmIrSOilr3x/_buildManifest.js",
+      "size": 224
+    },
+    {
+      "name": "main-c89a409c40824b2e.js",
+      "path": ".next/static/chunks/main-c89a409c40824b2e.js",
+      "size": 155
+    },
+    {
+      "name": "page-9eb5ce8038f26511.js",
+      "path": ".next/static/chunks/app/_not-found/page-9eb5ce8038f26511.js",
+      "size": 148
+    },
+    {
+      "name": "page-175caab57c2e3472.js",
+      "path": ".next/static/chunks/app/bookings/[id]/page-175caab57c2e3472.js",
+      "size": 148
+    },
+    {
+      "name": "page-a1ad230aa487c8b2.js",
+      "path": ".next/static/chunks/app/category/[slug]/page-a1ad230aa487c8b2.js",
+      "size": 148
+    },
+    {
+      "name": "page-39f14cc2fa0f780c.js",
+      "path": ".next/static/chunks/app/location/[slug]/page-39f14cc2fa0f780c.js",
+      "size": 148
+    },
+    {
+      "name": "not-found-6a524341e6c34cbe.js",
+      "path": ".next/static/chunks/app/not-found-6a524341e6c34cbe.js",
+      "size": 148
+    },
+    {
+      "name": "page-ca87ca0cd46c72b8.js",
+      "path": ".next/static/chunks/app/reviews/[id]/page-ca87ca0cd46c72b8.js",
+      "size": 148
+    },
+    {
+      "name": "page-7bb7af0f3b62f3ef.js",
+      "path": ".next/static/chunks/app/terms/page-7bb7af0f3b62f3ef.js",
+      "size": 148
+    },
+    {
+      "name": "loading-48ef7c935d0c3fef.js",
+      "path": ".next/static/chunks/app/venues/loading-48ef7c935d0c3fef.js",
+      "size": 148
+    },
+    {
+      "name": "page-4e134ff91bb72c19.js",
+      "path": ".next/static/chunks/app/privacy/page-4e134ff91bb72c19.js",
+      "size": 147
+    },
+    {
+      "name": "_ssgManifest.js",
+      "path": ".next/static/qElUPOrP3uqmIrSOilr3x/_ssgManifest.js",
+      "size": 80
+    }
+  ],
+  "coverage": {},
+  "recommendations": [
+    {
+      "category": "Performance",
+      "priority": "High",
+      "issue": "Slow First Contentful Paint",
+      "score": 0.87,
+      "recommendation": "Optimize critical rendering path, reduce server response time, and minimize render-blocking resources"
+    },
+    {
+      "category": "Performance",
+      "priority": "High",
+      "issue": "Slow Largest Contentful Paint",
+      "score": 0.67,
+      "recommendation": "Optimize images, use efficient image formats (WebP/AVIF), and implement lazy loading"
+    },
+    {
+      "category": "Performance",
+      "priority": "Medium",
+      "issue": "Cumulative Layout Shift",
+      "score": 0.01,
+      "recommendation": "Add size attributes to images and videos, avoid inserting content above existing content"
+    },
+    {
+      "category": "Performance",
+      "priority": "Medium",
+      "issue": "Unused CSS Rules",
+      "score": 0,
+      "recommendation": "Remove unused CSS and implement critical CSS inlining"
+    },
+    {
+      "category": "Performance",
+      "priority": "High",
+      "issue": "Unused JavaScript",
+      "score": 0,
+      "recommendation": "Remove unused JavaScript, implement code splitting, and use dynamic imports"
+    },
+    {
+      "category": "API Performance",
+      "priority": "High",
+      "issue": "Slow API response times detected",
+      "recommendation": "Optimize database queries, implement caching, and consider CDN for static assets"
+    }
+  ],
+  "summary": {
+    "totalRecommendations": 6,
+    "highPriority": 4,
+    "mediumPriority": 2,
+    "lowPriority": 0
+  }
+}

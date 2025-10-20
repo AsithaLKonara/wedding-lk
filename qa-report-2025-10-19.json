@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-10-19T22:04:44.996Z",
+  "duration": "3675.26s",
+  "results": {
+    "passed": 12,
+    "failed": 15,
+    "warnings": 0,
+    "total": 27
+  },
+  "successRate": "44.4%",
+  "status": "FAIL"
+}

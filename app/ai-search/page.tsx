@@ -11,6 +11,7 @@ import { motion } from "framer-motion"
 
 export default function AISearchPage() {
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedLocation, setSelectedLocation] = useState('')
   const [isSearching, setIsSearching] = useState(false)
   const [searchResults, setSearchResults] = useState<any[]>([])
   const [recentSearches, setRecentSearches] = useState([
@@ -19,6 +20,18 @@ export default function AISearchPage() {
     "Luxury hotel ballroom Colombo under 300k",
     "Garden wedding venue with catering"
   ])
+
+  const locations = [
+    "All Locations",
+    "Colombo",
+    "Kandy", 
+    "Galle",
+    "Bentota",
+    "Nuwara Eliya",
+    "Negombo",
+    "Anuradhapura",
+    "Jaffna"
+  ]
 
   const quickSearches = [
     "Beach wedding venues in Galle",
@@ -123,34 +136,52 @@ export default function AISearchPage() {
           >
             <Card>
               <CardContent className="pt-6">
-                <div className="flex gap-4">
-                  <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                    <Input
-                      placeholder="Describe your dream wedding..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                      className="pl-10 text-lg py-3"
-                    />
+                <div className="space-y-4">
+                  <div className="flex gap-4">
+                    <div className="flex-1 relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <Input
+                        placeholder="Describe your dream wedding..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                        className="pl-10 text-lg py-3"
+                      />
+                    </div>
+                    <Button 
+                      onClick={handleSearch}
+                      disabled={isSearching || !searchQuery.trim()}
+                      className="px-8"
+                    >
+                      {isSearching ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                          Searching...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-4 h-4 mr-2" />
+                          Search
+                        </>
+                      )}
+                    </Button>
                   </div>
-                  <Button 
-                    onClick={handleSearch}
-                    disabled={isSearching || !searchQuery.trim()}
-                    className="px-8"
-                  >
-                    {isSearching ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                        Searching...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="w-4 h-4 mr-2" />
-                        Search
-                      </>
-                    )}
-                  </Button>
+                  
+                  {/* Location Selector */}
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-gray-500" />
+                    <select
+                      value={selectedLocation}
+                      onChange={(e) => setSelectedLocation(e.target.value)}
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    >
+                      {locations.map((location) => (
+                        <option key={location} value={location}>
+                          {location}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -226,7 +257,7 @@ export default function AISearchPage() {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {searchResults.map((result) => (
+                {searchResults && searchResults.length > 0 ? searchResults.map((result) => (
                   <Card key={result.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                     <div className="relative">
                       <img
@@ -282,7 +313,11 @@ export default function AISearchPage() {
                       </Button>
                     </CardContent>
                   </Card>
-                ))}
+                )) : (
+                  <div className="col-span-full text-center py-8">
+                    <p className="text-gray-500">No results found</p>
+                  </div>
+                )}
               </div>
             </motion.div>
           )}

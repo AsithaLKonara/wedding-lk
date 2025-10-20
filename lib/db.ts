@@ -2,10 +2,6 @@ import mongoose from "mongoose"
 
 const MONGODB_URI = process.env.MONGODB_URI as string
 
-if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable inside .env.local")
-}
-
 let cached = (global as any).mongoose
 
 if (!cached) {
@@ -13,6 +9,12 @@ if (!cached) {
 }
 
 export async function connectDB() {
+  // Skip database connection during build if no URI is provided
+  if (!MONGODB_URI) {
+    console.warn("MONGODB_URI not provided, skipping database connection")
+    return null
+  }
+
   if (cached.conn) {
     return cached.conn
   }
@@ -29,7 +31,8 @@ export async function connectDB() {
     cached.conn = await cached.promise
   } catch (e) {
     cached.promise = null
-    throw e
+    console.warn("Database connection failed:", e)
+    return null
   }
 
   return cached.conn

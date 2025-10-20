@@ -1,9 +1,9 @@
 export default function TeamSection() {
   const team = [
-    { name: "Sarah Johnson", role: "CEO & Founder", image: "/placeholder.svg" },
-    { name: "Michael Chen", role: "CTO", image: "/placeholder.svg" },
-    { name: "Priya Fernando", role: "Head of Operations", image: "/placeholder.svg" },
-    { name: "David Kumar", role: "Lead Developer", image: "/placeholder.svg" }
+    { name: "Asitha L Konara", role: "CEO & Founder", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face" },
+    { name: "Michael Chen", role: "CTO", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face" },
+    { name: "Priya Fernando", role: "Head of Operations", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face" },
+    { name: "David Kumar", role: "Lead Developer", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face" }
   ];
 
   return (

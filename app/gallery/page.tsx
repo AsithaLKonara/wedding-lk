@@ -190,6 +190,7 @@ export default function GalleryPage() {
                       src={item.image}
                       alt={item.title}
                       className="w-full h-48 object-cover"
+                      loading="lazy"
                     />
                     {item.featured && (
                       <Badge className="absolute top-2 left-2 bg-red-500">
@@ -257,6 +258,7 @@ export default function GalleryPage() {
                         src={item.image}
                         alt={item.title}
                         className="w-full h-full object-cover"
+                        loading="lazy"
                       />
                       {item.featured && (
                         <Badge className="absolute top-2 left-2 bg-red-500 text-xs">

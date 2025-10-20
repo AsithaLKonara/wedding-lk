@@ -469,18 +469,23 @@ export default function SettingsPage() {
             {show2FASetup && (
               <div className="space-y-2">
                 <Label htmlFor="otp">Enter OTP</Label>
-                <InputOTP
-                  value={otp}
-                  onChange={setOtp}
-                  maxLength={6}
-                  className="mb-2"
-                  aria-invalid={!!otpError}
-                  aria-describedby="otp-error"
-                >
+                <div className="flex gap-2 mb-2">
                   {Array.from({ length: 6 }).map((_, i) => (
-                    <InputOTPSlot key={i} index={i} />
+                    <Input
+                      key={i}
+                      value={otp[i] || ''}
+                      onChange={(e) => {
+                        const newOtp = otp.split('')
+                        newOtp[i] = e.target.value
+                        setOtp(newOtp.join(''))
+                      }}
+                      maxLength={1}
+                      className="w-10 h-10 text-center"
+                      aria-invalid={!!otpError}
+                      aria-describedby="otp-error"
+                    />
                   ))}
-                </InputOTP>
+                </div>
                 {otpError && <div id="otp-error" className="text-xs text-destructive">{otpError}</div>}
                 <Button onClick={handleVerify2FA} disabled={is2FALoading}>
                   {is2FALoading ? "Verifying..." : "Verify & Enable 2FA"}

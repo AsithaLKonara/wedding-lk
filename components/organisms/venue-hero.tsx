@@ -94,3 +94,6 @@ export function VenueHero({ venue }: VenueHeroProps) {
     </div>
   )
 }
+
+
+export default VenueHero;

@@ -41,7 +41,11 @@ const nextConfig = {
   poweredByHeader: false,
   
   // Caching and performance
-  generateEtags: false,
+  generateEtags: true,
+  
+  // Static file handling
+  trailingSlash: false,
+  skipTrailingSlashRedirect: true,
   
   // Bundle optimization
   webpack: (config, { dev, isServer }) => {
@@ -68,7 +72,7 @@ const nextConfig = {
     return config
   },
   
-  // Headers for better caching
+  // Headers for better caching and security
   async headers() {
     return [
       {
@@ -85,6 +89,18 @@ const nextConfig = {
           {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains; preload',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
           },
         ],
       },

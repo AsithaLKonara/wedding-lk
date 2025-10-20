@@ -426,3 +426,6 @@ export function GuestList() {
     </div>
   )
 }
+
+
+export default GuestList;

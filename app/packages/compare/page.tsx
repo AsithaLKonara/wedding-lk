@@ -41,7 +41,7 @@ export default function ComparePackagesPage() {
         "Honeymoon package": true,
         "Video coverage": true,
         "Decoration premium": true,
-      },
+      } as Record<string, boolean>,
     },
     {
       id: 2,
@@ -60,7 +60,7 @@ export default function ComparePackagesPage() {
         "Honeymoon package": false,
         "Video coverage": true,
         "Decoration premium": false,
-      },
+      } as Record<string, boolean>,
     },
     {
       id: 3,
@@ -79,7 +79,7 @@ export default function ComparePackagesPage() {
         "Honeymoon package": false,
         "Video coverage": false,
         "Decoration premium": false,
-      },
+      } as Record<string, boolean>,
     },
   ]
 

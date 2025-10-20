@@ -79,17 +79,17 @@ async function processAISearch(searchData: any) {
   const insights = generateInsights(venues, vendors, searchData)
   
   // Calculate match scores for recommendations
-  const venueRecommendations = venues.map(venue => ({
+  const venueRecommendations = venues.map((venue: any) => ({
     ...venue.toObject(),
     matchScore: calculateVenueMatchScore(venue, searchData),
     reasons: generateVenueReasons(venue, searchData)
-  })).sort((a, b) => b.matchScore - a.matchScore)
+  })).sort((a: any, b: any) => b.matchScore - a.matchScore)
 
-  const vendorRecommendations = vendors.map(vendor => ({
+  const vendorRecommendations = vendors.map((vendor: any) => ({
     ...vendor.toObject(),
     matchScore: calculateVendorMatchScore(vendor, searchData),
     reasons: generateVendorReasons(vendor, searchData)
-  })).sort((a, b) => b.matchScore - a.matchScore)
+  })).sort((a: any, b: any) => b.matchScore - a.matchScore)
 
   return {
     interpretation: {
@@ -100,7 +100,7 @@ async function processAISearch(searchData: any) {
     recommendations: {
       venues: venueRecommendations,
       vendors: vendorRecommendations,
-      services: services.map(service => service.toObject()),
+      services: services.map((service: any) => service.toObject()),
     },
     insights,
     searchStats: {

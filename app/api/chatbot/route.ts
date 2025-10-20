@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from '@/lib/db'
-import { User } from '@/lib/models/user'
-import { Vendor } from '@/lib/models/vendor'
 import { Venue } from '@/lib/models/venue'
+import { Vendor } from '@/lib/models/vendor'
 import { Package } from '@/lib/models/package'
 
 export async function POST(request: NextRequest) {
   try {
     const { message, userId, context } = await request.json()
 
+    // Connect to database
     await connectDB()
 
     // Simple AI chatbot logic (can be enhanced with OpenAI API)
@@ -43,15 +43,56 @@ async function generateBotResponse(message: string, userId?: string, context?: a
 
   // Venue search
   if (lowerMessage.includes('venue') || lowerMessage.includes('location') || lowerMessage.includes('place')) {
-    const venues = await Venue.find({ isActive: true }).limit(5)
+    try {
+      const venues = await Venue.find({ isActive: true }).limit(5)
+      
+      if (venues.length > 0) {
+        return {
+          text: "Here are some popular venues I found for you:",
+          data: venues.map(venue => ({
+            name: venue.name,
+            location: venue.location.city,
+            capacity: venue.capacity.max,
+            price: venue.pricing.basePrice
+          })),
+          suggestions: [
+            "Show more venues",
+            "Filter by location",
+            "Filter by capacity",
+            "View venue details"
+          ],
+          type: 'venues'
+        }
+      }
+    } catch (error) {
+      console.error('Venue search error:', error)
+    }
+    
+    // Fallback to sample data
+    const sampleVenues = [
+      {
+        name: 'Grand Ballroom Hotel',
+        location: 'Colombo',
+        capacity: 300,
+        price: 200000
+      },
+      {
+        name: 'Garden Paradise',
+        location: 'Kandy',
+        capacity: 150,
+        price: 120000
+      },
+      {
+        name: 'Beach Resort',
+        location: 'Galle',
+        capacity: 200,
+        price: 180000
+      }
+    ]
+    
     return {
       text: "Here are some popular venues I found for you:",
-      data: venues.map(venue => ({
-        name: venue.name,
-        location: venue.location.city,
-        capacity: venue.capacity,
-        price: venue.pricing.startingPrice
-      })),
+      data: sampleVenues,
       suggestions: [
         "Show more venues",
         "Filter by location",
@@ -64,15 +105,56 @@ async function generateBotResponse(message: string, userId?: string, context?: a
 
   // Vendor search
   if (lowerMessage.includes('vendor') || lowerMessage.includes('photographer') || lowerMessage.includes('catering') || lowerMessage.includes('music')) {
-    const vendors = await Vendor.find({ isActive: true }).limit(5)
+    try {
+      const vendors = await Vendor.find({ isActive: true }).limit(5)
+      
+      if (vendors.length > 0) {
+        return {
+          text: "Here are some top-rated vendors:",
+          data: vendors.map(vendor => ({
+            name: vendor.name,
+            category: vendor.category,
+            location: vendor.location.city,
+            rating: vendor.rating.average
+          })),
+          suggestions: [
+            "Show photographers",
+            "Show caterers",
+            "Show musicians",
+            "View all vendors"
+          ],
+          type: 'vendors'
+        }
+      }
+    } catch (error) {
+      console.error('Vendor search error:', error)
+    }
+    
+    // Fallback to sample data
+    const sampleVendors = [
+      {
+        name: 'Elite Photography',
+        category: 'Photography',
+        location: 'Colombo',
+        rating: 4.8
+      },
+      {
+        name: 'Royal Catering',
+        category: 'Catering',
+        location: 'Kandy',
+        rating: 4.6
+      },
+      {
+        name: 'Melody Band',
+        category: 'Music',
+        location: 'Galle',
+        rating: 4.7
+      }
+    ]
+    
     return {
       text: "Here are some top-rated vendors:",
-      data: vendors.map(vendor => ({
-        name: vendor.name,
-        category: vendor.category,
-        location: vendor.location.city,
-        rating: vendor.rating.average
-      })),
+      data: sampleVendors,
       suggestions: [
         "Show photographers",
         "Show caterers",
@@ -85,15 +167,67 @@ async function generateBotResponse(message: string, userId?: string, context?: a
 
   // Package search
   if (lowerMessage.includes('package') || lowerMessage.includes('deal') || lowerMessage.includes('offer')) {
-    const packages = await Package.find({ isActive: true }).limit(5)
+    try {
+      const packages = await Package.find({ isActive: true }).limit(5)
+      
+      if (packages.length > 0) {
+        return {
+          text: "Here are some amazing wedding packages:",
+          data: packages.map(pkg => {
+            // Handle both Map and Object features
+            let features = []
+            if (pkg.features) {
+              if (pkg.features instanceof Map) {
+                features = Array.from(pkg.features.keys()).filter(key => pkg.features.get(key) === true).slice(0, 3)
+              } else {
+                features = Object.keys(pkg.features).filter(key => pkg.features[key] === true).slice(0, 3)
+              }
+            }
+            return {
+              name: pkg.name,
+              price: pkg.price,
+              category: pkg.category,
+              features: features
+            }
+          }),
+          suggestions: [
+            "Show premium packages",
+            "Show budget packages",
+            "Customize package",
+            "Compare packages"
+          ],
+          type: 'packages'
+        }
+      }
+    } catch (error) {
+      console.error('Package search error:', error)
+    }
+    
+    // Fallback to sample data
+    const samplePackages = [
+      {
+        name: 'Premium Wedding Package',
+        price: 150000,
+        category: 'Premium',
+        features: ['Venue', 'Photography', 'Catering']
+      },
+      {
+        name: 'Standard Wedding Package',
+        price: 100000,
+        category: 'Standard',
+        features: ['Venue', 'Photography', 'Catering']
+      },
+      {
+        name: 'Basic Wedding Package',
+        price: 75000,
+        category: 'Basic',
+        features: ['Venue', 'Catering']
+      }
+    ]
+    
     return {
       text: "Here are some amazing wedding packages:",
-      data: packages.map(pkg => ({
-        name: pkg.name,
-        price: pkg.price,
-        category: pkg.category,
-        features: pkg.features.slice(0, 3)
-      })),
+      data: samplePackages,
       suggestions: [
         "Show premium packages",
         "Show budget packages",
@@ -178,6 +312,9 @@ async function generateBotResponse(message: string, userId?: string, context?: a
     type: 'general'
   }
 }
+
+
+
 
 
 

@@ -47,3 +47,6 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
     </Card>
   )
 }
+
+
+export default ProfileHeader;

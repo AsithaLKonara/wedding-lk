@@ -83,3 +83,6 @@ export function VenueDetails({ venue }: VenueDetailsProps) {
     </div>
   )
 }
+
+
+export default VenueDetails;

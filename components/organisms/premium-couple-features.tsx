@@ -314,3 +314,6 @@ export function PremiumCoupleFeatures() {
     </section>
   )
 }
+
+
+export default PremiumCoupleFeatures;
