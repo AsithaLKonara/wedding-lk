@@ -103,65 +103,45 @@ const DisputeSchema: Schema = new Schema({
   disputeId: {
     type: String,
     required: true,
-    unique: true,
-    index: true
-  },
+    unique: true},
   type: {
     type: String,
     required: true,
-    enum: ['booking', 'payment', 'service', 'vendor', 'refund', 'other'],
-    index: true
-  },
+    enum: ['booking', 'payment', 'service', 'vendor', 'refund', 'other']},
   status: {
     type: String,
     required: true,
     enum: ['open', 'in_progress', 'resolved', 'closed', 'escalated'],
-    default: 'open',
-    index: true
-  },
+    default: 'open'},
   priority: {
     type: String,
     required: true,
     enum: ['low', 'medium', 'high', 'urgent'],
-    default: 'medium',
-    index: true
-  },
+    default: 'medium'},
   
   // Parties Involved
   complainantId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
-  },
+    required: true},
   respondentId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
-  },
+    required: true},
   assignedAdminId: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
-    index: true
-  },
+    ref: 'User'},
   
   // Related Entities
   bookingId: {
     type: Schema.Types.ObjectId,
-    ref: 'Booking',
-    index: true
-  },
+    ref: 'Booking'},
   paymentId: {
     type: Schema.Types.ObjectId,
-    ref: 'Payment',
-    index: true
-  },
+    ref: 'Payment'},
   vendorId: {
     type: Schema.Types.ObjectId,
-    ref: 'Vendor',
-    index: true
-  },
+    ref: 'Vendor'},
   
   // Dispute Details
   title: {
@@ -179,9 +159,7 @@ const DisputeSchema: Schema = new Schema({
   category: {
     type: String,
     required: true,
-    enum: ['quality', 'delivery', 'communication', 'billing', 'cancellation', 'other'],
-    index: true
-  },
+    enum: ['quality', 'delivery', 'communication', 'billing', 'cancellation', 'other']},
   requestedResolution: {
     type: String,
     required: true,
@@ -357,19 +335,13 @@ const DisputeSchema: Schema = new Schema({
   // Resolution Tracking
   resolutionDeadline: {
     type: Date,
-    required: true,
-    index: true
-  },
+    required: true},
   lastActivityAt: {
     type: Date,
-    default: Date.now,
-    index: true
-  },
+    default: Date.now},
   isOverdue: {
     type: Boolean,
-    default: false,
-    index: true
-  },
+    default: false},
   
   // Satisfaction and Feedback
   complainantSatisfaction: {

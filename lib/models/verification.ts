@@ -72,15 +72,11 @@ const VerificationSchema = new Schema<IVerification>({
   vendorId: { 
     type: Schema.Types.ObjectId, 
     ref: 'Vendor', 
-    required: true,
-    index: true 
-  },
+    required: true},
   type: { 
     type: String, 
     required: true, 
-    enum: ['business_registration', 'tax_certificate', 'insurance', 'portfolio', 'identity', 'address'],
-    index: true
-  },
+    enum: ['business_registration', 'tax_certificate', 'insurance', 'portfolio', 'identity', 'address']},
   
   document: {
     filename: { type: String, required: true },
@@ -94,9 +90,7 @@ const VerificationSchema = new Schema<IVerification>({
   status: { 
     type: String, 
     enum: ['pending', 'approved', 'rejected', 'expired'],
-    default: 'pending',
-    index: true
-  },
+    default: 'pending'},
   submittedAt: { type: Date, required: true, default: Date.now },
   reviewedAt: { type: Date },
   reviewedBy: { type: Schema.Types.ObjectId, ref: 'User' },

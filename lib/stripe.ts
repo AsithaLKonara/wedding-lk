@@ -1,8 +1,14 @@
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-06-30.basil',
-});
+// Initialize Stripe only when needed to avoid build-time errors
+const getStripe = () => {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error('STRIPE_SECRET_KEY is not configured');
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2025-06-30.basil',
+  });
+};
 
 interface PaymentIntentRequest {
   amount: number;
@@ -16,6 +22,7 @@ interface CustomerRequest {
 
 export const createPaymentIntent = async (amount: number, currency: string = 'lkr') => {
   try {
+    const stripe = getStripe();
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency,
@@ -34,6 +41,7 @@ export const createPaymentIntent = async (amount: number, currency: string = 'lk
 
 export const createCustomer = async (email: string, name: string) => {
   try {
+    const stripe = getStripe();
     const customer = await stripe.customers.create({
       email,
       name,
@@ -49,6 +57,7 @@ export const createCustomer = async (email: string, name: string) => {
 
 export const createSubscription = async (customerId: string, priceId: string) => {
   try {
+    const stripe = getStripe();
     const subscription = await stripe.subscriptions.create({
       customer: customerId,
       items: [{ price: priceId }],

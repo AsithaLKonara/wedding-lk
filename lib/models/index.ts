@@ -58,6 +58,7 @@ import { Hashtag } from './hashtags';
 import { Mention } from './mentions';
 import { MessageAttachment } from './messageAttachments';
 import { NotificationPreferences } from './notificationPreferences';
+import { Package } from './package';
 
 // Export all models
 export {
@@ -122,6 +123,7 @@ export {
   Mention,
   MessageAttachment,
   NotificationPreferences,
+  Package,
 };
 
 // Export VenueBoost as default

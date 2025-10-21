@@ -172,26 +172,18 @@ const AnalyticsSchema: Schema = new Schema({
   // Basic Information
   entityId: {
     type: Schema.Types.ObjectId,
-    required: true,
-    index: true
-  },
+    required: true},
   entityType: {
     type: String,
     required: true,
-    enum: ['user', 'vendor', 'platform', 'booking', 'venue'],
-    index: true
-  },
+    enum: ['user', 'vendor', 'platform', 'booking', 'venue']},
   date: {
     type: Date,
-    required: true,
-    index: true
-  },
+    required: true},
   period: {
     type: String,
     required: true,
-    enum: ['daily', 'weekly', 'monthly', 'yearly'],
-    index: true
-  },
+    enum: ['daily', 'weekly', 'monthly', 'yearly']},
   
   // User Analytics
   userMetrics: {

@@ -88,9 +88,7 @@ const SubscriptionPlanSchema = new Schema<ISubscriptionPlan>({
     type: String, 
     required: true, 
     enum: ['free', 'premium', 'featured', 'enterprise'],
-    unique: true,
-    index: true
-  },
+    unique: true},
   description: { type: String, required: true, maxlength: 500 },
   
   price: { type: Number, required: true, min: 0 },
@@ -123,8 +121,8 @@ const SubscriptionPlanSchema = new Schema<ISubscriptionPlan>({
     sortOrder: { type: Number, default: 0 }
   },
   
-  isActive: { type: Boolean, default: true, index: true },
-  isPublic: { type: Boolean, default: true, index: true },
+  isActive: { type: Boolean, default: true},
+  isPublic: { type: Boolean, default: true},
   availableFrom: { type: Date },
   availableUntil: { type: Date },
   

@@ -66,21 +66,15 @@ const QuotationSchema = new Schema<IQuotation>({
   requestId: { 
     type: Schema.Types.ObjectId, 
     ref: 'QuotationRequest', 
-    required: true,
-    index: true 
-  },
+    required: true},
   vendorId: { 
     type: Schema.Types.ObjectId, 
     ref: 'Vendor', 
-    required: true,
-    index: true 
-  },
+    required: true},
   customerId: { 
     type: Schema.Types.ObjectId, 
     ref: 'User', 
-    required: true,
-    index: true 
-  },
+    required: true},
   serviceId: { 
     type: Schema.Types.ObjectId, 
     ref: 'Service' 
@@ -111,9 +105,7 @@ const QuotationSchema = new Schema<IQuotation>({
   status: { 
     type: String, 
     enum: ['draft', 'sent', 'viewed', 'accepted', 'rejected', 'expired'],
-    default: 'draft',
-    index: true
-  },
+    default: 'draft'},
   sentAt: { type: Date },
   viewedAt: { type: Date },
   respondedAt: { type: Date },

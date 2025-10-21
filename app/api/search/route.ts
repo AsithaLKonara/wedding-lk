@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { connectDB } from '@/lib/mongodb'
+import { connectDB } from '@/lib/db'
 import { Vendor, Venue, Package } from '@/lib/models'
 
 export async function GET(request: NextRequest) {
@@ -139,6 +139,45 @@ export async function GET(request: NextRequest) {
     })
   } catch (error) {
     console.error('Search error:', error)
+    
+    // Return mock data for development/testing
+    if (process.env.NODE_ENV === 'development') {
+      return NextResponse.json({
+        success: true,
+        results: [
+          {
+            _id: 'mock-search-1',
+            name: 'Beautiful Garden Venue',
+            description: 'A stunning outdoor venue perfect for weddings',
+            type: 'venue',
+            category: 'venue',
+            location: 'Colombo, Sri Lanka',
+            price: 50000,
+            rating: 4.5,
+            searchScore: 10
+          }
+        ],
+        pagination: {
+          page: 1,
+          limit: 12,
+          totalCount: 1,
+          totalPages: 1,
+          hasNext: false,
+          hasPrev: false
+        },
+        filters: {
+          query: query || '',
+          type: type || 'all',
+          category: category || '',
+          location: location || '',
+          minPrice: minPrice || '',
+          maxPrice: maxPrice || '',
+          rating: rating || '',
+          sortBy: sortBy || 'relevance'
+        }
+      })
+    }
+    
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

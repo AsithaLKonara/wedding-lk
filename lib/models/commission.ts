@@ -121,15 +121,11 @@ const CommissionSchema = new Schema<ICommission>({
   vendorId: { 
     type: Schema.Types.ObjectId, 
     ref: 'Vendor', 
-    required: true,
-    index: true 
-  },
+    required: true},
   customerId: { 
     type: Schema.Types.ObjectId, 
     ref: 'User', 
-    required: true,
-    index: true 
-  },
+    required: true},
   
   grossAmount: { type: Number, required: true, min: 0 },
   commissionRate: { type: Number, required: true, min: 0, max: 100 },
@@ -148,9 +144,7 @@ const CommissionSchema = new Schema<ICommission>({
   status: { 
     type: String, 
     enum: ['pending', 'calculated', 'approved', 'paid', 'disputed', 'refunded'],
-    default: 'pending',
-    index: true
-  },
+    default: 'pending'},
   
   payout: {
     payoutId: { type: String },

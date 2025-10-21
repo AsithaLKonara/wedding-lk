@@ -141,9 +141,7 @@ const ServicePackageSchema = new Schema<IServicePackage>({
   vendorId: { 
     type: Schema.Types.ObjectId, 
     ref: 'Vendor', 
-    required: true,
-    index: true 
-  },
+    required: true},
   name: { type: String, required: true, maxlength: 200 },
   description: { type: String, required: true, maxlength: 2000 },
   category: { type: String, required: true, maxlength: 100 },
@@ -151,9 +149,7 @@ const ServicePackageSchema = new Schema<IServicePackage>({
   type: { 
     type: String, 
     required: true, 
-    enum: ['basic', 'premium', 'custom', 'addon'],
-    index: true
-  },
+    enum: ['basic', 'premium', 'custom', 'addon']},
   basePrice: { type: Number, required: true, min: 0 },
   currency: { type: String, default: 'LKR', maxlength: 3 },
   
@@ -266,9 +262,7 @@ const ServicePackageSchema = new Schema<IServicePackage>({
   status: { 
     type: String, 
     enum: ['draft', 'pending', 'approved', 'rejected', 'suspended'],
-    default: 'draft',
-    index: true
-  },
+    default: 'draft'},
   moderationNotes: { type: String, maxlength: 1000 },
   approvedAt: { type: Date },
   approvedBy: { type: Schema.Types.ObjectId, ref: 'User' },

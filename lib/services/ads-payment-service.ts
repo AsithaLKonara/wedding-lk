@@ -3,9 +3,15 @@ import { connectDB } from '@/lib/db';
 import { MetaAdsCampaign } from '@/lib/models/metaAds';
 import { Payment } from '@/lib/models/Payment';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
-});
+// Initialize Stripe only when needed to avoid build-time errors
+const getStripe = () => {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error('STRIPE_SECRET_KEY is not configured');
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2023-10-16',
+  });
+};
 
 export interface AdsPaymentRequest {
   campaignId: string;
@@ -35,6 +41,7 @@ export class AdsPaymentService {
       await connectDB();
 
       // Create Stripe payment intent
+      const stripe = getStripe();
       const paymentIntent = await stripe.paymentIntents.create({
         amount: Math.round(paymentRequest.amount * 100), // Convert to cents
         currency: paymentRequest.currency.toLowerCase(),
@@ -101,6 +108,7 @@ export class AdsPaymentService {
       }
 
       // Retrieve payment intent from Stripe
+      const stripe = getStripe();
       const paymentIntent = await stripe.paymentIntents.retrieve(payment.stripePaymentIntentId!);
 
       if (paymentIntent.status === 'succeeded') {
@@ -212,6 +220,7 @@ export class AdsPaymentService {
       let customerId = await this.getOrCreateStripeCustomer(vendorId);
 
       // Create subscription
+      const stripe = getStripe();
       const subscription = await stripe.subscriptions.create({
         customer: customerId,
         items: [{
@@ -281,6 +290,7 @@ export class AdsPaymentService {
       }
 
       // Create new Stripe customer
+      const stripe = getStripe();
       const customer = await stripe.customers.create({
         metadata: {
           vendorId,

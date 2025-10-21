@@ -2,10 +2,10 @@ import mongoose from 'mongoose';
 // Import all models to ensure they are registered
 import './models';
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGODB_ATLAS_URI;
 
 if (!MONGODB_URI) {
-  throw new Error('MONGODB_URI environment variable is required for MongoDB Atlas connection');
+  console.warn('⚠️ MONGODB_URI environment variable is not set. Using fallback connection.');
 }
 
 interface ConnectionCache {
@@ -48,7 +48,17 @@ export async function connectDB() {
     };
 
     if (!MONGODB_URI) {
-      throw new Error('MONGODB_URI environment variable is required');
+      console.warn('⚠️ No MongoDB URI found. Using local fallback for development.');
+      // Use a local MongoDB connection for development
+      const fallbackUri = 'mongodb://localhost:27017/weddinglk-dev';
+      cached.promise = mongoose.connect(fallbackUri, opts).then((mongoose) => {
+        console.log('✅ Connected to local MongoDB for development');
+        return mongoose;
+      }).catch((error) => {
+        console.error('❌ Local MongoDB connection error:', error);
+        throw new Error(`Failed to connect to local MongoDB: ${error.message}`);
+      });
+      return;
     }
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {

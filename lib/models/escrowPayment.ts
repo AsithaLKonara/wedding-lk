@@ -80,35 +80,25 @@ const EscrowPaymentSchema: Schema = new Schema({
   escrowId: {
     type: String,
     required: true,
-    unique: true,
-    index: true
-  },
+    unique: true},
   bookingId: {
     type: Schema.Types.ObjectId,
     ref: 'Booking',
-    required: true,
-    index: true
-  },
+    required: true},
   paymentId: {
     type: Schema.Types.ObjectId,
     ref: 'Payment',
-    required: true,
-    index: true
-  },
+    required: true},
   
   // Parties
   payerId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
-  },
+    required: true},
   payeeId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
-  },
+    required: true},
   platformId: {
     type: Schema.Types.ObjectId,
     ref: 'User', // Platform user account
@@ -142,26 +132,18 @@ const EscrowPaymentSchema: Schema = new Schema({
   stripePaymentIntentId: {
     type: String,
     required: true,
-    unique: true,
-    index: true
-  },
+    unique: true},
   stripeTransferId: {
-    type: String,
-    index: true
-  },
+    type: String},
   stripeRefundId: {
-    type: String,
-    index: true
-  },
+    type: String},
   
   // Escrow Status
   status: {
     type: String,
     required: true,
     enum: ['pending', 'held', 'released', 'refunded', 'disputed', 'cancelled'],
-    default: 'pending',
-    index: true
-  },
+    default: 'pending'},
   holdReason: {
     type: String,
     maxlength: 200,
@@ -177,9 +159,7 @@ const EscrowPaymentSchema: Schema = new Schema({
       default: 'event_based'
     },
     eventDate: {
-      type: Date,
-      index: true
-    },
+      type: Date},
     daysAfterEvent: {
       type: Number,
       default: 1,
@@ -191,9 +171,7 @@ const EscrowPaymentSchema: Schema = new Schema({
       default: false
     },
     autoReleaseDate: {
-      type: Date,
-      index: true
-    }
+      type: Date}
   },
   
   // Release Process
@@ -283,14 +261,10 @@ const EscrowPaymentSchema: Schema = new Schema({
   // Dispute Integration
   disputeId: {
     type: Schema.Types.ObjectId,
-    ref: 'Dispute',
-    index: true
-  },
+    ref: 'Dispute'},
   isDisputed: {
     type: Boolean,
-    default: false,
-    index: true
-  },
+    default: false},
   disputeAmount: {
     type: Number,
     min: 0
@@ -298,13 +272,9 @@ const EscrowPaymentSchema: Schema = new Schema({
   
   // Timestamps
   releasedAt: {
-    type: Date,
-    index: true
-  },
+    type: Date},
   refundedAt: {
-    type: Date,
-    index: true
-  },
+    type: Date},
   expiresAt: {
     type: Date
   }

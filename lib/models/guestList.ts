@@ -90,20 +90,14 @@ const GuestListSchema: Schema = new Schema({
   weddingId: {
     type: Schema.Types.ObjectId,
     ref: 'Wedding',
-    required: true,
-    index: true
-  },
+    required: true},
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
-  },
+    required: true},
   weddingDate: {
     type: Date,
-    required: true,
-    index: true
-  },
+    required: true},
   weddingLocation: {
     type: String,
     required: true,

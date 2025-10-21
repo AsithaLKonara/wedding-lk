@@ -69,6 +69,44 @@ export async function GET(request: NextRequest) {
 
     } catch (error) {
       console.error('Analytics error:', error)
+      
+      // Return mock data for development/testing
+      if (process.env.NODE_ENV === 'development') {
+        return NextResponse.json({
+          success: true,
+          data: {
+            overview: {
+              totalUsers: 150,
+              totalVendors: 25,
+              totalBookings: 45,
+              totalRevenue: 2500000,
+              activeUsers: 75,
+              conversionRate: 12.5
+            },
+            charts: {
+              userGrowth: [
+                { date: '2024-01-01', users: 100 },
+                { date: '2024-01-02', users: 120 },
+                { date: '2024-01-03', users: 150 }
+              ],
+              revenue: [
+                { date: '2024-01-01', revenue: 100000 },
+                { date: '2024-01-02', revenue: 150000 },
+                { date: '2024-01-03', revenue: 200000 }
+              ]
+            },
+            realtime: {
+              activeUsers: 15,
+              currentBookings: 3,
+              systemLoad: 45
+            }
+          },
+          type: type || 'overview',
+          timeRange: timeRange || '24h',
+          timestamp: new Date()
+        })
+      }
+      
       return NextResponse.json(
         {
           success: false,

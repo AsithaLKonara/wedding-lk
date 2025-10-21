@@ -110,21 +110,15 @@ const VendorSubscriptionSchema: Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-    unique: true,
-    index: true
-  },
+    unique: true},
   planId: {
     type: Schema.Types.ObjectId,
     ref: 'SubscriptionPlan',
-    required: true,
-    index: true
-  },
+    required: true},
   subscriptionId: {
     type: String,
     required: true,
-    unique: true,
-    index: true
-  },
+    unique: true},
   
   // Subscription Details
   planName: {
@@ -135,16 +129,12 @@ const VendorSubscriptionSchema: Schema = new Schema({
   planType: {
     type: String,
     required: true,
-    enum: ['free', 'standard', 'premium', 'enterprise'],
-    index: true
-  },
+    enum: ['free', 'standard', 'premium', 'enterprise']},
   status: {
     type: String,
     required: true,
     enum: ['active', 'inactive', 'cancelled', 'past_due', 'unpaid', 'trialing'],
-    default: 'active',
-    index: true
-  },
+    default: 'active'},
   
   // Billing Information
   billingCycle: {
@@ -185,15 +175,11 @@ const VendorSubscriptionSchema: Schema = new Schema({
   // Stripe Integration
   stripeCustomerId: {
     type: String,
-    required: true,
-    index: true
-  },
+    required: true},
   stripeSubscriptionId: {
     type: String,
     required: true,
-    unique: true,
-    index: true
-  },
+    unique: true},
   stripePriceId: {
     type: String,
     required: true
@@ -204,9 +190,7 @@ const VendorSubscriptionSchema: Schema = new Schema({
   },
   currentPeriodEnd: {
     type: Date,
-    required: true,
-    index: true
-  },
+    required: true},
   cancelAtPeriodEnd: {
     type: Boolean,
     default: false

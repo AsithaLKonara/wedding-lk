@@ -120,15 +120,11 @@ export interface IModeration extends Document {
 const ModerationSchema = new Schema<IModeration>({
   contentId: { 
     type: Schema.Types.ObjectId, 
-    required: true,
-    index: true 
-  },
+    required: true},
   contentType: { 
     type: String, 
     required: true, 
-    enum: ['post', 'comment', 'review', 'story', 'reel', 'vendor', 'venue'],
-    index: true
-  },
+    enum: ['post', 'comment', 'review', 'story', 'reel', 'vendor', 'venue']},
   contentAuthor: {
     type: { 
       type: String, 
@@ -142,15 +138,11 @@ const ModerationSchema = new Schema<IModeration>({
   status: { 
     type: String, 
     enum: ['pending', 'approved', 'rejected', 'flagged', 'hidden', 'deleted'],
-    default: 'pending',
-    index: true
-  },
+    default: 'pending'},
   priority: { 
     type: String, 
     enum: ['low', 'medium', 'high', 'urgent'],
-    default: 'medium',
-    index: true
-  },
+    default: 'medium'},
   
   reports: [{
     reporterId: { type: Schema.Types.ObjectId, ref: 'User', required: true },

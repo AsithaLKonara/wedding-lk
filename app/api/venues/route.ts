@@ -69,6 +69,39 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('❌ Error fetching venues:', error);
+    
+    // Return mock data for development/testing
+    if (process.env.NODE_ENV === 'development') {
+      return NextResponse.json({
+        success: true,
+        venues: [
+          {
+            _id: 'mock-venue-1',
+            name: 'Beautiful Garden Venue',
+            description: 'A stunning outdoor venue perfect for weddings',
+            location: {
+              address: '123 Garden Street, Colombo',
+              city: 'Colombo',
+              coordinates: { lat: 6.9271, lng: 79.8612 }
+            },
+            capacity: { min: 50, max: 200 },
+            pricing: { startingPrice: 50000 },
+            images: [],
+            amenities: ['Parking', 'Catering', 'Sound System'],
+            rating: { average: 4.5, count: 25 },
+            isActive: true,
+            isAvailable: true
+          }
+        ],
+        pagination: {
+          total: 1,
+          page: 1,
+          limit: 10,
+          totalPages: 1
+        }
+      });
+    }
+    
     return NextResponse.json({
       success: false,
       error: 'Failed to fetch venues',

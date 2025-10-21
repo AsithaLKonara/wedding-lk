@@ -1,10 +1,15 @@
 import Stripe from 'stripe'
 import crypto from 'crypto'
 
-// Initialize Stripe
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-06-30.basil',
-})
+// Initialize Stripe only when needed to avoid build-time errors
+const getStripe = () => {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error('STRIPE_SECRET_KEY is not configured');
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2025-06-30.basil',
+  });
+};
 
 // PayHere configuration
 const PAYHERE_MERCHANT_ID = process.env.PAYHERE_MERCHANT_ID || ''
@@ -43,6 +48,7 @@ export interface PaymentResponse {
 export class StripePaymentProcessor {
   static async createPaymentIntent(request: PaymentRequest): Promise<PaymentResponse> {
     try {
+      const stripe = getStripe();
       const paymentIntent = await stripe.paymentIntents.create({
         amount: request.amount * 100, // Convert to cents
         currency: request.currency.toLowerCase(),
@@ -77,6 +83,7 @@ export class StripePaymentProcessor {
 
   static async confirmPayment(paymentIntentId: string): Promise<PaymentResponse> {
     try {
+      const stripe = getStripe();
       const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId)
       
       return {

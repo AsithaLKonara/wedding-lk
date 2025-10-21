@@ -73,28 +73,24 @@ const NotificationSchema = new Schema<INotification>({
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
+    required: true
   },
   type: {
     type: String,
     required: true,
-    enum: ['booking', 'message', 'review', 'system', 'promotion', 'payment', 'vendor', 'wedding', 'guest', 'referral'],
-    index: true
+    enum: ['booking', 'message', 'review', 'system', 'promotion', 'payment', 'vendor', 'wedding', 'guest', 'referral']
   },
   category: {
     type: String,
     required: true,
     enum: ['info', 'success', 'warning', 'error', 'reminder'],
-    default: 'info',
-    index: true
+    default: 'info'
   },
   priority: {
     type: String,
     required: true,
     enum: ['low', 'medium', 'high', 'urgent'],
-    default: 'medium',
-    index: true
+    default: 'medium'
   },
   
   // Content
@@ -179,8 +175,7 @@ const NotificationSchema = new Schema<INotification>({
   // Read Status
   read: {
     type: Boolean,
-    default: false,
-    index: true
+    default: false
   },
   readAt: {
     type: Date
@@ -213,8 +208,7 @@ const NotificationSchema = new Schema<INotification>({
   
   // Grouping
   groupKey: {
-    type: String,
-    index: true
+    type: String
   },
   parentNotificationId: {
     type: Schema.Types.ObjectId,

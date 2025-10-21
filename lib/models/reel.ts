@@ -261,15 +261,13 @@ const ReelSchema = new Schema<IReel>({
   
   category: { type: String, required: true, maxlength: 50 },
   tags: [{ type: String, maxlength: 30 }],
-  isTrending: { type: Boolean, default: false, index: true },
+  isTrending: { type: Boolean, default: false},
   trendingScore: { type: Number, default: 0, min: 0 },
   
   status: { 
     type: String, 
     enum: ['draft', 'published', 'hidden', 'removed'],
-    default: 'draft',
-    index: true
-  },
+    default: 'draft'},
   moderationFlags: {
     inappropriate: { type: Boolean, default: false },
     copyright: { type: Boolean, default: false },

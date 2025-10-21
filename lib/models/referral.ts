@@ -57,15 +57,11 @@ const ReferralSchema: Schema = new Schema({
   referrerId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
-  },
+    required: true},
   refereeId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
-  },
+    required: true},
   referralCode: {
     type: String,
     required: true,
@@ -75,18 +71,14 @@ const ReferralSchema: Schema = new Schema({
   referralType: {
     type: String,
     required: true,
-    enum: ['user_signup', 'vendor_signup', 'booking', 'first_booking'],
-    index: true
-  },
+    enum: ['user_signup', 'vendor_signup', 'booking', 'first_booking']},
   
   // Status and Tracking
   status: {
     type: String,
     required: true,
     enum: ['pending', 'completed', 'expired', 'cancelled'],
-    default: 'pending',
-    index: true
-  },
+    default: 'pending'},
   completedAt: {
     type: Date
   },
@@ -162,9 +154,7 @@ const ReferralSchema: Schema = new Schema({
     default: 'direct'
   },
   campaignId: {
-    type: String,
-    index: true
-  },
+    type: String},
   utmParams: {
     source: String,
     medium: String,

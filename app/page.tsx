@@ -29,3 +29,6 @@ export default function HomePage() {
     </>
   )
 }
+
+// Force dynamic rendering to avoid build-time issues
+export const dynamic = 'force-dynamic'

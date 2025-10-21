@@ -112,27 +112,19 @@ const InvoiceSchema = new Schema<IInvoice>({
   invoiceNumber: { 
     type: String, 
     required: true, 
-    unique: true,
-    index: true 
-  },
+    unique: true},
   bookingId: { 
     type: Schema.Types.ObjectId, 
     ref: 'Booking', 
-    required: true,
-    index: true 
-  },
+    required: true},
   customerId: { 
     type: Schema.Types.ObjectId, 
     ref: 'User', 
-    required: true,
-    index: true 
-  },
+    required: true},
   vendorId: { 
     type: Schema.Types.ObjectId, 
     ref: 'Vendor', 
-    required: true,
-    index: true 
-  },
+    required: true},
   
   issueDate: { type: Date, required: true, default: Date.now },
   dueDate: { type: Date, required: true },
@@ -188,9 +180,7 @@ const InvoiceSchema = new Schema<IInvoice>({
   paymentStatus: { 
     type: String, 
     enum: ['pending', 'paid', 'overdue', 'cancelled', 'refunded'],
-    default: 'pending',
-    index: true
-  },
+    default: 'pending'},
   paymentMethod: { type: String, maxlength: 50 },
   paymentDate: { type: Date },
   transactionId: { type: String, maxlength: 100 },
@@ -209,9 +199,7 @@ const InvoiceSchema = new Schema<IInvoice>({
   status: { 
     type: String, 
     enum: ['draft', 'sent', 'viewed', 'paid', 'overdue', 'cancelled'],
-    default: 'draft',
-    index: true
-  },
+    default: 'draft'},
   sentAt: { type: Date },
   viewedAt: { type: Date },
   paidAt: { type: Date },

@@ -60,34 +60,24 @@ const ReviewSchema: Schema = new Schema({
   vendorId: {
     type: Schema.Types.ObjectId,
     ref: 'Vendor',
-    required: true,
-    index: true
-  },
+    required: true},
   venueId: {
     type: Schema.Types.ObjectId,
-    ref: 'Venue',
-    index: true
-  },
+    ref: 'Venue'},
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
-  },
+    required: true},
   bookingId: {
     type: Schema.Types.ObjectId,
-    ref: 'Booking',
-    index: true
-  },
+    ref: 'Booking'},
   
   // Rating Details
   overallRating: {
     type: Number,
     required: true,
     min: 1,
-    max: 5,
-    index: true
-  },
+    max: 5},
   categoryRatings: {
     service: {
       type: Number,
@@ -168,9 +158,7 @@ const ReviewSchema: Schema = new Schema({
   // Verification
   isVerified: {
     type: Boolean,
-    default: false,
-    index: true
-  },
+    default: false},
   verifiedAt: {
     type: Date
   },
@@ -214,9 +202,7 @@ const ReviewSchema: Schema = new Schema({
   status: {
     type: String,
     enum: ['pending', 'approved', 'rejected', 'flagged'],
-    default: 'pending',
-    index: true
-  },
+    default: 'pending'},
   moderationNotes: {
     type: String,
     maxlength: 500

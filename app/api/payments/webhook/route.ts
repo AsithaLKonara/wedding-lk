@@ -3,11 +3,22 @@ import { connectDB } from '@/lib/mongodb'
 import { Payment, Booking } from '@/lib/models'
 import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-06-20',
-})
+// Initialize Stripe only when needed to avoid build-time errors
+const getStripe = () => {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error('STRIPE_SECRET_KEY is not configured');
+  }
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2024-06-20',
+  });
+};
 
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!
+const getEndpointSecret = () => {
+  if (!process.env.STRIPE_WEBHOOK_SECRET) {
+    throw new Error('STRIPE_WEBHOOK_SECRET is not configured');
+  }
+  return process.env.STRIPE_WEBHOOK_SECRET;
+};
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,6 +28,8 @@ export async function POST(request: NextRequest) {
     let event: Stripe.Event
 
     try {
+      const stripe = getStripe();
+      const endpointSecret = getEndpointSecret();
       event = stripe.webhooks.constructEvent(body, sig, endpointSecret)
     } catch (err) {
       console.error('Webhook signature verification failed:', err)

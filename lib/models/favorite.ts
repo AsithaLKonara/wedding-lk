@@ -18,20 +18,14 @@ const FavoriteSchema = new Schema<IFavorite>({
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
-  },
+    required: true},
   itemId: {
     type: Schema.Types.ObjectId,
-    required: true,
-    index: true
-  },
+    required: true},
   type: {
     type: String,
     required: true,
-    enum: ['venue', 'vendor', 'package', 'service'],
-    index: true
-  },
+    enum: ['venue', 'vendor', 'package', 'service']},
   category: {
     type: String,
     trim: true,
@@ -54,9 +48,7 @@ const FavoriteSchema = new Schema<IFavorite>({
   }],
   isForComparison: {
     type: Boolean,
-    default: false,
-    index: true
-  },
+    default: false},
   comparisonGroup: {
     type: String,
     trim: true,

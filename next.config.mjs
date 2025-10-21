@@ -9,8 +9,19 @@ const nextConfig = {
   },
   // Enable standalone output for Docker
   output: 'standalone',
-  // Server external packages (correct location for Next.js 15)
-  serverExternalPackages: ['mongoose'],
+  // Experimental features for better performance
+  experimental: {
+    optimizePackageImports: ['@mui/material', '@mui/icons-material', 'lucide-react'],
+    optimizeCss: true,
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
   // Image optimization
   images: {
     domains: [
@@ -36,19 +47,6 @@ const nextConfig = {
   },
   // Asset handling
   assetPrefix: '',
-  // Experimental features for better performance
-  experimental: {
-    optimizePackageImports: ['@mui/material', '@mui/icons-material', 'lucide-react'],
-    optimizeCss: true,
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
-  },
   // Webpack configuration
   webpack: (config, { isServer }) => {
     if (!isServer) {

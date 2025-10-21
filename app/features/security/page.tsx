@@ -1,310 +1,262 @@
-import { Metadata } from 'next'
-import Header from '@/components/organisms/header'
-import Footer from '@/components/organisms/footer'
-import { Badge } from '@/components/ui/badge'
-import { Shield, Lock, Eye, Key, Database, AlertTriangle, CheckCircle, Users } from 'lucide-react'
+import { Shield, Lock, Eye, CheckCircle, AlertTriangle, Users, FileText, Clock } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: 'Security & Privacy | WeddingLK',
-  description: 'Learn about WeddingLK\'s enterprise-grade security measures protecting your wedding data and personal information.',
-}
-
-const securityFeatures = [
-  {
-    icon: Lock,
-    title: 'End-to-End Encryption',
-    description: 'All your data is encrypted using industry-standard AES-256 encryption.',
-    benefits: [
-      'Data encrypted in transit and at rest',
-      'Zero-knowledge architecture',
-      'Military-grade encryption standards',
-      'Regular security audits'
-    ]
-  },
-  {
-    icon: Shield,
-    title: 'Multi-Factor Authentication',
-    description: 'Protect your account with multiple layers of security verification.',
-    benefits: [
-      'SMS and email verification',
-      'Authenticator app support',
-      'Biometric authentication',
-      'Backup recovery codes'
-    ]
-  },
-  {
-    icon: Database,
-    title: 'Secure Data Storage',
-    description: 'Your wedding data is stored in secure, SOC 2 compliant data centers.',
-    benefits: [
-      'SOC 2 Type II compliance',
-      'Regular data backups',
-      'Geographic data distribution',
-      'Disaster recovery protocols'
-    ]
-  },
-  {
-    icon: Eye,
-    title: 'Privacy Controls',
-    description: 'Complete control over your data visibility and sharing preferences.',
-    benefits: [
-      'Granular privacy settings',
-      'Data export capabilities',
-      'Account deletion options',
-      'Consent management'
-    ]
-  },
-  {
-    icon: Key,
-    title: 'Access Control',
-    description: 'Role-based access control ensures only authorized users can access your data.',
-    benefits: [
-      'Role-based permissions',
-      'Session management',
-      'Device tracking',
-      'Suspicious activity alerts'
-    ]
-  },
-  {
-    icon: AlertTriangle,
-    title: 'Threat Detection',
-    description: 'Advanced AI-powered threat detection monitors for suspicious activities.',
-    benefits: [
-      'Real-time threat monitoring',
-      'Automated incident response',
-      'Security breach notifications',
-      'Continuous vulnerability scanning'
-    ]
-  }
-]
-
-const complianceStandards = [
-  {
-    name: 'SOC 2 Type II',
-    description: 'Audited security controls for data protection',
-    status: 'Certified'
-  },
-  {
-    name: 'GDPR Compliant',
-    description: 'European data protection regulation compliance',
-    status: 'Compliant'
-  },
-  {
-    name: 'CCPA Compliant',
-    description: 'California consumer privacy act compliance',
-    status: 'Compliant'
-  },
-  {
-    name: 'ISO 27001',
-    description: 'International information security management',
-    status: 'Certified'
-  }
-]
-
-const securityStats = [
-  { number: '99.9%', label: 'Uptime Guarantee' },
-  { number: '256-bit', label: 'AES Encryption' },
-  { number: '24/7', label: 'Security Monitoring' },
-  { number: '0', label: 'Data Breaches' }
-]
-
-export default function SecurityPage() {
+export default function SecurityFeaturesPage() {
   return (
-    <>
-      <Header />
-      <main className="min-h-screen">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-green-900 via-blue-900 to-purple-900 text-white py-20">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-4xl mx-auto">
-              <div className="flex justify-center mb-6">
-                <div className="p-4 bg-white/10 rounded-full backdrop-blur-sm">
-                  <Shield className="w-12 h-12 text-green-400" />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+              <Shield className="w-8 h-8 text-blue-600" />
                 </div>
-              </div>
-              <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-green-200 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
                 Enterprise-Grade Security
               </h1>
-              <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
-                Your wedding data is protected by industry-leading security measures and privacy controls. 
-                We take your trust seriously.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300">
-                  View Security Report
-                </button>
-                <button className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300">
-                  Privacy Policy
-                </button>
-              </div>
-            </div>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Your wedding data is protected with military-grade security, ensuring complete privacy and peace of mind throughout your planning journey.
+            </p>
           </div>
-        </section>
+        </div>
+      </div>
 
-        {/* Security Features Section */}
-        <section className="py-20 bg-gray-50">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Advanced Security Features
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Multiple layers of security protect your wedding data from unauthorized access and cyber threats.
-              </p>
+      {/* Security Features Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Data Encryption */}
+          <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <div className="flex items-center mb-6">
+              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                <Lock className="w-6 h-6 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900">End-to-End Encryption</h3>
             </div>
+            <p className="text-gray-600 mb-4">
+              All your wedding data is encrypted using AES-256 encryption, the same standard used by banks and government agencies.
+            </p>
+            <ul className="space-y-2">
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Personal information protection
+              </li>
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Secure file storage
+              </li>
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Encrypted communications
+              </li>
+            </ul>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {securityFeatures.map((feature, index) => (
-                <div key={index} className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                  <div className="flex items-center mb-6">
-                    <div className="p-3 bg-gradient-to-r from-green-500 to-blue-500 rounded-xl text-white">
-                      <feature.icon className="w-6 h-6" />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 ml-4">
-                      {feature.title}
-                    </h3>
-                  </div>
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    {feature.description}
+          {/* Privacy Controls */}
+          <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <div className="flex items-center mb-6">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                <Eye className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900">Privacy Controls</h3>
+            </div>
+            <p className="text-gray-600 mb-4">
+              Complete control over who can see your wedding details, with granular privacy settings for every aspect of your planning.
                   </p>
                   <ul className="space-y-2">
-                    {feature.benefits.map((benefit, benefitIndex) => (
-                      <li key={benefitIndex} className="flex items-center text-sm text-gray-700">
-                        <CheckCircle className="w-4 h-4 text-green-500 mr-3" />
-                        {benefit}
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Guest list privacy
+              </li>
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Vendor information control
+              </li>
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Social media integration
                       </li>
-                    ))}
                   </ul>
                 </div>
-              ))}
+
+          {/* Secure Authentication */}
+          <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <div className="flex items-center mb-6">
+              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                <Users className="w-6 h-6 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900">Multi-Factor Authentication</h3>
             </div>
+            <p className="text-gray-600 mb-4">
+              Advanced authentication with 2FA, biometric login, and secure session management to protect your account.
+            </p>
+            <ul className="space-y-2">
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Two-factor authentication
+              </li>
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Biometric login support
+              </li>
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Session timeout protection
+              </li>
+            </ul>
           </div>
-        </section>
 
-        {/* Compliance Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Compliance & Certifications
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                We maintain the highest standards of security compliance and data protection.
-              </p>
+          {/* Compliance */}
+          <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <div className="flex items-center mb-6">
+              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                <FileText className="w-6 h-6 text-orange-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900">GDPR Compliance</h3>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {complianceStandards.map((standard, index) => (
-                <div key={index} className="text-center">
-                  <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Shield className="w-10 h-10 text-white" />
+            <p className="text-gray-600 mb-4">
+              Full compliance with international data protection regulations, ensuring your rights are protected.
+            </p>
+            <ul className="space-y-2">
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Right to data portability
+              </li>
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Right to be forgotten
+              </li>
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Consent management
+              </li>
+            </ul>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">{standard.name}</h3>
-                  <p className="text-gray-600 mb-4">{standard.description}</p>
-                  <Badge className="bg-green-100 text-green-800">{standard.status}</Badge>
+
+          {/* Audit Logging */}
+          <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <div className="flex items-center mb-6">
+              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+                <Clock className="w-6 h-6 text-red-600" />
                 </div>
-              ))}
+              <h3 className="text-xl font-semibold text-gray-900">Audit Logging</h3>
             </div>
+            <p className="text-gray-600 mb-4">
+              Complete audit trail of all activities, ensuring transparency and accountability in your wedding planning process.
+            </p>
+            <ul className="space-y-2">
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Activity tracking
+              </li>
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Access logging
+              </li>
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Change history
+              </li>
+            </ul>
           </div>
-        </section>
 
-        {/* Security Stats Section */}
-        <section className="py-20 bg-gradient-to-br from-green-50 to-blue-50">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Security by the Numbers
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Our security measures deliver measurable results in protecting your data.
-              </p>
+          {/* Security Monitoring */}
+          <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <div className="flex items-center mb-6">
+              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
+                <AlertTriangle className="w-6 h-6 text-yellow-600" />
             </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {securityStats.map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-5xl md:text-6xl font-bold text-green-600 mb-2">
-                    {stat.number}
-                  </div>
-                  <div className="text-lg text-gray-600 font-medium">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
+              <h3 className="text-xl font-semibold text-gray-900">24/7 Security Monitoring</h3>
             </div>
+            <p className="text-gray-600 mb-4">
+              Continuous monitoring and threat detection to ensure your data remains secure at all times.
+            </p>
+            <ul className="space-y-2">
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Real-time threat detection
+              </li>
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Automated security updates
+              </li>
+              <li className="flex items-center text-sm text-gray-600">
+                <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                Incident response
+              </li>
+            </ul>
           </div>
-        </section>
-
-        {/* Privacy Controls Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                  Your Privacy, Your Control
-                </h2>
-                <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                  We believe you should have complete control over your personal data. 
-                  Our privacy controls give you the power to manage how your information is used and shared.
-                </p>
-                
-                <div className="space-y-6">
-                  <div className="flex items-start">
-                    <CheckCircle className="w-6 h-6 text-green-500 mr-4 mt-1" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Data Export</h3>
-                      <p className="text-gray-600">Download all your wedding data in a portable format anytime.</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-start">
-                    <CheckCircle className="w-6 h-6 text-green-500 mr-4 mt-1" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Account Deletion</h3>
-                      <p className="text-gray-600">Permanently delete your account and all associated data.</p>
-                    </div>
+      {/* Security Certifications */}
+      <div className="bg-gray-50 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Security Certifications & Standards
+            </h2>
+            <p className="text-lg text-gray-600">
+              We meet the highest industry standards for data protection and security
+            </p>
                   </div>
                   
-                  <div className="flex items-start">
-                    <CheckCircle className="w-6 h-6 text-green-500 mr-4 mt-1" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">Consent Management</h3>
-                      <p className="text-gray-600">Control what data we collect and how we use it.</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="font-semibold text-gray-900">ISO 27001</h3>
+              <p className="text-sm text-gray-600">Information Security</p>
                     </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Lock className="w-8 h-8 text-green-600" />
                   </div>
+              <h3 className="font-semibold text-gray-900">SOC 2</h3>
+              <p className="text-sm text-gray-600">Security Controls</p>
                 </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileText className="w-8 h-8 text-purple-600" />
               </div>
-              
-              <div className="flex justify-center">
-                <div className="w-96 h-96 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-3xl flex items-center justify-center">
-                  <Users className="w-32 h-32 text-green-500" />
+              <h3 className="font-semibold text-gray-900">GDPR</h3>
+              <p className="text-sm text-gray-600">Data Protection</p>
                 </div>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-8 h-8 text-orange-600" />
               </div>
+              <h3 className="font-semibold text-gray-900">PCI DSS</h3>
+              <p className="text-sm text-gray-600">Payment Security</p>
             </div>
           </div>
-        </section>
+        </div>
+      </div>
 
         {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-green-600 to-blue-600 text-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Trust WeddingLK with Your Data
+      <div className="bg-blue-600 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">
+            Your Wedding Data is Safe with Us
             </h2>
-            <p className="text-xl text-green-100 mb-8 max-w-3xl mx-auto">
-              Join thousands of couples who trust WeddingLK to keep their wedding data secure and private.
+          <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+            Start planning your perfect wedding with complete confidence, knowing your personal information and wedding details are protected by enterprise-grade security.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-green-600 hover:bg-gray-100 px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+            <a
+              href="/auth/signup"
+              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            >
                 Start Planning Securely
-              </button>
-              <button className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300">
-                Contact Security Team
-              </button>
-            </div>
+            </a>
+            <a
+              href="/help/security"
+              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
+            >
+              Learn More About Security
+            </a>
           </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+        </div>
+      </div>
+    </div>
   )
 }

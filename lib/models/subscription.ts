@@ -106,29 +106,21 @@ const SubscriptionSchema = new Schema<ISubscription>({
   vendorId: { 
     type: Schema.Types.ObjectId, 
     ref: 'Vendor', 
-    required: true,
-    index: true 
-  },
+    required: true},
   planId: { 
     type: Schema.Types.ObjectId, 
     ref: 'SubscriptionPlan', 
-    required: true,
-    index: true 
-  },
+    required: true},
   
   planName: { type: String, required: true, maxlength: 100 },
   planType: { 
     type: String, 
     required: true, 
-    enum: ['free', 'premium', 'featured', 'enterprise'],
-    index: true
-  },
+    enum: ['free', 'premium', 'featured', 'enterprise']},
   status: { 
     type: String, 
     enum: ['active', 'inactive', 'cancelled', 'expired', 'suspended'],
-    default: 'active',
-    index: true
-  },
+    default: 'active'},
   
   price: { type: Number, required: true, min: 0 },
   currency: { type: String, default: 'LKR', maxlength: 3 },
