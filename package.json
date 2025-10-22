@@ -119,7 +119,7 @@
     "jsonwebtoken": "^9.0.2",
     "kerberos": "latest",
     "lucide-react": "^0.454.0",
-    "mongodb": "latest",
+    "mongodb": "^6.20.0",
     "mongodb-client-encryption": "latest",
     "mongoose": "latest",
     "next": "15.2.4",
