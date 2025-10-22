@@ -24,9 +24,7 @@ export function optimizeMongooseQueries() {
   // Enable query optimization
   mongoose.set('strictQuery', false);
   
-  // Optimize connection pool
-  mongoose.set('maxPoolSize', 10);
-  mongoose.set('minPoolSize', 2);
+  // Optimize connection settings
   mongoose.set('maxIdleTimeMS', 30000);
   mongoose.set('serverSelectionTimeoutMS', 5000);
   mongoose.set('socketTimeoutMS', 45000);

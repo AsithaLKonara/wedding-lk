@@ -34,8 +34,6 @@ export async function connectDB() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
-      maxPoolSize: 20, // Increased pool size for better performance
-      minPoolSize: 5, // Maintain minimum connections
       serverSelectionTimeoutMS: 10000, // Increased timeout for better reliability
       socketTimeoutMS: 30000, // Reduced socket timeout for faster failure detection
       connectTimeoutMS: 10000, // Connection timeout

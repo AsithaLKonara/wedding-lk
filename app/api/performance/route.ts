@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { advancedCache } from '@/lib/advanced-cache-service';
-import { dbPoolManager } from '@/lib/db-pool-manager';
+// import { dbPoolManager } from '@/lib/db-pool-manager';
 
 // Performance monitoring API
 export async function GET(request: NextRequest) {
@@ -9,10 +9,10 @@ export async function GET(request: NextRequest) {
     const cacheStats = await advancedCache.getStats();
     const cacheHealth = await advancedCache.healthCheck();
     
-    // Get database pool statistics
-    const poolStats = dbPoolManager.getPoolStats();
-    const poolHealth = await dbPoolManager.healthCheck();
-    const poolPerformance = dbPoolManager.getPerformanceMetrics();
+    // Get database pool statistics (temporarily disabled)
+    const poolStats = { totalConnections: 0, activeConnections: 0, idleConnections: 0, pendingConnections: 0, maxConnections: 0, minConnections: 0, connectionUtilization: 0, averageResponseTime: 0 };
+    const poolHealth = { isHealthy: true, message: 'Pool manager disabled' };
+    const poolPerformance = { averageResponseTime: 0, totalQueries: 0, slowQueries: 0 };
     
     // Get system performance metrics
     const systemMetrics = {
