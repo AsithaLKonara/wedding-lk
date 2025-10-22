@@ -99,7 +99,7 @@ export default function RealFeaturedVendors() {
                       {vendor?.businessName || 'Unknown Business'}
                     </CardTitle>
                     <CardDescription className="text-sm text-gray-600">
-                      {vendor?.name || 'Unknown'} • {vendor?.category || 'General'}
+                      {vendor?.name || vendor?.businessName || 'Unknown'} • {vendor?.category || 'General'}
                     </CardDescription>
                   </div>
                   {vendor?.isVerified && (

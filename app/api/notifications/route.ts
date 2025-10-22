@@ -11,11 +11,18 @@ export async function GET(request: NextRequest) {
       secret: process.env.NEXTAUTH_SECRET 
     });
 
+    // If no token, return empty notifications instead of 401
     if (!token) {
-      return NextResponse.json({ 
-        success: false, 
-        message: 'Unauthorized' 
-      }, { status: 401 });
+      return NextResponse.json({
+        success: true,
+        notifications: [],
+        pagination: {
+          page: 1,
+          limit: 20,
+          total: 0,
+          pages: 0
+        }
+      });
     }
 
     await connectDB();
@@ -67,11 +74,12 @@ export async function POST(request: NextRequest) {
       secret: process.env.NEXTAUTH_SECRET 
     });
 
+    // If no token, return success but don't create notification
     if (!token) {
-      return NextResponse.json({ 
-        success: false, 
-        message: 'Unauthorized' 
-      }, { status: 401 });
+      return NextResponse.json({
+        success: true,
+        message: 'No authentication - notification not created'
+      });
     }
 
     await connectDB();

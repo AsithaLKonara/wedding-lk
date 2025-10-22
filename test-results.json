@@ -53,22 +53,6 @@
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
         ],
         "timeout": 60000
-      },
-      {
-        "outputDir": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results",
-        "repeatEach": 1,
-        "retries": 0,
-        "metadata": {
-          "actualWorkers": 2
-        },
-        "id": "webkit",
-        "name": "webkit",
-        "testDir": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e",
-        "testIgnore": [],
-        "testMatch": [
-          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
-        ],
-        "timeout": 60000
       }
     ],
     "shard": null,
@@ -94,7 +78,7 @@
           "specs": [
             {
               "title": "Homepage loads and basic functionality works",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -107,58 +91,18 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 24745,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveTitle\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/Wedding.lk/\u001b[39m\nReceived string:  \u001b[31m\"\"\u001b[39m\nTimeout: 15000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveTitle\" with timeout 15000ms\u001b[22m\n\u001b[2m    11 × unexpected value \"WeddingLK - Sri Lanka's Premier Wedding Planning Platform\"\u001b[22m\n\u001b[2m    6 × unexpected value \"\"\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveTitle\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/Wedding.lk/\u001b[39m\nReceived string:  \u001b[31m\"\"\u001b[39m\nTimeout: 15000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveTitle\" with timeout 15000ms\u001b[22m\n\u001b[2m    11 × unexpected value \"WeddingLK - Sri Lanka's Premier Wedding Planning Platform\"\u001b[22m\n\u001b[2m    6 × unexpected value \"\"\u001b[22m\n\n    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts:12:24",
-                        "location": {
-                          "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts",
-                          "column": 24,
-                          "line": 12
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 10 |\u001b[39m     \n \u001b[90m 11 |\u001b[39m     \u001b[90m// Check if page loads without errors\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 12 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveTitle(\u001b[35m/Wedding.lk/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 13 |\u001b[39m     \n \u001b[90m 14 |\u001b[39m     \u001b[90m// Check for basic elements\u001b[39m\n \u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'header'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts",
-                            "column": 24,
-                            "line": 12
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveTitle\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/Wedding.lk/\u001b[39m\nReceived string:  \u001b[31m\"\"\u001b[39m\nTimeout: 15000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveTitle\" with timeout 15000ms\u001b[22m\n\u001b[2m    11 × unexpected value \"WeddingLK - Sri Lanka's Premier Wedding Planning Platform\"\u001b[22m\n\u001b[2m    6 × unexpected value \"\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 10 |\u001b[39m     \n \u001b[90m 11 |\u001b[39m     \u001b[90m// Check if page loads without errors\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 12 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveTitle(\u001b[35m/Wedding.lk/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 13 |\u001b[39m     \n \u001b[90m 14 |\u001b[39m     \u001b[90m// Check for basic elements\u001b[39m\n \u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m'header'\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts:12:24\u001b[22m"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 9187,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T21:31:40.083Z",
+                      "startTime": "2025-10-22T21:54:50.998Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/quick-verification-🚀-Quic-5d3be-d-basic-functionality-works-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/quick-verification-🚀-Quic-5d3be-d-basic-functionality-works-chromium/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/quick-verification-🚀-Quic-5d3be-d-basic-functionality-works-chromium/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts",
-                        "column": 24,
-                        "line": 12
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "4d9ec1a593f7ef705177-630ff9986c961440c20b",
@@ -182,12 +126,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 9438,
+                      "duration": 5163,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T21:31:40.008Z",
+                      "startTime": "2025-10-22T21:54:50.998Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -216,12 +160,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 23322,
+                      "duration": 26342,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T21:31:52.164Z",
+                      "startTime": "2025-10-22T21:54:57.746Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -247,15 +191,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 11832,
+                      "duration": 3520,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T21:32:14.291Z",
+                      "startTime": "2025-10-22T21:55:01.948Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -281,15 +225,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 13256,
+                      "duration": 5332,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T21:32:15.716Z",
+                      "startTime": "2025-10-22T21:55:05.600Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -304,7 +248,7 @@
             },
             {
               "title": "No critical JavaScript errors",
-              "ok": true,
+              "ok": false,
               "tags": [],
               "tests": [
                 {
@@ -315,275 +259,63 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 5941,
-                      "errors": [],
+                      "status": "failed",
+                      "duration": 7739,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoHaveLength\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected length: \u001b[32m0\u001b[39m\nReceived length: \u001b[31m3\u001b[39m\nReceived array:  \u001b[31m[\"Failed to load resource: the server responded with a status of 401 ()\", \"TypeError: Cannot read properties of undefined (reading 'name')\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:14089\u001b[39m\n\u001b[31m    at Array.map (<anonymous>)\u001b[39m\n\u001b[31m    at o (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:13356)\u001b[39m\n\u001b[31m    at lS (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:39325)\u001b[39m\n\u001b[31m    at ot (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:64573)\u001b[39m\n\u001b[31m    at ov (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:75638)\u001b[39m\n\u001b[31m    at ic (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112360)\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112205\u001b[39m\n\u001b[31m    at is (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112213)\u001b[39m\n\u001b[31m    at u9 (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:109424)\u001b[39m\n\u001b[31m    at iH (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:130650)\u001b[39m\n\u001b[31m    at MessagePort.w (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/1684-9a6e7388e0450d3e.js:1:52153)\", \"Application error: TypeError: Cannot read properties of undefined (reading 'name')\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:14089\u001b[39m\n\u001b[31m    at Array.map (<anonymous>)\u001b[39m\n\u001b[31m    at o (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:13356)\u001b[39m\n\u001b[31m    at lS (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:39325)\u001b[39m\n\u001b[31m    at ot (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:64573)\u001b[39m\n\u001b[31m    at ov (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:75638)\u001b[39m\n\u001b[31m    at ic (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112360)\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112205\u001b[39m\n\u001b[31m    at is (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112213)\u001b[39m\n\u001b[31m    at u9 (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:109424)\u001b[39m\n\u001b[31m    at iH (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:130650)\u001b[39m\n\u001b[31m    at MessagePort.w (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/1684-9a6e7388e0450d3e.js:1:52153)\"]\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoHaveLength\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected length: \u001b[32m0\u001b[39m\nReceived length: \u001b[31m3\u001b[39m\nReceived array:  \u001b[31m[\"Failed to load resource: the server responded with a status of 401 ()\", \"TypeError: Cannot read properties of undefined (reading 'name')\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:14089\u001b[39m\n\u001b[31m    at Array.map (<anonymous>)\u001b[39m\n\u001b[31m    at o (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:13356)\u001b[39m\n\u001b[31m    at lS (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:39325)\u001b[39m\n\u001b[31m    at ot (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:64573)\u001b[39m\n\u001b[31m    at ov (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:75638)\u001b[39m\n\u001b[31m    at ic (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112360)\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112205\u001b[39m\n\u001b[31m    at is (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112213)\u001b[39m\n\u001b[31m    at u9 (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:109424)\u001b[39m\n\u001b[31m    at iH (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:130650)\u001b[39m\n\u001b[31m    at MessagePort.w (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/1684-9a6e7388e0450d3e.js:1:52153)\", \"Application error: TypeError: Cannot read properties of undefined (reading 'name')\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:14089\u001b[39m\n\u001b[31m    at Array.map (<anonymous>)\u001b[39m\n\u001b[31m    at o (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:13356)\u001b[39m\n\u001b[31m    at lS (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:39325)\u001b[39m\n\u001b[31m    at ot (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:64573)\u001b[39m\n\u001b[31m    at ov (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:75638)\u001b[39m\n\u001b[31m    at ic (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112360)\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112205\u001b[39m\n\u001b[31m    at is (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112213)\u001b[39m\n\u001b[31m    at u9 (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:109424)\u001b[39m\n\u001b[31m    at iH (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:130650)\u001b[39m\n\u001b[31m    at MessagePort.w (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/1684-9a6e7388e0450d3e.js:1:52153)\"]\u001b[39m\n    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts:95:28",
+                        "location": {
+                          "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts",
+                          "column": 28,
+                          "line": 95
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 93 |\u001b[39m     )\u001b[33m;\u001b[39m\n \u001b[90m 94 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 95 |\u001b[39m     expect(criticalErrors)\u001b[33m.\u001b[39mtoHaveLength(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 96 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 97 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 98 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts",
+                            "column": 28,
+                            "line": 95
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoHaveLength\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected length: \u001b[32m0\u001b[39m\nReceived length: \u001b[31m3\u001b[39m\nReceived array:  \u001b[31m[\"Failed to load resource: the server responded with a status of 401 ()\", \"TypeError: Cannot read properties of undefined (reading 'name')\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:14089\u001b[39m\n\u001b[31m    at Array.map (<anonymous>)\u001b[39m\n\u001b[31m    at o (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:13356)\u001b[39m\n\u001b[31m    at lS (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:39325)\u001b[39m\n\u001b[31m    at ot (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:64573)\u001b[39m\n\u001b[31m    at ov (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:75638)\u001b[39m\n\u001b[31m    at ic (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112360)\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112205\u001b[39m\n\u001b[31m    at is (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112213)\u001b[39m\n\u001b[31m    at u9 (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:109424)\u001b[39m\n\u001b[31m    at iH (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:130650)\u001b[39m\n\u001b[31m    at MessagePort.w (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/1684-9a6e7388e0450d3e.js:1:52153)\", \"Application error: TypeError: Cannot read properties of undefined (reading 'name')\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:14089\u001b[39m\n\u001b[31m    at Array.map (<anonymous>)\u001b[39m\n\u001b[31m    at o (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:13356)\u001b[39m\n\u001b[31m    at lS (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:39325)\u001b[39m\n\u001b[31m    at ot (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:64573)\u001b[39m\n\u001b[31m    at ov (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:75638)\u001b[39m\n\u001b[31m    at ic (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112360)\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112205\u001b[39m\n\u001b[31m    at is (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112213)\u001b[39m\n\u001b[31m    at u9 (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:109424)\u001b[39m\n\u001b[31m    at iH (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:130650)\u001b[39m\n\u001b[31m    at MessagePort.w (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/1684-9a6e7388e0450d3e.js:1:52153)\"]\u001b[39m\n\n\u001b[0m \u001b[90m 93 |\u001b[39m     )\u001b[33m;\u001b[39m\n \u001b[90m 94 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 95 |\u001b[39m     expect(criticalErrors)\u001b[33m.\u001b[39mtoHaveLength(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 96 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 97 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 98 |\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts:95:28\u001b[22m"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T21:32:27.274Z",
+                      "startTime": "2025-10-22T21:55:10.991Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/quick-verification-🚀-Quic-e0dbb--critical-JavaScript-errors-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/quick-verification-🚀-Quic-e0dbb--critical-JavaScript-errors-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/quick-verification-🚀-Quic-e0dbb--critical-JavaScript-errors-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts",
+                        "column": 28,
+                        "line": 95
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "4d9ec1a593f7ef705177-dd8c384aeffca8cc24fc",
-              "file": "quick-verification.spec.ts",
-              "line": 71,
-              "column": 7
-            },
-            {
-              "title": "Homepage loads and basic functionality works",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 3,
-                      "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 13630,
-                      "error": {
-                        "message": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument",
-                        "stack": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument"
-                      },
-                      "errors": [
-                        {
-                          "message": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-22T21:32:40.360Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "4d9ec1a593f7ef705177-4b6b6f2cac7396875618",
-              "file": "quick-verification.spec.ts",
-              "line": 4,
-              "column": 7
-            },
-            {
-              "title": "API endpoints are responding",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 4,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 11338,
-                      "error": {
-                        "message": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument",
-                        "stack": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument"
-                      },
-                      "errors": [
-                        {
-                          "message": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-22T21:32:40.305Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "4d9ec1a593f7ef705177-44388dd156ab1d437efe",
-              "file": "quick-verification.spec.ts",
-              "line": 25,
-              "column": 7
-            },
-            {
-              "title": "Database connection is working",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 5,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 4748,
-                      "error": {
-                        "message": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument",
-                        "stack": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument"
-                      },
-                      "errors": [
-                        {
-                          "message": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-22T21:32:59.877Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "4d9ec1a593f7ef705177-5d76bf4000ca0a973d7d",
-              "file": "quick-verification.spec.ts",
-              "line": 35,
-              "column": 7
-            },
-            {
-              "title": "Navigation works correctly",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 6,
-                      "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 4782,
-                      "error": {
-                        "message": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument",
-                        "stack": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument"
-                      },
-                      "errors": [
-                        {
-                          "message": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-22T21:33:03.039Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "4d9ec1a593f7ef705177-7a55f18eaada90463e96",
-              "file": "quick-verification.spec.ts",
-              "line": 46,
-              "column": 7
-            },
-            {
-              "title": "Page is responsive",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 7,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 5646,
-                      "error": {
-                        "message": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument",
-                        "stack": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument"
-                      },
-                      "errors": [
-                        {
-                          "message": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-22T21:33:13.461Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "4d9ec1a593f7ef705177-29b21483cd411bf82d9c",
-              "file": "quick-verification.spec.ts",
-              "line": 59,
-              "column": 7
-            },
-            {
-              "title": "No critical JavaScript errors",
-              "ok": false,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 60000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "webkit",
-                  "projectName": "webkit",
-                  "results": [
-                    {
-                      "workerIndex": 8,
-                      "parallelIndex": 1,
-                      "status": "failed",
-                      "duration": 4684,
-                      "error": {
-                        "message": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument",
-                        "stack": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument"
-                      },
-                      "errors": [
-                        {
-                          "message": "Error: browserContext.newPage: Protocol error (Page.overrideSetting): Unknown setting: FixedBackgroundsPaintRelativeToDocument"
-                        }
-                      ],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2025-10-22T21:33:16.633Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "unexpected"
-                }
-              ],
-              "id": "4d9ec1a593f7ef705177-0fa17171dc7d4d179c7c",
               "file": "quick-verification.spec.ts",
               "line": 71,
               "column": 7
@@ -595,11 +327,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-10-22T21:31:30.807Z",
-    "duration": 111994.648,
+    "startTime": "2025-10-22T21:54:47.477Z",
+    "duration": 36852.280000000006,
     "expected": 5,
     "skipped": 0,
-    "unexpected": 7,
+    "unexpected": 1,
     "flaky": 0
   }
 }

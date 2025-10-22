@@ -224,8 +224,8 @@ export default function WeddingPackagesSection() {
               })),
               vendors: (featuredVendors || []).slice(0, 3).map((vendor: any) => ({
                 _id: vendor?._id || '',
-                name: vendor?.name || 'Unknown Vendor',
-                businessName: vendor?.businessName || 'Unknown Business',
+                name: vendor?.name || vendor?.businessName || 'Unknown Vendor',
+                businessName: vendor?.businessName || vendor?.name || 'Unknown Business',
                 category: vendor?.category || 'Other',
                 rating: vendor?.rating?.average || 4.5
               }))

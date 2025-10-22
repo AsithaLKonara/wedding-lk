@@ -9,24 +9,43 @@ import RealFeaturedVenues from '@/components/organisms/real-featured-venues'
 import RealTestimonials from '@/components/organisms/real-testimonials'
 import CTASection from '@/components/organisms/cta-section'
 import Footer from '@/components/organisms/footer'
+import { ErrorSafetyWrapper } from '@/components/error-safety-wrapper'
 
 export default function HomePage() {
   return (
-    <>
+    <ErrorSafetyWrapper>
       <Header />
       <main className="min-h-screen">
-        <AISearchSection />
-        <FeaturesSection />
-        <WeddingPackagesSection />
-        <VendorCategoriesSection />
-        <StatsSection />
-        <RealFeaturedVendors />
-        <RealFeaturedVenues />
-        <RealTestimonials />
-        <CTASection />
+        <ErrorSafetyWrapper>
+          <AISearchSection />
+        </ErrorSafetyWrapper>
+        <ErrorSafetyWrapper>
+          <FeaturesSection />
+        </ErrorSafetyWrapper>
+        <ErrorSafetyWrapper>
+          <WeddingPackagesSection />
+        </ErrorSafetyWrapper>
+        <ErrorSafetyWrapper>
+          <VendorCategoriesSection />
+        </ErrorSafetyWrapper>
+        <ErrorSafetyWrapper>
+          <StatsSection />
+        </ErrorSafetyWrapper>
+        <ErrorSafetyWrapper>
+          <RealFeaturedVendors />
+        </ErrorSafetyWrapper>
+        <ErrorSafetyWrapper>
+          <RealFeaturedVenues />
+        </ErrorSafetyWrapper>
+        <ErrorSafetyWrapper>
+          <RealTestimonials />
+        </ErrorSafetyWrapper>
+        <ErrorSafetyWrapper>
+          <CTASection />
+        </ErrorSafetyWrapper>
         <Footer />
       </main>
-    </>
+    </ErrorSafetyWrapper>
   )
 }
 
