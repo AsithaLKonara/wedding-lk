@@ -37,14 +37,9 @@ export async function connectDB() {
       serverSelectionTimeoutMS: 10000, // Increased timeout for better reliability
       socketTimeoutMS: 30000, // Reduced socket timeout for faster failure detection
       connectTimeoutMS: 10000, // Connection timeout
-      maxIdleTimeMS: 30000, // Close connections after 30 seconds of inactivity
       family: 4, // Use IPv4, skip trying IPv6
       retryWrites: true, // Enable retryable writes
       retryReads: true, // Enable retryable reads
-      compressors: ['zlib'], // Enable compression
-      zlibCompressionLevel: 6, // Compression level
-      heartbeatFrequencyMS: 10000, // Heartbeat frequency
-      maxStalenessSeconds: 90, // Max staleness for secondary reads
     };
 
     if (!MONGODB_URI) {

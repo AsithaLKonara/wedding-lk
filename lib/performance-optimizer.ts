@@ -25,14 +25,11 @@ export function optimizeMongooseQueries() {
   mongoose.set('strictQuery', false);
   
   // Optimize connection settings
-  mongoose.set('maxIdleTimeMS', 30000);
   mongoose.set('serverSelectionTimeoutMS', 5000);
   mongoose.set('socketTimeoutMS', 45000);
   mongoose.set('connectTimeoutMS', 10000);
   
-  // Enable compression
-  mongoose.set('compressors', ['zlib']);
-  mongoose.set('zlibCompressionLevel', 6);
+  // Compression settings removed for compatibility
   
   // Enable retryable writes
   mongoose.set('retryWrites', true);
