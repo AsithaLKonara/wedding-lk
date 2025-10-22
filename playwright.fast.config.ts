@@ -69,16 +69,17 @@ export default defineConfig({
         }
       },
     },
-    {
-      name: 'webkit',
-      use: { 
-        ...devices['Desktop Safari'],
-        // Disable problematic WebKit settings
-        launchOptions: {
-          args: ['--disable-web-security', '--disable-features=VizDisplayCompositor']
-        }
-      },
-    },
+    // Remove WebKit for now due to compatibility issues
+    // {
+    //   name: 'webkit',
+    //   use: { 
+    //     ...devices['Desktop Safari'],
+    //     // Disable problematic WebKit settings
+    //     launchOptions: {
+    //       args: ['--disable-web-security', '--disable-features=VizDisplayCompositor']
+    //     }
+    //   },
+    // },
   ],
 
   /* Run your local dev server before starting the tests */

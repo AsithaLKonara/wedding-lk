@@ -9,7 +9,7 @@ test.describe('🚀 Quick Production Verification', () => {
     await page.waitForLoadState('domcontentloaded');
     
     // Check if page loads without errors
-    await expect(page).toHaveTitle(/Wedding.lk/);
+    await expect(page).toHaveTitle(/WeddingLK/);
     
     // Check for basic elements
     await expect(page.locator('header')).toBeVisible();
