@@ -1,0 +1,86 @@
+{
+  "photographer": {
+    "name": "John Doe Photography",
+    "businessName": "John Doe Photography Studio",
+    "email": "john@photography.com",
+    "phone": "+94771234567",
+    "category": "photographer",
+    "description": "Professional wedding photographer with 10+ years experience",
+    "services": [
+      {
+        "name": "Wedding Photography Basic",
+        "description": "6 hours coverage with 300+ edited photos",
+        "price": 45000,
+        "duration": "6 hours"
+      },
+      {
+        "name": "Wedding Photography Premium",
+        "description": "8 hours coverage with 500+ edited photos and online gallery",
+        "price": 75000,
+        "duration": "8 hours"
+      }
+    ],
+    "location": {
+      "address": "123 Main Street",
+      "city": "Colombo",
+      "province": "Western Province",
+      "serviceAreas": ["Colombo", "Negombo", "Mount Lavinia"]
+    }
+  },
+  "catering": {
+    "name": "Royal Catering Services",
+    "businessName": "Royal Catering Services",
+    "email": "info@royalcatering.com",
+    "phone": "+94771234568",
+    "category": "catering",
+    "description": "Premium catering services for weddings and special events",
+    "services": [
+      {
+        "name": "Wedding Buffet Package",
+        "description": "Full buffet with 15+ dishes",
+        "price": 2500,
+        "duration": "per person"
+      },
+      {
+        "name": "Premium Wedding Menu",
+        "description": "Multi-course fine dining experience",
+        "price": 4000,
+        "duration": "per person"
+      }
+    ],
+    "location": {
+      "address": "456 Catering Lane",
+      "city": "Colombo",
+      "province": "Western Province",
+      "serviceAreas": ["Colombo", "Kandy", "Galle"]
+    }
+  },
+  "music": {
+    "name": "Sound Waves Band",
+    "businessName": "Sound Waves Entertainment",
+    "email": "bookings@soundwaves.com",
+    "phone": "+94771234569",
+    "category": "music",
+    "description": "Professional live music band for weddings",
+    "services": [
+      {
+        "name": "Live Band Performance",
+        "description": "4-piece band with vocalist",
+        "price": 35000,
+        "duration": "4 hours"
+      },
+      {
+        "name": "DJ Services",
+        "description": "Professional DJ with sound system",
+        "price": 25000,
+        "duration": "6 hours"
+      }
+    ],
+    "location": {
+      "address": "789 Music Street",
+      "city": "Colombo",
+      "province": "Western Province",
+      "serviceAreas": ["Colombo", "Negombo", "Mount Lavinia"]
+    }
+  }
+}

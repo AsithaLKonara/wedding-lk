@@ -229,16 +229,74 @@ export const analyticsQuerySchema = z.object({
 
 // File upload validation schemas
 export const fileUploadSchema = z.object({
-  file: z.instanceof(File),
+  file: z.any(), // File type for browser compatibility
   type: z.enum(['image', 'document', 'video']),
   maxSize: z.number().default(5 * 1024 * 1024), // 5MB default
   allowedTypes: z.array(z.string()).optional(),
 });
 
+// Validation functions
+export const validateBookingDate = (dateString: string): void => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const twoYearsFromNow = new Date();
+  twoYearsFromNow.setFullYear(now.getFullYear() + 2);
+  
+  if (isNaN(date.getTime())) {
+    throw new Error('Invalid date format');
+  }
+  
+  if (date < now) {
+    throw new Error('Cannot book past date');
+  }
+  
+  if (date > twoYearsFromNow) {
+    throw new Error('Booking date is too far in future');
+  }
+};
+
+export const validateEmail = (email: string): void => {
+  // More strict email validation - no consecutive dots
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email) || email.includes('..')) {
+    throw new Error('Invalid email address');
+  }
+};
+
+export const validatePhone = (phone: string): void => {
+  // Sri Lankan phone number validation
+  const phoneRegex = /^(\+94|0)?[0-9]{9}$/;
+  if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+    throw new Error('Invalid phone number format');
+  }
+};
+
+export const validatePassword = (password: string): void => {
+  if (password.length < 8) {
+    throw new Error('Password does not meet requirements');
+  }
+  
+  if (!/(?=.*[a-z])/.test(password)) {
+    throw new Error('Password does not meet requirements');
+  }
+  
+  if (!/(?=.*[A-Z])/.test(password)) {
+    throw new Error('Password does not meet requirements');
+  }
+  
+  if (!/(?=.*\d)/.test(password)) {
+    throw new Error('Password does not meet requirements');
+  }
+  
+  if (!/(?=.*[@$!%*?&#])/.test(password)) {
+    throw new Error('Password does not meet requirements');
+  }
+};
+
 // Common validation utilities
 export const validateId = z.string().min(1, 'ID is required');
-export const validateEmail = z.string().email('Invalid email address');
-export const validatePhone = z.string().min(10, 'Phone number must be at least 10 digits');
+export const validateEmailSchema = z.string().email('Invalid email address');
+export const validatePhoneSchema = z.string().min(10, 'Phone number must be at least 10 digits');
 export const validateUrl = z.string().url('Invalid URL');
 export const validateDate = z.string().datetime('Invalid date format');
 export const validateTime = z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format (HH:MM)');

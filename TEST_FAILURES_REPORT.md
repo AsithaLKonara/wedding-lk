@@ -263,3 +263,11 @@
 *Report Generated: $(date)*  
 *Test Environment: Playwright with Chromium, Firefox, WebKit, Mobile Chrome, Mobile Safari*  
 *Target URL: https://wedding-lk.vercel.app/*
+
+
+
+
+
+
+
+

@@ -1,14 +1,25 @@
 /**
- * Format currency in LKR (Sri Lankan Rupees)
+ * Format currency in LKR (Sri Lankan Rupees) or USD
  */
-export const formatCurrency = (amount: number | null | undefined): string => {
-  if (amount === null || amount === undefined || isNaN(amount)) return "LKR 0"
-  return new Intl.NumberFormat("en-LK", {
-    style: "currency",
-    currency: "LKR",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+export const formatCurrency = (amount: number | null | undefined, currency: string = 'LKR'): string => {
+  if (amount === null || amount === undefined || isNaN(amount)) return currency === 'USD' ? '$0.00' : 'LKR 0.00'
+  
+  if (currency === 'USD') {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(amount)
+  }
+  
+  // For LKR, use manual formatting to ensure consistent output
+  const formatted = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(amount)
+  
+  return `LKR ${formatted}`
 }
 
 /**
@@ -57,13 +68,38 @@ export const formatPercentage = (value: number, total: number): string => {
 /**
  * Format date for display
  */
-export const formatDate = (date: Date | string | null | undefined): string => {
+export const formatDate = (date: Date | string | null | undefined, locale: string = 'en-US'): string => {
   if (!date) return "N/A"
   const d = new Date(date)
   if (isNaN(d.getTime())) return "Invalid Date"
-  return d.toLocaleDateString("en-LK", {
+  
+  if (locale === 'si-LK') {
+    return d.toLocaleDateString("si-LK", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  }
+  
+  if (locale === 'short') {
+    return d.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+  }
+  
+  if (locale === 'long') {
+    return d.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  }
+  
+  return d.toLocaleDateString("en-US", {
     year: "numeric",
-    month: "short",
+    month: "long",
     day: "numeric",
   })
 }
@@ -181,4 +217,40 @@ export const getRoleTheme = (role: string) => {
         border: "border-gray-200",
       }
   }
+}
+
+/**
+ * Generate unique booking ID with date prefix
+ */
+export const generateBookingId = (): string => {
+  const today = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+  const random = Math.random().toString(36).substring(2, 8).toUpperCase()
+  return `BK${today}${random}`
+}
+
+/**
+ * Calculate total price for booking
+ */
+export const calculateTotalPrice = (params: {
+  basePrice: number
+  guestCount: number
+  pricePerGuest: number
+  additionalServices?: Array<{ price: number; quantity?: number }>
+}): number => {
+  const { basePrice, guestCount, pricePerGuest, additionalServices = [] } = params
+  
+  let total = basePrice
+  
+  // Add per-guest pricing
+  if (pricePerGuest > 0 && guestCount > 0) {
+    total += pricePerGuest * guestCount
+  }
+  
+  // Add additional services
+  additionalServices.forEach(service => {
+    const quantity = service.quantity || 1
+    total += service.price * quantity
+  })
+  
+  return total
 }

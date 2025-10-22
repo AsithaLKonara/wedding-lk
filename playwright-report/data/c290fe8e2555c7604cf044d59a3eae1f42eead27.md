@@ -1,0 +1,111 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "Wedding.lk" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8]
+          - generic [ref=e10]: Wedding.lk
+        - generic [ref=e11]:
+          - button "Toggle theme" [ref=e13] [cursor=pointer]:
+            - generic [ref=e14]:
+              - img
+              - img
+            - generic [ref=e15]: Toggle theme
+          - button [ref=e16] [cursor=pointer]:
+            - img
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - heading "Welcome Back" [level=1] [ref=e20]
+        - paragraph [ref=e21]: Sign in to your WeddingLK account
+        - generic [ref=e22]:
+          - generic [ref=e25]: SSL Secured
+          - generic [ref=e28]: GDPR Compliant
+          - generic [ref=e31]: Trusted Platform
+      - generic [ref=e32]:
+        - heading "Sign In" [level=2] [ref=e34]
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - button "Continue with Google" [ref=e37] [cursor=pointer]:
+              - img [ref=e38]
+              - text: Continue with Google
+            - button "Continue with Facebook" [ref=e43] [cursor=pointer]:
+              - img [ref=e44]
+              - text: Continue with Facebook
+          - generic [ref=e50]: Or continue with email
+          - generic [ref=e51]:
+            - generic [ref=e52]:
+              - generic [ref=e53]: Email Address
+              - textbox "Email Address" [ref=e54]:
+                - /placeholder: Enter your email
+            - generic [ref=e55]:
+              - generic [ref=e56]: Password
+              - generic [ref=e57]:
+                - textbox "Password" [ref=e58]:
+                  - /placeholder: Enter your password
+                - button [ref=e59] [cursor=pointer]:
+                  - img [ref=e60]
+            - generic [ref=e63]:
+              - generic [ref=e64]:
+                - checkbox "Remember me" [ref=e65]
+                - generic [ref=e66]: Remember me
+              - link "Forgot password?" [ref=e67] [cursor=pointer]:
+                - /url: /auth/forgot-password
+            - button "Sign In" [ref=e68] [cursor=pointer]
+          - paragraph [ref=e70]:
+            - text: Don't have an account?
+            - link "Sign up" [ref=e71] [cursor=pointer]:
+              - /url: /auth/signup
+    - contentinfo [ref=e72]:
+      - generic [ref=e73]:
+        - generic [ref=e74]:
+          - generic [ref=e75]:
+            - link "Wedding.lk" [ref=e76] [cursor=pointer]:
+              - /url: /
+              - img [ref=e78]
+              - generic [ref=e80]: Wedding.lk
+            - paragraph [ref=e81]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+            - generic [ref=e82]:
+              - button [ref=e83] [cursor=pointer]:
+                - img
+              - button [ref=e84] [cursor=pointer]:
+                - img
+              - button [ref=e85] [cursor=pointer]:
+                - img
+              - button [ref=e86] [cursor=pointer]:
+                - img
+          - generic [ref=e87]:
+            - heading "Services" [level=3] [ref=e88]
+            - list [ref=e89]:
+              - listitem [ref=e90]:
+                - link "Venues" [ref=e91] [cursor=pointer]:
+                  - /url: /venues
+              - listitem [ref=e92]:
+                - link "Vendors" [ref=e93] [cursor=pointer]:
+                  - /url: /vendors
+              - listitem [ref=e94]:
+                - button "Planning Tools" [ref=e95] [cursor=pointer]
+              - listitem [ref=e96]:
+                - link "Gallery" [ref=e97] [cursor=pointer]:
+                  - /url: /gallery
+          - generic [ref=e98]:
+            - heading "Company" [level=3] [ref=e99]
+            - list [ref=e100]:
+              - listitem [ref=e101]:
+                - link "About" [ref=e102] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e103]:
+                - link "Contact" [ref=e104] [cursor=pointer]:
+                  - /url: /contact
+              - listitem [ref=e105]:
+                - link "Privacy" [ref=e106] [cursor=pointer]:
+                  - /url: /privacy
+              - listitem [ref=e107]:
+                - link "Terms" [ref=e108] [cursor=pointer]:
+                  - /url: /terms
+        - paragraph [ref=e110]: © 2024 Wedding.lk. All rights reserved.
+  - alert [ref=e113]
+```

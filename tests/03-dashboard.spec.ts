@@ -119,3 +119,11 @@ test.describe('Dashboard Tests', () => {
     await expect(page.locator('nav, .sidebar')).toBeVisible();
   });
 });
+
+
+
+
+
+
+
+

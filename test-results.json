@@ -1,0 +1,2091 @@
+{
+  "config": {
+    "configFile": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/playwright.config.ts",
+    "rootDir": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "test-results.xml"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "comprehensive-crud.spec.ts",
+      "file": "comprehensive-crud.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "🔐 Authentication & User Management CRUD",
+          "file": "comprehensive-crud.spec.ts",
+          "line": 51,
+          "column": 6,
+          "specs": [
+            {
+              "title": "User Registration Flow",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 38245,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 56
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"name\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 54 |\u001b[39m     \n \u001b[90m 55 |\u001b[39m     \u001b[90m// Fill registration form\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 56 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"name\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mname)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 57 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m 58 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 59 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"confirmPassword\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:56:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:43:22.976Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔐-Auth-d5d79-CRUD-User-Registration-Flow-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔐-Auth-d5d79-CRUD-User-Registration-Flow-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔐-Auth-d5d79-CRUD-User-Registration-Flow-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-db3cb018b777d81269ec",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 52,
+              "column": 7
+            },
+            {
+              "title": "User Login Flow",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 35395,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 72
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 70 |\u001b[39m     \n \u001b[90m 71 |\u001b[39m     \u001b[90m// Fill login form\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 72 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 73 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 74 |\u001b[39m     \n \u001b[90m 75 |\u001b[39m     \u001b[90m// Submit login\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:72:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:43:23.205Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔐-Auth-b3a02-gement-CRUD-User-Login-Flow-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔐-Auth-b3a02-gement-CRUD-User-Login-Flow-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔐-Auth-b3a02-gement-CRUD-User-Login-Flow-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-b551d37822f3009c474b",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "User Profile CRUD Operations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 32254,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 85
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 83 |\u001b[39m     \u001b[90m// Login first\u001b[39m\n \u001b[90m 84 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 85 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 86 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 87 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 88 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:85:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:44:15.159Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔐-Auth-7a9a3-ser-Profile-CRUD-Operations-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔐-Auth-7a9a3-ser-Profile-CRUD-Operations-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔐-Auth-7a9a3-ser-Profile-CRUD-Operations-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-34fec8df41bb8f905372",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 82,
+              "column": 7
+            },
+            {
+              "title": "User Settings CRUD Operations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 41389,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 109
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 107 |\u001b[39m     \u001b[90m// Login first\u001b[39m\n \u001b[90m 108 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 109 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 110 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 111 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 112 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:109:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:44:24.174Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔐-Auth-e8e4d-er-Settings-CRUD-Operations-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔐-Auth-e8e4d-er-Settings-CRUD-Operations-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔐-Auth-e8e4d-er-Settings-CRUD-Operations-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-8665ca5c28fbbc25e049",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 106,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "🏢 Vendor Management CRUD",
+          "file": "comprehensive-crud.spec.ts",
+          "line": 130,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Vendor Registration Flow",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 33679,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 135
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"businessName\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 133 |\u001b[39m     \n \u001b[90m 134 |\u001b[39m     \u001b[90m// Fill vendor registration form\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 135 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"businessName\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mvendor\u001b[33m.\u001b[39mname)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 136 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mvendor\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m 137 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mvendor\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 138 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"phone\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'+94771234567'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:135:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:44:56.177Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🏢-Vend-4884e-UD-Vendor-Registration-Flow-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🏢-Vend-4884e-UD-Vendor-Registration-Flow-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🏢-Vend-4884e-UD-Vendor-Registration-Flow-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-9b48684ae59ee568746d",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 131,
+              "column": 7
+            },
+            {
+              "title": "Vendor Services CRUD Operations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 35653,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 151
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 149 |\u001b[39m     \u001b[90m// Login as vendor\u001b[39m\n \u001b[90m 150 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 151 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mvendor\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 152 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mvendor\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 153 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 154 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:151:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:45:13.813Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🏢-Vend-64218-or-Services-CRUD-Operations-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🏢-Vend-64218-or-Services-CRUD-Operations-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🏢-Vend-64218-or-Services-CRUD-Operations-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-ce994a176471e5b7a3d1",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 148,
+              "column": 7
+            },
+            {
+              "title": "Vendor Analytics & Reports",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 34681,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 185
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 183 |\u001b[39m     \u001b[90m// Login as vendor\u001b[39m\n \u001b[90m 184 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 185 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mvendor\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 186 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mvendor\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 187 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 188 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:185:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:45:37.986Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🏢-Vend-1244e-UD-Vendor-Analytics-Reports-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🏢-Vend-1244e-UD-Vendor-Analytics-Reports-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🏢-Vend-1244e-UD-Vendor-Analytics-Reports-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-96ea40e4f7b33bafe052",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 182,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "📅 Booking System CRUD",
+          "file": "comprehensive-crud.spec.ts",
+          "line": 200,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Create Booking Flow",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 32766,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 204
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 202 |\u001b[39m     \u001b[90m// Login as regular user\u001b[39m\n \u001b[90m 203 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 204 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 205 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 206 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 207 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:204:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:45:58.328Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📅-Book-32257-em-CRUD-Create-Booking-Flow-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📅-Book-32257-em-CRUD-Create-Booking-Flow-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📅-Book-32257-em-CRUD-Create-Booking-Flow-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-caa66471f6c33d637668",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 201,
+              "column": 7
+            },
+            {
+              "title": "Booking Management CRUD",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 34785,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 231
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 229 |\u001b[39m     \u001b[90m// Login as user\u001b[39m\n \u001b[90m 230 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 231 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 232 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 233 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 234 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:231:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:46:20.288Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📅-Book-0046c-RUD-Booking-Management-CRUD-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📅-Book-0046c-RUD-Booking-Management-CRUD-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📅-Book-0046c-RUD-Booking-Management-CRUD-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-f4e44daef651bd1bc570",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 228,
+              "column": 7
+            },
+            {
+              "title": "Booking Status Tracking",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 39420,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 261
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 259 |\u001b[39m     \u001b[90m// Login as vendor\u001b[39m\n \u001b[90m 260 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 261 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mvendor\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 262 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mvendor\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 263 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 264 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:261:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:46:40.194Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📅-Book-6532e-RUD-Booking-Status-Tracking-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📅-Book-6532e-RUD-Booking-Status-Tracking-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📅-Book-6532e-RUD-Booking-Status-Tracking-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-3600339f806e0437a982",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 258,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "👥 Wedding Planner CRUD Operations",
+          "file": "comprehensive-crud.spec.ts",
+          "line": 282,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Planner Client Management",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 35065,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 286
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 284 |\u001b[39m     \u001b[90m// Login as wedding planner\u001b[39m\n \u001b[90m 285 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 286 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mweddingPlanner\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 287 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mweddingPlanner\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 288 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 289 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:286:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:47:03.397Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-👥-Wedd-6d749-s-Planner-Client-Management-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-👥-Wedd-6d749-s-Planner-Client-Management-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-👥-Wedd-6d749-s-Planner-Client-Management-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-64fb3ea799e48903e583",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 283,
+              "column": 7
+            },
+            {
+              "title": "Planner Task Management",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 34231,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 316
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 314 |\u001b[39m     \u001b[90m// Login as wedding planner\u001b[39m\n \u001b[90m 315 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 316 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mweddingPlanner\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 317 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mweddingPlanner\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 318 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 319 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:316:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:47:28.526Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-👥-Wedd-50ee2-ons-Planner-Task-Management-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-👥-Wedd-50ee2-ons-Planner-Task-Management-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-👥-Wedd-50ee2-ons-Planner-Task-Management-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-7c27d999d8feefebef82",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 313,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "🛡️ RBAC (Role-Based Access Control) Tests",
+          "file": "comprehensive-crud.spec.ts",
+          "line": 341,
+          "column": 6,
+          "specs": [
+            {
+              "title": "User Role Access Control",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 33881,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 345
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 343 |\u001b[39m     \u001b[90m// Login as regular user\u001b[39m\n \u001b[90m 344 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 345 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 346 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 347 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 348 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:345:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:47:47.914Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛡️-RBA-b8846-ts-User-Role-Access-Control-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛡️-RBA-b8846-ts-User-Role-Access-Control-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛡️-RBA-b8846-ts-User-Role-Access-Control-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-6004506a90312150310f",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 342,
+              "column": 7
+            },
+            {
+              "title": "Vendor Role Access Control",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 33751,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 369
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 367 |\u001b[39m     \u001b[90m// Login as vendor\u001b[39m\n \u001b[90m 368 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 369 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mvendor\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 370 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mvendor\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 371 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 372 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:369:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:48:11.875Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛡️-RBA-76435--Vendor-Role-Access-Control-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛡️-RBA-76435--Vendor-Role-Access-Control-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛡️-RBA-76435--Vendor-Role-Access-Control-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-92a5707284a19f3a94ea",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 366,
+              "column": 7
+            },
+            {
+              "title": "Admin Role Access Control",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 39658,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 393
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 391 |\u001b[39m     \u001b[90m// Login as admin\u001b[39m\n \u001b[90m 392 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 393 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39madmin\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 394 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39madmin\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 395 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 396 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:393:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:48:30.200Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛡️-RBA-d2e91-s-Admin-Role-Access-Control-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛡️-RBA-d2e91-s-Admin-Role-Access-Control-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛡️-RBA-d2e91-s-Admin-Role-Access-Control-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-e727a2d742d9a59e46b0",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 390,
+              "column": 7
+            },
+            {
+              "title": "Middleware Route Protection",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 11736,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/\\/auth\\/signin/\u001b[39m\nReceived string:  \u001b[31m\"https://wedding-lk.vercel.app/dashboard/user\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    5 × unexpected value \"https://wedding-lk.vercel.app/dashboard\"\u001b[22m\n\u001b[2m    - unexpected value \"https://wedding-lk.vercel.app/dashboard/redirect\"\u001b[22m\n\u001b[2m    2 × unexpected value \"https://wedding-lk.vercel.app/dashboard/user\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/\\/auth\\/signin/\u001b[39m\nReceived string:  \u001b[31m\"https://wedding-lk.vercel.app/dashboard/user\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    5 × unexpected value \"https://wedding-lk.vercel.app/dashboard\"\u001b[22m\n\u001b[2m    - unexpected value \"https://wedding-lk.vercel.app/dashboard/redirect\"\u001b[22m\n\u001b[2m    2 × unexpected value \"https://wedding-lk.vercel.app/dashboard/user\"\u001b[22m\n\n    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:415:24",
+                        "location": {
+                          "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                          "column": 24,
+                          "line": 415
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 413 |\u001b[39m     \u001b[90m// Test unauthenticated access to protected routes\u001b[39m\n \u001b[90m 414 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/dashboard'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 415 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/auth\\/signin/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 416 |\u001b[39m     \n \u001b[90m 417 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/dashboard/profile'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 418 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/auth\\/signin/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 24,
+                            "line": 415
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mpage\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nExpected pattern: \u001b[32m/\\/auth\\/signin/\u001b[39m\nReceived string:  \u001b[31m\"https://wedding-lk.vercel.app/dashboard/user\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveURL\" with timeout 5000ms\u001b[22m\n\u001b[2m    5 × unexpected value \"https://wedding-lk.vercel.app/dashboard\"\u001b[22m\n\u001b[2m    - unexpected value \"https://wedding-lk.vercel.app/dashboard/redirect\"\u001b[22m\n\u001b[2m    2 × unexpected value \"https://wedding-lk.vercel.app/dashboard/user\"\u001b[22m\n\n\n\u001b[0m \u001b[90m 413 |\u001b[39m     \u001b[90m// Test unauthenticated access to protected routes\u001b[39m\n \u001b[90m 414 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/dashboard'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 415 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/auth\\/signin/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 416 |\u001b[39m     \n \u001b[90m 417 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/dashboard/profile'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 418 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/auth\\/signin/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:415:24\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:48:53.199Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛡️-RBA-c8703-Middleware-Route-Protection-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛡️-RBA-c8703-Middleware-Route-Protection-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛡️-RBA-c8703-Middleware-Route-Protection-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                        "column": 24,
+                        "line": 415
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-c8cf636799831b5400f1",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 412,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "💳 Payment & Financial CRUD",
+          "file": "comprehensive-crud.spec.ts",
+          "line": 425,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Payment Processing Flow",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 35655,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 429
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 427 |\u001b[39m     \u001b[90m// Login as user\u001b[39m\n \u001b[90m 428 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 429 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 430 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 431 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 432 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:429:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:49:19.792Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-💳-Paym-6f1ed-RUD-Payment-Processing-Flow-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-💳-Paym-6f1ed-RUD-Payment-Processing-Flow-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-💳-Paym-6f1ed-RUD-Payment-Processing-Flow-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-a0f0b9784258103f9ea2",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 426,
+              "column": 7
+            },
+            {
+              "title": "Payment History & Management",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 37116,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 453
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 451 |\u001b[39m     \u001b[90m// Login as user\u001b[39m\n \u001b[90m 452 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 453 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 454 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 455 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 456 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:453:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:49:37.185Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-💳-Paym-d962d--Payment-History-Management-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-💳-Paym-d962d--Payment-History-Management-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-💳-Paym-d962d--Payment-History-Management-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-dae8a6d16d78ee56fd14",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 450,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "📱 Mobile & Responsive CRUD",
+          "file": "comprehensive-crud.spec.ts",
+          "line": 470,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Mobile Navigation & CRUD Operations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 33143,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 477
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 475 |\u001b[39m     \u001b[90m// Login as user\u001b[39m\n \u001b[90m 476 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 477 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 478 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 479 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 480 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:477:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:50:02.341Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📱-Mobi-c12a8--Navigation-CRUD-Operations-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📱-Mobi-c12a8--Navigation-CRUD-Operations-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📱-Mobi-c12a8--Navigation-CRUD-Operations-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-46b2f78d1b6132ee67db",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 471,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "🔍 Search & Filter CRUD",
+          "file": "comprehensive-crud.spec.ts",
+          "line": 500,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Venue Search & Filter Operations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 19,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 38186,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 505
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[placeholder*=\"Search venues\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 503 |\u001b[39m     \n \u001b[90m 504 |\u001b[39m     \u001b[90m// Search for venues\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 505 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[placeholder*=\"Search venues\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'Colombo'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 506 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Search\")'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 507 |\u001b[39m     \n \u001b[90m 508 |\u001b[39m     \u001b[90m// Apply filters\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:505:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:50:22.032Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔍-Sear-77ac3-ue-Search-Filter-Operations-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔍-Sear-77ac3-ue-Search-Filter-Operations-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔍-Sear-77ac3-ue-Search-Filter-Operations-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-7841c650d3fec6acb62a",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 501,
+              "column": 7
+            },
+            {
+              "title": "Vendor Search & Filter Operations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 20,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 37690,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 522
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[placeholder*=\"Search vendors\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 520 |\u001b[39m     \n \u001b[90m 521 |\u001b[39m     \u001b[90m// Search for vendors\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 522 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[placeholder*=\"Search vendors\"]'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'photography'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 523 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button:has-text(\"Search\")'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 524 |\u001b[39m     \n \u001b[90m 525 |\u001b[39m     \u001b[90m// Apply category filters\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:522:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:50:42.353Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔍-Sear-8b262-or-Search-Filter-Operations-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔍-Sear-8b262-or-Search-Filter-Operations-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔍-Sear-8b262-or-Search-Filter-Operations-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-1a77dbcb8d7bba5c6840",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 518,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "📊 Analytics & Reporting CRUD",
+          "file": "comprehensive-crud.spec.ts",
+          "line": 534,
+          "column": 6,
+          "specs": [
+            {
+              "title": "User Analytics Dashboard",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 21,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 33276,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 538
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 536 |\u001b[39m     \u001b[90m// Login as user\u001b[39m\n \u001b[90m 537 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 538 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 539 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 540 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 541 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:538:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:51:06.815Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📊-Anal-bd0f7-UD-User-Analytics-Dashboard-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📊-Anal-bd0f7-UD-User-Analytics-Dashboard-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📊-Anal-bd0f7-UD-User-Analytics-Dashboard-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-e3409de6e4d88631113d",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 535,
+              "column": 7
+            },
+            {
+              "title": "Admin Analytics & Reports",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 22,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 37313,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 555
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 553 |\u001b[39m     \u001b[90m// Login as admin\u001b[39m\n \u001b[90m 554 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 555 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39madmin\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 556 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39madmin\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 557 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 558 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:555:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:51:26.504Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📊-Anal-de256-RUD-Admin-Analytics-Reports-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📊-Anal-de256-RUD-Admin-Analytics-Reports-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-📊-Anal-de256-RUD-Admin-Analytics-Reports-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-1e6774f5000aa2f73d69",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 552,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "🔔 Notification & Communication CRUD",
+          "file": "comprehensive-crud.spec.ts",
+          "line": 580,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Notification Management",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 23,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 34353,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 584
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 582 |\u001b[39m     \u001b[90m// Login as user\u001b[39m\n \u001b[90m 583 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 584 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 585 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 586 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 587 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:584:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:51:48.780Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔔-Noti-e4267-RUD-Notification-Management-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔔-Noti-e4267-RUD-Notification-Management-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔔-Noti-e4267-RUD-Notification-Management-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-7d07801cd2d7bb1c129b",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 581,
+              "column": 7
+            },
+            {
+              "title": "Message System CRUD",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 24,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 33840,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 608
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 606 |\u001b[39m     \u001b[90m// Login as user\u001b[39m\n \u001b[90m 607 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 608 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 609 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39mregularUser\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 610 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 611 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:608:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:52:12.119Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔔-Noti-e1c21-on-CRUD-Message-System-CRUD-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔔-Noti-e1c21-on-CRUD-Message-System-CRUD-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔔-Noti-e1c21-on-CRUD-Message-System-CRUD-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-f37edd35793070421eb7",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 605,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "🔄 Data Synchronization & Cache CRUD",
+          "file": "comprehensive-crud.spec.ts",
+          "line": 632,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Data Cache Management",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 25,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 36792,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 636
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 634 |\u001b[39m     \u001b[90m// Login as admin\u001b[39m\n \u001b[90m 635 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 636 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39madmin\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 637 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39madmin\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 638 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 639 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:636:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:52:31.356Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔄-Data-ae5cf--CRUD-Data-Cache-Management-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔄-Data-ae5cf--CRUD-Data-Cache-Management-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🔄-Data-ae5cf--CRUD-Data-Cache-Management-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-120484d1ee3203d02c4f",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 633,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "🛠️ System Administration CRUD",
+          "file": "comprehensive-crud.spec.ts",
+          "line": 657,
+          "column": 6,
+          "specs": [
+            {
+              "title": "User Management Operations",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 26,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 34100,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 661
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 659 |\u001b[39m     \u001b[90m// Login as admin\u001b[39m\n \u001b[90m 660 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 661 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39madmin\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 662 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39madmin\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 663 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 664 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:661:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:52:53.227Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛠️-Sys-e1e93--User-Management-Operations-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛠️-Sys-e1e93--User-Management-Operations-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛠️-Sys-e1e93--User-Management-Operations-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-b73e4291a508f0bac894",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 658,
+              "column": 7
+            },
+            {
+              "title": "System Settings Management",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 27,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 38194,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts",
+                            "column": 16,
+                            "line": 689
+                          },
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[name=\"email\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 687 |\u001b[39m     \u001b[90m// Login as admin\u001b[39m\n \u001b[90m 688 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/auth/signin'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 689 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"email\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39madmin\u001b[33m.\u001b[39memail)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 690 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mfill(\u001b[32m'input[name=\"password\"]'\u001b[39m\u001b[33m,\u001b[39m testUsers\u001b[33m.\u001b[39madmin\u001b[33m.\u001b[39mpassword)\u001b[33m;\u001b[39m\n \u001b[90m 691 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'button[type=\"submit\"]'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 692 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/comprehensive-crud.spec.ts:689:16\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-22T00:53:17.658Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛠️-Sys-350da--System-Settings-Management-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛠️-Sys-350da--System-Settings-Management-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/comprehensive-crud-🛠️-Sys-350da--System-Settings-Management-chromium/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "59873d68576aff739198-37d10e975bb053a179a8",
+              "file": "comprehensive-crud.spec.ts",
+              "line": 686,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-10-22T00:43:12.658Z",
+    "duration": 647202.3380000001,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 28,
+    "flaky": 0
+  }
+}

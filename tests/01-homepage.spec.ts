@@ -100,3 +100,11 @@ test.describe('Homepage Tests', () => {
     await expect(page.locator('h1, h2')).toContainText(/404|not found|page not found/i);
   });
 });
+
+
+
+
+
+
+
+
