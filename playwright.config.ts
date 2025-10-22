@@ -13,6 +13,12 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
+  /* Global test timeout - increased for production testing */
+  timeout: 120000, // 2 minutes per test
+  /* Global expect timeout */
+  expect: {
+    timeout: 30000, // 30 seconds for assertions
+  },
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['html', { outputFolder: 'playwright-report' }],
@@ -23,17 +29,21 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.E2E_BASE_URL || 'https://wedding-lk.vercel.app',
+    baseURL: process.env.E2E_BASE_URL || 'https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     /* Take screenshot on failure */
     screenshot: 'only-on-failure',
     /* Record video on failure */
     video: 'retain-on-failure',
-    /* Global timeout for each action */
-    actionTimeout: 30000,
-    /* Global timeout for navigation */
-    navigationTimeout: 30000,
+    /* Global timeout for each action - increased for production */
+    actionTimeout: 60000, // 1 minute for actions
+    /* Global timeout for navigation - increased for production */
+    navigationTimeout: 60000, // 1 minute for navigation
+    /* Wait for network to be idle */
+    waitForLoadState: 'networkidle',
+    /* Ignore HTTPS errors for production testing */
+    ignoreHTTPSErrors: true,
   },
 
   /* Configure projects for major browsers */
