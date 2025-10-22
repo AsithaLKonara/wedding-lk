@@ -24,17 +24,6 @@ export function optimizeMongooseQueries() {
   // Enable query optimization
   mongoose.set('strictQuery', false);
   
-  // Optimize connection settings
-  mongoose.set('serverSelectionTimeoutMS', 5000);
-  mongoose.set('socketTimeoutMS', 45000);
-  mongoose.set('connectTimeoutMS', 10000);
-  
-  // Compression settings removed for compatibility
-  
-  // Enable retryable writes
-  mongoose.set('retryWrites', true);
-  mongoose.set('retryReads', true);
-  
   console.log('✅ Mongoose queries optimized for performance');
 }
 

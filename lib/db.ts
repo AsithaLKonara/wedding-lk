@@ -34,12 +34,6 @@ export async function connectDB() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
-      serverSelectionTimeoutMS: 10000, // Increased timeout for better reliability
-      socketTimeoutMS: 30000, // Reduced socket timeout for faster failure detection
-      connectTimeoutMS: 10000, // Connection timeout
-      family: 4, // Use IPv4, skip trying IPv6
-      retryWrites: true, // Enable retryable writes
-      retryReads: true, // Enable retryable reads
     };
 
     if (!MONGODB_URI) {
