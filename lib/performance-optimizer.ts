@@ -71,7 +71,7 @@ export function setupQueryMonitoring() {
  * Get performance statistics
  */
 export function getPerformanceStats() {
-  return {
+      return {
     totalQueries: queryCount,
     slowQueries: slowQueryCount,
     averageQueryTime: queryCount > 0 ? Math.round(totalQueryTime / queryCount) : 0,

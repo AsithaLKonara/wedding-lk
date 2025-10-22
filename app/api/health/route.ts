@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
+import { testRedisConnection } from '@/lib/redis';
+import { testCloudinaryConnection } from '@/lib/cloudinary';
+import { testEmailConnection } from '@/lib/email';
 
 interface HealthCheck {
   status: 'healthy' | 'degraded' | 'unhealthy';
@@ -95,43 +98,25 @@ export async function GET(request: NextRequest) {
       healthCheck.status = 'degraded';
     }
 
-    // Check Redis connection (if configured)
-    if (process.env.REDIS_URL) {
-      const redisStartTime = Date.now();
-      try {
-        // Simple Redis ping test with proper error handling
-        const redis = require('redis');
-        const client = redis.createClient({ 
-          url: process.env.REDIS_URL,
-          socket: {
-            connectTimeout: 5000,
-            commandTimeout: 5000,
-          }
-        });
-        
-        await client.connect();
-        await client.ping();
-        await client.quit(); // Use quit() instead of disconnect()
-        
-        healthCheck.checks.redis = {
-          status: 'healthy',
-          responseTime: Date.now() - redisStartTime,
-        };
-      } catch (redisError) {
-        healthCheck.checks.redis = {
-          status: 'unhealthy',
-          responseTime: Date.now() - redisStartTime,
-          error: redisError instanceof Error ? redisError.message : 'Unknown Redis error',
-        };
+    // Check Redis connection
+    const redisStartTime = Date.now();
+    try {
+      const redisResult = await testRedisConnection();
+      healthCheck.checks.redis = {
+        status: redisResult.success ? 'healthy' : 'unhealthy',
+        responseTime: Date.now() - redisStartTime,
+        error: redisResult.error
+      };
+      if (!redisResult.success) {
         healthCheck.status = 'degraded';
       }
-    } else {
-      // Redis not configured
+    } catch (redisError) {
       healthCheck.checks.redis = {
         status: 'unhealthy',
-        responseTime: 0,
-        error: 'Redis URL not configured',
+        responseTime: Date.now() - redisStartTime,
+        error: redisError instanceof Error ? redisError.message : 'Unknown Redis error',
       };
+      healthCheck.status = 'degraded';
     }
 
     // Check external APIs
@@ -141,13 +126,6 @@ export async function GET(request: NextRequest) {
         url: 'https://api.stripe.com/v1/charges',
         headers: process.env.STRIPE_SECRET_KEY ? {
           'Authorization': `Bearer ${process.env.STRIPE_SECRET_KEY}`
-        } : {}
-      },
-      { 
-        name: 'cloudinary', 
-        url: `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME || 'test'}/resources/image`,
-        headers: process.env.CLOUDINARY_API_KEY ? {
-          'Authorization': `Basic ${Buffer.from(`${process.env.CLOUDINARY_API_KEY}:${process.env.CLOUDINARY_API_SECRET}`).toString('base64')}`
         } : {}
       },
     ];
@@ -183,6 +161,40 @@ export async function GET(request: NextRequest) {
           error: apiError instanceof Error ? apiError.message : 'Unknown API error',
         };
       }
+    }
+
+    // Check Cloudinary
+    const cloudinaryStartTime = Date.now();
+    try {
+      const cloudinaryResult = await testCloudinaryConnection();
+      healthCheck.checks.external_apis.services.cloudinary = {
+        status: cloudinaryResult.success ? 'healthy' : 'unhealthy',
+        responseTime: Date.now() - cloudinaryStartTime,
+        error: cloudinaryResult.error
+      };
+    } catch (cloudinaryError) {
+      healthCheck.checks.external_apis.services.cloudinary = {
+        status: 'unhealthy',
+        responseTime: Date.now() - cloudinaryStartTime,
+        error: cloudinaryError instanceof Error ? cloudinaryError.message : 'Unknown Cloudinary error',
+      };
+    }
+
+    // Check Email Service
+    const emailStartTime = Date.now();
+    try {
+      const emailResult = await testEmailConnection();
+      healthCheck.checks.external_apis.services.email = {
+        status: emailResult.success ? 'healthy' : 'unhealthy',
+        responseTime: Date.now() - emailStartTime,
+        error: emailResult.error
+      };
+    } catch (emailError) {
+      healthCheck.checks.external_apis.services.email = {
+        status: 'unhealthy',
+        responseTime: Date.now() - emailStartTime,
+        error: emailError instanceof Error ? emailError.message : 'Unknown email error',
+      };
     }
 
     // Set external APIs status

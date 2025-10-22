@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     await connectDB();
     
     console.log('🌱 Starting database seeding...');
-
+    
     // Clear existing data
     await User.deleteMany({});
     await Vendor.deleteMany({});
@@ -363,7 +363,7 @@ export async function POST(request: NextRequest) {
     console.log(`✅ Created ${createdPosts.length} posts`);
 
     console.log('🎉 Database seeding completed successfully!');
-
+    
     return NextResponse.json({
       success: true,
       message: 'Database seeded successfully',
@@ -379,7 +379,7 @@ export async function POST(request: NextRequest) {
         posts: createdPosts.length
       }
     });
-
+    
   } catch (error) {
     console.error('Database seeding error:', error);
     return NextResponse.json({
