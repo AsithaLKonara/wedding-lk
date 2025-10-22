@@ -1,17 +1,12 @@
 {
   "name": "WeddingLK - Sri Lanka's Premier Wedding Planning Platform",
   "short_name": "WeddingLK",
-  "description": "Find the perfect vendors, venues, and services for your dream wedding in Sri Lanka",
+  "description": "Find your perfect wedding venues, vendors, and plan your dream wedding in Sri Lanka",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#8B5CF6",
-  "version": "2.0.0",
+  "theme_color": "#f43f5e",
   "orientation": "portrait-primary",
-  "scope": "/",
-  "lang": "en",
-  "dir": "ltr",
-  "categories": ["lifestyle", "business", "social"],
   "icons": [
     {
       "src": "/icons/icon-72x72.png",
@@ -62,67 +57,54 @@
       "purpose": "maskable any"
     }
   ],
+  "categories": ["lifestyle", "business", "productivity"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false,
   "screenshots": [
     {
-      "src": "/screenshots/mobile-home.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/screenshots/mobile-vendors.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/screenshots/desktop-home.png",
+      "src": "/screenshots/homepage.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/mobile.png",
+      "sizes": "375x667",
+      "type": "image/png",
+      "form_factor": "narrow"
     }
   ],
   "shortcuts": [
     {
-      "name": "Search Vendors",
-      "short_name": "Search",
-      "description": "Find wedding vendors and venues",
-      "url": "/search",
+      "name": "Find Venues",
+      "short_name": "Venues",
+      "description": "Browse wedding venues",
+      "url": "/venues",
       "icons": [
         {
-          "src": "/icons/search-96x96.png",
+          "src": "/icons/venues-96x96.png",
           "sizes": "96x96"
         }
       ]
     },
     {
-      "name": "My Bookings",
-      "short_name": "Bookings",
-      "description": "View your wedding bookings",
-      "url": "/dashboard/user/bookings",
+      "name": "Find Vendors",
+      "short_name": "Vendors",
+      "description": "Browse wedding vendors",
+      "url": "/vendors",
       "icons": [
         {
-          "src": "/icons/bookings-96x96.png",
+          "src": "/icons/vendors-96x96.png",
           "sizes": "96x96"
         }
       ]
     },
     {
-      "name": "Vendor Dashboard",
-      "short_name": "Dashboard",
-      "description": "Manage your vendor business",
-      "url": "/dashboard/vendor",
-      "icons": [
-        {
-          "src": "/icons/dashboard-96x96.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Social Feed",
+      "name": "Wedding Feed",
       "short_name": "Feed",
-      "description": "Browse wedding inspiration",
+      "description": "View wedding inspiration",
       "url": "/feed",
       "icons": [
         {
@@ -130,39 +112,6 @@
           "sizes": "96x96"
         }
       ]
-    }
-  ],
-  "related_applications": [
-    {
-      "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.weddinglk.app",
-      "id": "com.weddinglk.app"
-    },
-    {
-      "platform": "itunes",
-      "url": "https://apps.apple.com/app/weddinglk/id123456789"
-    }
-  ],
-  "prefer_related_applications": false,
-  "edge_side_panel": {
-    "preferred_width": 400
-  },
-  "launch_handler": {
-    "client_mode": "navigate-existing"
-  },
-  "file_handlers": [
-    {
-      "action": "/upload",
-      "accept": {
-        "image/*": [".jpg", ".jpeg", ".png", ".webp"],
-        "video/*": [".mp4", ".mov", ".avi"]
-      }
-    }
-  ],
-  "protocol_handlers": [
-    {
-      "protocol": "web+weddinglk",
-      "url": "/vendor?url=%s"
     }
   ]
 }

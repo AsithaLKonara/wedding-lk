@@ -1,233 +1,199 @@
-import { connectDB } from './db';
-import { Vendor } from './models/vendor';
-import { Venue } from './models/venue';
-import { User } from './models/user';
-import { Booking } from './models/booking';
-import { Review } from './models/review';
+/**
+ * Performance Optimizer
+ * Fixes query timeout issues and optimizes database performance
+ */
 
-interface PerformanceResults {
-  vendorQuery: { vendors: any[]; queryTime: number } | null;
-  venueQuery: { venues: any[]; queryTime: number } | null;
-  statsQuery: { userCount: number; vendorCount: number; venueCount: number; bookingCount: number; reviewCount: number; queryTime: number } | null;
-  textSearch: { vendors: any[]; queryTime: number } | null;
-  totalTime: number;
+import mongoose from 'mongoose';
+
+// Query timeout configuration
+const QUERY_TIMEOUT = 30000; // 30 seconds
+const SLOW_QUERY_THRESHOLD = 1000; // 1 second
+
+// Performance monitoring
+let queryCount = 0;
+let slowQueryCount = 0;
+let totalQueryTime = 0;
+
+/**
+ * Optimize mongoose queries for better performance
+ */
+export function optimizeMongooseQueries() {
+  // Set query timeout
+  mongoose.set('maxTimeMS', QUERY_TIMEOUT);
+  
+  // Enable query optimization
+  mongoose.set('strictQuery', false);
+  
+  // Optimize connection pool
+  mongoose.set('maxPoolSize', 10);
+  mongoose.set('minPoolSize', 2);
+  mongoose.set('maxIdleTimeMS', 30000);
+  mongoose.set('serverSelectionTimeoutMS', 5000);
+  mongoose.set('socketTimeoutMS', 45000);
+  mongoose.set('connectTimeoutMS', 10000);
+  
+  // Enable compression
+  mongoose.set('compressors', ['zlib']);
+  mongoose.set('zlibCompressionLevel', 6);
+  
+  // Enable retryable writes
+  mongoose.set('retryWrites', true);
+  mongoose.set('retryReads', true);
+  
+  console.log('✅ Mongoose queries optimized for performance');
 }
 
-export class PerformanceOptimizer {
+/**
+ * Monitor and log slow queries
+ */
+export function setupQueryMonitoring() {
+  const originalExec = mongoose.Query.prototype.exec;
   
-  /**
-   * Optimize database queries with lean() and field selection
-   */
-  static async optimizeVendorQueries() {
-    try {
-      await connectDB();
-      
-      // Test optimized vendor query
-      const startTime = Date.now();
-      
-      const vendors = await Vendor.find({ isActive: true, isVerified: true })
-        .select('businessName businessType description rating totalReviews experience')
-        .sort({ rating: -1, totalReviews: -1 })
-        .limit(10)
-        .lean()
-        .exec();
-      
-      const queryTime = Date.now() - startTime;
-      console.log(`⚡ Optimized vendor query: ${queryTime}ms for ${vendors.length} results`);
-      
-      return { vendors, queryTime };
-      
-    } catch (error) {
-      console.error('❌ Vendor optimization error:', error);
-      throw error;
-    }
-  }
-  
-  /**
-   * Optimize venue queries with lean() and field selection
-   */
-  static async optimizeVenueQueries() {
-    try {
-      await connectDB();
-      
-      const startTime = Date.now();
-      
-      const venues = await Venue.find({ isAvailable: true, isVerified: true })
-        .select('name type description capacity rating totalReviews amenities pricing images')
-        .sort({ rating: -1, totalReviews: -1 })
-        .limit(10)
-        .lean()
-        .exec();
-      
-      const queryTime = Date.now() - startTime;
-      console.log(`⚡ Optimized venue query: ${queryTime}ms for ${venues.length} results`);
-      
-      return { venues, queryTime };
-      
-    } catch (error) {
-      console.error('❌ Venue optimization error:', error);
-      throw error;
-    }
-  }
-  
-  /**
-   * Optimize stats aggregation with parallel pipelines
-   */
-  static async optimizeStatsQueries() {
-    try {
-      await connectDB();
-      
-      const startTime = Date.now();
-      
-      // Execute all aggregations in parallel
-      const [userCount, vendorCount, venueCount, bookingCount, reviewCount] = await Promise.all([
-        User.countDocuments({}).exec(),
-        Vendor.countDocuments({ isActive: true, isVerified: true }).exec(),
-        Venue.countDocuments({ isAvailable: true, isVerified: true }).exec(),
-        Booking.countDocuments({}).exec(),
-        Review.countDocuments({ isVerified: true }).exec()
-      ]);
-      
-      const queryTime = Date.now() - startTime;
-      console.log(`⚡ Optimized stats queries: ${queryTime}ms`);
-      
-      return {
-        userCount,
-        vendorCount,
-        venueCount,
-        bookingCount,
-        reviewCount,
-        queryTime
-      };
-      
-    } catch (error) {
-      console.error('❌ Stats optimization error:', error);
-      throw error;
-    }
-  }
-  
-  /**
-   * Test text search performance
-   */
-  static async testTextSearch() {
-    try {
-      await connectDB();
-      
-      const startTime = Date.now();
-      
-      // Test vendor text search
-      const vendors = await Vendor.find({
-        $text: { $search: 'wedding photographer' }
-      })
-      .select('businessName businessType description rating')
-      .sort({ score: { $meta: 'textScore' } })
-      .limit(5)
-      .lean()
-      .exec();
-      
-      const queryTime = Date.now() - startTime;
-      console.log(`⚡ Text search query: ${queryTime}ms for ${vendors.length} results`);
-      
-      return { vendors, queryTime };
-      
-    } catch (error) {
-      console.error('❌ Text search error:', error);
-      throw error;
-    }
-  }
-  
-  /**
-   * Run comprehensive performance test
-   */
-  static async runPerformanceTest(): Promise<PerformanceResults> {
-    console.log('🚀 Running Comprehensive Performance Test...');
-    console.log('============================================');
+  mongoose.Query.prototype.exec = function() {
+    const start = Date.now();
+    queryCount++;
     
-    const results: PerformanceResults = {
-      vendorQuery: null,
-      venueQuery: null,
-      statsQuery: null,
-      textSearch: null,
-      totalTime: 0
-    };
-    
-    const startTime = Date.now();
-    
-    try {
-      // Test all optimizations
-      results.vendorQuery = await this.optimizeVendorQueries();
-      results.venueQuery = await this.optimizeVenueQueries();
-      results.statsQuery = await this.optimizeStatsQueries();
-      results.textSearch = await this.testTextSearch();
+    return originalExec.apply(this, arguments).then((result) => {
+      const duration = Date.now() - start;
+      totalQueryTime += duration;
       
-      results.totalTime = Date.now() - startTime;
-      
-      console.log('\n📊 PERFORMANCE TEST RESULTS');
-      console.log('============================');
-      if (results.vendorQuery) console.log(`Vendor Query: ${results.vendorQuery.queryTime}ms`);
-      if (results.venueQuery) console.log(`Venue Query: ${results.venueQuery.queryTime}ms`);
-      if (results.statsQuery) console.log(`Stats Query: ${results.statsQuery.queryTime}ms`);
-      if (results.textSearch) console.log(`Text Search: ${results.textSearch.queryTime}ms`);
-      console.log(`Total Time: ${results.totalTime}ms`);
-      
-      // Performance analysis
-      const queryTimes = [
-        results.vendorQuery?.queryTime || 0,
-        results.venueQuery?.queryTime || 0,
-        results.statsQuery?.queryTime || 0,
-        results.textSearch?.queryTime || 0
-      ].filter(time => time > 0);
-      
-      const avgQueryTime = queryTimes.length > 0 ? queryTimes.reduce((a, b) => a + b, 0) / queryTimes.length : 0;
-      
-      if (avgQueryTime < 1000) {
-        console.log('\n✅ EXCELLENT: All queries under 1 second!');
-      } else if (avgQueryTime < 3000) {
-        console.log('\n📈 GOOD: Queries under 3 seconds');
-      } else if (avgQueryTime < 10000) {
-        console.log('\n⚠️  NEEDS IMPROVEMENT: Some queries over 10 seconds');
-      } else {
-        console.log('\n🚨 CRITICAL: Queries too slow, needs immediate optimization');
+      if (duration > SLOW_QUERY_THRESHOLD) {
+        slowQueryCount++;
+        console.warn(`🐌 Slow Query Detected: ${duration}ms`, {
+          collection: this.model?.collection?.name || 'unknown',
+          query: this.getQuery(),
+          duration: `${duration}ms`,
+          slowQueryCount,
+          totalQueries: queryCount
+        });
       }
       
-      return results;
-      
-    } catch (error) {
-      console.error('❌ Performance test failed:', error);
+      return result;
+    }).catch((error) => {
+      const duration = Date.now() - start;
+      console.error(`❌ Query Error after ${duration}ms:`, {
+        collection: this.model?.collection?.name || 'unknown',
+        query: this.getQuery(),
+        error: error.message
+      });
       throw error;
-    }
-  }
+    });
+  };
   
-  /**
-   * Generate optimization recommendations
-   */
-  static generateRecommendations(results: PerformanceResults) {
-    console.log('\n💡 OPTIMIZATION RECOMMENDATIONS');
-    console.log('================================');
-    
-    if (results.vendorQuery && results.vendorQuery.queryTime > 5000) {
-      console.log('🔧 Vendors: Add compound indexes for (isActive, isVerified, rating)');
-    }
-    
-    if (results.venueQuery && results.venueQuery.queryTime > 5000) {
-      console.log('🔧 Venues: Add compound indexes for (isAvailable, isVerified, rating)');
-    }
-    
-    if (results.statsQuery && results.statsQuery.queryTime > 5000) {
-      console.log('🔧 Stats: Implement Redis caching for aggregation results');
-    }
-    
-    if (results.textSearch && results.textSearch.queryTime > 5000) {
-      console.log('🔧 Search: Optimize text search indexes and add result caching');
-    }
-    
-    console.log('\n🎯 IMMEDIATE ACTIONS:');
-    console.log('1. Implement Redis for distributed caching');
-    console.log('2. Add database connection pooling');
-    console.log('3. Use production build for testing');
-    console.log('4. Implement response compression');
-  }
+  console.log('✅ Query monitoring enabled');
 }
 
-// Export for use in other modules
-export default PerformanceOptimizer; 
+/**
+ * Get performance statistics
+ */
+export function getPerformanceStats() {
+  return {
+    totalQueries: queryCount,
+    slowQueries: slowQueryCount,
+    averageQueryTime: queryCount > 0 ? Math.round(totalQueryTime / queryCount) : 0,
+    slowQueryRate: queryCount > 0 ? Math.round((slowQueryCount / queryCount) * 100) : 0,
+    totalQueryTime
+  };
+}
+
+/**
+ * Reset performance counters
+ */
+export function resetPerformanceCounters() {
+  queryCount = 0;
+  slowQueryCount = 0;
+  totalQueryTime = 0;
+  console.log('✅ Performance counters reset');
+}
+
+/**
+ * Optimize specific queries with common patterns
+ */
+export const QueryOptimizer = {
+  // Add indexes for common queries
+  async ensureIndexes() {
+    try {
+      // User indexes
+      await mongoose.connection.db.collection('users').createIndex({ email: 1 }, { unique: true });
+      await mongoose.connection.db.collection('users').createIndex({ role: 1 });
+      await mongoose.connection.db.collection('users').createIndex({ createdAt: -1 });
+      
+      // Venue indexes
+      await mongoose.connection.db.collection('venues').createIndex({ location: '2dsphere' });
+      await mongoose.connection.db.collection('venues').createIndex({ 'location.city': 1 });
+      await mongoose.connection.db.collection('venues').createIndex({ capacity: 1 });
+      await mongoose.connection.db.collection('venues').createIndex({ 'pricing.basePrice': 1 });
+      await mongoose.connection.db.collection('venues').createIndex({ isActive: 1 });
+      await mongoose.connection.db.collection('venues').createIndex({ featured: 1 });
+      
+      // Vendor indexes
+      await mongoose.connection.db.collection('vendors').createIndex({ 'location.city': 1 });
+      await mongoose.connection.db.collection('vendors').createIndex({ category: 1 });
+      await mongoose.connection.db.collection('vendors').createIndex({ isActive: 1 });
+      await mongoose.connection.db.collection('vendors').createIndex({ 'rating.average': -1 });
+      
+      // Booking indexes
+      await mongoose.connection.db.collection('bookings').createIndex({ userId: 1 });
+      await mongoose.connection.db.collection('bookings').createIndex({ venueId: 1 });
+      await mongoose.connection.db.collection('bookings').createIndex({ status: 1 });
+      await mongoose.connection.db.collection('bookings').createIndex({ eventDate: 1 });
+      await mongoose.connection.db.collection('bookings').createIndex({ createdAt: -1 });
+      
+      // Payment indexes
+      await mongoose.connection.db.collection('payments').createIndex({ bookingId: 1 });
+      await mongoose.connection.db.collection('payments').createIndex({ status: 1 });
+      await mongoose.connection.db.collection('payments').createIndex({ createdAt: -1 });
+      
+      console.log('✅ Database indexes created/verified');
+    } catch (error) {
+      console.error('❌ Error creating indexes:', error);
+    }
+  },
+  
+  // Optimize aggregation pipelines
+  optimizeAggregation(pipeline: any[]) {
+    return pipeline.map(stage => {
+      // Add $match stages early
+      if (stage.$match) {
+        return { ...stage, $match: { ...stage.$match, isActive: true } };
+      }
+      
+      // Add $limit to prevent large result sets
+      if (stage.$group && !pipeline.some(s => s.$limit)) {
+        return [stage, { $limit: 1000 }];
+      }
+      
+      return stage;
+    }).flat();
+  },
+  
+  // Add pagination to queries
+  addPagination(query: any, page: number = 1, limit: number = 20) {
+    const skip = (page - 1) * limit;
+    return query.skip(skip).limit(Math.min(limit, 100)); // Max 100 items per page
+  }
+};
+
+/**
+ * Initialize performance optimizations
+ */
+export function initializePerformanceOptimizations() {
+  optimizeMongooseQueries();
+  setupQueryMonitoring();
+  
+  // Ensure indexes after connection
+  mongoose.connection.on('open', async () => {
+    await QueryOptimizer.ensureIndexes();
+  });
+  
+  console.log('✅ Performance optimizations initialized');
+}
+
+export default {
+  optimizeMongooseQueries,
+  setupQueryMonitoring,
+  getPerformanceStats,
+  resetPerformanceCounters,
+  QueryOptimizer,
+  initializePerformanceOptimizations
+};

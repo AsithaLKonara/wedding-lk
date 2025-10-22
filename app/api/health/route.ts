@@ -80,7 +80,8 @@ export async function GET(request: NextRequest) {
     const dbStartTime = Date.now();
     try {
       const db = await connectDB();
-      await db.admin().ping();
+      // Use proper mongoose ping method
+      await db.connection.db.admin().ping();
       healthCheck.checks.database = {
         status: 'healthy',
         responseTime: Date.now() - dbStartTime,
@@ -98,12 +99,19 @@ export async function GET(request: NextRequest) {
     if (process.env.REDIS_URL) {
       const redisStartTime = Date.now();
       try {
-        // Simple Redis ping test
+        // Simple Redis ping test with proper error handling
         const redis = require('redis');
-        const client = redis.createClient({ url: process.env.REDIS_URL });
+        const client = redis.createClient({ 
+          url: process.env.REDIS_URL,
+          socket: {
+            connectTimeout: 5000,
+            commandTimeout: 5000,
+          }
+        });
+        
         await client.connect();
         await client.ping();
-        await client.disconnect();
+        await client.quit(); // Use quit() instead of disconnect()
         
         healthCheck.checks.redis = {
           status: 'healthy',
@@ -117,20 +125,50 @@ export async function GET(request: NextRequest) {
         };
         healthCheck.status = 'degraded';
       }
+    } else {
+      // Redis not configured
+      healthCheck.checks.redis = {
+        status: 'unhealthy',
+        responseTime: 0,
+        error: 'Redis URL not configured',
+      };
     }
 
     // Check external APIs
     const externalApis = [
-      { name: 'stripe', url: 'https://api.stripe.com/v1/charges' },
-      { name: 'cloudinary', url: 'https://api.cloudinary.com/v1_1/test' },
+      { 
+        name: 'stripe', 
+        url: 'https://api.stripe.com/v1/charges',
+        headers: process.env.STRIPE_SECRET_KEY ? {
+          'Authorization': `Bearer ${process.env.STRIPE_SECRET_KEY}`
+        } : {}
+      },
+      { 
+        name: 'cloudinary', 
+        url: `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME || 'test'}/resources/image`,
+        headers: process.env.CLOUDINARY_API_KEY ? {
+          'Authorization': `Basic ${Buffer.from(`${process.env.CLOUDINARY_API_KEY}:${process.env.CLOUDINARY_API_SECRET}`).toString('base64')}`
+        } : {}
+      },
     ];
 
     for (const api of externalApis) {
       const apiStartTime = Date.now();
       try {
+        // Skip API check if no credentials are provided
+        if (Object.keys(api.headers).length === 0) {
+          healthCheck.checks.external_apis.services[api.name] = {
+            status: 'unhealthy',
+            responseTime: 0,
+            error: 'API credentials not configured',
+          };
+          continue;
+        }
+
         const response = await fetch(api.url, {
           method: 'HEAD',
-          timeout: 5000,
+          headers: api.headers,
+          signal: AbortSignal.timeout(5000),
         });
         
         healthCheck.checks.external_apis.services[api.name] = {

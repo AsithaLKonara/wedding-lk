@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 // Import all models to ensure they are registered
 import './models';
+// Import performance optimizations
+import { initializePerformanceOptimizations } from './performance-optimizer';
 
 const MONGODB_URI = process.env.MONGODB_URI || process.env.MONGODB_ATLAS_URI;
 
@@ -63,6 +65,8 @@ export async function connectDB() {
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       console.log('✅ Connected to MongoDB Atlas with optimized settings');
+      // Initialize performance optimizations
+      initializePerformanceOptimizations();
       return mongoose;
     }).catch((error) => {
       console.error('❌ MongoDB connection error:', error);

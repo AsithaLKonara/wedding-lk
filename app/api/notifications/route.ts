@@ -1,37 +1,42 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
-import { connectDB } from '@/lib/db'
-import { Notification } from '@/lib/models'
+import { NextRequest, NextResponse } from 'next/server';
+import { connectDB } from '@/lib/db';
+import { Notification } from '@/lib/models';
+import { getToken } from 'next-auth/jwt';
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    // Get authentication token
+    const token = await getToken({ 
+      req: request, 
+      secret: process.env.NEXTAUTH_SECRET 
+    });
+
+    if (!token) {
+      return NextResponse.json({ 
+        success: false, 
+        message: 'Unauthorized' 
+      }, { status: 401 });
     }
 
-    const { searchParams } = new URL(request.url)
-    const unreadOnly = searchParams.get('unreadOnly') === 'true'
-    const limit = parseInt(searchParams.get('limit') || '20')
-    const page = parseInt(searchParams.get('page') || '1')
+    await connectDB();
 
-    await connectDB()
+    const { searchParams } = new URL(request.url);
+    const limit = parseInt(searchParams.get('limit') || '20');
+    const page = parseInt(searchParams.get('page') || '1');
+    const skip = (page - 1) * limit;
 
-    const query: any = { userId: session.user.id }
-    if (unreadOnly) {
-      query.read = false
-    }
+    // Get notifications for the user
+    const notifications = await Notification.find({
+      userId: token.userId || token.sub
+    })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .lean();
 
-    const notifications = await Notification.find(query)
-      .populate('relatedId')
-      .sort({ createdAt: -1 })
-      .limit(limit)
-      .skip((page - 1) * limit)
-
-    const totalCount = await Notification.countDocuments(query)
-    const unreadCount = await Notification.countDocuments({ userId: session.user.id, read: false })
+    const total = await Notification.countDocuments({
+      userId: token.userId || token.sub
+    });
 
     return NextResponse.json({
       success: true,
@@ -39,117 +44,66 @@ export async function GET(request: NextRequest) {
       pagination: {
         page,
         limit,
-        totalCount,
-        totalPages: Math.ceil(totalCount / limit),
-        hasNext: page < Math.ceil(totalCount / limit),
-        hasPrev: page > 1
-      },
-      unreadCount
-    })
+        total,
+        pages: Math.ceil(total / limit)
+      }
+    });
+
   } catch (error) {
-    console.error('Error fetching notifications:', error)
-    
-    // Return mock data for development/testing
-    if (process.env.NODE_ENV === 'development') {
-      return NextResponse.json({
-        success: true,
-        notifications: [
-          {
-            _id: 'mock-notification-1',
-            userId: session?.user?.id || 'test-user',
-            type: 'booking',
-            title: 'Booking Confirmed',
-            message: 'Your wedding venue booking has been confirmed for December 25, 2024',
-            relatedId: 'mock-booking-1',
-            relatedType: 'booking',
-            read: false,
-            createdAt: new Date()
-          }
-        ],
-        pagination: {
-          page: 1,
-          limit: 20,
-          totalCount: 1,
-          totalPages: 1,
-          hasNext: false,
-          hasPrev: false
-        },
-        unreadCount: 1
-      })
-    }
-    
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    console.error('Notifications API error:', error);
+    return NextResponse.json({
+      success: false,
+      message: 'Failed to fetch notifications',
+      error: error.message
+    }, { status: 500 });
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    // Get authentication token
+    const token = await getToken({ 
+      req: request, 
+      secret: process.env.NEXTAUTH_SECRET 
+    });
+
+    if (!token) {
+      return NextResponse.json({ 
+        success: false, 
+        message: 'Unauthorized' 
+      }, { status: 401 });
     }
 
-    const { userId, type, title, message, relatedId, relatedType } = await request.json()
+    await connectDB();
 
-    if (!userId || !type || !title || !message) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
-    }
+    const body = await request.json();
+    const { type, title, message, data } = body;
 
-    await connectDB()
-
+    // Create new notification
     const notification = new Notification({
-      userId,
-      type,
-      title,
-      message,
-      relatedId: relatedId || null,
-      relatedType: relatedType || null,
+      userId: token.userId || token.sub,
+      type: type || 'info',
+      title: title || 'New Notification',
+      message: message || '',
+      data: data || {},
       read: false,
       createdAt: new Date()
-    })
+    });
 
-    await notification.save()
+    await notification.save();
 
-    // In a real application, you would send a push notification here
-    // For now, we'll just return the created notification
+    return NextResponse.json({
+      success: true,
+      notification,
+      message: 'Notification created successfully'
+    });
 
-    return NextResponse.json({ success: true, notification })
   } catch (error) {
-    console.error('Error creating notification:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-  }
-}
-
-export async function PUT(request: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions)
-    
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    const { notificationId, read } = await request.json()
-
-    if (!notificationId) {
-      return NextResponse.json({ error: 'Missing notification ID' }, { status: 400 })
-    }
-
-    await connectDB()
-
-    const notification = await Notification.findOneAndUpdate(
-      { _id: notificationId, userId: session.user.id },
-      { read: read !== undefined ? read : true },
-      { new: true }
-    )
-
-    if (!notification) {
-      return NextResponse.json({ error: 'Notification not found' }, { status: 404 })
-    }
-
-    return NextResponse.json({ success: true, notification })
-  } catch (error) {
-    console.error('Error updating notification:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    console.error('Create notification error:', error);
+    return NextResponse.json({
+      success: false,
+      message: 'Failed to create notification',
+      error: error.message
+    }, { status: 500 });
   }
 }
