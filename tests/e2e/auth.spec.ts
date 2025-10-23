@@ -56,9 +56,20 @@ test.describe('Authentication Flows', () => {
     await expect(page.locator('.text-red-600, .error, [data-testid="error-message"]')).toBeVisible();
   });
 
-  test.skip('Forgot password flow - DISABLED (Feature removed)', async ({ page }) => {
-    // Forgot password functionality has been removed from the application
-    // This test is disabled as the feature no longer exists
+  test('Forgot password flow', async ({ page }) => {
+    const email = faker.internet.email();
+    
+    await page.goto('/auth/forgot-password');
+    await page.fill('input[name="email"]', email);
+    await page.click('button[type="submit"]');
+
+    await expect(page.locator('.success, .toast-success, [data-testid="success-message"]')).toBeVisible();
+    
+    // Simulate password reset
+    const resetResponse = await page.request.post('/api/test/reset-password', { 
+      data: { email, newPassword: 'NewPass123!' } 
+    });
+    expect(resetResponse.ok()).toBeTruthy();
   });
 
   test.skip('Social login with Google - DISABLED (Social login removed)', async ({ page }) => {
@@ -66,9 +77,31 @@ test.describe('Authentication Flows', () => {
     // This test is disabled as the feature no longer exists
   });
 
-  test.skip('Two-factor authentication setup - DISABLED (Feature removed)', async ({ page }) => {
-    // Two-factor authentication has been removed from the application
-    // This test is disabled as the feature no longer exists
+  test('Two-factor authentication setup', async ({ page }) => {
+    // Login first
+    await page.goto('/login');
+    await page.fill('input[name="email"]', process.env.TEST_USER_EMAIL || 'test@example.com');
+    await page.fill('input[name="password"]', process.env.TEST_USER_PASSWORD || 'TestPass123!');
+    await page.click('button[type="submit"]');
+    await expect(page).toHaveURL(/\/dashboard/);
+
+    // Go to 2FA setup
+    await page.goto('/dashboard/settings');
+    await page.click('text=Two-Factor Authentication, [data-testid="2fa-setup"]');
+    
+    // Mock QR code generation
+    await page.route('**/api/auth/2fa/setup', route => {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ 
+          qrCode: 'data:image/png;base64,mock-qr-code',
+          secret: 'mock-secret-key'
+        })
+      });
+    });
+
+    await expect(page.locator('text=Scan QR Code, [data-testid="qr-code"]')).toBeVisible();
   });
 
   test('Login with test user credentials', async ({ page }) => {

@@ -63,6 +63,13 @@ export interface IUser extends Document {
   loginAttempts: number;
   lockedUntil?: Date;
   
+  // Password Reset
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
+  
+  // Email Verification
+  emailVerificationToken?: string;
+  emailVerificationExpires?: Date;
   
   // Wedding Details
   weddingDetails?: {
@@ -301,6 +308,21 @@ const UserSchema: Schema = new Schema(
       type: Date,
     },
     
+    // Password Reset
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
+    },
+    
+    // Email Verification
+    emailVerificationToken: {
+      type: String,
+    },
+    emailVerificationExpires: {
+      type: Date,
+    },
     
     // Wedding Details
     weddingDetails: {

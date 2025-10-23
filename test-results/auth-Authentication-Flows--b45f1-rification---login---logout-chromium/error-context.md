@@ -43,14 +43,14 @@
                   - img [ref=e52]
                   - textbox "Full Name" [ref=e55]:
                     - /placeholder: Enter your full name
-                    - text: Ed Ritchie
+                    - text: Marshall Casper
               - generic [ref=e56]:
                 - text: Email
                 - generic [ref=e57]:
                   - img [ref=e58]
                   - textbox "Email" [ref=e61]:
                     - /placeholder: Enter your email
-                    - text: Kenyon_Haag87@hotmail.com
+                    - text: Aryanna_Pfeffer31@hotmail.com
             - generic [ref=e62]:
               - generic [ref=e63]:
                 - text: Phone Number
