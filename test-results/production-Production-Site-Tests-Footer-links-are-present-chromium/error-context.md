@@ -1,0 +1,233 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e4]:
+      - link "Wedding.lk" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - img [ref=e7]
+        - generic [ref=e9]: Wedding.lk
+      - navigation [ref=e11]:
+        - link "Venues" [ref=e13] [cursor=pointer]:
+          - /url: /venues
+        - link "Vendors" [ref=e15] [cursor=pointer]:
+          - /url: /vendors
+        - link "Feed" [ref=e17] [cursor=pointer]:
+          - /url: /feed
+        - link "Gallery" [ref=e19] [cursor=pointer]:
+          - /url: /gallery
+        - link "About" [ref=e21] [cursor=pointer]:
+          - /url: /about
+      - generic [ref=e22]:
+        - button "Toggle theme" [ref=e24] [cursor=pointer]:
+          - generic [ref=e25]:
+            - img
+            - img
+          - generic [ref=e26]: Toggle theme
+        - button [ref=e28] [cursor=pointer]:
+          - img
+        - generic [ref=e29]:
+          - link "Sign In" [ref=e30] [cursor=pointer]:
+            - /url: /auth/signin
+          - link "Get Started" [ref=e31] [cursor=pointer]:
+            - /url: /auth/signup
+  - main [ref=e32]:
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - generic [ref=e39]:
+          - img [ref=e40]
+          - generic [ref=e42]: AI-Powered Wedding Search
+        - heading "Find Your Perfect Wedding Experience" [level=1] [ref=e43]:
+          - text: Find Your Perfect
+          - generic [ref=e44]: Wedding Experience
+        - paragraph [ref=e45]: Describe your dream wedding in natural language and let our AI find the perfect venues, vendors, and packages for you
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - generic [ref=e51]:
+            - img [ref=e52]
+            - generic [ref=e54]: Describe your dream wedding
+          - generic [ref=e55]:
+            - textbox "e.g., 'I want a beach wedding in Galle for 200 guests with traditional Sri Lankan cuisine and live music'" [ref=e56]
+            - button [ref=e57] [cursor=pointer]:
+              - img
+        - generic [ref=e58]:
+          - generic [ref=e59]: "Quick searches:"
+          - generic [ref=e60] [cursor=pointer]: Beach wedding venues in Galle
+          - generic [ref=e61] [cursor=pointer]: Garden wedding under 200k
+          - generic [ref=e62] [cursor=pointer]: Luxury hotel ballrooms Colombo
+          - generic [ref=e63] [cursor=pointer]: Mountain view venues for 150 guests
+          - generic [ref=e64] [cursor=pointer]: Traditional wedding venues Kandy
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - text: Location
+            - combobox [ref=e67] [cursor=pointer]:
+              - generic [ref=e68]:
+                - img
+                - text: Select location
+              - img
+          - generic [ref=e69]:
+            - text: Wedding Date
+            - generic [ref=e70]:
+              - img [ref=e71]
+              - textbox [ref=e73]
+          - generic [ref=e74]:
+            - text: Guest Count
+            - generic [ref=e75]:
+              - img [ref=e76]
+              - textbox "Number of guests" [ref=e81]
+        - button "Find My Perfect Wedding" [ref=e82] [cursor=pointer]:
+          - img
+          - text: Find My Perfect Wedding
+    - generic [ref=e84]:
+      - generic [ref=e85]:
+        - heading "Everything You Need for Your Perfect Day" [level=2] [ref=e86]
+        - paragraph [ref=e87]: Our platform provides all the tools and services to plan your dream wedding
+      - generic [ref=e88]:
+        - generic [ref=e92]:
+          - img [ref=e94]
+          - heading "Event Planning" [level=3] [ref=e96]
+          - paragraph [ref=e97]: Comprehensive timeline and checklist management for your wedding day.
+        - generic [ref=e101]:
+          - img [ref=e103]
+          - heading "Venue Discovery" [level=3] [ref=e106]
+          - paragraph [ref=e107]: Find and book the perfect venue from our curated collection.
+        - generic [ref=e111]:
+          - img [ref=e113]
+          - heading "Vendor Network" [level=3] [ref=e118]
+          - paragraph [ref=e119]: Connect with trusted photographers, caterers, and decorators.
+        - generic [ref=e123]:
+          - img [ref=e125]
+          - heading "Guest Management" [level=3] [ref=e127]
+          - paragraph [ref=e128]: Manage invitations, RSVPs, and seating arrangements effortlessly.
+        - generic [ref=e132]:
+          - img [ref=e134]
+          - heading "Photo Sharing" [level=3] [ref=e137]
+          - paragraph [ref=e138]: Create shared albums for guests to upload and share memories.
+        - generic [ref=e142]:
+          - img [ref=e144]
+          - heading "Entertainment" [level=3] [ref=e148]
+          - paragraph [ref=e149]: Book DJs, bands, and entertainment for your special day.
+    - paragraph [ref=e154]: Loading wedding packages...
+    - generic [ref=e156]:
+      - generic [ref=e157]:
+        - heading "Explore Vendor Categories" [level=2] [ref=e158]
+        - paragraph [ref=e159]: Discover specialized vendors for every aspect of your perfect wedding
+      - button "View All Vendors" [ref=e161] [cursor=pointer]
+    - generic [ref=e167]:
+      - generic [ref=e168]:
+        - generic [ref=e169]:
+          - img [ref=e170]
+          - generic [ref=e173]: Our Impact
+        - heading "Numbers That Tell Our Story" [level=2] [ref=e174]
+        - paragraph [ref=e175]: From our humble beginnings to becoming Sri Lanka's most trusted wedding platform, these numbers reflect our commitment to excellence.
+      - generic [ref=e176]:
+        - generic [ref=e178]:
+          - img [ref=e182]
+          - generic [ref=e187]: 10,000+
+          - generic [ref=e188]: Happy Couples
+          - generic [ref=e189]: Couples who found their perfect wedding through our platform
+        - generic [ref=e192]:
+          - img [ref=e196]
+          - generic [ref=e199]: 500+
+          - generic [ref=e200]: Venues
+          - generic [ref=e201]: Stunning venues across all 9 provinces of Sri Lanka
+        - generic [ref=e204]:
+          - img [ref=e208]
+          - generic [ref=e210]: 2,000+
+          - generic [ref=e211]: Vendors
+          - generic [ref=e212]: Trusted vendors from photographers to traditional dancers
+        - generic [ref=e215]:
+          - img [ref=e219]
+          - generic [ref=e221]: 15,000+
+          - generic [ref=e222]: Events Planned
+          - generic [ref=e223]: Successful weddings and celebrations organized
+        - generic [ref=e226]:
+          - img [ref=e230]
+          - generic [ref=e232]: 4.9/5
+          - generic [ref=e233]: Average Rating
+          - generic [ref=e234]: Customer satisfaction rating from our couples
+        - generic [ref=e237]:
+          - img [ref=e241]
+          - generic [ref=e244]: 50+
+          - generic [ref=e245]: Awards Won
+          - generic [ref=e246]: Recognition for excellence in wedding services
+        - generic [ref=e249]:
+          - img [ref=e253]
+          - generic [ref=e255]: "25"
+          - generic [ref=e256]: Districts Covered
+          - generic [ref=e257]: Complete coverage across Sri Lanka
+        - generic [ref=e260]:
+          - img [ref=e264]
+          - generic [ref=e267]: 95%
+          - generic [ref=e268]: Success Rate
+          - generic [ref=e269]: Couples who successfully planned their dream wedding
+      - generic [ref=e272]:
+        - heading "Ready to Be Part of Our Success Story?" [level=3] [ref=e273]
+        - paragraph [ref=e274]: Let's make your wedding dreams come true.
+        - generic [ref=e275]:
+          - button "Start Planning Today" [ref=e276] [cursor=pointer]
+          - button "Explore Venues" [ref=e277] [cursor=pointer]
+    - paragraph [ref=e282]: Loading featured vendors...
+    - paragraph [ref=e287]: Loading featured venues...
+    - paragraph [ref=e292]: Loading testimonials...
+    - generic [ref=e297]:
+      - img [ref=e298]
+      - heading "Ready to Start Planning?" [level=2] [ref=e300]
+      - paragraph [ref=e301]: Join thousands of couples who have planned their perfect wedding with us
+      - generic [ref=e302]:
+        - link "Get Started Free" [ref=e303] [cursor=pointer]:
+          - /url: /register
+          - text: Get Started Free
+          - img
+        - link "Contact Us" [ref=e304] [cursor=pointer]:
+          - /url: /contact
+    - generic [ref=e306]:
+      - generic [ref=e307]:
+        - generic [ref=e308]:
+          - link "Wedding.lk" [ref=e309] [cursor=pointer]:
+            - /url: /
+            - img [ref=e311]
+            - generic [ref=e313]: Wedding.lk
+          - paragraph [ref=e314]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+          - generic [ref=e315]:
+            - button [ref=e316] [cursor=pointer]:
+              - img
+            - button [ref=e317] [cursor=pointer]:
+              - img
+            - button [ref=e318] [cursor=pointer]:
+              - img
+            - button [ref=e319] [cursor=pointer]:
+              - img
+        - generic [ref=e320]:
+          - heading "Services" [level=3] [ref=e321]
+          - list [ref=e322]:
+            - listitem [ref=e323]:
+              - link "Venues" [ref=e324] [cursor=pointer]:
+                - /url: /venues
+            - listitem [ref=e325]:
+              - link "Vendors" [ref=e326] [cursor=pointer]:
+                - /url: /vendors
+            - listitem [ref=e327]:
+              - button "Planning Tools" [ref=e328] [cursor=pointer]
+            - listitem [ref=e329]:
+              - link "Gallery" [ref=e330] [cursor=pointer]:
+                - /url: /gallery
+        - generic [ref=e331]:
+          - heading "Company" [level=3] [ref=e332]
+          - list [ref=e333]:
+            - listitem [ref=e334]:
+              - link "About" [ref=e335] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e336]:
+              - link "Contact" [ref=e337] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=e338]:
+              - link "Privacy" [ref=e339] [cursor=pointer]:
+                - /url: /privacy
+            - listitem [ref=e340]:
+              - link "Terms" [ref=e341] [cursor=pointer]:
+                - /url: /terms
+      - paragraph [ref=e343]: © 2024 Wedding.lk. All rights reserved.
+  - alert [ref=e346]
+```

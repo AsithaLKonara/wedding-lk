@@ -1,0 +1,134 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "Wedding.lk" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8]
+          - generic [ref=e10]: Wedding.lk
+        - navigation [ref=e12]:
+          - link "Venues" [ref=e14] [cursor=pointer]:
+            - /url: /venues
+          - link "Vendors" [ref=e16] [cursor=pointer]:
+            - /url: /vendors
+          - link "Feed" [ref=e18] [cursor=pointer]:
+            - /url: /feed
+          - link "Gallery" [ref=e20] [cursor=pointer]:
+            - /url: /gallery
+          - link "About" [ref=e22] [cursor=pointer]:
+            - /url: /about
+        - generic [ref=e23]:
+          - button "Toggle theme" [ref=e25] [cursor=pointer]:
+            - generic [ref=e26]:
+              - img
+              - img
+            - generic [ref=e27]: Toggle theme
+          - button [ref=e29] [cursor=pointer]:
+            - img
+          - generic [ref=e30]:
+            - link "Sign In" [ref=e31] [cursor=pointer]:
+              - /url: /auth/signin
+            - link "Get Started" [ref=e32] [cursor=pointer]:
+              - /url: /auth/signup
+    - main [ref=e33]:
+      - generic [ref=e34]:
+        - generic [ref=e37]:
+          - heading "Wedding Gallery" [level=1] [ref=e38]
+          - paragraph [ref=e39]: Get inspired by beautiful weddings from our venues and vendors
+        - generic [ref=e40]:
+          - generic [ref=e42]:
+            - generic [ref=e44]:
+              - combobox [ref=e45] [cursor=pointer]:
+                - img [ref=e46]
+                - generic:
+                  - generic:
+                    - generic: All Photos
+                    - generic: "0"
+                - img [ref=e48]
+              - combobox [ref=e50] [cursor=pointer]:
+                - generic: All Venues
+                - img [ref=e51]
+            - generic [ref=e53]:
+              - button "All Photos 0" [ref=e54] [cursor=pointer]:
+                - text: All Photos
+                - generic [ref=e55]: "0"
+              - button "Ceremonies 0" [ref=e56] [cursor=pointer]:
+                - text: Ceremonies
+                - generic [ref=e57]: "0"
+              - button "Receptions 0" [ref=e58] [cursor=pointer]:
+                - text: Receptions
+                - generic [ref=e59]: "0"
+              - button "Decorations 0" [ref=e60] [cursor=pointer]:
+                - text: Decorations
+                - generic [ref=e61]: "0"
+              - button "Venues 0" [ref=e62] [cursor=pointer]:
+                - text: Venues
+                - generic [ref=e63]: "0"
+              - button "Couples 0" [ref=e64] [cursor=pointer]:
+                - text: Couples
+                - generic [ref=e65]: "0"
+              - button "Traditional 0" [ref=e66] [cursor=pointer]:
+                - text: Traditional
+                - generic [ref=e67]: "0"
+              - button "Modern 0" [ref=e68] [cursor=pointer]:
+                - text: Modern
+                - generic [ref=e69]: "0"
+          - generic [ref=e71]:
+            - paragraph [ref=e73]: Showing 0 photos
+            - generic [ref=e74]:
+              - img [ref=e76]
+              - heading "No photos found" [level=3] [ref=e79]
+              - paragraph [ref=e80]: Try adjusting your filters to see more photos
+    - contentinfo [ref=e81]:
+      - generic [ref=e82]:
+        - generic [ref=e83]:
+          - generic [ref=e84]:
+            - link "Wedding.lk" [ref=e85] [cursor=pointer]:
+              - /url: /
+              - img [ref=e87]
+              - generic [ref=e89]: Wedding.lk
+            - paragraph [ref=e90]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+            - generic [ref=e91]:
+              - button [ref=e92] [cursor=pointer]:
+                - img
+              - button [ref=e93] [cursor=pointer]:
+                - img
+              - button [ref=e94] [cursor=pointer]:
+                - img
+              - button [ref=e95] [cursor=pointer]:
+                - img
+          - generic [ref=e96]:
+            - heading "Services" [level=3] [ref=e97]
+            - list [ref=e98]:
+              - listitem [ref=e99]:
+                - link "Venues" [ref=e100] [cursor=pointer]:
+                  - /url: /venues
+              - listitem [ref=e101]:
+                - link "Vendors" [ref=e102] [cursor=pointer]:
+                  - /url: /vendors
+              - listitem [ref=e103]:
+                - button "Planning Tools" [ref=e104] [cursor=pointer]
+              - listitem [ref=e105]:
+                - link "Gallery" [ref=e106] [cursor=pointer]:
+                  - /url: /gallery
+          - generic [ref=e107]:
+            - heading "Company" [level=3] [ref=e108]
+            - list [ref=e109]:
+              - listitem [ref=e110]:
+                - link "About" [ref=e111] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e112]:
+                - link "Contact" [ref=e113] [cursor=pointer]:
+                  - /url: /contact
+              - listitem [ref=e114]:
+                - link "Privacy" [ref=e115] [cursor=pointer]:
+                  - /url: /privacy
+              - listitem [ref=e116]:
+                - link "Terms" [ref=e117] [cursor=pointer]:
+                  - /url: /terms
+        - paragraph [ref=e119]: © 2024 Wedding.lk. All rights reserved.
+  - alert [ref=e122]
+```

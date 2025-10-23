@@ -92,12 +92,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 9187,
+                      "duration": 5531,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T21:54:50.998Z",
+                      "startTime": "2025-10-22T22:10:44.116Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -126,12 +126,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 5163,
+                      "duration": 4215,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T21:54:50.998Z",
+                      "startTime": "2025-10-22T22:10:43.908Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -160,12 +160,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 26342,
+                      "duration": 6703,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T21:54:57.746Z",
+                      "startTime": "2025-10-22T22:10:50.310Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -194,12 +194,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3520,
+                      "duration": 4354,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T21:55:01.948Z",
+                      "startTime": "2025-10-22T22:10:51.778Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -228,12 +228,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5332,
+                      "duration": 7086,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T21:55:05.600Z",
+                      "startTime": "2025-10-22T22:10:56.260Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -248,7 +248,7 @@
             },
             {
               "title": "No critical JavaScript errors",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -259,60 +259,20 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 7739,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoHaveLength\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected length: \u001b[32m0\u001b[39m\nReceived length: \u001b[31m3\u001b[39m\nReceived array:  \u001b[31m[\"Failed to load resource: the server responded with a status of 401 ()\", \"TypeError: Cannot read properties of undefined (reading 'name')\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:14089\u001b[39m\n\u001b[31m    at Array.map (<anonymous>)\u001b[39m\n\u001b[31m    at o (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:13356)\u001b[39m\n\u001b[31m    at lS (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:39325)\u001b[39m\n\u001b[31m    at ot (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:64573)\u001b[39m\n\u001b[31m    at ov (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:75638)\u001b[39m\n\u001b[31m    at ic (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112360)\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112205\u001b[39m\n\u001b[31m    at is (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112213)\u001b[39m\n\u001b[31m    at u9 (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:109424)\u001b[39m\n\u001b[31m    at iH (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:130650)\u001b[39m\n\u001b[31m    at MessagePort.w (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/1684-9a6e7388e0450d3e.js:1:52153)\", \"Application error: TypeError: Cannot read properties of undefined (reading 'name')\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:14089\u001b[39m\n\u001b[31m    at Array.map (<anonymous>)\u001b[39m\n\u001b[31m    at o (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:13356)\u001b[39m\n\u001b[31m    at lS (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:39325)\u001b[39m\n\u001b[31m    at ot (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:64573)\u001b[39m\n\u001b[31m    at ov (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:75638)\u001b[39m\n\u001b[31m    at ic (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112360)\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112205\u001b[39m\n\u001b[31m    at is (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112213)\u001b[39m\n\u001b[31m    at u9 (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:109424)\u001b[39m\n\u001b[31m    at iH (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:130650)\u001b[39m\n\u001b[31m    at MessagePort.w (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/1684-9a6e7388e0450d3e.js:1:52153)\"]\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoHaveLength\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected length: \u001b[32m0\u001b[39m\nReceived length: \u001b[31m3\u001b[39m\nReceived array:  \u001b[31m[\"Failed to load resource: the server responded with a status of 401 ()\", \"TypeError: Cannot read properties of undefined (reading 'name')\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:14089\u001b[39m\n\u001b[31m    at Array.map (<anonymous>)\u001b[39m\n\u001b[31m    at o (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:13356)\u001b[39m\n\u001b[31m    at lS (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:39325)\u001b[39m\n\u001b[31m    at ot (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:64573)\u001b[39m\n\u001b[31m    at ov (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:75638)\u001b[39m\n\u001b[31m    at ic (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112360)\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112205\u001b[39m\n\u001b[31m    at is (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112213)\u001b[39m\n\u001b[31m    at u9 (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:109424)\u001b[39m\n\u001b[31m    at iH (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:130650)\u001b[39m\n\u001b[31m    at MessagePort.w (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/1684-9a6e7388e0450d3e.js:1:52153)\", \"Application error: TypeError: Cannot read properties of undefined (reading 'name')\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:14089\u001b[39m\n\u001b[31m    at Array.map (<anonymous>)\u001b[39m\n\u001b[31m    at o (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:13356)\u001b[39m\n\u001b[31m    at lS (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:39325)\u001b[39m\n\u001b[31m    at ot (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:64573)\u001b[39m\n\u001b[31m    at ov (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:75638)\u001b[39m\n\u001b[31m    at ic (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112360)\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112205\u001b[39m\n\u001b[31m    at is (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112213)\u001b[39m\n\u001b[31m    at u9 (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:109424)\u001b[39m\n\u001b[31m    at iH (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:130650)\u001b[39m\n\u001b[31m    at MessagePort.w (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/1684-9a6e7388e0450d3e.js:1:52153)\"]\u001b[39m\n    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts:95:28",
-                        "location": {
-                          "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts",
-                          "column": 28,
-                          "line": 95
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 93 |\u001b[39m     )\u001b[33m;\u001b[39m\n \u001b[90m 94 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 95 |\u001b[39m     expect(criticalErrors)\u001b[33m.\u001b[39mtoHaveLength(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 96 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 97 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 98 |\u001b[39m\u001b[0m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts",
-                            "column": 28,
-                            "line": 95
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoHaveLength\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected length: \u001b[32m0\u001b[39m\nReceived length: \u001b[31m3\u001b[39m\nReceived array:  \u001b[31m[\"Failed to load resource: the server responded with a status of 401 ()\", \"TypeError: Cannot read properties of undefined (reading 'name')\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:14089\u001b[39m\n\u001b[31m    at Array.map (<anonymous>)\u001b[39m\n\u001b[31m    at o (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:13356)\u001b[39m\n\u001b[31m    at lS (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:39325)\u001b[39m\n\u001b[31m    at ot (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:64573)\u001b[39m\n\u001b[31m    at ov (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:75638)\u001b[39m\n\u001b[31m    at ic (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112360)\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112205\u001b[39m\n\u001b[31m    at is (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112213)\u001b[39m\n\u001b[31m    at u9 (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:109424)\u001b[39m\n\u001b[31m    at iH (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:130650)\u001b[39m\n\u001b[31m    at MessagePort.w (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/1684-9a6e7388e0450d3e.js:1:52153)\", \"Application error: TypeError: Cannot read properties of undefined (reading 'name')\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:14089\u001b[39m\n\u001b[31m    at Array.map (<anonymous>)\u001b[39m\n\u001b[31m    at o (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/app/page-57c754a9cb448aab.js:1:13356)\u001b[39m\n\u001b[31m    at lS (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:39325)\u001b[39m\n\u001b[31m    at ot (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:64573)\u001b[39m\n\u001b[31m    at ov (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:75638)\u001b[39m\n\u001b[31m    at ic (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112360)\u001b[39m\n\u001b[31m    at https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112205\u001b[39m\n\u001b[31m    at is (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:112213)\u001b[39m\n\u001b[31m    at u9 (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:109424)\u001b[39m\n\u001b[31m    at iH (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/4bd1b696-3a46e864feff3c06.js:1:130650)\u001b[39m\n\u001b[31m    at MessagePort.w (https://wedding-ikuzlo997-asithalkonaras-projects.vercel.app/_next/static/chunks/1684-9a6e7388e0450d3e.js:1:52153)\"]\u001b[39m\n\n\u001b[0m \u001b[90m 93 |\u001b[39m     )\u001b[33m;\u001b[39m\n \u001b[90m 94 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 95 |\u001b[39m     expect(criticalErrors)\u001b[33m.\u001b[39mtoHaveLength(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 96 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 97 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 98 |\u001b[39m\u001b[0m\n\u001b[2m    at /Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts:95:28\u001b[22m"
-                        }
-                      ],
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 6281,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T21:55:10.991Z",
+                      "startTime": "2025-10-22T22:10:57.191Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/quick-verification-🚀-Quic-e0dbb--critical-JavaScript-errors-chromium/test-failed-1.png"
-                        },
-                        {
-                          "name": "video",
-                          "contentType": "video/webm",
-                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/quick-verification-🚀-Quic-e0dbb--critical-JavaScript-errors-chromium/video.webm"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/test-results/quick-verification-🚀-Quic-e0dbb--critical-JavaScript-errors-chromium/error-context.md"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "/Users/asithalakmal/Documents/web/final project/WeddingLK-next copy/tests/e2e/quick-verification.spec.ts",
-                        "column": 28,
-                        "line": 95
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "4d9ec1a593f7ef705177-dd8c384aeffca8cc24fc",
@@ -327,11 +287,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-10-22T21:54:47.477Z",
-    "duration": 36852.280000000006,
-    "expected": 5,
+    "startTime": "2025-10-22T22:10:40.090Z",
+    "duration": 23784.334,
+    "expected": 6,
     "skipped": 0,
-    "unexpected": 1,
+    "unexpected": 0,
     "flaky": 0
   }
 }
