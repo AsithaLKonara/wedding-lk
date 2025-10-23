@@ -179,6 +179,7 @@ function LoginForm() {
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -193,6 +194,7 @@ function LoginForm() {
                 <div className="relative">
                   <Input
                     id="password"
+                    name="password"
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -275,5 +277,4 @@ export default function LoginPage() {
       <LoginForm />
     </Suspense>
   );
-}// Force deployment Thu Oct 23 10:44:05 +0530 2025
-// Force deployment Thu Oct 23 11:03:11 +0530 2025
+}
