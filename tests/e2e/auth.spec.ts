@@ -22,8 +22,8 @@ test.describe('Authentication Flows', () => {
     await page.fill('input[name="confirmPassword"]', user.password);
     await page.click('button[type="submit"]');
 
-    // Expect redirect/confirmation
-    await expect(page.locator('.toast-success, .signup-success, [data-testid="success-message"]')).toBeVisible();
+    // Expect redirect to login page with success message
+    await expect(page).toHaveURL(/\/login\?message=Registration successful/);
 
     // Simulate email verification by calling a test helper API endpoint
     // (Your app should expose a test-only endpoint to complete verification in e2e)
@@ -53,7 +53,7 @@ test.describe('Authentication Flows', () => {
     await page.fill('input[name="password"]', 'wrongpassword');
     await page.click('button[type="submit"]');
 
-    await expect(page.locator('.error, .toast-error, [data-testid="error-message"]')).toBeVisible();
+    await expect(page.locator('.text-red-600, .error, [data-testid="error-message"]')).toBeVisible();
   });
 
   test('Forgot password flow', async ({ page }) => {
@@ -72,27 +72,9 @@ test.describe('Authentication Flows', () => {
     expect(resetResponse.ok()).toBeTruthy();
   });
 
-  test('Social login with Google', async ({ page }) => {
-    await page.goto('/login');
-    
-    // Mock Google OAuth
-    await page.route('**/api/auth/oauth/google', route => {
-      route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ 
-          success: true, 
-          user: { 
-            id: 'google_123', 
-            email: 'test@gmail.com', 
-            name: 'Test User' 
-          } 
-        })
-      });
-    });
-
-    await page.click('button[data-testid="google-login"], .google-login-button');
-    await expect(page).toHaveURL(/\/dashboard/);
+  test.skip('Social login with Google - DISABLED (Social login removed)', async ({ page }) => {
+    // Social login has been completely removed from the application
+    // This test is disabled as the feature no longer exists
   });
 
   test('Two-factor authentication setup', async ({ page }) => {

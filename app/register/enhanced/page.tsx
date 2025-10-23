@@ -19,7 +19,6 @@ import { RoleSelection } from '@/components/auth/role-selection';
 import { EnhancedRegistrationForm } from '@/components/auth/enhanced-registration-form';
 import { DocumentUpload } from '@/components/auth/document-upload';
 import { RegistrationProgress } from '@/components/auth/registration-progress';
-import { SocialLoginButtons } from '@/components/auth/social-login-buttons';
 import { DynamicFormFactory } from '@/lib/forms/dynamic-form-engine';
 
 interface RegistrationData {
@@ -436,11 +435,9 @@ function EnhancedRegistrationContent() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <SocialLoginButtons
-                  onSuccess={() => router.push('/dashboard')}
-                  onError={setError}
-                  showDescription={false}
-                />
+                <p className="text-center text-gray-600">
+                  Social login has been removed. Please use email/password registration.
+                </p>
               </CardContent>
             </Card>
 

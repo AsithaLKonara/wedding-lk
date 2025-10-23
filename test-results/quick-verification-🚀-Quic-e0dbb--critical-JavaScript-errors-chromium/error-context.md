@@ -343,66 +343,66 @@
         - generic [ref=e475]:
           - button "Start Planning Today" [ref=e476] [cursor=pointer]
           - button "Explore Venues" [ref=e477] [cursor=pointer]
-    - paragraph [ref=e482]: Loading featured vendors...
-    - paragraph [ref=e486]: No featured venues available at the moment
-    - paragraph [ref=e488]: Something went wrong. Please refresh the page.
-    - generic [ref=e493]:
-      - img [ref=e494]
-      - heading "Ready to Start Planning?" [level=2] [ref=e496]
-      - paragraph [ref=e497]: Join thousands of couples who have planned their perfect wedding with us
-      - generic [ref=e498]:
-        - link "Get Started Free" [ref=e499] [cursor=pointer]:
+    - paragraph [ref=e481]: No featured vendors available at the moment
+    - paragraph [ref=e485]: No featured venues available at the moment
+    - paragraph [ref=e487]: Something went wrong. Please refresh the page.
+    - generic [ref=e492]:
+      - img [ref=e493]
+      - heading "Ready to Start Planning?" [level=2] [ref=e495]
+      - paragraph [ref=e496]: Join thousands of couples who have planned their perfect wedding with us
+      - generic [ref=e497]:
+        - link "Get Started Free" [ref=e498] [cursor=pointer]:
           - /url: /register
           - text: Get Started Free
           - img
-        - link "Contact Us" [ref=e500] [cursor=pointer]:
+        - link "Contact Us" [ref=e499] [cursor=pointer]:
           - /url: /contact
-    - generic [ref=e502]:
-      - generic [ref=e503]:
-        - generic [ref=e504]:
-          - link "Wedding.lk" [ref=e505] [cursor=pointer]:
+    - generic [ref=e501]:
+      - generic [ref=e502]:
+        - generic [ref=e503]:
+          - link "Wedding.lk" [ref=e504] [cursor=pointer]:
             - /url: /
-            - img [ref=e507]
-            - generic [ref=e509]: Wedding.lk
-          - paragraph [ref=e510]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
-          - generic [ref=e511]:
+            - img [ref=e506]
+            - generic [ref=e508]: Wedding.lk
+          - paragraph [ref=e509]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+          - generic [ref=e510]:
+            - button [ref=e511] [cursor=pointer]:
+              - img
             - button [ref=e512] [cursor=pointer]:
               - img
             - button [ref=e513] [cursor=pointer]:
               - img
             - button [ref=e514] [cursor=pointer]:
               - img
-            - button [ref=e515] [cursor=pointer]:
-              - img
-        - generic [ref=e516]:
-          - heading "Services" [level=3] [ref=e517]
-          - list [ref=e518]:
-            - listitem [ref=e519]:
-              - link "Venues" [ref=e520] [cursor=pointer]:
+        - generic [ref=e515]:
+          - heading "Services" [level=3] [ref=e516]
+          - list [ref=e517]:
+            - listitem [ref=e518]:
+              - link "Venues" [ref=e519] [cursor=pointer]:
                 - /url: /venues
-            - listitem [ref=e521]:
-              - link "Vendors" [ref=e522] [cursor=pointer]:
+            - listitem [ref=e520]:
+              - link "Vendors" [ref=e521] [cursor=pointer]:
                 - /url: /vendors
-            - listitem [ref=e523]:
-              - button "Planning Tools" [ref=e524] [cursor=pointer]
-            - listitem [ref=e525]:
-              - link "Gallery" [ref=e526] [cursor=pointer]:
+            - listitem [ref=e522]:
+              - button "Planning Tools" [ref=e523] [cursor=pointer]
+            - listitem [ref=e524]:
+              - link "Gallery" [ref=e525] [cursor=pointer]:
                 - /url: /gallery
-        - generic [ref=e527]:
-          - heading "Company" [level=3] [ref=e528]
-          - list [ref=e529]:
-            - listitem [ref=e530]:
-              - link "About" [ref=e531] [cursor=pointer]:
+        - generic [ref=e526]:
+          - heading "Company" [level=3] [ref=e527]
+          - list [ref=e528]:
+            - listitem [ref=e529]:
+              - link "About" [ref=e530] [cursor=pointer]:
                 - /url: /about
-            - listitem [ref=e532]:
-              - link "Contact" [ref=e533] [cursor=pointer]:
+            - listitem [ref=e531]:
+              - link "Contact" [ref=e532] [cursor=pointer]:
                 - /url: /contact
-            - listitem [ref=e534]:
-              - link "Privacy" [ref=e535] [cursor=pointer]:
+            - listitem [ref=e533]:
+              - link "Privacy" [ref=e534] [cursor=pointer]:
                 - /url: /privacy
-            - listitem [ref=e536]:
-              - link "Terms" [ref=e537] [cursor=pointer]:
+            - listitem [ref=e535]:
+              - link "Terms" [ref=e536] [cursor=pointer]:
                 - /url: /terms
-      - paragraph [ref=e539]: © 2024 Wedding.lk. All rights reserved.
-  - alert [ref=e542]
+      - paragraph [ref=e538]: © 2024 Wedding.lk. All rights reserved.
+  - alert [ref=e541]
 ```

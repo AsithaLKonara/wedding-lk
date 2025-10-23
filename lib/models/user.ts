@@ -47,18 +47,6 @@ export interface IUser extends Document {
     };
   };
   
-  // Social Authentication
-  socialAccounts: Array<{
-    provider: string;
-    providerId: string;
-    accessToken?: string;
-    refreshToken?: string;
-    expiresAt?: Date;
-    scope?: string;
-    idToken?: string;
-    linkedAt: Date;
-    lastUsed?: Date;
-  }>;
   
   // Verification Status
   isEmailVerified: boolean;
