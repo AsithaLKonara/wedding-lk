@@ -92,12 +92,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5531,
+                      "duration": 10020,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T22:10:44.116Z",
+                      "startTime": "2025-10-23T05:11:56.384Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -126,12 +126,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 4215,
+                      "duration": 5584,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T22:10:43.908Z",
+                      "startTime": "2025-10-23T05:11:56.580Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -160,12 +160,12 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 6703,
+                      "duration": 24587,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T22:10:50.310Z",
+                      "startTime": "2025-10-23T05:12:03.565Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -194,12 +194,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4354,
+                      "duration": 4296,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T22:10:51.778Z",
+                      "startTime": "2025-10-23T05:12:07.927Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -228,12 +228,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 7086,
+                      "duration": 4428,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T22:10:56.260Z",
+                      "startTime": "2025-10-23T05:12:12.286Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -259,15 +259,15 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 1,
-                      "parallelIndex": 1,
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6281,
+                      "duration": 6269,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-10-22T22:10:57.191Z",
+                      "startTime": "2025-10-23T05:12:16.739Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -287,8 +287,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-10-22T22:10:40.090Z",
-    "duration": 23784.334,
+    "startTime": "2025-10-23T05:11:51.112Z",
+    "duration": 37193.335,
     "expected": 6,
     "skipped": 0,
     "unexpected": 0,
