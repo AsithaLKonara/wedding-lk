@@ -48,7 +48,7 @@ const testUsers = {
 // Helper function to login with specific role
 async function loginAsRole(page: any, role: keyof typeof testUsers) {
   const user = testUsers[role];
-  await page.goto('/auth/signin');
+  await page.goto('/login');
   await page.fill('input[name="email"]', user.email);
   await page.fill('input[name="password"]', user.password);
   await page.click('button[type="submit"]');

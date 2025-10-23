@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 // Mock API routes
-app.post('/api/auth/register', (req, res) => {
+app.post('/api/auth/signup', (req, res) => {
   const { email, password, name } = req.body;
   if (!email || !password) {
     return res.status(400).json({ success: false, message: 'Invalid input' });
@@ -30,7 +30,7 @@ app.post('/api/auth/register', (req, res) => {
   });
 });
 
-app.post('/api/auth/login', (req, res) => {
+app.post('/api/auth/signin', (req, res) => {
   const { email, password } = req.body;
   if (email === 'test@example.com' && password === 'password123') {
     return res.status(200).json({ 
@@ -46,28 +46,19 @@ app.post('/api/auth/login', (req, res) => {
   res.status(401).json({ success: false, message: 'Invalid credentials' });
 });
 
-app.post('/api/auth/forgot-password', (req, res) => {
-  const { email } = req.body;
-  if (email === 'nonexistent@example.com') {
-    return res.status(200).json({ success: true, message: 'Email sent' });
-  }
-  res.status(200).json({ success: true, message: 'Password reset email sent' });
+app.post('/api/auth/signout', (req, res) => {
+  res.status(200).json({ success: true, message: 'Logged out successfully' });
 });
 
-app.post('/api/auth/reset-password', (req, res) => {
-  const { token, newPassword } = req.body;
-  if (token === 'invalid-token') {
-    return res.status(400).json({ success: false, message: 'Invalid token' });
+app.get('/api/auth/me', (req, res) => {
+  const token = req.headers.authorization?.replace('Bearer ', '');
+  if (token === 'mock-jwt-token') {
+    return res.status(200).json({ 
+      success: true, 
+      user: { email: 'test@example.com', name: 'Test User', id: 'test-user-id' }
+    });
   }
-  res.status(200).json({ success: true, message: 'Password reset' });
-});
-
-app.post('/api/auth/verify-email', (req, res) => {
-  const { token } = req.body;
-  if (token === 'invalid-token') {
-    return res.status(400).json({ success: false, message: 'Invalid token' });
-  }
-  res.status(200).json({ success: true, message: 'Email verified' });
+  res.status(401).json({ success: false, message: 'Unauthorized' });
 });
 
 beforeAll(async () => {
@@ -79,7 +70,7 @@ afterAll(async () => {
 });
 
 describe('Auth API', () => {
-  describe('POST /api/auth/register', () => {
+  describe('POST /api/auth/signup', () => {
     test('registers new user successfully', async () => {
       const userData = {
         name: 'Test User',
@@ -89,7 +80,7 @@ describe('Auth API', () => {
       };
 
       const response = await request(app)
-        .post('/api/auth/register')
+        .post('/api/auth/signup')
         .send(userData)
         .expect(201);
 

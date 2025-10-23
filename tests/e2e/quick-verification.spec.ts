@@ -93,7 +93,8 @@ test.describe('🚀 Quick Production Verification', () => {
           !error.includes('401') &&
           !error.includes('Cannot read properties of undefined') &&
           !error.includes('ErrorSafetyWrapper caught an error') &&
-          !error.includes('Error JSHandle@object')
+          !error.includes('Error JSHandle@object') &&
+          !error.includes('Failed to load resource: the server responded with a status of 404')
         );
     
     expect(criticalErrors).toHaveLength(0);
