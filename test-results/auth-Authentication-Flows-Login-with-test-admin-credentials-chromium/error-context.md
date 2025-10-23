@@ -1,45 +1,118 @@
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
-  - generic [ref=e3]:
-    - generic [ref=e4]:
-      - heading "WeddingLK" [level=1] [ref=e5]
-      - paragraph [ref=e6]: Your complete wedding planning platform
-    - generic [ref=e7]:
-      - generic [ref=e8]:
-        - button "Continue with Google" [ref=e9] [cursor=pointer]:
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link "Wedding.lk" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img [ref=e8]
+        - generic [ref=e10]: Wedding.lk
+      - navigation [ref=e12]:
+        - link "Venues" [ref=e14] [cursor=pointer]:
+          - /url: /venues
+        - link "Vendors" [ref=e16] [cursor=pointer]:
+          - /url: /vendors
+        - link "Feed" [ref=e18] [cursor=pointer]:
+          - /url: /feed
+        - link "Gallery" [ref=e20] [cursor=pointer]:
+          - /url: /gallery
+        - link "About" [ref=e22] [cursor=pointer]:
+          - /url: /about
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - button "Toggle theme" [disabled]:
+            - generic: Toggle theme
+        - button [ref=e26] [cursor=pointer]:
           - img
-          - text: Continue with Google
-        - button "Continue with Facebook" [ref=e10] [cursor=pointer]:
-          - img
-          - text: Continue with Facebook
-      - generic [ref=e11]:
-        - text: By signing in, you agree to our
-        - link "Terms of Service" [ref=e12] [cursor=pointer]:
-          - /url: /terms
-        - text: and
-        - link "Privacy Policy" [ref=e13] [cursor=pointer]:
-          - /url: /privacy
-    - paragraph [ref=e15]:
-      - text: Don't have an account?
-      - link "Sign up here" [ref=e16] [cursor=pointer]:
-        - /url: /register
-    - generic [ref=e17]:
-      - generic [ref=e21]: Development Info
-      - generic [ref=e22]:
-        - generic [ref=e23]:
-          - heading "OAuth Status" [level=3] [ref=e24]
-          - paragraph [ref=e25]: Current OAuth provider configuration status
-        - generic [ref=e26]:
-          - generic [ref=e27]:
-            - generic [ref=e28]: "Google OAuth:"
-            - generic [ref=e29]: Configured
-          - generic [ref=e30]:
-            - generic [ref=e31]: "Facebook OAuth:"
-            - generic [ref=e32]: Configured
-          - generic [ref=e33]:
-            - generic [ref=e34]: "NextAuth Secret:"
-            - generic [ref=e35]: Configured
-  - alert [ref=e38]
+  - generic [ref=e31]:
+    - generic [ref=e32]:
+      - heading "Welcome Back" [level=1] [ref=e33]
+      - paragraph [ref=e34]: Sign in to your WeddingLK account
+      - generic [ref=e35]:
+        - generic [ref=e38]: SSL Secured
+        - generic [ref=e41]: GDPR Compliant
+        - generic [ref=e44]: Trusted Platform
+    - generic [ref=e45]:
+      - heading "Sign In" [level=2] [ref=e47]
+      - generic [ref=e48]:
+        - generic [ref=e49]:
+          - button "Continue with Google" [ref=e50] [cursor=pointer]:
+            - img [ref=e51]
+            - text: Continue with Google
+          - button "Continue with Facebook" [ref=e56] [cursor=pointer]:
+            - img [ref=e57]
+            - text: Continue with Facebook
+        - generic [ref=e63]: Or continue with email
+        - generic [ref=e64]:
+          - generic [ref=e65]:
+            - generic [ref=e66]: Email Address
+            - textbox "Email Address" [ref=e67]:
+              - /placeholder: Enter your email
+          - generic [ref=e68]:
+            - generic [ref=e69]: Password
+            - generic [ref=e70]:
+              - textbox "Password" [ref=e71]:
+                - /placeholder: Enter your password
+              - button [ref=e72] [cursor=pointer]:
+                - img [ref=e73]
+          - generic [ref=e76]:
+            - generic [ref=e77]:
+              - checkbox "Remember me" [ref=e78]
+              - generic [ref=e79]: Remember me
+            - link "Forgot password?" [ref=e80] [cursor=pointer]:
+              - /url: /auth/forgot-password
+          - button "Sign In" [ref=e81] [cursor=pointer]
+        - paragraph [ref=e83]:
+          - text: Don't have an account?
+          - link "Sign up" [ref=e84] [cursor=pointer]:
+            - /url: /auth/signup
+  - contentinfo [ref=e85]:
+    - generic [ref=e86]:
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - link "Wedding.lk" [ref=e89] [cursor=pointer]:
+            - /url: /
+            - img [ref=e91]
+            - generic [ref=e93]: Wedding.lk
+          - paragraph [ref=e94]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+          - generic [ref=e95]:
+            - button [ref=e96] [cursor=pointer]:
+              - img
+            - button [ref=e97] [cursor=pointer]:
+              - img
+            - button [ref=e98] [cursor=pointer]:
+              - img
+            - button [ref=e99] [cursor=pointer]:
+              - img
+        - generic [ref=e100]:
+          - heading "Services" [level=3] [ref=e101]
+          - list [ref=e102]:
+            - listitem [ref=e103]:
+              - link "Venues" [ref=e104] [cursor=pointer]:
+                - /url: /venues
+            - listitem [ref=e105]:
+              - link "Vendors" [ref=e106] [cursor=pointer]:
+                - /url: /vendors
+            - listitem [ref=e107]:
+              - button "Planning Tools" [ref=e108] [cursor=pointer]
+            - listitem [ref=e109]:
+              - link "Gallery" [ref=e110] [cursor=pointer]:
+                - /url: /gallery
+        - generic [ref=e111]:
+          - heading "Company" [level=3] [ref=e112]
+          - list [ref=e113]:
+            - listitem [ref=e114]:
+              - link "About" [ref=e115] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e116]:
+              - link "Contact" [ref=e117] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=e118]:
+              - link "Privacy" [ref=e119] [cursor=pointer]:
+                - /url: /privacy
+            - listitem [ref=e120]:
+              - link "Terms" [ref=e121] [cursor=pointer]:
+                - /url: /terms
+      - paragraph [ref=e123]: © 2024 Wedding.lk. All rights reserved.
 ```

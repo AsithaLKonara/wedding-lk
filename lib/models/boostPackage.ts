@@ -69,7 +69,7 @@ BoostPackageSchema.index({ type: 1, isActive: 1 });
 BoostPackageSchema.index({ price: 1 });
 BoostPackageSchema.index({ isActive: 1 });
 
-export const BoostPackage = mongoose.model<IBoostPackage>('BoostPackage', BoostPackageSchema);
+export const BoostPackage = mongoose.models.BoostPackage || mongoose.model<IBoostPackage>('BoostPackage', BoostPackageSchema);
 
 
 

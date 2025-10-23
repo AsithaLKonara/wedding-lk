@@ -15,7 +15,7 @@ export default defineConfig({
     timeout: 10000, // 10 seconds for assertions
   },
   use: {
-    baseURL: process.env.E2E_BASE_URL || 'https://wedding-lk.vercel.app',
+    baseURL: process.env.E2E_BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',

@@ -269,7 +269,7 @@ MetaAdsCreativeSchema.index({ adSetId: 1, status: 1 });
 MetaAdsAccountSchema.index({ vendorId: 1 });
 MetaAdsAccountSchema.index({ metaAccountId: 1 });
 
-export const MetaAdsCampaign = mongoose.model<IMetaAdsCampaign>('MetaAdsCampaign', MetaAdsCampaignSchema);
-export const MetaAdsAdSet = mongoose.model<IMetaAdsAdSet>('MetaAdsAdSet', MetaAdsAdSetSchema);
-export const MetaAdsCreative = mongoose.model<IMetaAdsCreative>('MetaAdsCreative', MetaAdsCreativeSchema);
-export const MetaAdsAccount = mongoose.model<IMetaAdsAccount>('MetaAdsAccount', MetaAdsAccountSchema);
+export const MetaAdsCampaign = mongoose.models.MetaAdsCampaign || mongoose.model<MetaAdsCampaign>('MetaAdsCampaign', MetaAdsCampaignSchema);
+export const MetaAdsAdSet = mongoose.models.MetaAdsAdSet || mongoose.model<MetaAdsAdSet>('MetaAdsAdSet', MetaAdsAdSetSchema);
+export const MetaAdsCreative = mongoose.models.MetaAdsCreative || mongoose.model<MetaAdsCreative>('MetaAdsCreative', MetaAdsCreativeSchema);
+export const MetaAdsAccount = mongoose.models.MetaAdsAccount || mongoose.model<MetaAdsAccount>('MetaAdsAccount', MetaAdsAccountSchema);
