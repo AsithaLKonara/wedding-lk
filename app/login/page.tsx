@@ -261,20 +261,5 @@ function LoginForm() {
 }
 
 export default function LoginPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-100">
-        <div className="max-w-md w-full">
-          <Card>
-            <CardContent className="flex items-center justify-center p-6">
-              <FaSpinner className="h-6 w-6 animate-spin" />
-              <span className="ml-2">Loading...</span>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    }>
-      <LoginForm />
-    </Suspense>
-  );
+  return <LoginForm />;
 }

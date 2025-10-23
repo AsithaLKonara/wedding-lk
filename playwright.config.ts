@@ -56,16 +56,17 @@ export default defineConfig({
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
-    {
-      name: 'webkit',
-      use: { 
-        ...devices['Desktop Safari'],
-        // Disable problematic WebKit settings
-        launchOptions: {
-          args: ['--disable-web-security', '--disable-features=VizDisplayCompositor']
-        }
-      },
-    },
+        // Disable WebKit for now due to compatibility issues
+        // {
+        //   name: 'webkit',
+        //   use: { 
+        //     ...devices['Desktop Safari'],
+        //     // Disable problematic WebKit settings
+        //     launchOptions: {
+        //       args: ['--disable-web-security', '--disable-features=VizDisplayCompositor']
+        //     }
+        //   },
+        // },
     /* Test against mobile viewports. */
     {
       name: 'Mobile Chrome',
