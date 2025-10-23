@@ -9,6 +9,7 @@ const ROUTE_ACCESS = {
   public: [
     '/',
     '/login',
+    '/auth/signin',
     '/register',
     '/about',
     '/contact',
