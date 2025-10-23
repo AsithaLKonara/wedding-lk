@@ -33,7 +33,7 @@ test.describe('Authentication Flows', () => {
     expect(verificationResponse.ok()).toBeTruthy();
 
     // Go to login
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', user.email);
     await page.fill('input[name="password"]', user.password);
     await page.click('button[type="submit"]');
@@ -44,11 +44,11 @@ test.describe('Authentication Flows', () => {
 
     // Logout
     await logout(page);
-    await expect(page).toHaveURL('/login');
+    await expect(page).toHaveURL('/auth/signin');
   });
 
   test('Login with invalid credentials should show error', async ({ page }) => {
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'invalid@example.com');
     await page.fill('input[name="password"]', 'wrongpassword');
     await page.click('button[type="submit"]');
@@ -73,7 +73,7 @@ test.describe('Authentication Flows', () => {
   });
 
   test('Social login with Google', async ({ page }) => {
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     
     // Mock Google OAuth
     await page.route('**/api/auth/oauth/google', route => {
@@ -97,7 +97,7 @@ test.describe('Authentication Flows', () => {
 
   test('Two-factor authentication setup', async ({ page }) => {
     // Login first
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', process.env.TEST_USER_EMAIL || 'test@example.com');
     await page.fill('input[name="password"]', process.env.TEST_USER_PASSWORD || 'TestPass123!');
     await page.click('button[type="submit"]');

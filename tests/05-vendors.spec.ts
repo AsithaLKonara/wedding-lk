@@ -97,7 +97,7 @@ test.describe('Vendors CRUD Tests', () => {
 
   test('should book vendor service', async ({ page }) => {
     // Login first
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'test@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
@@ -131,7 +131,7 @@ test.describe('Vendors CRUD Tests', () => {
 
   test('should add vendor to favorites', async ({ page }) => {
     // Login first
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'test@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
@@ -155,7 +155,7 @@ test.describe('Vendors CRUD Tests', () => {
 
   test('should create vendor profile', async ({ page }) => {
     // Login as vendor
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'vendor@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
@@ -182,7 +182,7 @@ test.describe('Vendors CRUD Tests', () => {
 
   test('should edit vendor profile', async ({ page }) => {
     // Login as vendor
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'vendor@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
@@ -203,7 +203,7 @@ test.describe('Vendors CRUD Tests', () => {
 
   test('should manage vendor services', async ({ page }) => {
     // Login as vendor
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'vendor@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
@@ -231,7 +231,7 @@ test.describe('Vendors CRUD Tests', () => {
 
   test('should manage vendor portfolio', async ({ page }) => {
     // Login as vendor
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'vendor@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
@@ -272,7 +272,7 @@ test.describe('Vendors CRUD Tests', () => {
 
   test('should write vendor review', async ({ page }) => {
     // Login first
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'test@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');

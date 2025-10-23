@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Social Features Tests', () => {
   test.beforeEach(async ({ page }) => {
     // Login before each test
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'test@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');

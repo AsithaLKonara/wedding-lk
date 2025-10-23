@@ -50,7 +50,7 @@ test.describe('Authentication Flow Tests', () => {
   });
 
   test('should login with valid credentials', async ({ page }) => {
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     
     // Fill login form
     await page.fill('input[name="email"]', 'test@example.com');
@@ -64,7 +64,7 @@ test.describe('Authentication Flow Tests', () => {
   });
 
   test('should show error for invalid credentials', async ({ page }) => {
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     
     // Fill with invalid credentials
     await page.fill('input[name="email"]', 'invalid@example.com');
@@ -92,7 +92,7 @@ test.describe('Authentication Flow Tests', () => {
 
   test('should logout successfully', async ({ page }) => {
     // First login
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'test@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');

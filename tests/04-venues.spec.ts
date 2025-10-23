@@ -97,7 +97,7 @@ test.describe('Venues CRUD Tests', () => {
 
   test('should book venue', async ({ page }) => {
     // Login first
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'test@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
@@ -132,7 +132,7 @@ test.describe('Venues CRUD Tests', () => {
 
   test('should add venue to favorites', async ({ page }) => {
     // Login first
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'test@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
@@ -156,7 +156,7 @@ test.describe('Venues CRUD Tests', () => {
 
   test('should create new venue (vendor)', async ({ page }) => {
     // Login as vendor
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'vendor@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
@@ -180,7 +180,7 @@ test.describe('Venues CRUD Tests', () => {
 
   test('should edit venue (vendor)', async ({ page }) => {
     // Login as vendor
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'vendor@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
@@ -209,7 +209,7 @@ test.describe('Venues CRUD Tests', () => {
 
   test('should delete venue (vendor)', async ({ page }) => {
     // Login as vendor
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'vendor@example.com');
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');

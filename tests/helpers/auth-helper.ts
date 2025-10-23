@@ -39,7 +39,7 @@ export const TEST_USERS: Record<string, TestUser> = {
  */
 export async function loginAsUser(page: Page, userType: keyof typeof TEST_USERS): Promise<void> {
   const user = TEST_USERS[userType];
-  await page.goto('/login');
+  await page.goto('/auth/signin');
   await page.fill('input[name="email"]', user.email);
   await page.fill('input[name="password"]', user.password);
   await page.click('button[type="submit"]');
@@ -50,7 +50,7 @@ export async function loginAsUser(page: Page, userType: keyof typeof TEST_USERS)
  * Login with custom credentials
  */
 export async function loginWithCredentials(page: Page, email: string, password: string): Promise<void> {
-  await page.goto('/login');
+  await page.goto('/auth/signin');
   await page.fill('input[name="email"]', email);
   await page.fill('input[name="password"]', password);
   await page.click('button[type="submit"]');

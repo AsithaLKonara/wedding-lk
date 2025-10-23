@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Admin Panel Tests', () => {
   test.beforeEach(async ({ page }) => {
     // Login as admin
-    await page.goto('/login');
+    await page.goto('/auth/signin');
     await page.fill('input[name="email"]', 'admin@example.com');
     await page.fill('input[name="password"]', 'AdminPassword123!');
     await page.click('button[type="submit"]');

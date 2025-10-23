@@ -7,6 +7,50 @@ import { Eye, EyeOff, XCircle } from 'lucide-react';
 import { Header } from '@/components/organisms/header';
 import { Footer } from '@/components/organisms/footer';
 
+// Component to handle search params without causing hydration issues
+function ErrorHandler({ onError }: { onError: (error: string) => void }) {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const errorParam = searchParams.get('error');
+    if (errorParam) {
+      switch (errorParam) {
+        case 'CredentialsSignin':
+          onError('Invalid email or password. Please try again.');
+          break;
+        case 'OAuthSignin':
+          onError('Error signing in with Google. Please try again.');
+          break;
+        case 'OAuthCallback':
+          onError('Error with Google authentication. Please try again.');
+          break;
+        case 'OAuthCreateAccount':
+          onError('Could not create account with Google. Please try again.');
+          break;
+        case 'EmailCreateAccount':
+          onError('Could not create account. Please try again.');
+          break;
+        case 'Callback':
+          onError('Authentication error. Please try again.');
+          break;
+        case 'OAuthAccountNotLinked':
+          onError('Account already exists with different provider. Please sign in with the original provider.');
+          break;
+        case 'EmailSignin':
+          onError('Check your email for a sign-in link.');
+          break;
+        case 'SessionRequired':
+          onError('Please sign in to access this page.');
+          break;
+        default:
+          onError('An error occurred during sign in. Please try again.');
+      }
+    }
+  }, [searchParams, onError]);
+
+  return null;
+}
+
 function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,48 +59,6 @@ function SignInForm() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  // Check for error messages from URL params
-  useEffect(() => {
-    const errorParam = searchParams.get('error');
-    if (errorParam) {
-      switch (errorParam) {
-        case 'CredentialsSignin':
-          setError('Invalid email or password. Please try again.');
-          break;
-        case 'OAuthSignin':
-          setError('Error signing in with Google. Please try again.');
-          break;
-        case 'OAuthCallback':
-          setError('Error with Google authentication. Please try again.');
-          break;
-        case 'OAuthCreateAccount':
-          setError('Could not create account with Google. Please try again.');
-          break;
-        case 'EmailCreateAccount':
-          setError('Could not create account. Please try again.');
-          break;
-        case 'Callback':
-          setError('Authentication error. Please try again.');
-          break;
-        case 'OAuthAccountNotLinked':
-          setError('Account already exists with different provider. Please sign in with the original provider.');
-          break;
-        case 'EmailSignin':
-          setError('Check your email for a sign-in link.');
-          break;
-        case 'CredentialsSignin':
-          setError('Sign in failed. Check your credentials.');
-          break;
-        case 'SessionRequired':
-          setError('Please sign in to access this page.');
-          break;
-        default:
-          setError('An error occurred during sign in. Please try again.');
-      }
-    }
-  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,6 +105,9 @@ function SignInForm() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-100'>
       <Header />
+      <Suspense fallback={<div />}>
+        <ErrorHandler onError={setError} />
+      </Suspense>
       <div className='flex items-center justify-center p-4 pt-20 pb-20'>
         <div className='w-full max-w-md'>
         {/* Header */}
@@ -204,6 +209,7 @@ function SignInForm() {
                 </label>
                 <input
                   id='email'
+                  name='email'
                   type='email'
                   value={email}
                   onChange={e => setEmail(e.target.value)}
@@ -223,6 +229,7 @@ function SignInForm() {
                 <div className='relative'>
                   <input
                     id='password'
+                    name='password'
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={e => setPassword(e.target.value)}
@@ -305,22 +312,6 @@ function SignInForm() {
 }
 
 export default function SignInPage() {
-  return (
-    <Suspense fallback={
-      <div className='min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-100'>
-        <Header />
-        <div className='flex items-center justify-center p-4 pt-20 pb-20'>
-          <div className='w-full max-w-md'>
-            <div className='bg-white rounded-2xl shadow-xl p-8 text-center'>
-              <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4'></div>
-              <p className='text-gray-600'>Loading...</p>
-            </div>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    }>
-      <SignInForm />
-    </Suspense>
-  );
+  return <SignInForm />;
 }
+
