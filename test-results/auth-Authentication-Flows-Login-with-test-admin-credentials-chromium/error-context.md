@@ -16,7 +16,7 @@
           - generic [ref=e17]: Email Address
           - textbox "Email Address" [ref=e18]:
             - /placeholder: your@email.com
-            - text: user@test.local
+            - text: admin@test.local
         - generic [ref=e19]:
           - generic [ref=e20]: Password
           - generic [ref=e21]:

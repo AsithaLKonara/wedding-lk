@@ -16,13 +16,13 @@
           - generic [ref=e17]: Email Address
           - textbox "Email Address" [ref=e18]:
             - /placeholder: your@email.com
-            - text: user@test.local
+            - text: invalid@example.com
         - generic [ref=e19]:
           - generic [ref=e20]: Password
           - generic [ref=e21]:
             - textbox "Password" [ref=e22]:
               - /placeholder: Enter your password
-              - text: Test123!
+              - text: wrongpassword
             - button [ref=e23] [cursor=pointer]:
               - img [ref=e24]
         - button "Sign In" [ref=e27] [cursor=pointer]
