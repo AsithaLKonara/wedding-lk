@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { connectDB } from '@/lib/mongodb'
 import { MessageAttachment } from '@/lib/models'
@@ -9,9 +8,13 @@ import { existsSync } from 'fs'
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     
-    if (!session?.user) {
+    if (!user?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -74,7 +77,7 @@ export async function POST(request: NextRequest) {
       filePath: `/uploads/messages/${fileName}`,
       fileSize: file.size,
       fileType: file.type,
-      uploadedBy: session.user.id,
+      uploadedBy: user.id,
       createdAt: new Date()
     })
 

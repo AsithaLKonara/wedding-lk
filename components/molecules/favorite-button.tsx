@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { Heart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -20,13 +19,14 @@ export function FavoriteButton({
   size = 'md',
   showText = false 
 }: FavoriteButtonProps) {
-  const { data: session } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const [isFavorited, setIsFavorited] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecking, setIsChecking] = useState(true)
 
   useEffect(() => {
-    if (session?.user) {
+    if (user ?.user) {
       checkFavoriteStatus()
     } else {
       setIsChecking(false)
@@ -48,7 +48,7 @@ export function FavoriteButton({
   }
 
   const handleToggleFavorite = async () => {
-    if (!session?.user) {
+    if (!user?.user) {
       // Redirect to login if not authenticated
       window.location.href = '/auth/signin'
       return

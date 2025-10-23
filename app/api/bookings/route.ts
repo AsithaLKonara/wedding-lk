@@ -1,20 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { connectDB } from '@/lib/db'
 import { Booking, Package } from '@/lib/models'
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     
-    if (!session?.user) {
+    if (!user?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     await connectDB()
 
-    const bookings = await Booking.find({ user: session.user.id })
+    const bookings = await Booking.find({ user: user.id })
       .populate('vendor')
       .populate('venue')
         .sort({ createdAt: -1 })
@@ -30,7 +33,7 @@ export async function GET(request: NextRequest) {
         bookings: [
           {
             _id: 'mock-booking-1',
-            user: session?.user?.id || 'test-user',
+            user: user ?.user?.id || 'test-user',
             vendor: {
               _id: 'mock-vendor-1',
               businessName: 'Elegant Photography Studio'
@@ -60,9 +63,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     
-    if (!session?.user) {
+    if (!user?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -93,7 +100,7 @@ export async function POST(request: NextRequest) {
     const primaryVendor = packageData.vendors && packageData.vendors.length > 0 ? packageData.vendors[0] : null
 
     const booking = new Booking({
-      user: session.user.id,
+      user: user.id,
       vendor: primaryVendor,
       eventDate: new Date(eventDate),
       eventTime: eventTime,

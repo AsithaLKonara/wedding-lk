@@ -1,16 +1,15 @@
 "use client"
 
-import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Calendar, Bell, Settings, LogOut } from "lucide-react"
-import { signOut } from "next-auth/react"
 
 export function DashboardHeader() {
-  const { data: session } = useSession()
-  const userName = session?.user?.name || 'User'
-  const userEmail = session?.user?.email || 'user@example.com'
-  const userRole = session?.user?.role || 'user'
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
+  const userName = user ?.user?.name || 'User'
+  const userEmail = user ?.user?.email || 'user@example.com'
+  const userRole = user ?.user?.role || 'user'
 
   const getRoleDisplayName = (role: string) => {
     switch (role) {
@@ -50,7 +49,7 @@ export function DashboardHeader() {
 
             <div className="flex items-center space-x-3">
               <Avatar>
-                <AvatarImage src={session?.user?.image || "/placeholder.svg?height=40&width=40"} />
+                <AvatarImage src={user ?.user?.image || "/placeholder.svg?height=40&width=40"} />
                 <AvatarFallback>{userName.charAt(0).toUpperCase()}</AvatarFallback>
               </Avatar>
               <div className="text-right">
@@ -60,7 +59,7 @@ export function DashboardHeader() {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                onClick={() => signOut()}
+                onClick={() => fetch('/api/auth/signout', { method: 'POST' }).then(() => )}
                 className="text-red-600 hover:text-red-700"
               >
                 <LogOut className="h-4 w-4" />

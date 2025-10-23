@@ -2,7 +2,6 @@
 
 import React from "react"
 import { ReactNode, useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { 
   Home, 
@@ -90,7 +89,8 @@ export function DashboardLayout({
   showSidebar = true,
   className = ""
 }: DashboardLayoutProps) {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [userRole, setUserRole] = useState<string>('user')
@@ -104,8 +104,8 @@ export function DashboardLayout({
 
   // Determine user role and menu items
   useEffect(() => {
-    if (session?.user?.role) {
-      setUserRole(session.user.role)
+    if (user ?.user?.role) {
+      setUserRole(user.role)
     }
   }, [session])
 
@@ -194,10 +194,10 @@ export function DashboardLayout({
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                  {session?.user?.name || 'User'}
+                  {user ?.user?.name || 'User'}
                 </p>
                 <p className="text-xs text-gray-500 truncate">
-                  {session?.user?.email}
+                  {user ?.user?.email}
                 </p>
                 <div className="flex items-center mt-1">
                   <Badge variant="outline" className="text-xs">

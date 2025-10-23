@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/nextauth-config';
 import { AdsPaymentService } from '@/lib/services/ads-payment-service';
 
 export async function POST(
@@ -8,8 +6,12 @@ export async function POST(
   { params }: { params: { paymentId: string } }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (!user?.user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

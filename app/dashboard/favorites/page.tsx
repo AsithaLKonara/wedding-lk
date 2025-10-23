@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { 
   Heart, 
@@ -64,7 +63,8 @@ interface FavoriteVenue {
 }
 
 export default function FavoritesPage() {
-  const { data: session, status } = useSession();
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter();
   const [favoriteVendors, setFavoriteVendors] = useState<FavoriteVendor[]>([]);
   const [favoriteVenues, setFavoriteVenues] = useState<FavoriteVenue[]>([]);
@@ -76,7 +76,7 @@ export default function FavoritesPage() {
   useEffect(() => {
     if (status === 'loading') return;
     
-    if (!session?.user) {
+    if (!user?.user) {
       router.push('/auth/signin');
       return;
     }
@@ -147,7 +147,7 @@ export default function FavoritesPage() {
     );
   }
 
-  if (!session?.user) {
+  if (!user?.user) {
     return null;
   }
 

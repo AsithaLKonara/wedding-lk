@@ -9,7 +9,7 @@ import { getServerSession } from '@/lib/auth-utils';
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession()
-    if (!session || session.user?.role !== 'vendor') {
+    if (!token || session.user?.role !== 'vendor') {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 

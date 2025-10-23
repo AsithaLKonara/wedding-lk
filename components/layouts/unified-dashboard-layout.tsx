@@ -1,10 +1,9 @@
 "use client"
 
-import { useState } from "react"
-import { useSession } from "next-auth/react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { signOut } from "next-auth/react"
 import dynamic from "next/dynamic"
+import type { AuthUser } from '@/lib/auth/custom-auth'
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -209,31 +208,45 @@ const navigationItems: NavigationItem[] = [
 ]
 
 function UnifiedDashboardLayoutComponent({ children }: UnifiedDashboardLayoutProps) {
-  const { data: session } = useSession()
+  const [user, setUser] = useState<AuthUser | null>(null)
   const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
-  if (!session) {
-    return null
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          setUser(data.user)
+        } else {
+          router.push('/login')
+        }
+      })
+      .catch(() => router.push('/login'))
+  }, [router])
+
+  if (!user) {
+    return <div>Loading...</div>
   }
 
-  const user = session.user
-  const userRole = user?.role as UserRole || 'user'
+  const userRole = user.role as UserRole
   const theme = RBACManager.getRoleTheme(userRole)
   const roleDisplayName = RBACManager.getRoleDisplayName(userRole)
 
   // Filter navigation items based on user role and permissions
   const filteredItems = RBACManager.filterNavigation(navigationItems, {
-    id: user?.id || '',
-    name: user?.name || '',
-    email: user?.email || '',
+    id: user.id,
+    name: user.name,
+    email: user.email,
     role: userRole,
-    image: user?.image
+    image: undefined
   })
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: "/login" })
+    await fetch('/api/auth/signout', { method: 'POST' })
+    router.push('/login')
+    router.refresh()
   }
 
   return (

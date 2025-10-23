@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSocket } from '@/hooks/use-socket';
-import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -57,7 +56,8 @@ const RealTimeChat: React.FC<RealTimeChatProps> = ({
   receiverAvatar,
   onClose
 }) => {
-  const { data: session } = useSession();
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const {
     isConnected,
     isAuthenticated,
@@ -81,7 +81,7 @@ const RealTimeChat: React.FC<RealTimeChatProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
 
-  const currentUserId = session?.user?.id || session?.user?.email;
+  const currentUserId = user ?.user?.id || user ?.user?.email;
 
   // Filter messages for this chat
   useEffect(() => {

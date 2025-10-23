@@ -1,20 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { connectDB } from '@/lib/mongodb'
 import { Favorite } from '@/lib/models'
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     
-    if (!session?.user) {
+    if (!user?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     await connectDB()
 
-    const favorites = await Favorite.find({ userId: session.user.id })
+    const favorites = await Favorite.find({ userId: user.id })
       .populate('itemId')
       .sort({ createdAt: -1 })
 
@@ -27,9 +30,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     
-    if (!session?.user) {
+    if (!user?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -43,7 +50,7 @@ export async function POST(request: NextRequest) {
 
     // Check if already favorited
     const existingFavorite = await Favorite.findOne({
-      userId: session.user.id,
+      userId: user.id,
       itemId,
       itemType
     })
@@ -53,7 +60,7 @@ export async function POST(request: NextRequest) {
     }
 
     const favorite = new Favorite({
-      userId: session.user.id,
+      userId: user.id,
       itemId,
       itemType,
       createdAt: new Date()
@@ -70,9 +77,13 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     
-    if (!session?.user) {
+    if (!user?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -87,7 +98,7 @@ export async function DELETE(request: NextRequest) {
     await connectDB()
 
     const result = await Favorite.deleteOne({
-      userId: session.user.id,
+      userId: user.id,
       itemId,
       itemType
     })

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Search, Filter, Eye, Edit, Trash2, CheckCircle, XCircle, AlertCircle, Building2, Star, Users, DollarSign } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -28,7 +27,8 @@ interface Vendor {
 }
 
 export default function AdminVendorsPage() {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
   const [vendors, setVendors] = useState<Vendor[]>([])
   const [loading, setLoading] = useState(true)
@@ -39,12 +39,12 @@ export default function AdminVendorsPage() {
   useEffect(() => {
     if (status === 'loading') return
 
-    if (!session?.user) {
+    if (!user?.user) {
       router.push('/auth/signin')
       return
     }
 
-    if (session.user.role !== 'admin') {
+    if (user.role !== 'admin') {
       router.push('/unauthorized')
       return
     }

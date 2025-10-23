@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { 
   Calendar, 
@@ -64,7 +63,8 @@ const taskCategories = [
 ];
 
 export default function PlanningPage() {
-  const { data: session, status } = useSession();
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter();
   const [tasks, setTasks] = useState<PlanningTask[]>([]);
   const [weddingDetails, setWeddingDetails] = useState<WeddingDetails | null>(null);
@@ -82,7 +82,7 @@ export default function PlanningPage() {
   useEffect(() => {
     if (status === 'loading') return;
     
-    if (!session?.user) {
+    if (!user?.user) {
       router.push('/auth/signin');
       return;
     }
@@ -193,7 +193,7 @@ export default function PlanningPage() {
     );
   }
 
-  if (!session?.user) {
+  if (!user?.user) {
     return null;
   }
 

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { useSession } from 'next-auth/react';
 
 interface Message {
   id: string;
@@ -37,7 +36,8 @@ interface SocketState {
 }
 
 export const useSocket = () => {
-  const { data: session } = useSession();
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const socketRef = useRef<Socket | null>(null);
   const [socketState, setSocketState] = useState<SocketState>({
     isConnected: false,
@@ -52,7 +52,7 @@ export const useSocket = () => {
 
   // Initialize socket connection
   const initializeSocket = useCallback(() => {
-    if (!session?.user?.email) return;
+    if (!user?.user?.email) return;
 
     const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3000', {
       transports: ['websocket', 'polling'],
@@ -67,11 +67,11 @@ export const useSocket = () => {
       setSocketState(prev => ({ ...prev, isConnected: true, error: null }));
 
       // Authenticate with user data
-      if (session.user) {
+      if (user) {
         socket.emit('authenticate', {
-          userId: session.user.id || session.user.email,
-          email: session.user.email,
-          role: session.user.role || 'user'
+          userId: user.id || user.email,
+          email: user.email,
+          role: user.role || 'user'
         });
       }
     });
@@ -93,8 +93,8 @@ export const useSocket = () => {
         setSocketState(prev => ({ ...prev, isAuthenticated: true }));
         
         // Join user's personal room
-        if (session.user?.id || session.user?.email) {
-          socket.emit('join-user-room', session.user.id || session.user.email);
+        if (user?.id || user?.email) {
+          socket.emit('join-user-room', user.id || user.email);
         }
       }
     });
@@ -192,7 +192,7 @@ export const useSocket = () => {
     if (socketRef.current && socketState.isAuthenticated) {
       socketRef.current.emit(isTyping ? 'typing-start' : 'typing-stop', {
         receiverId,
-        senderId: session?.user?.id || session?.user?.email
+        senderId: user ?.user?.id || user ?.user?.email
       });
     }
   }, [socketState.isAuthenticated, session]);
@@ -218,7 +218,7 @@ export const useSocket = () => {
 
   // Initialize socket when session changes
   useEffect(() => {
-    if (session?.user?.email) {
+    if (user ?.user?.email) {
       initializeSocket();
     } else {
       disconnectSocket();

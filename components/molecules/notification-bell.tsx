@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { Bell, Check, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -20,14 +19,15 @@ interface Notification {
 }
 
 export function NotificationBell() {
-  const { data: session } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
   const [isOpen, setIsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (session?.user) {
+    if (user ?.user) {
       fetchNotifications()
       
       // Poll for new notifications every 30 seconds
@@ -117,7 +117,7 @@ export function NotificationBell() {
     return `${Math.floor(diffInSeconds / 86400)}d ago`
   }
 
-  if (!session?.user) {
+  if (!user?.user) {
     return null
   }
 

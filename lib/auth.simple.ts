@@ -1,5 +1,4 @@
-// import type { NextAuthOptions } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
+// import CredentialsProvider from "next-auth/providers/credentials"
 
 // Extend the built-in session types
 declare module "next-auth" {
@@ -69,10 +68,10 @@ export const authOptions = {
       return token
     },
     async session({ session, token }: { session: any; token: any }) {
-      if (token && session.user) {
-        session.user.id = token.sub!
-        if (token.role) session.user.role = token.role as string
-        if (token.twoFactorPending) session.user.twoFactorPending = token.twoFactorPending
+      if (token && user) {
+        user.id = token.sub!
+        if (token.role) user.role = token.role as string
+        if (token.twoFactorPending) user.twoFactorPending = token.twoFactorPending
       }
       return session
     },

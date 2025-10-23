@@ -10,7 +10,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Eye, EyeOff, Mail, Lock, User, Phone, Calendar } from "lucide-react"
 import Link from "next/link"
-import { signIn } from "next-auth/react"
 import { useToast } from "@/hooks/use-toast"
 
 export function RegisterForm() {

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Plus, Upload, Edit, Trash2, Eye, Heart, Download, Share2, Image as ImageIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -23,7 +22,8 @@ interface PortfolioItem {
 }
 
 export default function VendorPortfolioPage() {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([])
   const [loading, setLoading] = useState(true)
@@ -33,12 +33,12 @@ export default function VendorPortfolioPage() {
   useEffect(() => {
     if (status === 'loading') return
 
-    if (!session?.user) {
+    if (!user?.user) {
       router.push('/auth/signin')
       return
     }
 
-    if (session.user.role !== 'vendor') {
+    if (user.role !== 'vendor') {
       router.push('/unauthorized')
       return
     }

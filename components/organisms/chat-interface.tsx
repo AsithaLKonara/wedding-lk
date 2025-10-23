@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { useSession } from 'next-auth/react'
 import { useSocket } from '@/hooks/use-socket'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -141,7 +140,8 @@ interface ChatInterfaceProps {
 }
 
 export function ChatInterface({ conversationId, onConversationSelect, className = "" }: ChatInterfaceProps) {
-  const { data: session } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const { toast } = useToast()
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null)
@@ -168,7 +168,7 @@ export function ChatInterface({ conversationId, onConversationSelect, className 
 
   // Load conversations
   useEffect(() => {
-    if (session?.user?.email) {
+    if (user ?.user?.email) {
       loadConversations()
     }
   }, [session])
@@ -400,7 +400,7 @@ export function ChatInterface({ conversationId, onConversationSelect, className 
     
     if (conversation.conversationType === 'direct') {
       const otherParticipant = conversation.participants.find(
-        p => p.user._id !== session?.user?.id
+        p => p.user._id !== user ?.user?.id
       )
       return otherParticipant ? `${otherParticipant.user.firstName} ${otherParticipant.user.lastName}` : 'Direct Message'
     }
@@ -585,10 +585,10 @@ export function ChatInterface({ conversationId, onConversationSelect, className 
                 {messages.map((message) => (
                   <div
                     key={message._id}
-                    className={`flex ${message.sender._id === session?.user?.id ? 'justify-end' : 'justify-start'}`}
+                    className={`flex ${message.sender._id === user ?.user?.id ? 'justify-end' : 'justify-start'}`}
                   >
-                    <div className={`max-w-xs lg:max-w-md ${message.sender._id === session?.user?.id ? 'order-2' : 'order-1'}`}>
-                      {message.sender._id !== session?.user?.id && (
+                    <div className={`max-w-xs lg:max-w-md ${message.sender._id === user ?.user?.id ? 'order-2' : 'order-1'}`}>
+                      {message.sender._id !== user ?.user?.id && (
                         <Avatar className="h-8 w-8 mb-1">
                           <AvatarImage src={message.sender.profileImage} />
                           <AvatarFallback>{message.sender.firstName[0]}</AvatarFallback>
@@ -596,7 +596,7 @@ export function ChatInterface({ conversationId, onConversationSelect, className 
                       )}
                       
                       <div className={`rounded-lg p-3 ${
-                        message.sender._id === session?.user?.id
+                        message.sender._id === user ?.user?.id
                           ? 'bg-blue-500 text-white'
                           : 'bg-gray-100 text-gray-900'
                       }`}>
@@ -642,7 +642,7 @@ export function ChatInterface({ conversationId, onConversationSelect, className 
                             )}
                           </div>
                           
-                          {message.sender._id === session?.user?.id && (
+                          {message.sender._id === user ?.user?.id && (
                             <div className="flex items-center gap-1">
                               {getMessageStatus(message)}
                               <Button

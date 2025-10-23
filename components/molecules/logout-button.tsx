@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { signOut } from 'next-auth/react';
+// Removed NextAuth - using custom auth
 import { useRouter } from 'next/navigation';
 import { LogOut, User, Settings, HelpCircle } from 'lucide-react';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+// Removed NextAuth - using custom auth
 import { useRouter } from 'next/navigation';
 import { 
   Users, 
@@ -41,7 +41,9 @@ interface User {
 }
 
 export default function AdminUsersPage() {
-  const { data: session, status } = useSession();
+  // Custom auth implementation
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);

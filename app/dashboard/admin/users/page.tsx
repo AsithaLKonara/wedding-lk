@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Search, Filter, MoreVertical, Eye, Edit, Trash2, Shield, UserCheck, UserX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -23,7 +22,8 @@ interface User {
 }
 
 export default function AdminUsersPage() {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
@@ -34,12 +34,12 @@ export default function AdminUsersPage() {
   useEffect(() => {
     if (status === 'loading') return
 
-    if (!session?.user) {
+    if (!user?.user) {
       router.push('/auth/signin')
       return
     }
 
-    if (session.user.role !== 'admin') {
+    if (user.role !== 'admin') {
       router.push('/unauthorized')
       return
     }

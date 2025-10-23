@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/nextauth-config';
+// Removed NextAuth - using custom auth
 import { seedDatabase, clearDatabase } from '@/lib/seed-data';
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user || session.user.role !== 'admin') {
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (!user?.user || user.role !== 'admin') {
       return NextResponse.json(
         { error: 'Unauthorized - Admin access required' },
         { status: 401 }

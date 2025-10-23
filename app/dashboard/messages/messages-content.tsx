@@ -1,6 +1,5 @@
 "use client"
 
-import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,7 +12,8 @@ import { Search, MessageSquare, Send, Paperclip, Image as ImageIcon, Smile, More
 import Link from "next/link"
 
 export default function MessagesContent() {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [conversations, setConversations] = useState([
@@ -135,7 +135,7 @@ export default function MessagesContent() {
     )
   }
 
-  if (!session) {
+  if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Card className="w-full max-w-md">

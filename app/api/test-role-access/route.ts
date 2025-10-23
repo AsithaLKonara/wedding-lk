@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
+// Removed NextAuth - using custom auth
 import { connectDB } from '@/lib/db';
 import { User } from '@/lib/models/user';
 

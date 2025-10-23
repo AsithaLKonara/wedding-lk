@@ -18,7 +18,7 @@ const getStripe = () => {
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession();
-    if (!session?.user?.email) {
+    if (!token?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

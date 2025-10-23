@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { 
   User, 
@@ -46,7 +45,8 @@ interface UserProfile {
 }
 
 export default function ProfilePage() {
-  const { data: session, status } = useSession();
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -64,7 +64,7 @@ export default function ProfilePage() {
   useEffect(() => {
     if (status === 'loading') return;
     
-    if (!session?.user) {
+    if (!user?.user) {
       router.push('/auth/signin');
       return;
     }
@@ -133,7 +133,7 @@ export default function ProfilePage() {
     );
   }
 
-  if (!session?.user || !profile) {
+  if (!user?.user || !profile) {
     return null;
   }
 

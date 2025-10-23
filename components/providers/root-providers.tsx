@@ -1,7 +1,6 @@
 "use client"
 
 import { ThemeProvider } from "next-themes"
-import { SessionProvider } from "next-auth/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Toaster } from "@/components/ui/sonner"
 import RoleRouter from "./role-router"

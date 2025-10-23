@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Plus, CheckCircle, Clock, AlertCircle, Calendar, User, Filter, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -24,7 +23,8 @@ interface Task {
 }
 
 export default function PlannerTasksPage() {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
   const [tasks, setTasks] = useState<Task[]>([])
   const [loading, setLoading] = useState(true)
@@ -35,12 +35,12 @@ export default function PlannerTasksPage() {
   useEffect(() => {
     if (status === 'loading') return
 
-    if (!session?.user) {
+    if (!user?.user) {
       router.push('/auth/signin')
       return
     }
 
-    if (session.user.role !== 'wedding_planner') {
+    if (user.role !== 'wedding_planner') {
       router.push('/unauthorized')
       return
     }

@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState } from "react"
-import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -40,7 +39,8 @@ interface VendorContactProps {
 }
 
 export function VendorContact({ vendor }: VendorContactProps) {
-  const { data: session } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
@@ -57,7 +57,7 @@ export function VendorContact({ vendor }: VendorContactProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!session?.user?.email) {
+    if (!user?.user?.email) {
       toast({
         title: "Please login",
         description: "You need to be logged in to contact vendors.",
@@ -76,13 +76,13 @@ export function VendorContact({ vendor }: VendorContactProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           participants: [
-            { user: session.user.id, role: session.user.role || 'couple' },
+            { user: user.id, role: user.role || 'couple' },
             { user: vendor._id, role: 'vendor' }
           ],
           conversationType: 'direct',
           vendorId: vendor._id,
           title: `Inquiry about ${vendor.businessName}`,
-          description: `Inquiry from ${formData.name || session.user.name} about ${vendor.businessName}`,
+          description: `Inquiry from ${formData.name || user.name} about ${vendor.businessName}`,
         })
       })
 
@@ -99,7 +99,7 @@ export function VendorContact({ vendor }: VendorContactProps) {
         body: JSON.stringify({
           conversationId: conversationData.conversation._id,
           recipientId: vendor._id,
-          content: `Hi ${vendor.name},\n\n${formData.message}\n\nEvent Details:\n- Date: ${formData.eventDate}\n- Guest Count: ${formData.guestCount}\n- Budget: ${formData.budget}\n\nContact Information:\n- Name: ${formData.name || session.user.name}\n- Email: ${formData.email || session.user.email}\n- Phone: ${formData.phone || 'Not provided'}`,
+          content: `Hi ${vendor.name},\n\n${formData.message}\n\nEvent Details:\n- Date: ${formData.eventDate}\n- Guest Count: ${formData.guestCount}\n- Budget: ${formData.budget}\n\nContact Information:\n- Name: ${formData.name || user.name}\n- Email: ${formData.email || user.email}\n- Phone: ${formData.phone || 'Not provided'}`,
           messageType: 'text',
         })
       })
@@ -177,7 +177,7 @@ export function VendorContact({ vendor }: VendorContactProps) {
                 placeholder="Your full name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                defaultValue={session?.user?.name || ""}
+                defaultValue={user ?.user?.name || ""}
               />
             </div>
             
@@ -189,7 +189,7 @@ export function VendorContact({ vendor }: VendorContactProps) {
                 placeholder="your@email.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                defaultValue={session?.user?.email || ""}
+                defaultValue={user ?.user?.email || ""}
               />
             </div>
           </div>

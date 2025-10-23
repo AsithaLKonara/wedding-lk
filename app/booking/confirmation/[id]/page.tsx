@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter, useParams } from 'next/navigation'
 import { CheckCircle, Calendar, Clock, User, MapPin, CreditCard, Download, Share2, Home } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -24,7 +23,8 @@ interface BookingConfirmation {
 }
 
 export default function BookingConfirmationPage() {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
   const params = useParams()
   const bookingId = params.id as string
@@ -35,7 +35,7 @@ export default function BookingConfirmationPage() {
   useEffect(() => {
     if (status === 'loading') return
 
-    if (!session?.user) {
+    if (!user?.user) {
       router.push('/auth/signin')
       return
     }
@@ -51,7 +51,7 @@ export default function BookingConfirmationPage() {
       totalPrice: 150000,
       status: 'confirmed',
       bookingDate: new Date().toISOString(),
-      contactEmail: session.user.email || '',
+      contactEmail: user.email || '',
       contactPhone: '+94 77 123 4567',
       specialRequests: 'Outdoor ceremony preferred'
     })

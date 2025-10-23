@@ -1,4 +1,3 @@
-import { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { connectDB } from "./mongodb"
@@ -56,8 +55,8 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (token) {
-        session.user.id = token.sub!
-        session.user.role = token.role as string
+        user.id = token.sub!
+        user.role = token.role as string
       }
       return session
     }

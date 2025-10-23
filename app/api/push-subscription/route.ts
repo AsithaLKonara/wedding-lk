@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
-import { getToken } from 'next-auth/jwt';
+// Removed NextAuth - using custom auth
 
 export async function POST(request: NextRequest) {
   try {

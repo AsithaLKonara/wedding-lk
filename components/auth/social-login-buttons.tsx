@@ -1,6 +1,6 @@
 'use client';
 
-import { signIn, getSession } from 'next-auth/react';
+// Removed NextAuth - using custom auth
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

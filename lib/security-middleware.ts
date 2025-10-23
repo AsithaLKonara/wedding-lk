@@ -2,7 +2,7 @@
 // Enhanced security for cookies, sessions, and CSRF protection
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
+// Removed NextAuth - using custom auth
 
 export interface SecurityConfig {
   csrf: {

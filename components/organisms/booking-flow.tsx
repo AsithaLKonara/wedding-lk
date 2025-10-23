@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -54,7 +53,8 @@ export function BookingFlow({
   onClose, 
   onSuccess 
 }: BookingFlowProps) {
-  const { data: session } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const { toast } = useToast()
   const [currentStep, setCurrentStep] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -64,7 +64,7 @@ export function BookingFlow({
     guestCount: 50,
     specialRequirements: '',
     contactPhone: '',
-    contactEmail: session?.user?.email || '',
+    contactEmail: user ?.user?.email || '',
     paymentMethod: 'card',
     notes: ''
   })
@@ -96,7 +96,7 @@ export function BookingFlow({
   }
 
   const handleSubmit = async () => {
-    if (!session?.user) {
+    if (!user?.user) {
       toast({
         title: "Authentication Required",
         description: "Please log in to make a booking",
@@ -109,7 +109,7 @@ export function BookingFlow({
 
     try {
       const bookingData = {
-        userId: session.user.id,
+        userId: user.id,
         [itemType === 'package' ? 'packageId' : `${itemType}Id`]: itemId,
         itemType,
         eventDate: new Date(formData.eventDate),

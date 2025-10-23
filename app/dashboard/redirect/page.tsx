@@ -1,24 +1,24 @@
 "use client"
 
 import { useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 
 export default function DashboardRedirect() {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
 
   useEffect(() => {
     if (status === 'loading') return // Still loading
 
-    if (!session) {
+    if (!user) {
       router.push('/login')
       return
     }
 
     // Role-based routing
-    const userRole = (session.user as any)?.role || 'user'
+    const userRole = (user as any)?.role || 'user'
     
     console.log('🎯 Dashboard redirect - User role:', userRole)
     console.log('🎯 Session data:', session)

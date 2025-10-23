@@ -1,18 +1,18 @@
 "use client"
 
 import Link from "next/link"
-import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Logo } from "@/components/atoms/logo"
 import { SocialLinks } from "@/components/molecules/social-links"
 
 export function Footer() {
-  const { data: session } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
 
   const handlePlanningToolsClick = (e: React.MouseEvent) => {
     e.preventDefault()
-    if (session?.user) {
+    if (user ?.user) {
       router.push('/dashboard/user')
     } else {
       router.push('/auth/signin')

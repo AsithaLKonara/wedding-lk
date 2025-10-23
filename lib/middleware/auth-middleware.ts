@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/nextauth-config';
 
 export interface AuthUser {
   id: string;
@@ -17,9 +15,13 @@ export interface AuthRequest extends NextRequest {
 export function withAuth(handler: (req: AuthRequest) => Promise<NextResponse>) {
   return async (req: NextRequest): Promise<NextResponse> => {
     try {
-      const session = await getServerSession(authOptions);
+      // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
       
-      if (!session?.user) {
+      if (!user?.user) {
         return NextResponse.json(
           { error: 'Authentication required' },
           { status: 401 }
@@ -29,11 +31,11 @@ export function withAuth(handler: (req: AuthRequest) => Promise<NextResponse>) {
       // Add user to request object
       const authReq = req as AuthRequest;
       authReq.user = {
-        id: session.user.id,
-        email: session.user.email,
-        name: session.user.name,
-        role: session.user.role,
-        image: session.user.image,
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        image: user.image,
       };
 
       return handler(authReq);

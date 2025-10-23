@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -29,7 +28,8 @@ interface Payment {
 }
 
 export default function PaymentHistoryPage() {
-  const { data: session } = useSession() || {};
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -71,7 +71,7 @@ export default function PaymentHistoryPage() {
         },
         body: JSON.stringify({
           paymentId,
-          userId: session?.user?.email
+          userId: user ?.user?.email
         }),
       });
 

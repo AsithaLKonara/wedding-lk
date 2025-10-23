@@ -10,7 +10,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { getToken } from 'next-auth/jwt'
+// Removed NextAuth - using custom auth
 
 // Role definitions
 export type UserRole = 'user' | 'vendor' | 'wedding_planner' | 'admin' | 'maintainer'
@@ -227,25 +227,25 @@ export class AuthHelpers {
    */
   static async getAuthenticatedUser(request: NextRequest): Promise<AuthResult> {
     try {
-      const token = await getToken({ 
-        req: request,
-        secret: process.env.NEXTAUTH_SECRET 
-      })
-
-      if (!token || !token.userId) {
+      // Custom auth implementation
+      const token = request.cookies.get('auth-token')?.value
+      
+      if (!token) {
         return {
           success: false,
           error: 'No authentication token found'
         }
       }
 
-      // In a real app, you'd fetch user from database
+      // Verify token using custom auth
+      const jwt = require('jsonwebtoken')
+      const decoded = jwt.verify(token, process.env.NEXTAUTH_SECRET || 'your-secret-key')
+      
       const user: AuthUser = {
-        id: token.userId as string,
-        name: token.name as string,
-        email: token.email as string,
-        role: (token.role as UserRole) || 'user',
-        image: token.picture as string,
+        id: decoded.id,
+        name: decoded.name,
+        email: decoded.email,
+        role: decoded.role || 'user',
         isActive: true
       }
 

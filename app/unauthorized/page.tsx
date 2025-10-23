@@ -1,13 +1,13 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ShieldX, ArrowLeft, Home } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
 function UnauthorizedPage() {
-  const { data: session } = useSession() || { data: null };
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter();
 
   const handleGoBack = () => {
@@ -15,9 +15,9 @@ function UnauthorizedPage() {
   };
 
   const getDashboardUrl = () => {
-    if (!session?.user?.role) return "/";
+    if (!user?.user?.role) return "/";
     
-    switch (session.user.role) {
+    switch (user.role) {
       case "admin":
         return "/dashboard/admin";
       case "vendor":
@@ -51,10 +51,10 @@ function UnauthorizedPage() {
           <li>• You're trying to access a page meant for a different user type</li>
         </ul>
 
-        {session?.user && (
+        {user ?.user && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
             <p className="text-sm text-blue-800">
-              <strong>Your Role:</strong> {session.user.role}
+              <strong>Your Role:</strong> {user.role}
             </p>
             <p className="text-sm text-blue-600 mt-1">
               You can access your dashboard using the button below.
@@ -71,7 +71,7 @@ function UnauthorizedPage() {
             Go Back
           </button>
           
-          {session?.user ? (
+          {user ?.user ? (
             <Link
               href={getDashboardUrl()}
               className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"

@@ -1,9 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { useSession } from "next-auth/react"
+// Removed NextAuth - using custom auth
 import { useRouter } from "next/navigation"
-import { signOut } from "next-auth/react"
+// Removed NextAuth - using custom auth
 import dynamic from "next/dynamic"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { connectDB } from "@/lib/mongodb"
 import { User } from "@/lib/models"
@@ -37,14 +36,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Cloudinary not configured" }, { status: 503 })
     }
     
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.email) {
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (!user?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     await connectDB()
 
-    const user = await User.findOne({ email: session.user.email })
+    const user = await User.findOne({ email: user.email })
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
@@ -144,14 +147,18 @@ export async function POST(request: NextRequest) {
 // GET /api/upload - Get upload gallery
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.email) {
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (!user?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     await connectDB()
 
-    const user = await User.findOne({ email: session.user.email })
+    const user = await User.findOne({ email: user.email })
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
@@ -219,14 +226,18 @@ export async function GET(request: NextRequest) {
 // DELETE /api/upload - Delete uploaded file
 export async function DELETE(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.email) {
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (!user?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     await connectDB()
 
-    const user = await User.findOne({ email: session.user.email })
+    const user = await User.findOne({ email: user.email })
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
@@ -280,14 +291,18 @@ export async function DELETE(request: NextRequest) {
 // PUT /api/upload - Update file metadata
 export async function PUT(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.email) {
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (!user?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     await connectDB()
 
-    const user = await User.findOne({ email: session.user.email })
+    const user = await User.findOne({ email: user.email })
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Calendar, Clock, Plus, Edit, Trash2, CheckCircle, XCircle, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -30,7 +29,8 @@ interface RecurringAvailability {
 }
 
 export default function VendorAvailabilityPage() {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
   const [availabilitySlots, setAvailabilitySlots] = useState<AvailabilitySlot[]>([])
   const [recurringAvailability, setRecurringAvailability] = useState<RecurringAvailability[]>([])
@@ -41,12 +41,12 @@ export default function VendorAvailabilityPage() {
   useEffect(() => {
     if (status === 'loading') return
 
-    if (!session?.user) {
+    if (!user?.user) {
       router.push('/auth/signin')
       return
     }
 
-    if (session.user.role !== 'vendor') {
+    if (user.role !== 'vendor') {
       router.push('/unauthorized')
       return
     }

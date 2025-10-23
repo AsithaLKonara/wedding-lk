@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -44,7 +43,8 @@ interface Photo {
 }
 
 export default function PhotoReviewPage() {
-  const { data: session } = useSession() || {};
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [filteredPhotos, setFilteredPhotos] = useState<Photo[]>([]);
   const [selectedPhotos, setSelectedPhotos] = useState<string[]>([]);

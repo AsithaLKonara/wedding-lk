@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession();
     
-    if (!session || session.user.role !== 'admin') {
+    if (!token || session.user.role !== 'admin') {
       return NextResponse.json(
         { error: 'Unauthorized - Admin access required' },
         { status: 401 }
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession();
     
-    if (!session || session.user.role !== 'admin') {
+    if (!token || session.user.role !== 'admin') {
       return NextResponse.json(
         { error: 'Unauthorized - Admin access required' },
         { status: 401 }
@@ -188,7 +188,7 @@ export async function PUT(request: NextRequest) {
   try {
     const session = await getServerSession();
     
-    if (!session || session.user.role !== 'admin') {
+    if (!token || session.user.role !== 'admin') {
       return NextResponse.json(
         { error: 'Unauthorized - Admin access required' },
         { status: 401 }
@@ -268,7 +268,7 @@ export async function DELETE(request: NextRequest) {
   try {
     const session = await getServerSession();
     
-    if (!session || session.user.role !== 'admin') {
+    if (!token || session.user.role !== 'admin') {
       return NextResponse.json(
         { error: 'Unauthorized - Admin access required' },
         { status: 401 }

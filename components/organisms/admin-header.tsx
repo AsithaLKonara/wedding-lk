@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -20,11 +19,12 @@ interface AdminHeaderProps {
 }
 
 export function AdminHeader({ unreadNotifications = 0 }: AdminHeaderProps) {
-  const { data: session } = useSession();
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
   const handleLogout = () => {
-    signOut({ callbackUrl: '/' });
+    fetch('/api/auth/signout', { method: 'POST' }).then(() => { callbackUrl: '/' });
   };
 
   const getRoleIcon = (role: string) => {
@@ -49,7 +49,7 @@ export function AdminHeader({ unreadNotifications = 0 }: AdminHeaderProps) {
     }
   };
 
-  if (!session?.user) {
+  if (!user?.user) {
     return null;
   }
 
@@ -73,7 +73,7 @@ export function AdminHeader({ unreadNotifications = 0 }: AdminHeaderProps) {
         <div className="hidden md:flex items-center gap-6">
           <div className="text-center">
             <div className="text-2xl font-bold text-gray-900">
-              {session.user.role === 'admin' ? 'Full Access' : 'Limited Access'}
+              {user.role === 'admin' ? 'Full Access' : 'Limited Access'}
             </div>
             <div className="text-sm text-gray-500">Admin Privileges</div>
           </div>
@@ -106,9 +106,9 @@ export function AdminHeader({ unreadNotifications = 0 }: AdminHeaderProps) {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={session.user.image || ''} alt={session.user.name || ''} />
+                  <AvatarImage src={user.image || ''} alt={user.name || ''} />
                   <AvatarFallback className="bg-gradient-to-br from-purple-600 to-pink-600 text-white">
-                    {session.user.name?.charAt(0).toUpperCase() || 'A'}
+                    {user.name?.charAt(0).toUpperCase() || 'A'}
                   </AvatarFallback>
                 </Avatar>
               </Button>
@@ -117,10 +117,10 @@ export function AdminHeader({ unreadNotifications = 0 }: AdminHeaderProps) {
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">
-                    {session.user.name || 'Admin User'}
+                    {user.name || 'Admin User'}
                   </p>
                   <p className="text-xs leading-none text-muted-foreground">
-                    {session.user.email || 'admin@weddinglk.com'}
+                    {user.email || 'admin@weddinglk.com'}
                   </p>
                 </div>
               </DropdownMenuLabel>
@@ -129,12 +129,12 @@ export function AdminHeader({ unreadNotifications = 0 }: AdminHeaderProps) {
               {/* Role Display */}
               <div className="px-2 py-1.5">
                 <div className="flex items-center gap-2">
-                  {getRoleIcon(session.user.role || 'admin')}
+                  {getRoleIcon(user.role || 'admin')}
                   <Badge 
                     variant="outline" 
-                    className={`text-xs ${getRoleColor(session.user.role || 'admin')}`}
+                    className={`text-xs ${getRoleColor(user.role || 'admin')}`}
                   >
-                    {session.user.role || 'admin'}
+                    {user.role || 'admin'}
                   </Badge>
                 </div>
               </div>
@@ -171,17 +171,17 @@ export function AdminHeader({ unreadNotifications = 0 }: AdminHeaderProps) {
         <div className="flex items-center justify-between">
           <div className="text-center">
             <div className="text-lg font-semibold text-gray-900">
-              {session.user.role === 'admin' ? 'Full Access' : 'Limited Access'}
+              {user.role === 'admin' ? 'Full Access' : 'Limited Access'}
             </div>
             <div className="text-xs text-gray-500">Admin Privileges</div>
           </div>
           <div className="flex items-center gap-2">
-            {getRoleIcon(session.user.role || 'admin')}
+            {getRoleIcon(user.role || 'admin')}
             <Badge 
               variant="outline" 
-              className={`text-xs ${getRoleColor(session.user.role || 'admin')}`}
+              className={`text-xs ${getRoleColor(user.role || 'admin')}`}
             >
-              {session.user.role || 'admin'}
+              {user.role || 'admin'}
             </Badge>
           </div>
         </div>

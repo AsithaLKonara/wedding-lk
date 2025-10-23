@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,7 +21,8 @@ interface CheckoutItem {
 }
 
 function CheckoutPage() {
-  const { data: session, status } = useSession();
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter();
   const [items, setItems] = useState<CheckoutItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ function CheckoutPage() {
 
   useEffect(() => {
     if (status === 'loading') return;
-    if (!session) {
+    if (!user) {
       router.push('/login?callbackUrl=/checkout');
       return;
     }
@@ -66,7 +66,7 @@ function CheckoutPage() {
   };
 
   const handleCheckout = async () => {
-    if (!session?.user?.email) {
+    if (!user?.user?.email) {
       toast({
         title: 'Authentication Required',
         description: 'Please log in to continue with checkout.',
@@ -90,7 +90,7 @@ function CheckoutPage() {
             quantity: item.quantity,
             type: item.type
           })),
-          userId: session.user.email,
+          userId: user.email,
           total: calculateGrandTotal()
         }),
       });
@@ -136,7 +136,7 @@ function CheckoutPage() {
     );
   }
 
-  if (!session) {
+  if (!user) {
     return null;
   }
 
@@ -220,7 +220,7 @@ function CheckoutPage() {
                   <Input
                     id="email"
                     type="email"
-                    value={session.user?.email || ''}
+                    value={user?.email || ''}
                     disabled
                     className="bg-gray-50"
                   />

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { MessageSquare, Send, Search, MoreVertical, Phone, Video, Paperclip } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -46,7 +45,8 @@ interface Message {
 }
 
 export default function MessagesPage() {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null)
@@ -62,7 +62,7 @@ export default function MessagesPage() {
   useEffect(() => {
     if (status === 'loading') return
 
-    if (!session?.user) {
+    if (!user?.user) {
       router.push('/auth/signin')
       return
     }
@@ -137,7 +137,7 @@ export default function MessagesPage() {
     if (!selectedConversation) return
 
     const recipientId = selectedConversation.participants.find(
-      p => p._id !== session?.user?.id
+      p => p._id !== user ?.user?.id
     )?._id
 
     if (!recipientId) return
@@ -171,7 +171,7 @@ export default function MessagesPage() {
 
     try {
       const recipientId = selectedConversation.participants.find(
-        p => p._id !== session?.user?.id
+        p => p._id !== user ?.user?.id
       )?._id
 
       if (!recipientId) return
@@ -202,7 +202,7 @@ export default function MessagesPage() {
   }
 
   const getOtherParticipant = (conversation: Conversation) => {
-    return conversation.participants.find(p => p._id !== session?.user?.id)
+    return conversation.participants.find(p => p._id !== user ?.user?.id)
   }
 
   const filteredConversations = conversations.filter(conversation => {
@@ -335,7 +335,7 @@ export default function MessagesPage() {
                   <div className="h-[calc(100vh-400px)] overflow-y-auto p-4 space-y-4">
                     {messages.length > 0 ? (
                       messages.map((message) => {
-                        const isOwnMessage = message.senderId._id === session?.user?.id
+                        const isOwnMessage = message.senderId._id === user ?.user?.id
                         return (
                           <div
                             key={message._id}

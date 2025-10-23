@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
-import { signIn, getSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Eye, EyeOff, XCircle, ChevronLeft, ChevronRight, Building2, Users, Heart, CheckCircle } from 'lucide-react';
 import { Header } from '@/components/organisms/header';

@@ -1,8 +1,7 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, ReactNode } from "react";
+import { useEffect, ReactNode, useState } from "react";
 import { Loader2, ShieldX } from "lucide-react";
 
 interface ProtectedRouteProps {
@@ -16,18 +15,19 @@ export function ProtectedRoute({
   requiredRole, 
   fallback 
 }: ProtectedRouteProps) {
-  const { data: session, status } = useSession();
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter();
 
   useEffect(() => {
     if (status === "loading") return;
 
-    if (!session) {
+    if (!user) {
       router.push("/login");
       return;
     }
 
-    if (requiredRole && session.user?.role !== requiredRole) {
+    if (requiredRole && user?.role !== requiredRole) {
       router.push("/unauthorized");
       return;
     }
@@ -45,7 +45,7 @@ export function ProtectedRoute({
     );
   }
 
-  if (!session) {
+  if (!user) {
     return fallback || (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
@@ -57,7 +57,7 @@ export function ProtectedRoute({
     );
   }
 
-  if (requiredRole && session.user?.role !== requiredRole) {
+  if (requiredRole && user?.role !== requiredRole) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
@@ -65,7 +65,7 @@ export function ProtectedRoute({
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Access Denied</h2>
           <p className="text-gray-600">You don't have permission to access this page</p>
           <p className="text-sm text-gray-500 mt-2">
-            Required role: {requiredRole} | Your role: {session.user?.role}
+            Required role: {requiredRole} | Your role: {user?.role}
           </p>
         </div>
       </div>

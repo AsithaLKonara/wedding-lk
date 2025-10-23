@@ -1,8 +1,8 @@
 "use client"
 
-import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import type { AuthUser } from '@/lib/auth/custom-auth'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -65,22 +65,26 @@ interface DashboardStats {
 }
 
 export default function UnifiedDashboard() {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState<AuthUser | null>(null)
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [activeTab, setActiveTab] = useState('overview')
 
   useEffect(() => {
-    if (status === 'loading') {
-      setIsLoading(true)
-    } else if (status === 'unauthenticated') {
-      router.push('/login')
-    } else {
-      setIsLoading(false)
-      fetchDashboardData()
-    }
-  }, [status, router, session])
+    fetch('/api/auth/me')
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          setUser(data.user)
+          fetchDashboardData()
+        } else {
+          router.push('/login')
+        }
+      })
+      .catch(() => router.push('/login'))
+      .finally(() => setIsLoading(false))
+  }, [router])
 
   const fetchDashboardData = async () => {
     try {
@@ -156,7 +160,7 @@ export default function UnifiedDashboard() {
   }
 
   // Show loading state
-  if (isLoading || status === 'loading') {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
@@ -168,7 +172,7 @@ export default function UnifiedDashboard() {
   }
 
   // Show login prompt if not authenticated
-  if (!session) {
+  if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Card className="w-full max-w-md">
@@ -188,8 +192,7 @@ export default function UnifiedDashboard() {
     )
   }
 
-  const user = session.user
-  const userRole = user.role || 'user'
+  const userRole = user.role
 
   // Role-based dashboard configuration
   const getRoleConfig = () => {

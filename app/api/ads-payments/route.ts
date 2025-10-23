@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/nextauth-config';
 import { AdsPaymentService } from '@/lib/services/ads-payment-service';
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (!user?.user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -47,7 +49,7 @@ export async function POST(req: NextRequest) {
       amount,
       currency,
       description,
-      vendorId: session.user.id,
+      vendorId: user.id,
       packageId,
       paymentMethod,
       billingCycle,
@@ -70,8 +72,12 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (!user?.user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -82,7 +88,7 @@ export async function GET(req: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20');
 
     const adsPaymentService = new AdsPaymentService();
-    const payments = await adsPaymentService.getVendorPaymentHistory(session.user.id, limit);
+    const payments = await adsPaymentService.getVendorPaymentHistory(user.id, limit);
 
     return NextResponse.json({
       success: true,

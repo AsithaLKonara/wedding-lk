@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
-import { loginAsUser, loginWithCredentials, logout, seedTestData, TEST_USERS } from '../helpers/auth-helper';
+import { loginTestUser, createTestUser, seedTestData } from '../helpers/auth-helper';
 
 test.describe('Authentication Flows', () => {
   test.beforeEach(async ({ page }) => {
@@ -15,7 +15,7 @@ test.describe('Authentication Flows', () => {
     };
 
     // Go to signup
-    await page.goto('/auth/signup');
+    await page.goto('/register');
     await page.fill('input[name="name"]', user.name);
     await page.fill('input[name="email"]', user.email);
     await page.fill('input[name="password"]', user.password);
@@ -33,7 +33,7 @@ test.describe('Authentication Flows', () => {
     expect(verificationResponse.ok()).toBeTruthy();
 
     // Go to login
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', user.email);
     await page.fill('input[name="password"]', user.password);
     await page.click('button[type="submit"]');
@@ -43,12 +43,12 @@ test.describe('Authentication Flows', () => {
     await expect(page.locator('text=Welcome, text=Dashboard')).toBeVisible();
 
     // Logout
-    await logout(page);
-    await expect(page).toHaveURL('/auth/signin');
+    await page.click('[data-testid="logout-button"], button:has-text("Logout"), a:has-text("Logout")');
+    await expect(page).toHaveURL('/login');
   });
 
   test('Login with invalid credentials should show error', async ({ page }) => {
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', 'invalid@example.com');
     await page.fill('input[name="password"]', 'wrongpassword');
     await page.click('button[type="submit"]');
@@ -73,7 +73,7 @@ test.describe('Authentication Flows', () => {
   });
 
   test('Social login with Google', async ({ page }) => {
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     
     // Mock Google OAuth
     await page.route('**/api/auth/oauth/google', route => {
@@ -97,7 +97,7 @@ test.describe('Authentication Flows', () => {
 
   test('Two-factor authentication setup', async ({ page }) => {
     // Login first
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_USER_EMAIL || 'test@example.com');
     await page.fill('input[name="password"]', process.env.TEST_USER_PASSWORD || 'TestPass123!');
     await page.click('button[type="submit"]');
@@ -124,21 +124,30 @@ test.describe('Authentication Flows', () => {
 
   test('Login with test user credentials', async ({ page }) => {
     // Test login with pre-seeded test user
-    await loginAsUser(page, 'user');
+    await page.goto('/login');
+    await page.fill('input[name="email"]', 'user@test.local');
+    await page.fill('input[name="password"]', 'Test123!');
+    await page.click('button[type="submit"]');
     await expect(page).toHaveURL(/\/dashboard/);
     await expect(page.locator('text=Welcome')).toBeVisible();
   });
 
   test('Login with test vendor credentials', async ({ page }) => {
     // Test login with pre-seeded test vendor
-    await loginAsUser(page, 'vendor');
+    await page.goto('/login');
+    await page.fill('input[name="email"]', 'vendor@test.local');
+    await page.fill('input[name="password"]', 'Test123!');
+    await page.click('button[type="submit"]');
     await expect(page).toHaveURL(/\/dashboard/);
     await expect(page.locator('text=Welcome')).toBeVisible();
   });
 
   test('Login with test admin credentials', async ({ page }) => {
     // Test login with pre-seeded test admin
-    await loginAsUser(page, 'admin');
+    await page.goto('/login');
+    await page.fill('input[name="email"]', 'admin@test.local');
+    await page.fill('input[name="password"]', 'Test123!');
+    await page.click('button[type="submit"]');
     await expect(page).toHaveURL(/\/dashboard/);
     await expect(page.locator('text=Welcome')).toBeVisible();
   });

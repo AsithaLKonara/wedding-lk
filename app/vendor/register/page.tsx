@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -51,7 +50,8 @@ const services = [
 ]
 
 export default function VendorRegistrationPage() {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
   
   const [form, setForm] = useState<VendorForm>({
@@ -61,7 +61,7 @@ export default function VendorRegistrationPage() {
     services: [],
     location: '',
     contactPhone: '',
-    contactEmail: session?.user?.email || '',
+    contactEmail: user ?.user?.email || '',
     website: '',
     experience: '',
     portfolio: [],
@@ -91,7 +91,7 @@ export default function VendorRegistrationPage() {
     )
   }
 
-  if (!session?.user) {
+  if (!user?.user) {
     router.push('/auth/signin')
     return null
   }
@@ -159,7 +159,7 @@ export default function VendorRegistrationPage() {
         },
         body: JSON.stringify({
           ...form,
-          userId: session.user.id
+          userId: user.id
         })
       })
 

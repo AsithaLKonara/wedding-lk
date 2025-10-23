@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter, useParams } from 'next/navigation'
 import { Calendar, Clock, User, MapPin, CreditCard, CheckCircle, ArrowLeft, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -37,7 +36,8 @@ interface BookingForm {
 }
 
 export default function BookingPage() {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
   const params = useParams()
   const packageId = params.id as string
@@ -60,7 +60,7 @@ export default function BookingPage() {
   useEffect(() => {
     if (status === 'loading') return
 
-    if (!session?.user) {
+    if (!user?.user) {
       router.push('/auth/signin')
       return
     }
@@ -92,8 +92,8 @@ export default function BookingPage() {
     })
     
     // Pre-fill email if user is logged in
-    if (session?.user?.email) {
-      setBookingForm(prev => ({ ...prev, contactEmail: session.user.email }))
+    if (user ?.user?.email) {
+      setBookingForm(prev => ({ ...prev, contactEmail: user.email }))
     }
     
     setLoading(false)

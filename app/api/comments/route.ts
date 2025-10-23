@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { Comment, EnhancedPost } from '@/lib/models';
-import { getServerSession, authOptions } from '@/lib/auth/nextauth-config';
 
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
     const { searchParams } = new URL(request.url);
     const postId = searchParams.get('postId');
@@ -57,17 +60,17 @@ export async function GET(request: NextRequest) {
     const commentsWithInteractions = comments.map(comment => ({
       ...comment,
       userInteractions: {
-        isLiked: session?.user?.id ? comment.likes.some(like => 
+        isLiked: token ?.user?.id ? comment.likes.some(like => 
           like.user._id.toString() === session.user.id
         ) : false,
-        isDisliked: session?.user?.id ? comment.dislikes.some(dislike => 
+        isDisliked: token ?.user?.id ? comment.dislikes.some(dislike => 
           dislike.user._id.toString() === session.user.id
         ) : false,
-        canEdit: session?.user?.id ? (
+        canEdit: token ?.user?.id ? (
           comment.author.id._id.toString() === session.user.id || 
           session.user.role === 'admin'
         ) : false,
-        canDelete: session?.user?.id ? (
+        canDelete: token ?.user?.id ? (
           comment.author.id._id.toString() === session.user.id || 
           session.user.role === 'admin'
         ) : false
@@ -100,9 +103,13 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-    if (!session?.user?.id) {
+    if (!token?.user?.id) {
       return NextResponse.json({
         success: false,
         error: 'Authentication required'

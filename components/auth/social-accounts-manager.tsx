@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -33,7 +32,8 @@ interface SocialAccountsData {
 }
 
 export default function SocialAccountsManager() {
-  const { data: session, update } = useSession();
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const [data, setData] = useState<SocialAccountsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [unlinking, setUnlinking] = useState<string | null>(null);

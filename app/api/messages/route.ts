@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { connectDB } from '@/lib/db'
 import { Message, Conversation } from '@/lib/models'
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     
-    if (!session?.user) {
+    if (!user?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -27,7 +30,7 @@ export async function GET(request: NextRequest) {
     } else {
       // Get all conversations for user
       const conversations = await Conversation.find({
-        participants: session.user.id
+        participants: user.id
       })
         .populate('participants', 'name email image')
         .populate('lastMessage')
@@ -65,9 +68,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     
-    if (!session?.user) {
+    if (!user?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -84,12 +91,12 @@ export async function POST(request: NextRequest) {
     // If no conversation ID, create or find existing conversation
     if (!currentConversationId) {
       let conversation = await Conversation.findOne({
-        participants: { $all: [session.user.id, recipientId] }
+        participants: { $all: [user.id, recipientId] }
       })
 
       if (!conversation) {
         conversation = new Conversation({
-          participants: [session.user.id, recipientId],
+          participants: [user.id, recipientId],
           createdAt: new Date(),
           updatedAt: new Date()
         })
@@ -102,7 +109,7 @@ export async function POST(request: NextRequest) {
     // Create message
     const message = new Message({
       conversationId: currentConversationId,
-      senderId: session.user.id,
+      senderId: user.id,
       content,
       createdAt: new Date()
     })

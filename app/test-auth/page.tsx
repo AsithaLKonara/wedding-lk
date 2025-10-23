@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from 'react';
-import { signIn, signOut, useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 
 function TestAuthPage() {
-  const { data: session, status } = useSession() || { data: null, status: 'loading' };
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const [email, setEmail] = useState('fixed@example.com');
   const [password, setPassword] = useState('password123');
   const [result, setResult] = useState<any>(null);
@@ -24,7 +24,7 @@ function TestAuthPage() {
   };
 
   const handleSignOut = async () => {
-    await signOut({ redirect: false });
+    await fetch('/api/auth/signout', { method: 'POST' }).then(() => { redirect: false });
     setResult(null);
   };
 

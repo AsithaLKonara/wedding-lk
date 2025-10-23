@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -43,7 +42,8 @@ interface BudgetItem {
 }
 
 export default function BudgetPlannerPage() {
-  const { data: session } = useSession() || {};
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const [totalBudget, setTotalBudget] = useState(500000);
   const [categories, setCategories] = useState<BudgetCategory[]>([]);
   const [items, setItems] = useState<BudgetItem[]>([]);

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -51,7 +50,8 @@ interface ReviewReply {
 }
 
 export default function ReviewReplyPage() {
-  const { data: session } = useSession() || {};
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const [reviews, setReviews] = useState<Review[]>([]);
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
   const [replyText, setReplyText] = useState('');
@@ -211,8 +211,8 @@ export default function ReviewReplyPage() {
     const newReply: ReviewReply = {
       id: Date.now().toString(),
       reviewId: selectedReview.id,
-      userId: session?.user?.id || '',
-      userName: session?.user?.name || 'You',
+      userId: user ?.user?.id || '',
+      userName: user ?.user?.name || 'You',
       userRole: 'vendor', // In real app, determine based on user role
       message: replyText.trim(),
       createdAt: new Date().toISOString(),

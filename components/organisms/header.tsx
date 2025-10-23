@@ -3,7 +3,6 @@
 import React, { useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/molecules/theme-toggle"
 import { NavigationMenu } from "@/components/molecules/navigation-menu"
@@ -15,7 +14,8 @@ import { Menu, X } from "lucide-react"
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
 
   return (
     <motion.header
@@ -42,8 +42,8 @@ export function Header() {
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
                 </div>
-              ) : session?.user ? (
-                <LogoutButton user={session.user} />
+              ) : user ?.user ? (
+                <LogoutButton user={user} />
               ) : (
                 <>
                   <Button variant="ghost" asChild>

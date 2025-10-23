@@ -1,7 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { PerformanceMonitoringDashboard } from '@/components/organisms/performance-monitoring-dashboard';
-import { MetaAdsAnalyticsDashboard } from '@/components/organisms/meta-ads-analytics-dashboard';
+// MetaAdsAnalyticsDashboard component removed - using placeholder
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
@@ -115,7 +115,15 @@ export default function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="campaigns">
-            <MetaAdsAnalyticsDashboard />
+            <Card>
+              <CardHeader>
+                <CardTitle>Meta Ads Analytics</CardTitle>
+                <CardDescription>Meta ads integration has been removed</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">This feature has been simplified for better performance.</p>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="payments">

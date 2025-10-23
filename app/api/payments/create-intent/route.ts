@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { connectDB } from '@/lib/mongodb'
 import { Payment, Booking } from '@/lib/models'
@@ -17,9 +16,13 @@ const getStripe = () => {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
+    // Custom auth implementation
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     
-    if (!session?.user) {
+    if (!user?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -33,7 +36,7 @@ export async function POST(request: NextRequest) {
 
     // Verify booking exists and belongs to user
     const booking = await Booking.findById(bookingId)
-    if (!booking || booking.user.toString() !== session.user.id) {
+    if (!booking || booking.user.toString() !== user.id) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 })
     }
 
@@ -44,7 +47,7 @@ export async function POST(request: NextRequest) {
       currency: currency.toLowerCase(),
       metadata: {
         bookingId: bookingId,
-        userId: session.user.id,
+        userId: user.id,
         description: description || 'WeddingLK Package Booking'
       },
       automatic_payment_methods: {
@@ -54,7 +57,7 @@ export async function POST(request: NextRequest) {
 
     // Create payment record
     const payment = new Payment({
-      user: session.user.id,
+      user: user.id,
       booking: bookingId,
       amount: amount,
       currency: currency,

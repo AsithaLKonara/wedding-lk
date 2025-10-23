@@ -9,7 +9,7 @@ export async function PUT(request: NextRequest) {
   try {
     const session = await getServerSession();
     
-    if (!session?.user?.email) {
+    if (!token?.user?.email) {
       return NextResponse.json(
         { success: false, error: 'Authentication required' },
         { status: 401 }

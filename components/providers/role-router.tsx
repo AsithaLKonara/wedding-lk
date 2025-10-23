@@ -1,15 +1,15 @@
 "use client"
 
-import { useSession } from "next-auth/react"
 import { useRouter, usePathname } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react";
 
 interface RoleRouterProps {
   children: React.ReactNode
 }
 
 export default function RoleRouter({ children }: RoleRouterProps) {
-  const { data: session, status } = useSession()
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('loading');
   const router = useRouter()
   const pathname = usePathname()
 
@@ -21,8 +21,8 @@ export default function RoleRouter({ children }: RoleRouterProps) {
     if (status === 'unauthenticated') return
     
     // If authenticated, check role-based routing
-    if (session?.user?.role) {
-      const userRole = session.user.role
+    if (user ?.user?.role) {
+      const userRole = user.role
       const currentPath = pathname
 
       // Define role-based routing rules
