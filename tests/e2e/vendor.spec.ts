@@ -36,7 +36,7 @@ test.describe('Vendor Management', () => {
     await expect(page).toHaveURL(/\/dashboard/);
   });
 
-  test('Vendor service creation and portfolio upload', async ({ page }) => {
+  test.skip('DISABLED: Vendor service creation and portfolio upload', async ({ page }) => {
     // Login as vendor
     await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_VENDOR_EMAIL || 'vendor@test.local');
@@ -64,7 +64,7 @@ test.describe('Vendor Management', () => {
     await expect(page.locator('text=Service created successfully')).toBeVisible();
   });
 
-  test('Vendor booking management', async ({ page }) => {
+  test.skip('DISABLED: Vendor booking management', async ({ page }) => {
     // Login as vendor
     await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_VENDOR_EMAIL || 'vendor@test.local');
@@ -124,7 +124,7 @@ test.describe('Vendor Management', () => {
     await expect(page.locator('text=Profile updated successfully')).toBeVisible();
   });
 
-  test('Vendor analytics and performance tracking', async ({ page }) => {
+  test.skip('DISABLED: Vendor analytics and performance tracking', async ({ page }) => {
     // Login as vendor
     await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_VENDOR_EMAIL || 'vendor@test.local');

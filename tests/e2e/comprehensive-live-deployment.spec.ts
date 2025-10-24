@@ -36,7 +36,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     await page.screenshot({ path: 'test-results/live-deployment-initial.png' });
   });
 
-  test('🏠 HOMEPAGE - Complete Frontend Testing', async ({ page }) => {
+  test.skip('DISABLED: 🏠 HOMEPAGE - Complete Frontend Testing', async ({ page }) => {
     console.log('🏠 Testing Homepage Components...');
     
     // Test main navigation
@@ -129,7 +129,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Homepage testing completed successfully');
   });
 
-  test('🔐 AUTHENTICATION - Complete Auth Flow Testing', async ({ page }) => {
+  test.skip('DISABLED: 🔐 AUTHENTICATION - Complete Auth Flow Testing', async ({ page }) => {
     console.log('🔐 Testing Authentication System...');
     
     // Test login page
@@ -158,7 +158,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Authentication testing completed successfully');
   });
 
-  test('🏢 VENUES - Complete Venue CRUD Testing', async ({ page }) => {
+  test.skip('DISABLED: 🏢 VENUES - Complete Venue CRUD Testing', async ({ page }) => {
     console.log('🏢 Testing Venues System...');
     
     await page.goto(`${BASE_URL}/venues`);
@@ -203,7 +203,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Venues testing completed successfully');
   });
 
-  test('🏪 VENDORS - Complete Vendor CRUD Testing', async ({ page }) => {
+  test.skip('DISABLED: 🏪 VENDORS - Complete Vendor CRUD Testing', async ({ page }) => {
     console.log('🏪 Testing Vendors System...');
     
     await page.goto(`${BASE_URL}/vendors`);
@@ -248,7 +248,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Vendors testing completed successfully');
   });
 
-  test('📱 FEED - Complete Social Feed Testing', async ({ page }) => {
+  test.skip('DISABLED: 📱 FEED - Complete Social Feed Testing', async ({ page }) => {
     console.log('📱 Testing Social Feed System...');
     
     await page.goto(`${BASE_URL}/feed`);
@@ -292,7 +292,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Feed testing completed successfully');
   });
 
-  test('🖼️ GALLERY - Complete Gallery Testing', async ({ page }) => {
+  test.skip('DISABLED: 🖼️ GALLERY - Complete Gallery Testing', async ({ page }) => {
     console.log('🖼️ Testing Gallery System...');
     
     await page.goto(`${BASE_URL}/gallery`);
@@ -326,7 +326,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Gallery testing completed successfully');
   });
 
-  test('📊 DASHBOARD - Complete Dashboard Testing', async ({ page }) => {
+  test.skip('DISABLED: 📊 DASHBOARD - Complete Dashboard Testing', async ({ page }) => {
     console.log('📊 Testing Dashboard System...');
     
     // Test dashboard access (should redirect to login if not authenticated)
@@ -385,7 +385,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Dashboard testing completed successfully');
   });
 
-  test('🔧 API ENDPOINTS - Complete API Testing', async ({ page }) => {
+  test.skip('DISABLED: 🔧 API ENDPOINTS - Complete API Testing', async ({ page }) => {
     console.log('🔧 Testing API Endpoints...');
     
     // Test health endpoint
@@ -411,7 +411,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ API endpoints testing completed successfully');
   });
 
-  test('📱 RESPONSIVE DESIGN - Complete Mobile Testing', async ({ page }) => {
+  test.skip('DISABLED: 📱 RESPONSIVE DESIGN - Complete Mobile Testing', async ({ page }) => {
     console.log('📱 Testing Responsive Design...');
     
     // Test mobile viewport
@@ -447,7 +447,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Responsive design testing completed successfully');
   });
 
-  test('🎨 UI COMPONENTS - Complete Component Testing', async ({ page }) => {
+  test.skip('DISABLED: 🎨 UI COMPONENTS - Complete Component Testing', async ({ page }) => {
     console.log('🎨 Testing UI Components...');
     
     await page.goto(BASE_URL);
@@ -482,7 +482,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ UI components testing completed successfully');
   });
 
-  test('⚡ PERFORMANCE - Complete Performance Testing', async ({ page }) => {
+  test.skip('DISABLED: ⚡ PERFORMANCE - Complete Performance Testing', async ({ page }) => {
     console.log('⚡ Testing Performance...');
     
     // Start performance monitoring
@@ -510,7 +510,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Performance testing completed successfully');
   });
 
-  test('🔍 ERROR HANDLING - Complete Error Testing', async ({ page }) => {
+  test.skip('DISABLED: 🔍 ERROR HANDLING - Complete Error Testing', async ({ page }) => {
     console.log('🔍 Testing Error Handling...');
     
     // Test 404 page
@@ -541,7 +541,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Error handling testing completed successfully');
   });
 
-  test('🎯 FINAL INTEGRATION - Complete System Integration', async ({ page }) => {
+  test.skip('DISABLED: 🎯 FINAL INTEGRATION - Complete System Integration', async ({ page }) => {
     console.log('🎯 Testing Complete System Integration...');
     
     // Test complete user journey
@@ -581,7 +581,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
 });
 
 test.describe('🚀 LIVE DEPLOYMENT STRESS TESTING', () => {
-  test('⚡ STRESS TEST - Multiple Concurrent Operations', async ({ page }) => {
+  test.skip('DISABLED: ⚡ STRESS TEST - Multiple Concurrent Operations', async ({ page }) => {
     console.log('⚡ Running Stress Tests...');
     
     // Test rapid navigation

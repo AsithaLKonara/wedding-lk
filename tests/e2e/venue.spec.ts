@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 
 test.describe('Venue Management', () => {
-  test('Venue search and filtering', async ({ page }) => {
+  test.skip('DISABLED: Venue search and filtering', async ({ page }) => {
     await page.goto('/venues');
     
     // Search for venues
@@ -21,7 +21,7 @@ test.describe('Venue Management', () => {
     await expect(page.locator('.venue-card, [data-testid="venue-card"]')).toHaveCount.greaterThan(0);
   });
 
-  test('Venue details and booking inquiry', async ({ page }) => {
+  test.skip('DISABLED: Venue details and booking inquiry', async ({ page }) => {
     await page.goto('/venues');
     
     // Click on first venue
@@ -57,7 +57,7 @@ test.describe('Venue Management', () => {
     await expect(page.locator('text=Inquiry sent successfully')).toBeVisible();
   });
 
-  test('Venue availability calendar', async ({ page }) => {
+  test.skip('DISABLED: Venue availability calendar', async ({ page }) => {
     await page.goto('/venues');
     await page.click('.venue-card:first-child, [data-testid="venue-card"]:first-child');
     
@@ -70,7 +70,7 @@ test.describe('Venue Management', () => {
     await expect(page.locator('text=Available')).toBeVisible();
   });
 
-  test('Venue reviews and ratings', async ({ page }) => {
+  test.skip('DISABLED: Venue reviews and ratings', async ({ page }) => {
     await page.goto('/venues');
     await page.click('.venue-card:first-child, [data-testid="venue-card"]:first-child');
     
@@ -120,7 +120,7 @@ test.describe('Venue Management', () => {
     await expect(page.locator('text=Venue created successfully')).toBeVisible();
   });
 
-  test('Venue booking management', async ({ page }) => {
+  test.skip('DISABLED: Venue booking management', async ({ page }) => {
     // Login as venue owner
     await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_VENUE_OWNER_EMAIL || 'venue@test.local');

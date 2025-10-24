@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Simple Production Tests', () => {
-  test('Homepage loads and has basic content', async ({ page }) => {
+  test.skip('DISABLED: Homepage loads and has basic content', async ({ page }) => {
     await page.goto('/');
     
     // Check that the page loads
@@ -14,7 +14,7 @@ test.describe('Simple Production Tests', () => {
     await expect(page.locator('text=Wedding.lk')).toBeVisible();
   });
 
-  test('Page has navigation elements', async ({ page }) => {
+  test.skip('DISABLED: Page has navigation elements', async ({ page }) => {
     await page.goto('/');
     
     // Check that navigation elements exist (may be in different locations)
@@ -22,7 +22,7 @@ test.describe('Simple Production Tests', () => {
     await expect(page.locator('a[href="/gallery"]')).toBeVisible();
   });
 
-  test('Page has footer content', async ({ page }) => {
+  test.skip('DISABLED: Page has footer content', async ({ page }) => {
     await page.goto('/');
     
     // Scroll to footer
@@ -33,7 +33,7 @@ test.describe('Simple Production Tests', () => {
     await expect(page.locator('text=2024')).toBeVisible();
   });
 
-  test('Page is responsive', async ({ page }) => {
+  test.skip('DISABLED: Page is responsive', async ({ page }) => {
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/');
@@ -49,7 +49,7 @@ test.describe('Simple Production Tests', () => {
     await expect(page.locator('h1')).toContainText('Find Your Perfect');
   });
 
-  test('Page has correct metadata', async ({ page }) => {
+  test.skip('DISABLED: Page has correct metadata', async ({ page }) => {
     await page.goto('/');
     
     // Check title

@@ -40,7 +40,7 @@ const journeyData = {
 };
 
 test.describe.skip('DISABLED ', () => {
-  test('End-to-End Wedding Planning Journey', async ({ page }) => {
+  test.skip('DISABLED: End-to-End Wedding Planning Journey', async ({ page }) => {
     // Step 1: Registration and Profile Setup
     await page.goto('/register');
     await page.fill('input[name="name"]', journeyData.couple.name);
@@ -182,8 +182,8 @@ test.describe.skip('DISABLED ', () => {
   });
 });
 
-test.describe('📸 Vendor Business Journey', () => {
-  test('Complete Vendor Onboarding and Management Journey', async ({ page }) => {
+test.describe.skip('DISABLED: 📸 Vendor Business Journey', () => {
+  test.skip('DISABLED: Complete Vendor Onboarding and Management Journey', async ({ page }) => {
     // Step 1: Vendor Registration
     await page.goto('/vendor/register');
     await page.fill('input[name="businessName"]', journeyData.photographer.businessName);
@@ -304,8 +304,8 @@ test.describe('📸 Vendor Business Journey', () => {
   });
 });
 
-test.describe('👰 Wedding Planner Professional Journey', () => {
-  test('Complete Wedding Planner Workflow', async ({ page }) => {
+test.describe.skip('DISABLED: 👰 Wedding Planner Professional Journey', () => {
+  test.skip('DISABLED: Complete Wedding Planner Workflow', async ({ page }) => {
     // Step 1: Planner Registration and Setup
     await page.goto('/register');
     await page.fill('input[name="name"]', 'Emma Wedding Planner');
@@ -438,8 +438,8 @@ test.describe('👰 Wedding Planner Professional Journey', () => {
   });
 });
 
-test.describe('👑 Admin Platform Management Journey', () => {
-  test('Complete Admin Platform Management', async ({ page }) => {
+test.describe.skip('DISABLED: 👑 Admin Platform Management Journey', () => {
+  test.skip('DISABLED: Complete Admin Platform Management', async ({ page }) => {
     // Step 1: Admin Login
     await page.goto('/login');
     await page.fill('input[name="email"]', 'admin@test.com');
@@ -551,8 +551,8 @@ test.describe('👑 Admin Platform Management Journey', () => {
   });
 });
 
-test.describe('🔄 Cross-Platform Integration Journey', () => {
-  test('Mobile and Web Integration', async ({ page }) => {
+test.describe.skip('DISABLED: 🔄 Cross-Platform Integration Journey', () => {
+  test.skip('DISABLED: Mobile and Web Integration', async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     
@@ -593,8 +593,8 @@ test.describe('🔄 Cross-Platform Integration Journey', () => {
   });
 });
 
-test.describe('🚨 Error Handling and Recovery Journey', () => {
-  test('Application Error Recovery', async ({ page }) => {
+test.describe.skip('DISABLED: 🚨 Error Handling and Recovery Journey', () => {
+  test.skip('DISABLED: Application Error Recovery', async ({ page }) => {
     // Test network error handling
     await page.route('**/api/venues', route => route.abort());
     

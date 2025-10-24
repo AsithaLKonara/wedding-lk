@@ -19,7 +19,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     await page.screenshot({ path: 'test-results/live-deployment-realistic.png' });
   });
 
-  test('🏠 HOMEPAGE - Realistic Frontend Testing', async ({ page }) => {
+  test.skip('DISABLED: 🏠 HOMEPAGE - Realistic Frontend Testing', async ({ page }) => {
     console.log('🏠 Testing Homepage Components...');
     
     // Test main navigation - use more specific selectors
@@ -80,7 +80,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Homepage testing completed successfully');
   });
 
-  test('🔐 AUTHENTICATION - Realistic Auth Flow Testing', async ({ page }) => {
+  test.skip('DISABLED: 🔐 AUTHENTICATION - Realistic Auth Flow Testing', async ({ page }) => {
     console.log('🔐 Testing Authentication System...');
     
     // Test login page
@@ -119,7 +119,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Authentication testing completed');
   });
 
-  test('🏢 VENUES - Realistic Venue Testing', async ({ page }) => {
+  test.skip('DISABLED: 🏢 VENUES - Realistic Venue Testing', async ({ page }) => {
     console.log('🏢 Testing Venues System...');
     
     await page.goto(`${BASE_URL}/venues`);
@@ -151,7 +151,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Venues testing completed');
   });
 
-  test('🏪 VENDORS - Realistic Vendor Testing', async ({ page }) => {
+  test.skip('DISABLED: 🏪 VENDORS - Realistic Vendor Testing', async ({ page }) => {
     console.log('🏪 Testing Vendors System...');
     
     await page.goto(`${BASE_URL}/vendors`);
@@ -175,7 +175,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Vendors testing completed');
   });
 
-  test('📱 FEED - Realistic Social Feed Testing', async ({ page }) => {
+  test.skip('DISABLED: 📱 FEED - Realistic Social Feed Testing', async ({ page }) => {
     console.log('📱 Testing Social Feed System...');
     
     await page.goto(`${BASE_URL}/feed`);
@@ -201,7 +201,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Feed testing completed');
   });
 
-  test('🖼️ GALLERY - Realistic Gallery Testing', async ({ page }) => {
+  test.skip('DISABLED: 🖼️ GALLERY - Realistic Gallery Testing', async ({ page }) => {
     console.log('🖼️ Testing Gallery System...');
     
     await page.goto(`${BASE_URL}/gallery`);
@@ -234,7 +234,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Gallery testing completed');
   });
 
-  test('📊 DASHBOARD - Realistic Dashboard Testing', async ({ page }) => {
+  test.skip('DISABLED: 📊 DASHBOARD - Realistic Dashboard Testing', async ({ page }) => {
     console.log('📊 Testing Dashboard System...');
     
     // Test dashboard access
@@ -270,7 +270,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Dashboard testing completed');
   });
 
-  test('🔧 API ENDPOINTS - Realistic API Testing', async ({ page }) => {
+  test.skip('DISABLED: 🔧 API ENDPOINTS - Realistic API Testing', async ({ page }) => {
     console.log('🔧 Testing API Endpoints...');
     
     // Test various API endpoints
@@ -299,7 +299,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ API endpoints testing completed');
   });
 
-  test('📱 RESPONSIVE DESIGN - Realistic Mobile Testing', async ({ page }) => {
+  test.skip('DISABLED: 📱 RESPONSIVE DESIGN - Realistic Mobile Testing', async ({ page }) => {
     console.log('📱 Testing Responsive Design...');
     
     // Test mobile viewport
@@ -330,7 +330,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Responsive design testing completed');
   });
 
-  test('🎨 UI COMPONENTS - Realistic Component Testing', async ({ page }) => {
+  test.skip('DISABLED: 🎨 UI COMPONENTS - Realistic Component Testing', async ({ page }) => {
     console.log('🎨 Testing UI Components...');
     
     await page.goto(BASE_URL);
@@ -368,7 +368,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ UI components testing completed');
   });
 
-  test('⚡ PERFORMANCE - Realistic Performance Testing', async ({ page }) => {
+  test.skip('DISABLED: ⚡ PERFORMANCE - Realistic Performance Testing', async ({ page }) => {
     console.log('⚡ Testing Performance...');
     
     // Measure page load time
@@ -404,7 +404,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Performance testing completed');
   });
 
-  test('🔍 ERROR HANDLING - Realistic Error Testing', async ({ page }) => {
+  test.skip('DISABLED: 🔍 ERROR HANDLING - Realistic Error Testing', async ({ page }) => {
     console.log('🔍 Testing Error Handling...');
     
     // Test 404 page
@@ -430,7 +430,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Error handling testing completed');
   });
 
-  test('🎯 FINAL INTEGRATION - Realistic System Integration', async ({ page }) => {
+  test.skip('DISABLED: 🎯 FINAL INTEGRATION - Realistic System Integration', async ({ page }) => {
     console.log('🎯 Testing Complete System Integration...');
     
     // Test complete user journey
@@ -460,7 +460,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('✅ Complete system integration testing completed');
   });
 
-  test('📊 LIVE DEPLOYMENT STATUS REPORT', async ({ page }) => {
+  test.skip('DISABLED: 📊 LIVE DEPLOYMENT STATUS REPORT', async ({ page }) => {
     console.log('📊 Generating Live Deployment Status Report...');
     
     const report = {

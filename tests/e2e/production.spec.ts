@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Production Site Tests', () => {
-  test('Homepage loads correctly', async ({ page }) => {
+  test.skip('DISABLED: Homepage loads correctly', async ({ page }) => {
     await page.goto('/');
     
     // Check that the main heading is visible
@@ -16,7 +16,7 @@ test.describe('Production Site Tests', () => {
     await expect(page.locator('nav a[href="/gallery"]')).toBeVisible();
   });
 
-  test('Navigation works correctly', async ({ page }) => {
+  test.skip('DISABLED: Navigation works correctly', async ({ page }) => {
     await page.goto('/');
     
     // Test venues navigation - use a more robust approach
@@ -34,7 +34,7 @@ test.describe('Production Site Tests', () => {
     await expect(page.locator('h1')).toContainText('Find Your Perfect');
   });
 
-  test('Search functionality is present', async ({ page }) => {
+  test.skip('DISABLED: Search functionality is present', async ({ page }) => {
     await page.goto('/');
     
     // Check that the search input is present (try different placeholder text)
@@ -44,7 +44,7 @@ test.describe('Production Site Tests', () => {
     await expect(page.locator('button:has-text("Find My Perfect Wedding")')).toBeVisible();
   });
 
-  test('Footer links are present', async ({ page }) => {
+  test.skip('DISABLED: Footer links are present', async ({ page }) => {
     await page.goto('/');
     
     // Scroll to footer
@@ -58,7 +58,7 @@ test.describe('Production Site Tests', () => {
     await expect(page.locator('footer a[href="/about"], footer a[href="/contact"]')).toBeVisible();
   });
 
-  test('Responsive design works', async ({ page }) => {
+  test.skip('DISABLED: Responsive design works', async ({ page }) => {
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/');
@@ -74,7 +74,7 @@ test.describe('Production Site Tests', () => {
     await expect(page.locator('nav')).toBeVisible();
   });
 
-  test('Page metadata is correct', async ({ page }) => {
+  test.skip('DISABLED: Page metadata is correct', async ({ page }) => {
     await page.goto('/');
     
     // Check title

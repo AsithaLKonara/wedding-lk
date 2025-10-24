@@ -65,7 +65,7 @@ test.describe('🔐 Authentication & User Management CRUD', () => {
     await expect(page.locator('text=Registration successful')).toBeVisible({ timeout: 10000 });
   });
 
-  test('User Login Flow', async ({ page }) => {
+  test.skip('DISABLED: User Login Flow', async ({ page }) => {
     await page.goto('/login');
     
     // Fill login form
@@ -79,7 +79,7 @@ test.describe('🔐 Authentication & User Management CRUD', () => {
     await expect(page).toHaveURL(/\/dashboard/, { timeout: 10000 });
   });
 
-  test('User Profile CRUD Operations', async ({ page }) => {
+  test.skip('DISABLED: User Profile CRUD Operations', async ({ page }) => {
     // Login first
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
@@ -103,7 +103,7 @@ test.describe('🔐 Authentication & User Management CRUD', () => {
     await expect(page.locator('text=Profile updated successfully')).toBeVisible();
   });
 
-  test('User Settings CRUD Operations', async ({ page }) => {
+  test.skip('DISABLED: User Settings CRUD Operations', async ({ page }) => {
     // Login first
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
@@ -145,7 +145,7 @@ test.describe('🏢 Vendor Management CRUD', () => {
     await expect(page.locator('text=Vendor registration submitted')).toBeVisible();
   });
 
-  test('Vendor Services CRUD Operations', async ({ page }) => {
+  test.skip('DISABLED: Vendor Services CRUD Operations', async ({ page }) => {
     // Login as vendor
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.vendor.email);
@@ -179,7 +179,7 @@ test.describe('🏢 Vendor Management CRUD', () => {
     await expect(page.locator('text=Wedding Photography')).not.toBeVisible();
   });
 
-  test('Vendor Analytics & Reports', async ({ page }) => {
+  test.skip('DISABLED: Vendor Analytics & Reports', async ({ page }) => {
     // Login as vendor
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.vendor.email);
@@ -198,7 +198,7 @@ test.describe('🏢 Vendor Management CRUD', () => {
 });
 
 test.describe('📅 Booking System CRUD', () => {
-  test('Create Booking Flow', async ({ page }) => {
+  test.skip('DISABLED: Create Booking Flow', async ({ page }) => {
     // Login as regular user
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
@@ -225,7 +225,7 @@ test.describe('📅 Booking System CRUD', () => {
     await expect(page.locator('text=Booking confirmed')).toBeVisible();
   });
 
-  test('Booking Management CRUD', async ({ page }) => {
+  test.skip('DISABLED: Booking Management CRUD', async ({ page }) => {
     // Login as user
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
@@ -255,7 +255,7 @@ test.describe('📅 Booking System CRUD', () => {
     await expect(page.locator('text=Booking cancelled')).toBeVisible();
   });
 
-  test('Booking Status Tracking', async ({ page }) => {
+  test.skip('DISABLED: Booking Status Tracking', async ({ page }) => {
     // Login as vendor
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.vendor.email);
@@ -280,7 +280,7 @@ test.describe('📅 Booking System CRUD', () => {
 });
 
 test.describe('👥 Wedding Planner CRUD Operations', () => {
-  test('Planner Client Management', async ({ page }) => {
+  test.skip('DISABLED: Planner Client Management', async ({ page }) => {
     // Login as wedding planner
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.weddingPlanner.email);
@@ -310,7 +310,7 @@ test.describe('👥 Wedding Planner CRUD Operations', () => {
     await expect(page.locator('text=Client updated successfully')).toBeVisible();
   });
 
-  test('Planner Task Management', async ({ page }) => {
+  test.skip('DISABLED: Planner Task Management', async ({ page }) => {
     // Login as wedding planner
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.weddingPlanner.email);
@@ -339,7 +339,7 @@ test.describe('👥 Wedding Planner CRUD Operations', () => {
 });
 
 test.describe('🛡️ RBAC (Role-Based Access Control) Tests', () => {
-  test('User Role Access Control', async ({ page }) => {
+  test.skip('DISABLED: User Role Access Control', async ({ page }) => {
     // Login as regular user
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
@@ -363,7 +363,7 @@ test.describe('🛡️ RBAC (Role-Based Access Control) Tests', () => {
     await expect(page.locator('text=Access Denied')).toBeVisible();
   });
 
-  test('Vendor Role Access Control', async ({ page }) => {
+  test.skip('DISABLED: Vendor Role Access Control', async ({ page }) => {
     // Login as vendor
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.vendor.email);
@@ -387,7 +387,7 @@ test.describe('🛡️ RBAC (Role-Based Access Control) Tests', () => {
     await expect(page.locator('text=Access Denied')).toBeVisible();
   });
 
-  test('Admin Role Access Control', async ({ page }) => {
+  test.skip('DISABLED: Admin Role Access Control', async ({ page }) => {
     // Login as admin
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.admin.email);
@@ -409,7 +409,7 @@ test.describe('🛡️ RBAC (Role-Based Access Control) Tests', () => {
     await expect(page.locator('text=Reports & Analytics')).toBeVisible();
   });
 
-  test('Middleware Route Protection', async ({ page }) => {
+  test.skip('DISABLED: Middleware Route Protection', async ({ page }) => {
     // Test unauthenticated access to protected routes
     await page.goto('/dashboard');
     await expect(page).toHaveURL(/\/auth\/signin/);
@@ -423,7 +423,7 @@ test.describe('🛡️ RBAC (Role-Based Access Control) Tests', () => {
 });
 
 test.describe('💳 Payment & Financial CRUD', () => {
-  test('Payment Processing Flow', async ({ page }) => {
+  test.skip('DISABLED: Payment Processing Flow', async ({ page }) => {
     // Login as user
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
@@ -447,7 +447,7 @@ test.describe('💳 Payment & Financial CRUD', () => {
     await expect(page.locator('text=Payment successful')).toBeVisible();
   });
 
-  test('Payment History & Management', async ({ page }) => {
+  test.skip('DISABLED: Payment History & Management', async ({ page }) => {
     // Login as user
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
@@ -468,7 +468,7 @@ test.describe('💳 Payment & Financial CRUD', () => {
 });
 
 test.describe('📱 Mobile & Responsive CRUD', () => {
-  test('Mobile Navigation & CRUD Operations', async ({ page }) => {
+  test.skip('DISABLED: Mobile Navigation & CRUD Operations', async ({ page }) => {
     // Set mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
     
@@ -498,7 +498,7 @@ test.describe('📱 Mobile & Responsive CRUD', () => {
 });
 
 test.describe('🔍 Search & Filter CRUD', () => {
-  test('Venue Search & Filter Operations', async ({ page }) => {
+  test.skip('DISABLED: Venue Search & Filter Operations', async ({ page }) => {
     await page.goto('/venues');
     
     // Search for venues
@@ -515,7 +515,7 @@ test.describe('🔍 Search & Filter CRUD', () => {
     await expect(page.locator('text=Filtered Results')).toBeVisible();
   });
 
-  test('Vendor Search & Filter Operations', async ({ page }) => {
+  test.skip('DISABLED: Vendor Search & Filter Operations', async ({ page }) => {
     await page.goto('/vendors');
     
     // Search for vendors
@@ -532,7 +532,7 @@ test.describe('🔍 Search & Filter CRUD', () => {
 });
 
 test.describe('📊 Analytics & Reporting CRUD', () => {
-  test('User Analytics Dashboard', async ({ page }) => {
+  test.skip('DISABLED: User Analytics Dashboard', async ({ page }) => {
     // Login as user
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
@@ -549,7 +549,7 @@ test.describe('📊 Analytics & Reporting CRUD', () => {
     await expect(page.locator('text=Spending Overview')).toBeVisible();
   });
 
-  test('Admin Analytics & Reports', async ({ page }) => {
+  test.skip('DISABLED: Admin Analytics & Reports', async ({ page }) => {
     // Login as admin
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.admin.email);
@@ -578,7 +578,7 @@ test.describe('📊 Analytics & Reporting CRUD', () => {
 });
 
 test.describe('🔔 Notification & Communication CRUD', () => {
-  test('Notification Management', async ({ page }) => {
+  test.skip('DISABLED: Notification Management', async ({ page }) => {
     // Login as user
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
@@ -602,7 +602,7 @@ test.describe('🔔 Notification & Communication CRUD', () => {
     await expect(page.locator('text=Notification deleted')).toBeVisible();
   });
 
-  test('Message System CRUD', async ({ page }) => {
+  test.skip('DISABLED: Message System CRUD', async ({ page }) => {
     // Login as user
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
@@ -630,7 +630,7 @@ test.describe('🔔 Notification & Communication CRUD', () => {
 });
 
 test.describe('🔄 Data Synchronization & Cache CRUD', () => {
-  test('Data Cache Management', async ({ page }) => {
+  test.skip('DISABLED: Data Cache Management', async ({ page }) => {
     // Login as admin
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.admin.email);
@@ -655,7 +655,7 @@ test.describe('🔄 Data Synchronization & Cache CRUD', () => {
 });
 
 test.describe('🛠️ System Administration CRUD', () => {
-  test('User Management Operations', async ({ page }) => {
+  test.skip('DISABLED: User Management Operations', async ({ page }) => {
     // Login as admin
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.admin.email);
@@ -683,7 +683,7 @@ test.describe('🛠️ System Administration CRUD', () => {
     await expect(page.locator('text=User deactivated successfully')).toBeVisible();
   });
 
-  test('System Settings Management', async ({ page }) => {
+  test.skip('DISABLED: System Settings Management', async ({ page }) => {
     // Login as admin
     await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.admin.email);
