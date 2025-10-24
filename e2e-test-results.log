@@ -1,0 +1,22 @@
+
+> weddinglk-next@1.0.0 test:e2e
+> playwright test
+
+
+Running 582 tests using 2 workers
+
+  -    1 [chromium] › tests/e2e/api-integration.spec.ts:56:8 › 🔐 Authentication API Tests › DISABLED: User Registration API
+  -    2 [chromium] › tests/e2e/api-integration.spec.ts:72:8 › 🔐 Authentication API Tests › DISABLED: User Login API
+  -    3 [chromium] › tests/e2e/api-integration.spec.ts:101:8 › 🔐 Authentication API Tests › DISABLED: Password Reset API
+  ✘    5 [chromium] › tests/e2e/api-integration.spec.ts:112:7 › 🔐 Authentication API Tests › Email Verification API (6.0s)
+  ✘    4 [chromium] › tests/e2e/api-integration.spec.ts:87:7 › 🔐 Authentication API Tests › Invalid Login API (6.0s)
+  ✘    6 [chromium] › tests/e2e/api-integration.spec.ts:124:7 › 👤 User Management API Tests › Get User Profile API (5.1s)
+  ✘    7 [chromium] › tests/e2e/api-integration.spec.ts:136:7 › 👤 User Management API Tests › Update User Profile API (3.4s)
+  ✘    8 [chromium] › tests/e2e/api-integration.spec.ts:150:7 › 👤 User Management API Tests › Get User Favorites API (2.6s)
+  -    9 [chromium] › tests/e2e/api-integration.spec.ts:177:8 › 🏢 Vendor Management API Tests › DISABLED: Vendor Registration API
+  ✘   11 [chromium] › tests/e2e/api-integration.spec.ts:194:7 › 🏢 Vendor Management API Tests › Get Vendor Services API (4.0s)
+  ✘   10 [chromium] › tests/e2e/api-integration.spec.ts:161:7 › 👤 User Management API Tests › Add User Favorite API (4.2s)
+  ✘   13 [chromium] › tests/e2e/api-integration.spec.ts:221:7 › 🏢 Vendor Management API Tests › Update Vendor Service API (5.3s)
+  ✘   12 [chromium] › tests/e2e/api-integration.spec.ts:205:7 › 🏢 Vendor Management API Tests › Create Vendor Service API (5.4s)
+  ✘   14 [chromium] › tests/e2e/api-integration.spec.ts:246:7 › 🏢 Vendor Management API Tests › Get Vendor Analytics API (12.1s)
+  ✘   15 [chromium] › tests/e2e/api-integration.spec.ts:235:7 › 🏢 Vendor Management API Tests › Delete Vendor Service API (11.1s)

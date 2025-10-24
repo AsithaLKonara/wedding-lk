@@ -1,234 +1,57 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from '@/lib/db'
-import { Vendor, Venue, Package } from '@/lib/models'
+import { Venue, Vendor } from '@/lib/models'
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const query = searchParams.get('q') || ''
-    const type = searchParams.get('type') || 'all' // all, vendors, venues, packages
-    const category = searchParams.get('category') || ''
-    const location = searchParams.get('location') || ''
-    const minPrice = searchParams.get('minPrice') || ''
-    const maxPrice = searchParams.get('maxPrice') || ''
-    const rating = searchParams.get('rating') || ''
-    const sortBy = searchParams.get('sortBy') || 'relevance' // relevance, price, rating, name
-    const page = parseInt(searchParams.get('page') || '1')
-    const limit = parseInt(searchParams.get('limit') || '12')
+    const limit = parseInt(searchParams.get('limit') || '20')
+
+    if (!query.trim()) {
+      return NextResponse.json({
+        success: true,
+        venues: [],
+        vendors: [],
+        total: 0
+      })
+    }
 
     await connectDB()
 
-    let results: any[] = []
-    let totalCount = 0
-
-    // Build search criteria
-    const searchCriteria: any = {}
-    
-    if (query) {
-      searchCriteria.$or = [
+    // Search in venues
+    const venues = await Venue.find({
+      $or: [
         { name: { $regex: query, $options: 'i' } },
         { description: { $regex: query, $options: 'i' } },
-        { tags: { $regex: query, $options: 'i' } }
+        { 'location.city': { $regex: query, $options: 'i' } }
       ]
-    }
+    })
+      .limit(limit)
+      .lean()
 
-    if (category) {
-      searchCriteria.category = category
-    }
-
-    if (location) {
-      searchCriteria.location = { $regex: location, $options: 'i' }
-    }
-
-    if (minPrice || maxPrice) {
-      searchCriteria.price = {}
-      if (minPrice) searchCriteria.price.$gte = parseInt(minPrice)
-      if (maxPrice) searchCriteria.price.$lte = parseInt(maxPrice)
-    }
-
-    if (rating) {
-      searchCriteria.rating = { $gte: parseFloat(rating) }
-    }
-
-    // Search based on type
-    if (type === 'all' || type === 'vendors') {
-      const vendorResults = await Vendor.find(searchCriteria)
-        .populate('user', 'name email image')
-        .limit(limit)
-        .skip((page - 1) * limit)
-        .sort(getSortCriteria(sortBy))
-
-      const vendorCount = await Vendor.countDocuments(searchCriteria)
-      
-      results = results.concat(vendorResults.map(vendor => ({
-        ...vendor.toObject(),
-        type: 'vendor',
-        searchScore: calculateSearchScore(vendor, query)
-      })))
-      
-      totalCount += vendorCount
-    }
-
-    if (type === 'all' || type === 'venues') {
-      const venueResults = await Venue.find(searchCriteria)
-        .populate('owner', 'name email image')
-        .limit(limit)
-        .skip((page - 1) * limit)
-        .sort(getSortCriteria(sortBy))
-
-      const venueCount = await Venue.countDocuments(searchCriteria)
-      
-      results = results.concat(venueResults.map(venue => ({
-        ...venue.toObject(),
-        type: 'venue',
-        searchScore: calculateSearchScore(venue, query)
-      })))
-      
-      totalCount += venueCount
-    }
-
-    if (type === 'all' || type === 'packages') {
-      const packageResults = await Package.find(searchCriteria)
-        .populate('vendors', 'name email image')
-        .limit(limit)
-        .skip((page - 1) * limit)
-        .sort(getSortCriteria(sortBy))
-
-      const packageCount = await Package.countDocuments(searchCriteria)
-      
-      results = results.concat(packageResults.map(pkg => ({
-        ...pkg.toObject(),
-        type: 'package',
-        searchScore: calculateSearchScore(pkg, query)
-      })))
-      
-      totalCount += packageCount
-    }
-
-    // Sort results if needed
-    if (sortBy === 'relevance' && query) {
-      results.sort((a, b) => b.searchScore - a.searchScore)
-    }
-
-    // Apply pagination to combined results
-    const startIndex = (page - 1) * limit
-    const endIndex = startIndex + limit
-    const paginatedResults = results.slice(startIndex, endIndex)
+    // Search in vendors
+    const vendors = await Vendor.find({
+      $or: [
+        { businessName: { $regex: query, $options: 'i' } },
+        { description: { $regex: query, $options: 'i' } },
+        { category: { $regex: query, $options: 'i' } }
+      ]
+    })
+      .limit(limit)
+      .lean()
 
     return NextResponse.json({
       success: true,
-      results: paginatedResults,
-      pagination: {
-        page,
-        limit,
-        totalCount,
-        totalPages: Math.ceil(totalCount / limit),
-        hasNext: page < Math.ceil(totalCount / limit),
-        hasPrev: page > 1
-      },
-      filters: {
-        query,
-        type,
-        category,
-        location,
-        minPrice,
-        maxPrice,
-        rating,
-        sortBy
-      }
+      venues,
+      vendors,
+      total: venues.length + vendors.length
     })
   } catch (error) {
-    console.error('Search error:', error)
-    
-    // Return mock data for development/testing
-    if (process.env.NODE_ENV === 'development') {
-      return NextResponse.json({
-        success: true,
-        results: [
-          {
-            _id: 'mock-search-1',
-            name: 'Beautiful Garden Venue',
-            description: 'A stunning outdoor venue perfect for weddings',
-            type: 'venue',
-            category: 'venue',
-            location: 'Colombo, Sri Lanka',
-            price: 50000,
-            rating: 4.5,
-            searchScore: 10
-          }
-        ],
-        pagination: {
-          page: 1,
-          limit: 12,
-          totalCount: 1,
-          totalPages: 1,
-          hasNext: false,
-          hasPrev: false
-        },
-        filters: {
-          query: query || '',
-          type: type || 'all',
-          category: category || '',
-          location: location || '',
-          minPrice: minPrice || '',
-          maxPrice: maxPrice || '',
-          rating: rating || '',
-          sortBy: sortBy || 'relevance'
-        }
-      })
-    }
-    
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    console.error('[Search API] Error:', error)
+    return NextResponse.json(
+      { error: 'Search failed' },
+      { status: 500 }
+    )
   }
-}
-
-function getSortCriteria(sortBy: string) {
-  switch (sortBy) {
-    case 'price':
-      return { price: 1 }
-    case 'price-desc':
-      return { price: -1 }
-    case 'rating':
-      return { rating: -1 }
-    case 'name':
-      return { name: 1 }
-    case 'created':
-      return { createdAt: -1 }
-    default:
-      return { createdAt: -1 }
-  }
-}
-
-function calculateSearchScore(item: any, query: string): number {
-  if (!query) return 0
-
-  let score = 0
-  const queryLower = query.toLowerCase()
-
-  // Exact name match gets highest score
-  if (item.name?.toLowerCase().includes(queryLower)) {
-    score += 10
-  }
-
-  // Description match gets medium score
-  if (item.description?.toLowerCase().includes(queryLower)) {
-    score += 5
-  }
-
-  // Tags match gets lower score
-  if (item.tags?.some((tag: string) => tag.toLowerCase().includes(queryLower))) {
-    score += 3
-  }
-
-  // Category match gets bonus
-  if (item.category?.toLowerCase().includes(queryLower)) {
-    score += 2
-  }
-
-  // Location match gets bonus
-  if (item.location?.toLowerCase().includes(queryLower)) {
-    score += 1
-  }
-
-  return score
 }

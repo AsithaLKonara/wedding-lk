@@ -41,24 +41,24 @@ export default function LoginPage() {
   }
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-100 flex items-center justify-center p-4'>
+    <div className='min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-100 flex items-center justify-center p-4' data-testid='login-page'>
       <div className='w-full max-w-md'>
         <div className='text-center mb-8'>
           <h1 className='text-4xl font-bold text-gray-900 mb-2'>WeddingLK</h1>
           <p className='text-gray-600'>Sign in to your account</p>
         </div>
 
-        <div className='bg-white rounded-2xl shadow-xl p-8'>
+        <div className='bg-white rounded-2xl shadow-xl p-8' data-testid='login-form-container'>
           <h2 className='text-2xl font-semibold text-center mb-6'>Welcome Back</h2>
 
           {error && (
-            <div className='mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-start space-x-2'>
+            <div className='mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-start space-x-2' data-testid='login-error-message'>
               <XCircle className='h-5 w-5 text-red-500 flex-shrink-0 mt-0.5' />
               <p className='text-sm text-red-600'>{error}</p>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className='space-y-4'>
+          <form onSubmit={handleSubmit} className='space-y-4' data-testid='login-form'>
             <div>
               <label htmlFor='email' className='block text-sm font-medium text-gray-700 mb-2'>
                 Email Address
@@ -72,6 +72,7 @@ export default function LoginPage() {
                 required
                 className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent'
                 placeholder='your@email.com'
+                data-testid='login-email-input'
               />
             </div>
 
@@ -89,11 +90,13 @@ export default function LoginPage() {
                   required
                   className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-12'
                   placeholder='Enter your password'
+                  data-testid='login-password-input'
                 />
                 <button
                   type='button'
                   onClick={() => setShowPassword(!showPassword)}
                   className='absolute inset-y-0 right-0 pr-4 flex items-center'
+                  data-testid='login-password-toggle'
                 >
                   {showPassword ? (
                     <EyeOff className='h-5 w-5 text-gray-400' />
@@ -108,6 +111,7 @@ export default function LoginPage() {
               type='submit'
               disabled={isLoading}
               className='w-full bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-lg'
+              data-testid='login-submit-button'
             >
               {isLoading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -115,7 +119,7 @@ export default function LoginPage() {
 
           <p className='mt-6 text-center text-sm text-gray-600'>
             Don't have an account?{' '}
-            <a href='/register' className='text-purple-600 hover:text-purple-500 font-medium'>
+            <a href='/register' className='text-purple-600 hover:text-purple-500 font-medium' data-testid='login-signup-link'>
               Sign up here
             </a>
           </p>

@@ -19,6 +19,8 @@ export default defineConfig({
   expect: {
     timeout: 30000, // 30 seconds for assertions
   },
+  /* Global setup to seed test data */
+  globalSetup: require.resolve('./tests/global-setup.ts'),
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['html', { outputFolder: 'playwright-report' }],
@@ -40,8 +42,6 @@ export default defineConfig({
     actionTimeout: 60000, // 1 minute for actions
     /* Global timeout for navigation - increased for production */
     navigationTimeout: 60000, // 1 minute for navigation
-    /* Wait for network to be idle */
-    waitForLoadState: 'networkidle',
     /* Ignore HTTPS errors for production testing */
     ignoreHTTPSErrors: true,
   },

@@ -49,11 +49,11 @@ test.describe('Authentication Flows', () => {
 
   test('Login with invalid credentials should show error', async ({ page }) => {
     await page.goto('/login');
-    await page.fill('input[name="email"]', 'invalid@example.com');
-    await page.fill('input[name="password"]', 'wrongpassword');
-    await page.click('button[type="submit"]');
+    await page.fill('[data-testid="login-email-input"]', 'invalid@example.com');
+    await page.fill('[data-testid="login-password-input"]', 'wrongpassword');
+    await page.click('[data-testid="login-submit-button"]');
 
-    await expect(page.locator('.text-red-600, .error, [data-testid="error-message"]')).toBeVisible();
+    await expect(page.locator('[data-testid="login-error-message"]')).toBeVisible({ timeout: 10000 });
   });
 
   test.skip('Forgot password flow - DISABLED (Feature removed)', async ({ page }) => {

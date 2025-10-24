@@ -1,30 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { authOptions } from '@/lib/auth'
 import { connectDB } from '@/lib/db'
 import { Booking, Package } from '@/lib/models'
+import { verifyToken } from '@/lib/auth/custom-auth'
 
 export async function GET(request: NextRequest) {
   try {
-    // Custom auth implementation
-    const token = request.cookies.get('auth-token')?.value;
+    // Get authenticated user from token
+    const token = request.cookies.get('auth-token')?.value
+    
     if (!token) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Unauthorized - missing token' },
+        { status: 401 }
+      )
     }
     
-    if (!user?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const user = verifyToken(token)
+    if (!user || !user.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized - invalid token' },
+        { status: 401 }
+      )
     }
 
     await connectDB()
 
-    const bookings = await Booking.find({ user: user.id })
-      .populate('vendor')
-      .populate('venue')
-        .sort({ createdAt: -1 })
+    const bookings = await Booking.find({ userId: user.id })
+      .populate('vendorId')
+      .populate('venueId')
+      .sort({ createdAt: -1 })
+      .lean()
 
-    return NextResponse.json({ success: true, bookings })
+    return NextResponse.json({ 
+      success: true, 
+      bookings,
+      count: bookings.length
+    })
   } catch (error) {
-    console.error('Error fetching bookings:', error)
+    console.error('[Bookings API] Error fetching bookings:', error)
     
     // Return mock data for development/testing
     if (process.env.NODE_ENV === 'development') {
@@ -33,12 +46,12 @@ export async function GET(request: NextRequest) {
         bookings: [
           {
             _id: 'mock-booking-1',
-            user: user ?.user?.id || 'test-user',
-            vendor: {
+            userId: 'test-user',
+            vendorId: {
               _id: 'mock-vendor-1',
               businessName: 'Elegant Photography Studio'
             },
-            venue: {
+            venueId: {
               _id: 'mock-venue-1',
               name: 'Beautiful Garden Venue'
             },
@@ -46,35 +59,46 @@ export async function GET(request: NextRequest) {
             eventTime: '18:00',
             guestCount: 100,
             status: 'confirmed',
-            payment: {
-              amount: 50000,
-              currency: 'LKR',
-              status: 'completed'
-            },
+            totalPrice: 50000,
+            currency: 'LKR',
             createdAt: new Date()
           }
-        ]
+        ],
+        count: 1
       })
     }
     
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Failed to fetch bookings', message: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
+    )
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    // Custom auth implementation
-    const token = request.cookies.get('auth-token')?.value;
+    // Get authenticated user from token
+    const token = request.cookies.get('auth-token')?.value
+    
     if (!token) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'Unauthorized - missing token' },
+        { status: 401 }
+      )
     }
     
-    if (!user?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const user = verifyToken(token)
+    if (!user || !user.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized - invalid token' },
+        { status: 401 }
+      )
     }
 
     const {
       packageId,
+      vendorId,
+      venueId,
       eventDate,
       eventTime,
       guestCount,
@@ -84,42 +108,48 @@ export async function POST(request: NextRequest) {
       totalPrice
     } = await request.json()
 
-    if (!packageId || !eventDate || !eventTime || !guestCount || !contactPhone || !contactEmail) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    // Validate required fields
+    if (!eventDate || !eventTime || !guestCount || !contactPhone || !contactEmail) {
+      return NextResponse.json(
+        { error: 'Missing required fields: eventDate, eventTime, guestCount, contactPhone, contactEmail' },
+        { status: 400 }
+      )
     }
 
     await connectDB()
 
-    // Get package details to find vendor
-    const packageData = await Package.findById(packageId).populate('vendors')
-    if (!packageData) {
-      return NextResponse.json({ error: 'Package not found' }, { status: 404 })
-    }
-
-    // Use the first vendor from the package
-    const primaryVendor = packageData.vendors && packageData.vendors.length > 0 ? packageData.vendors[0] : null
-
-    const booking = new Booking({
-      user: user.id,
-      vendor: primaryVendor,
+    // Create booking
+    const bookingData: any = {
+      userId: user.id,
       eventDate: new Date(eventDate),
       eventTime: eventTime,
       guestCount: parseInt(guestCount),
-      payment: {
-        amount: parseFloat(totalPrice),
-        currency: 'LKR',
-        status: 'pending',
-        method: 'bank_transfer'
-      },
-      notes: `Contact: ${contactPhone}, Email: ${contactEmail}. Special Requests: ${specialRequests || 'None'}`,
-      status: 'pending'
-    })
+      status: 'pending',
+      totalPrice: totalPrice ? parseFloat(totalPrice) : 0,
+      currency: 'LKR',
+      contactPhone,
+      contactEmail,
+      specialRequests: specialRequests || ''
+    }
 
+    if (vendorId) bookingData.vendorId = vendorId
+    if (venueId) bookingData.venueId = venueId
+    if (packageId) bookingData.packageId = packageId
+
+    const booking = new Booking(bookingData)
     await booking.save()
 
-    return NextResponse.json({ success: true, booking })
+    console.log('[Bookings API] Booking created successfully:', booking._id)
+
+    return NextResponse.json(
+      { success: true, booking },
+      { status: 201 }
+    )
   } catch (error) {
-    console.error('Error creating booking:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    console.error('[Bookings API] Error creating booking:', error)
+    return NextResponse.json(
+      { error: 'Failed to create booking', message: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
+    )
   }
 }

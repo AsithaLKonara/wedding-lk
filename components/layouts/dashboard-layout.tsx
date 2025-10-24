@@ -209,12 +209,13 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <div className="h-screen flex bg-gray-50 overflow-hidden">
+    <div className="h-screen flex bg-gray-50 overflow-hidden" data-testid="dashboard-layout">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
           className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
           onClick={() => setSidebarOpen(false)}
+          data-testid="dashboard-sidebar-overlay"
         />
       )}
 
@@ -223,9 +224,9 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
         "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col",
         sidebarOpen ? "translate-x-0" : "-translate-x-full",
         sidebarCollapsed && "lg:w-16"
-      )}>
+      )} data-testid="dashboard-sidebar">
         {/* Sidebar Header */}
-        <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200 flex-shrink-0">
+        <div className="flex h-16 items-center justify-between px-4 border-b border-gray-200 flex-shrink-0" data-testid="dashboard-sidebar-header">
           {!sidebarCollapsed && (
             <div className="flex items-center space-x-2">
               <div className={cn("p-2 rounded-lg", theme.bg)}>
@@ -242,6 +243,7 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
               size="sm"
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
               className="hidden lg:flex p-2"
+              data-testid="dashboard-sidebar-toggle"
             >
               {sidebarCollapsed ? (
                 <ChevronRight className="h-4 w-4" />
@@ -254,6 +256,7 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
               size="sm"
               onClick={() => setSidebarOpen(false)}
               className="lg:hidden p-2"
+              data-testid="dashboard-sidebar-close"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -261,7 +264,7 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
         </div>
 
         {/* User Info */}
-        <div className="p-4 border-b border-gray-200 flex-shrink-0">
+        <div className="p-4 border-b border-gray-200 flex-shrink-0" data-testid="dashboard-user-info">
           <div className="flex items-center space-x-3">
             <Avatar className="h-10 w-10">
               <AvatarImage src={session.user?.image || ""} />
@@ -283,7 +286,7 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
         </div>
 
         {/* Navigation Items - Scrollable */}
-        <nav className="flex-1 overflow-y-auto py-4">
+        <nav className="flex-1 overflow-y-auto py-4" data-testid="dashboard-navigation">
           <div className="space-y-1 px-3">
             {filteredItems.map((item) => (
               <Button
@@ -297,6 +300,7 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
                   router.push(item.href)
                   setSidebarOpen(false)
                 }}
+                data-testid={`dashboard-nav-${item.title.toLowerCase().replace(/\s+/g, '-')}`}
               >
                 <div className="flex items-center space-x-3 w-full">
                   {item.icon}
@@ -319,7 +323,7 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
         </nav>
 
         {/* Logout Button - Fixed at bottom */}
-        <div className="border-t border-gray-200 p-4 flex-shrink-0">
+        <div className="border-t border-gray-200 p-4 flex-shrink-0" data-testid="dashboard-logout-section">
           <Button
             variant="outline"
             onClick={handleLogout}
@@ -327,6 +331,7 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
               "w-full justify-start",
               sidebarCollapsed && "px-2"
             )}
+            data-testid="dashboard-logout-button"
           >
             <LogOut className="h-4 w-4" />
             {!sidebarCollapsed && <span className="ml-2">Logout</span>}
@@ -335,9 +340,9 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden" data-testid="dashboard-main-content">
         {/* Top header - Fixed */}
-        <header className="bg-white border-b border-gray-200 px-4 py-4 flex-shrink-0">
+        <header className="bg-white border-b border-gray-200 px-4 py-4 flex-shrink-0" data-testid="dashboard-header">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Button
@@ -345,6 +350,7 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
                 size="sm"
                 onClick={() => setSidebarOpen(true)}
                 className="lg:hidden"
+                data-testid="dashboard-mobile-menu-button"
               >
                 <Menu className="h-5 w-5" />
               </Button>

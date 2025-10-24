@@ -1,123 +1,79 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/db';
-import { User } from '@/lib/models/user';
-import { Vendor } from '@/lib/models/vendor';
-import { Venue } from '@/lib/models/venue';
-import { withAuth } from '@/lib/middleware/auth-middleware';
+import { NextRequest, NextResponse } from 'next/server'
+import { connectDB } from '@/lib/db'
+import { User } from '@/lib/models'
+import { verifyToken } from '@/lib/auth/custom-auth'
 
-async function handler(req: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    await connectDB();
-
-    if (req.method === 'GET') {
-      // Get user's favorites
-      const user = await User.findById(req.user?.id).populate('favorites.vendors favorites.venues');
-      
-      if (!user) {
-        return NextResponse.json(
-          { error: 'User not found' },
-          { status: 404 }
-        );
-      }
-
-      return NextResponse.json({
-        success: true,
-        vendors: user.favorites?.vendors || [],
-        venues: user.favorites?.venues || []
-      });
-
-    } else if (req.method === 'POST') {
-      // Add to favorites
-      const { type, id } = await req.json();
-      
-      if (!type || !id) {
-        return NextResponse.json(
-          { error: 'Type and ID are required' },
-          { status: 400 }
-        );
-      }
-
-      const user = await User.findById(req.user?.id);
-      if (!user) {
-        return NextResponse.json(
-          { error: 'User not found' },
-          { status: 404 }
-        );
-      }
-
-      // Initialize favorites if not exists
-      if (!user.favorites) {
-        user.favorites = { vendors: [], venues: [] };
-      }
-
-      if (type === 'vendor') {
-        if (!user.favorites.vendors.includes(id)) {
-          user.favorites.vendors.push(id);
-        }
-      } else if (type === 'venue') {
-        if (!user.favorites.venues.includes(id)) {
-          user.favorites.venues.push(id);
-        }
-      }
-
-      await user.save();
-
-      return NextResponse.json({
-        success: true,
-        message: `${type} added to favorites`
-      });
-
-    } else if (req.method === 'DELETE') {
-      // Remove from favorites
-      const { type, id } = await req.json();
-      
-      if (!type || !id) {
-        return NextResponse.json(
-          { error: 'Type and ID are required' },
-          { status: 400 }
-        );
-      }
-
-      const user = await User.findById(req.user?.id);
-      if (!user) {
-        return NextResponse.json(
-          { error: 'User not found' },
-          { status: 404 }
-        );
-      }
-
-      if (user.favorites) {
-        if (type === 'vendor') {
-          user.favorites.vendors = user.favorites.vendors.filter((vendorId: string) => vendorId.toString() !== id);
-        } else if (type === 'venue') {
-          user.favorites.venues = user.favorites.venues.filter((venueId: string) => venueId.toString() !== id);
-        }
-      }
-
-      await user.save();
-
-      return NextResponse.json({
-        success: true,
-        message: `${type} removed from favorites`
-      });
-
-    } else {
+    const token = request.cookies.get('auth-token')?.value
+    
+    if (!token) {
       return NextResponse.json(
-        { error: 'Method not allowed' },
-        { status: 405 }
-      );
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+    
+    const user = verifyToken(token)
+    if (!user?.id) {
+      return NextResponse.json(
+        { error: 'Invalid token' },
+        { status: 401 }
+      )
     }
 
-  } catch (error: unknown) {
-    console.error('❌ Favorites API error:', error);
-    
+    await connectDB()
+    const userDoc = await User.findById(user.id)
+      .populate('favorites')
+      .lean()
+
+    if (!userDoc) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      )
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      favorites: userDoc.favorites || []
+    })
+  } catch (error) {
+    console.error('[User Favorites] Error:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to fetch favorites' },
       { status: 500 }
-    );
+    )
   }
 }
 
-export const GET = withAuth(handler);
-export const POST = withAuth(handler);
-export const DELETE = withAuth(handler);
+export async function POST(request: NextRequest) {
+  try {
+    const token = request.cookies.get('auth-token')?.value
+    if (!token) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    
+    const user = verifyToken(token)
+    if (!user?.id) {
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
+    }
+
+    const { itemId, itemType } = await request.json()
+    await connectDB()
+
+    const updatedUser = await User.findByIdAndUpdate(
+      user.id,
+      { $addToSet: { favorites: itemId } },
+      { new: true }
+    ).populate('favorites').lean()
+
+    return NextResponse.json({ success: true, favorites: updatedUser.favorites })
+  } catch (error) {
+    console.error('[User Favorites] Error:', error)
+    return NextResponse.json(
+      { error: 'Failed to add favorite' },
+      { status: 500 }
+    )
+  }
+}
