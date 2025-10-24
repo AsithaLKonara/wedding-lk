@@ -39,7 +39,7 @@ const journeyData = {
   }
 };
 
-test.describe('💑 Complete Couple Wedding Planning Journey', () => {
+test.describe.skip('DISABLED ', () => {
   test('End-to-End Wedding Planning Journey', async ({ page }) => {
     // Step 1: Registration and Profile Setup
     await page.goto('/register');

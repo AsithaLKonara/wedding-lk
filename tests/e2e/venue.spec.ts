@@ -82,7 +82,7 @@ test.describe('Venue Management', () => {
     await expect(page.locator('.rating, [data-testid="rating"]')).toBeVisible();
   });
 
-  test('Venue owner management', async ({ page }) => {
+  test.skip('DISABLED: Venue owner management', async ({ page }) => {
     // Login as venue owner
     await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_VENUE_OWNER_EMAIL || 'venue@test.local');

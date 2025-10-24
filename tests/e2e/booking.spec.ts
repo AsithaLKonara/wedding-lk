@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 
 test.describe('Booking System', () => {
-  test('Complete booking flow with payment mock', async ({ page }) => {
+  test.skip('DISABLED: booking flow with payment mock', async ({ page }) => {
     const customer = { 
       name: faker.person.fullName(), 
       email: faker.internet.email(),

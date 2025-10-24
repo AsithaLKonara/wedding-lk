@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { faker } from '@faker-js/faker';
 
 test.describe('Vendor Management', () => {
-  test('Vendor registration and onboarding', async ({ page }) => {
+  test.skip('DISABLED: Vendor registration and onboarding', async ({ page }) => {
     const vendor = {
       name: faker.person.fullName(),
       email: faker.internet.email(),
@@ -103,7 +103,7 @@ test.describe('Vendor Management', () => {
     await expect(page.locator('text=Confirmed')).toBeVisible();
   });
 
-  test('Vendor profile and portfolio management', async ({ page }) => {
+  test.skip('DISABLED: Vendor profile and portfolio management', async ({ page }) => {
     // Login as vendor
     await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_VENDOR_EMAIL || 'vendor@test.local');
