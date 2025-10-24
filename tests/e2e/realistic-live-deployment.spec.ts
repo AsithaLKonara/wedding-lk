@@ -84,7 +84,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     console.log('🔐 Testing Authentication System...');
     
     // Test login page
-    await page.goto(`${BASE_URL}/auth/signin`);
+    await page.goto(`${BASE_URL}/login`);
     await page.waitForLoadState('networkidle');
     
     // Check if login page exists
@@ -106,7 +106,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     }
     
     // Test registration page
-    await page.goto(`${BASE_URL}/auth/signup`);
+    await page.goto(`${BASE_URL}/register`);
     await page.waitForLoadState('networkidle');
     
     const signupTitle = page.locator('h1, h2, h3').filter({ hasText: /sign|register|sign up/i });
@@ -243,7 +243,7 @@ test.describe('🚀 REALISTIC LIVE DEPLOYMENT TESTING', () => {
     
     // Check if redirected to login or dashboard is accessible
     const currentUrl = page.url();
-    if (currentUrl.includes('/auth/signin') || currentUrl.includes('/login')) {
+    if (currentUrl.includes('/login') || currentUrl.includes('/login')) {
       console.log('✅ Dashboard correctly redirects to login when not authenticated');
       
       // Test login form if available

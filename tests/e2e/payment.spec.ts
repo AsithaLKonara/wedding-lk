@@ -125,7 +125,7 @@ test.describe('Payment System', () => {
 
   test('Payment refund processing', async ({ page }) => {
     // Login as admin
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_ADMIN_EMAIL || 'admin@test.local');
     await page.fill('input[name="password"]', process.env.TEST_ADMIN_PASSWORD || 'AdminPass123!');
     await page.click('button[type="submit"]');
@@ -172,7 +172,7 @@ test.describe('Payment System', () => {
 
   test('Payment history and analytics', async ({ page }) => {
     // Login as customer
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_CUSTOMER_EMAIL || 'customer@test.local');
     await page.fill('input[name="password"]', process.env.TEST_CUSTOMER_PASSWORD || 'CustomerPass123!');
     await page.click('button[type="submit"]');
@@ -194,7 +194,7 @@ test.describe('Payment System', () => {
 
   test('Subscription payment management', async ({ page }) => {
     // Login as vendor
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_VENDOR_EMAIL || 'vendor@test.local');
     await page.fill('input[name="password"]', process.env.TEST_VENDOR_PASSWORD || 'VendorPass123!');
     await page.click('button[type="submit"]');

@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 // Mock API routes
-app.post('/api/auth/signup', (req, res) => {
+app.post('/api/register', (req, res) => {
   const { email, password, name } = req.body;
   if (!email || !password) {
     return res.status(400).json({ success: false, message: 'Invalid input' });
@@ -30,7 +30,7 @@ app.post('/api/auth/signup', (req, res) => {
   });
 });
 
-app.post('/api/auth/signin', (req, res) => {
+app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
   if (email === 'test@example.com' && password === 'password123') {
     return res.status(200).json({ 
@@ -70,7 +70,7 @@ afterAll(async () => {
 });
 
 describe('Auth API', () => {
-  describe('POST /api/auth/signup', () => {
+  describe('POST /api/register', () => {
     test('registers new user successfully', async () => {
       const userData = {
         name: 'Test User',
@@ -80,7 +80,7 @@ describe('Auth API', () => {
       };
 
       const response = await request(app)
-        .post('/api/auth/signup')
+        .post('/api/register')
         .send(userData)
         .expect(201);
 
@@ -99,7 +99,7 @@ describe('Auth API', () => {
       };
 
       await request(app)
-        .post('/api/auth/register')
+        .post('/api/register')
         .send(userData)
         .expect(400);
     });
@@ -113,7 +113,7 @@ describe('Auth API', () => {
       };
 
       await request(app)
-        .post('/api/auth/register')
+        .post('/api/register')
         .send(userData)
         .expect(400);
     });
@@ -127,7 +127,7 @@ describe('Auth API', () => {
       };
 
       await request(app)
-        .post('/api/auth/register')
+        .post('/api/register')
         .send(userData)
         .expect(409);
     });
@@ -141,7 +141,7 @@ describe('Auth API', () => {
       };
 
       const response = await request(app)
-        .post('/api/auth/login')
+        .post('/api/login')
         .send(loginData)
         .expect(200);
 
@@ -157,7 +157,7 @@ describe('Auth API', () => {
       };
 
       await request(app)
-        .post('/api/auth/login')
+        .post('/api/login')
         .send(loginData)
         .expect(401);
     });
@@ -169,16 +169,16 @@ describe('Auth API', () => {
       };
 
       await request(app)
-        .post('/api/auth/login')
+        .post('/api/login')
         .send(loginData)
         .expect(404);
     });
   });
 
-  describe('POST /api/auth/forgot-password', () => {
+  describe('POST /api/forgot-password', () => {
     test('sends password reset email for valid user', async () => {
       const response = await request(app)
-        .post('/api/auth/forgot-password')
+        .post('/api/forgot-password')
         .send({ email: 'testuser@example.com' })
         .expect(200);
 
@@ -188,7 +188,7 @@ describe('Auth API', () => {
 
     test('handles non-existent email gracefully', async () => {
       const response = await request(app)
-        .post('/api/auth/forgot-password')
+        .post('/api/forgot-password')
         .send({ email: 'nonexistent@example.com' })
         .expect(200); // Should not reveal if email exists
 

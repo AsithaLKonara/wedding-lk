@@ -133,7 +133,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     console.log('🔐 Testing Authentication System...');
     
     // Test login page
-    await page.goto(`${BASE_URL}/auth/signin`);
+    await page.goto(`${BASE_URL}/login`);
     await page.waitForLoadState('networkidle');
     
     await expect(page.locator('h1:has-text("Sign In")')).toBeVisible();
@@ -142,7 +142,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     await expect(page.locator('button[type="submit"]')).toBeVisible();
     
     // Test registration page
-    await page.goto(`${BASE_URL}/auth/signup`);
+    await page.goto(`${BASE_URL}/register`);
     await page.waitForLoadState('networkidle');
     
     await expect(page.locator('h1:has-text("Sign Up")')).toBeVisible();
@@ -335,7 +335,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     
     // Check if redirected to login
     const currentUrl = page.url();
-    if (currentUrl.includes('/auth/signin') || currentUrl.includes('/login')) {
+    if (currentUrl.includes('/login') || currentUrl.includes('/login')) {
       console.log('✅ Dashboard correctly redirects to login when not authenticated');
       
       // Test login form
@@ -528,7 +528,7 @@ test.describe('🚀 COMPREHENSIVE LIVE DEPLOYMENT TESTING', () => {
     expect(invalidApiResponse.status()).toBe(404);
     
     // Test form validation
-    await page.goto(`${BASE_URL}/auth/signup`);
+    await page.goto(`${BASE_URL}/register`);
     await page.click('button[type="submit"]');
     
     // Check for validation errors

@@ -29,7 +29,7 @@ test.describe('Vendor Management', () => {
     });
 
     // Login as vendor
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', vendor.email);
     await page.fill('input[name="password"]', 'VendorPass123!');
     await page.click('button[type="submit"]');
@@ -38,7 +38,7 @@ test.describe('Vendor Management', () => {
 
   test('Vendor service creation and portfolio upload', async ({ page }) => {
     // Login as vendor
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_VENDOR_EMAIL || 'vendor@test.local');
     await page.fill('input[name="password"]', process.env.TEST_VENDOR_PASSWORD || 'VendorPass123!');
     await page.click('button[type="submit"]');
@@ -66,7 +66,7 @@ test.describe('Vendor Management', () => {
 
   test('Vendor booking management', async ({ page }) => {
     // Login as vendor
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_VENDOR_EMAIL || 'vendor@test.local');
     await page.fill('input[name="password"]', process.env.TEST_VENDOR_PASSWORD || 'VendorPass123!');
     await page.click('button[type="submit"]');
@@ -105,7 +105,7 @@ test.describe('Vendor Management', () => {
 
   test('Vendor profile and portfolio management', async ({ page }) => {
     // Login as vendor
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_VENDOR_EMAIL || 'vendor@test.local');
     await page.fill('input[name="password"]', process.env.TEST_VENDOR_PASSWORD || 'VendorPass123!');
     await page.click('button[type="submit"]');
@@ -126,7 +126,7 @@ test.describe('Vendor Management', () => {
 
   test('Vendor analytics and performance tracking', async ({ page }) => {
     // Login as vendor
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_VENDOR_EMAIL || 'vendor@test.local');
     await page.fill('input[name="password"]', process.env.TEST_VENDOR_PASSWORD || 'VendorPass123!');
     await page.click('button[type="submit"]');

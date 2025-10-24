@@ -59,7 +59,7 @@ test.describe('Authentication Flows', () => {
   test.skip('Forgot password flow - DISABLED (Feature removed)', async ({ page }) => {
     const email = faker.internet.email();
     
-    await page.goto('/auth/forgot-password');
+    await page.goto('/forgot-password');
     await page.fill('input[name="email"]', email);
     await page.click('button[type="submit"]');
 

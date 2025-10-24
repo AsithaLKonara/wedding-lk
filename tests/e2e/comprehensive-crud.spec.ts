@@ -50,7 +50,7 @@ const testBooking = {
 
 test.describe('🔐 Authentication & User Management CRUD', () => {
   test('User Registration Flow', async ({ page }) => {
-    await page.goto('/auth/signup');
+    await page.goto('/register');
     
     // Fill registration form
     await page.fill('input[name="name"]', testUsers.regularUser.name);
@@ -66,7 +66,7 @@ test.describe('🔐 Authentication & User Management CRUD', () => {
   });
 
   test('User Login Flow', async ({ page }) => {
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     
     // Fill login form
     await page.fill('input[name="email"]', testUsers.regularUser.email);
@@ -81,7 +81,7 @@ test.describe('🔐 Authentication & User Management CRUD', () => {
 
   test('User Profile CRUD Operations', async ({ page }) => {
     // Login first
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
     await page.fill('input[name="password"]', testUsers.regularUser.password);
     await page.click('button[type="submit"]');
@@ -105,7 +105,7 @@ test.describe('🔐 Authentication & User Management CRUD', () => {
 
   test('User Settings CRUD Operations', async ({ page }) => {
     // Login first
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
     await page.fill('input[name="password"]', testUsers.regularUser.password);
     await page.click('button[type="submit"]');
@@ -147,7 +147,7 @@ test.describe('🏢 Vendor Management CRUD', () => {
 
   test('Vendor Services CRUD Operations', async ({ page }) => {
     // Login as vendor
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.vendor.email);
     await page.fill('input[name="password"]', testUsers.vendor.password);
     await page.click('button[type="submit"]');
@@ -181,7 +181,7 @@ test.describe('🏢 Vendor Management CRUD', () => {
 
   test('Vendor Analytics & Reports', async ({ page }) => {
     // Login as vendor
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.vendor.email);
     await page.fill('input[name="password"]', testUsers.vendor.password);
     await page.click('button[type="submit"]');
@@ -200,7 +200,7 @@ test.describe('🏢 Vendor Management CRUD', () => {
 test.describe('📅 Booking System CRUD', () => {
   test('Create Booking Flow', async ({ page }) => {
     // Login as regular user
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
     await page.fill('input[name="password"]', testUsers.regularUser.password);
     await page.click('button[type="submit"]');
@@ -227,7 +227,7 @@ test.describe('📅 Booking System CRUD', () => {
 
   test('Booking Management CRUD', async ({ page }) => {
     // Login as user
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
     await page.fill('input[name="password"]', testUsers.regularUser.password);
     await page.click('button[type="submit"]');
@@ -257,7 +257,7 @@ test.describe('📅 Booking System CRUD', () => {
 
   test('Booking Status Tracking', async ({ page }) => {
     // Login as vendor
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.vendor.email);
     await page.fill('input[name="password"]', testUsers.vendor.password);
     await page.click('button[type="submit"]');
@@ -282,7 +282,7 @@ test.describe('📅 Booking System CRUD', () => {
 test.describe('👥 Wedding Planner CRUD Operations', () => {
   test('Planner Client Management', async ({ page }) => {
     // Login as wedding planner
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.weddingPlanner.email);
     await page.fill('input[name="password"]', testUsers.weddingPlanner.password);
     await page.click('button[type="submit"]');
@@ -312,7 +312,7 @@ test.describe('👥 Wedding Planner CRUD Operations', () => {
 
   test('Planner Task Management', async ({ page }) => {
     // Login as wedding planner
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.weddingPlanner.email);
     await page.fill('input[name="password"]', testUsers.weddingPlanner.password);
     await page.click('button[type="submit"]');
@@ -341,7 +341,7 @@ test.describe('👥 Wedding Planner CRUD Operations', () => {
 test.describe('🛡️ RBAC (Role-Based Access Control) Tests', () => {
   test('User Role Access Control', async ({ page }) => {
     // Login as regular user
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
     await page.fill('input[name="password"]', testUsers.regularUser.password);
     await page.click('button[type="submit"]');
@@ -365,7 +365,7 @@ test.describe('🛡️ RBAC (Role-Based Access Control) Tests', () => {
 
   test('Vendor Role Access Control', async ({ page }) => {
     // Login as vendor
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.vendor.email);
     await page.fill('input[name="password"]', testUsers.vendor.password);
     await page.click('button[type="submit"]');
@@ -389,7 +389,7 @@ test.describe('🛡️ RBAC (Role-Based Access Control) Tests', () => {
 
   test('Admin Role Access Control', async ({ page }) => {
     // Login as admin
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.admin.email);
     await page.fill('input[name="password"]', testUsers.admin.password);
     await page.click('button[type="submit"]');
@@ -425,7 +425,7 @@ test.describe('🛡️ RBAC (Role-Based Access Control) Tests', () => {
 test.describe('💳 Payment & Financial CRUD', () => {
   test('Payment Processing Flow', async ({ page }) => {
     // Login as user
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
     await page.fill('input[name="password"]', testUsers.regularUser.password);
     await page.click('button[type="submit"]');
@@ -449,7 +449,7 @@ test.describe('💳 Payment & Financial CRUD', () => {
 
   test('Payment History & Management', async ({ page }) => {
     // Login as user
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
     await page.fill('input[name="password"]', testUsers.regularUser.password);
     await page.click('button[type="submit"]');
@@ -473,7 +473,7 @@ test.describe('📱 Mobile & Responsive CRUD', () => {
     await page.setViewportSize({ width: 375, height: 667 });
     
     // Login as user
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
     await page.fill('input[name="password"]', testUsers.regularUser.password);
     await page.click('button[type="submit"]');
@@ -534,7 +534,7 @@ test.describe('🔍 Search & Filter CRUD', () => {
 test.describe('📊 Analytics & Reporting CRUD', () => {
   test('User Analytics Dashboard', async ({ page }) => {
     // Login as user
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
     await page.fill('input[name="password"]', testUsers.regularUser.password);
     await page.click('button[type="submit"]');
@@ -551,7 +551,7 @@ test.describe('📊 Analytics & Reporting CRUD', () => {
 
   test('Admin Analytics & Reports', async ({ page }) => {
     // Login as admin
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.admin.email);
     await page.fill('input[name="password"]', testUsers.admin.password);
     await page.click('button[type="submit"]');
@@ -580,7 +580,7 @@ test.describe('📊 Analytics & Reporting CRUD', () => {
 test.describe('🔔 Notification & Communication CRUD', () => {
   test('Notification Management', async ({ page }) => {
     // Login as user
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
     await page.fill('input[name="password"]', testUsers.regularUser.password);
     await page.click('button[type="submit"]');
@@ -604,7 +604,7 @@ test.describe('🔔 Notification & Communication CRUD', () => {
 
   test('Message System CRUD', async ({ page }) => {
     // Login as user
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.regularUser.email);
     await page.fill('input[name="password"]', testUsers.regularUser.password);
     await page.click('button[type="submit"]');
@@ -632,7 +632,7 @@ test.describe('🔔 Notification & Communication CRUD', () => {
 test.describe('🔄 Data Synchronization & Cache CRUD', () => {
   test('Data Cache Management', async ({ page }) => {
     // Login as admin
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.admin.email);
     await page.fill('input[name="password"]', testUsers.admin.password);
     await page.click('button[type="submit"]');
@@ -657,7 +657,7 @@ test.describe('🔄 Data Synchronization & Cache CRUD', () => {
 test.describe('🛠️ System Administration CRUD', () => {
   test('User Management Operations', async ({ page }) => {
     // Login as admin
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.admin.email);
     await page.fill('input[name="password"]', testUsers.admin.password);
     await page.click('button[type="submit"]');
@@ -685,7 +685,7 @@ test.describe('🛠️ System Administration CRUD', () => {
 
   test('System Settings Management', async ({ page }) => {
     // Login as admin
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', testUsers.admin.email);
     await page.fill('input[name="password"]', testUsers.admin.password);
     await page.click('button[type="submit"]');

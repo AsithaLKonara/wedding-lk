@@ -39,7 +39,7 @@ const testData = {
 
 // Helper function to get auth token
 async function getAuthToken(page: any, email: string, password: string) {
-  const response = await page.request.post('/api/auth/login', {
+  const response = await page.request.post('/api/login', {
     data: { email, password }
   });
   const data = await response.json();
@@ -54,7 +54,7 @@ async function authenticatedRequest(page: any, method: string, url: string, data
 
 test.describe('🔐 Authentication API Tests', () => {
   test('User Registration API', async ({ page }) => {
-    const response = await page.request.post('/api/auth/register', {
+    const response = await page.request.post('/api/register', {
       data: {
         name: testData.user.name,
         email: testData.user.email,
@@ -70,7 +70,7 @@ test.describe('🔐 Authentication API Tests', () => {
   });
 
   test('User Login API', async ({ page }) => {
-    const response = await page.request.post('/api/auth/login', {
+    const response = await page.request.post('/api/login', {
       data: {
         email: testData.user.email,
         password: testData.user.password
@@ -85,7 +85,7 @@ test.describe('🔐 Authentication API Tests', () => {
   });
 
   test('Invalid Login API', async ({ page }) => {
-    const response = await page.request.post('/api/auth/login', {
+    const response = await page.request.post('/api/login', {
       data: {
         email: 'invalid@example.com',
         password: 'wrongpassword'
@@ -99,7 +99,7 @@ test.describe('🔐 Authentication API Tests', () => {
   });
 
   test('Password Reset API', async ({ page }) => {
-    const response = await page.request.post('/api/auth/forgot-password', {
+    const response = await page.request.post('/api/forgot-password', {
       data: { email: testData.user.email }
     });
     
@@ -691,7 +691,7 @@ test.describe('🛡️ Security and Error Handling API Tests', () => {
   });
 
   test('Input Validation API', async ({ page }) => {
-    const response = await page.request.post('/api/auth/register', {
+    const response = await page.request.post('/api/register', {
       data: {
         name: '', // Invalid empty name
         email: 'invalid-email', // Invalid email format

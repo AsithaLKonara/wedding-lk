@@ -42,7 +42,7 @@ const journeyData = {
 test.describe('💑 Complete Couple Wedding Planning Journey', () => {
   test('End-to-End Wedding Planning Journey', async ({ page }) => {
     // Step 1: Registration and Profile Setup
-    await page.goto('/auth/signup');
+    await page.goto('/register');
     await page.fill('input[name="name"]', journeyData.couple.name);
     await page.fill('input[name="email"]', journeyData.couple.email);
     await page.fill('input[name="password"]', journeyData.couple.password);
@@ -197,7 +197,7 @@ test.describe('📸 Vendor Business Journey', () => {
     await expect(page.locator('text=Vendor registration submitted')).toBeVisible();
     
     // Step 2: Vendor Login
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', journeyData.photographer.email);
     await page.fill('input[name="password"]', journeyData.photographer.password);
     await page.click('button[type="submit"]');
@@ -307,7 +307,7 @@ test.describe('📸 Vendor Business Journey', () => {
 test.describe('👰 Wedding Planner Professional Journey', () => {
   test('Complete Wedding Planner Workflow', async ({ page }) => {
     // Step 1: Planner Registration and Setup
-    await page.goto('/auth/signup');
+    await page.goto('/register');
     await page.fill('input[name="name"]', 'Emma Wedding Planner');
     await page.fill('input[name="email"]', 'planner@test.com');
     await page.fill('input[name="password"]', 'PlannerPass123!');
@@ -318,7 +318,7 @@ test.describe('👰 Wedding Planner Professional Journey', () => {
     await expect(page.locator('text=Registration successful')).toBeVisible();
     
     // Step 2: Planner Dashboard
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', 'planner@test.com');
     await page.fill('input[name="password"]', 'PlannerPass123!');
     await page.click('button[type="submit"]');
@@ -441,7 +441,7 @@ test.describe('👰 Wedding Planner Professional Journey', () => {
 test.describe('👑 Admin Platform Management Journey', () => {
   test('Complete Admin Platform Management', async ({ page }) => {
     // Step 1: Admin Login
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', 'admin@test.com');
     await page.fill('input[name="password"]', 'AdminPass123!');
     await page.click('button[type="submit"]');
@@ -557,7 +557,7 @@ test.describe('🔄 Cross-Platform Integration Journey', () => {
     await page.setViewportSize({ width: 375, height: 667 });
     
     // Mobile login
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', journeyData.couple.email);
     await page.fill('input[name="password"]', journeyData.couple.password);
     await page.click('button[type="submit"]');
@@ -608,7 +608,7 @@ test.describe('🚨 Error Handling and Recovery Journey', () => {
     await expect(page.locator('text=Wedding Venues')).toBeVisible();
     
     // Test form validation errors
-    await page.goto('/auth/signup');
+    await page.goto('/register');
     await page.fill('input[name="name"]', '');
     await page.fill('input[name="email"]', 'invalid-email');
     await page.fill('input[name="password"]', '123');

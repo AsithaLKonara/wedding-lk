@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('API Endpoints Tests', () => {
   test('should test authentication endpoints', async ({ request }) => {
     // Test login endpoint
-    const loginResponse = await request.post('/api/auth/login', {
+    const loginResponse = await request.post('/api/login', {
       data: {
         email: 'test@example.com',
         password: 'TestPassword123!'
@@ -12,7 +12,7 @@ test.describe('API Endpoints Tests', () => {
     expect(loginResponse.status()).toBe(200);
     
     // Test register endpoint
-    const registerResponse = await request.post('/api/auth/register', {
+    const registerResponse = await request.post('/api/register', {
       data: {
         firstName: 'Test',
         lastName: 'User',
@@ -298,7 +298,7 @@ test.describe('API Endpoints Tests', () => {
     expect(notFoundResponse.status()).toBe(404);
     
     // Test 400 error
-    const badRequestResponse = await request.post('/api/auth/login', {
+    const badRequestResponse = await request.post('/api/login', {
       data: {
         email: 'invalid-email'
       }

@@ -84,7 +84,7 @@ test.describe('Venue Management', () => {
 
   test('Venue owner management', async ({ page }) => {
     // Login as venue owner
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_VENUE_OWNER_EMAIL || 'venue@test.local');
     await page.fill('input[name="password"]', process.env.TEST_VENUE_OWNER_PASSWORD || 'VenuePass123!');
     await page.click('button[type="submit"]');
@@ -122,7 +122,7 @@ test.describe('Venue Management', () => {
 
   test('Venue booking management', async ({ page }) => {
     // Login as venue owner
-    await page.goto('/auth/signin');
+    await page.goto('/login');
     await page.fill('input[name="email"]', process.env.TEST_VENUE_OWNER_EMAIL || 'venue@test.local');
     await page.fill('input[name="password"]', process.env.TEST_VENUE_OWNER_PASSWORD || 'VenuePass123!');
     await page.click('button[type="submit"]');
