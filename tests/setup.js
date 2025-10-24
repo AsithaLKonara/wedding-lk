@@ -7,12 +7,7 @@ process.env.NEXTAUTH_URL = 'http://localhost:3000';
 process.env.MONGODB_URI = process.env.TEST_DB_URI || 'mongodb://localhost:27017/weddinglk_test';
 
 // Mock external services
-jest.mock('next-auth', () => ({
-  getServerSession: jest.fn(() => Promise.resolve({
-    user: { id: 'test-user-id', email: 'test@example.com' },
-    expires: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
-  }))
-}));
+// NextAuth has been removed - using custom authentication system instead
 
 // Mock Stripe
 jest.mock('stripe', () => {
