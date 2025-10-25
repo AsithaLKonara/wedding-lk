@@ -48,3 +48,9 @@ env.local
 
 # Scripts with secrets
 scripts/setup-vercel-env.js
+
+# Test results and reports
+test-results/
+playwright-report/
+e2e-results.log
+*.log
