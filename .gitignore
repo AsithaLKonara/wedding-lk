@@ -1,20 +1,23 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
+node_modules/
+.pnp
 .pnp.js
 .yarn/install-state.gz
 
 # testing
-/coverage
+coverage/
+test-results/
+playwright-report/
 
 # next.js
-/.next/
-/out/
+.next/
+out/
 
 # production
-/build
+build/
+dist/
 
 # misc
 .DS_Store
@@ -49,8 +52,6 @@ env.local
 # Scripts with secrets
 scripts/setup-vercel-env.js
 
-# Test results and reports
-test-results/
-playwright-report/
-e2e-results.log
+# Logs and reports
 *.log
+e2e-results.log
