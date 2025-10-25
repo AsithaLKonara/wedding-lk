@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 // Removed NextAuth - using custom auth
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -37,12 +37,28 @@ function PaymentFormContent({
 }: PaymentFormProps) {
   const stripe = useStripe()
   const elements = useElements()
-  const { data: session } = useSession()
   const router = useRouter()
   
   const [processing, setProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  // Fetch user session using custom auth
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          setUser(data.user)
+        }
+        setLoading(false)
+      })
+      .catch(() => {
+        setLoading(false)
+      })
+  }, [])
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-LK', {
@@ -55,7 +71,7 @@ function PaymentFormContent({
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    if (!stripe || !elements || !session?.user) {
+    if (!stripe || !elements || !user) {
       return
     }
 
@@ -90,8 +106,8 @@ function PaymentFormContent({
           payment_method: {
             card: elements.getElement(CardElement)!,
             billing_details: {
-              name: session.user.name || '',
-              email: session.user.email || ''
+              name: user.name || '',
+              email: user.email || ''
             }
           }
         }
@@ -132,6 +148,33 @@ function PaymentFormContent({
         color: '#9e2146',
       },
     },
+  }
+
+  if (loading) {
+    return (
+      <div className="text-center py-8">
+        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">Loading...</h3>
+        <p className="text-gray-600">Preparing payment form...</p>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return (
+      <div className="text-center py-8">
+        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <AlertCircle className="w-8 h-8 text-red-600" />
+        </div>
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">Authentication Required</h3>
+        <p className="text-gray-600 mb-4">Please log in to proceed with payment.</p>
+        <Button onClick={() => router.push('/login')} className="bg-purple-600 hover:bg-purple-700">
+          Go to Login
+        </Button>
+      </div>
+    )
   }
 
   if (success) {

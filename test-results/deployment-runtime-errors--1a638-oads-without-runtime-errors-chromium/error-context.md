@@ -104,121 +104,125 @@
           - heading "Entertainment" [level=3] [ref=e148]
           - paragraph [ref=e149]: Book DJs, bands, and entertainment for your special day.
     - paragraph [ref=e154]: Loading wedding packages...
-    - paragraph [ref=e159]: Loading vendor categories...
-    - generic [ref=e165]:
-      - generic [ref=e166]:
-        - generic [ref=e167]:
-          - img [ref=e168]
-          - generic [ref=e171]: Our Impact
-        - heading "Numbers That Tell Our Story" [level=2] [ref=e172]
-        - paragraph [ref=e173]: From our humble beginnings to becoming Sri Lanka's most trusted wedding platform, these numbers reflect our commitment to excellence.
-      - generic [ref=e174]:
-        - generic [ref=e176]:
-          - img [ref=e180]
-          - generic [ref=e185]: 10,000+
-          - generic [ref=e186]: Happy Couples
-          - generic [ref=e187]: Couples who found their perfect wedding through our platform
-        - generic [ref=e190]:
-          - img [ref=e194]
-          - generic [ref=e197]: 500+
-          - generic [ref=e198]: Venues
-          - generic [ref=e199]: Stunning venues across all 9 provinces of Sri Lanka
-        - generic [ref=e202]:
-          - img [ref=e206]
-          - generic [ref=e208]: 2,000+
-          - generic [ref=e209]: Vendors
-          - generic [ref=e210]: Trusted vendors from photographers to traditional dancers
-        - generic [ref=e213]:
-          - img [ref=e217]
-          - generic [ref=e219]: 15,000+
-          - generic [ref=e220]: Events Planned
-          - generic [ref=e221]: Successful weddings and celebrations organized
-        - generic [ref=e224]:
-          - img [ref=e228]
-          - generic [ref=e230]: 4.9/5
-          - generic [ref=e231]: Average Rating
-          - generic [ref=e232]: Customer satisfaction rating from our couples
-        - generic [ref=e235]:
-          - img [ref=e239]
-          - generic [ref=e242]: 50+
-          - generic [ref=e243]: Awards Won
-          - generic [ref=e244]: Recognition for excellence in wedding services
-        - generic [ref=e247]:
-          - img [ref=e251]
-          - generic [ref=e253]: "25"
-          - generic [ref=e254]: Districts Covered
-          - generic [ref=e255]: Complete coverage across Sri Lanka
-        - generic [ref=e258]:
-          - img [ref=e262]
-          - generic [ref=e265]: 95%
-          - generic [ref=e266]: Success Rate
-          - generic [ref=e267]: Couples who successfully planned their dream wedding
-      - generic [ref=e270]:
-        - heading "Ready to Be Part of Our Success Story?" [level=3] [ref=e271]
-        - paragraph [ref=e272]: Let's make your wedding dreams come true.
-        - generic [ref=e273]:
-          - button "Start Planning Today" [ref=e274] [cursor=pointer]
-          - button "Explore Venues" [ref=e275] [cursor=pointer]
-    - paragraph [ref=e279]: No featured vendors available at the moment
-    - paragraph [ref=e283]: No featured venues available at the moment
-    - paragraph [ref=e287]: No testimonials available at the moment
-    - generic [ref=e292]:
-      - img [ref=e293]
-      - heading "Ready to Start Planning?" [level=2] [ref=e295]
-      - paragraph [ref=e296]: Join thousands of couples who have planned their perfect wedding with us
-      - generic [ref=e297]:
-        - link "Get Started Free" [ref=e298] [cursor=pointer]:
+    - generic [ref=e156]:
+      - generic [ref=e157]:
+        - heading "Explore Vendor Categories" [level=2] [ref=e158]
+        - paragraph [ref=e159]: Discover specialized vendors for every aspect of your perfect wedding
+      - button "View All Vendors" [ref=e161] [cursor=pointer]
+    - generic [ref=e167]:
+      - generic [ref=e168]:
+        - generic [ref=e169]:
+          - img [ref=e170]
+          - generic [ref=e173]: Our Impact
+        - heading "Numbers That Tell Our Story" [level=2] [ref=e174]
+        - paragraph [ref=e175]: From our humble beginnings to becoming Sri Lanka's most trusted wedding platform, these numbers reflect our commitment to excellence.
+      - generic [ref=e176]:
+        - generic [ref=e178]:
+          - img [ref=e182]
+          - generic [ref=e187]: 10,000+
+          - generic [ref=e188]: Happy Couples
+          - generic [ref=e189]: Couples who found their perfect wedding through our platform
+        - generic [ref=e192]:
+          - img [ref=e196]
+          - generic [ref=e199]: 500+
+          - generic [ref=e200]: Venues
+          - generic [ref=e201]: Stunning venues across all 9 provinces of Sri Lanka
+        - generic [ref=e204]:
+          - img [ref=e208]
+          - generic [ref=e210]: 2,000+
+          - generic [ref=e211]: Vendors
+          - generic [ref=e212]: Trusted vendors from photographers to traditional dancers
+        - generic [ref=e215]:
+          - img [ref=e219]
+          - generic [ref=e221]: 15,000+
+          - generic [ref=e222]: Events Planned
+          - generic [ref=e223]: Successful weddings and celebrations organized
+        - generic [ref=e226]:
+          - img [ref=e230]
+          - generic [ref=e232]: 4.9/5
+          - generic [ref=e233]: Average Rating
+          - generic [ref=e234]: Customer satisfaction rating from our couples
+        - generic [ref=e237]:
+          - img [ref=e241]
+          - generic [ref=e244]: 50+
+          - generic [ref=e245]: Awards Won
+          - generic [ref=e246]: Recognition for excellence in wedding services
+        - generic [ref=e249]:
+          - img [ref=e253]
+          - generic [ref=e255]: "25"
+          - generic [ref=e256]: Districts Covered
+          - generic [ref=e257]: Complete coverage across Sri Lanka
+        - generic [ref=e260]:
+          - img [ref=e264]
+          - generic [ref=e267]: 95%
+          - generic [ref=e268]: Success Rate
+          - generic [ref=e269]: Couples who successfully planned their dream wedding
+      - generic [ref=e272]:
+        - heading "Ready to Be Part of Our Success Story?" [level=3] [ref=e273]
+        - paragraph [ref=e274]: Let's make your wedding dreams come true.
+        - generic [ref=e275]:
+          - button "Start Planning Today" [ref=e276] [cursor=pointer]
+          - button "Explore Venues" [ref=e277] [cursor=pointer]
+    - paragraph [ref=e281]: No featured vendors available at the moment
+    - paragraph [ref=e285]: No featured venues available at the moment
+    - paragraph [ref=e289]: No testimonials available at the moment
+    - generic [ref=e294]:
+      - img [ref=e295]
+      - heading "Ready to Start Planning?" [level=2] [ref=e297]
+      - paragraph [ref=e298]: Join thousands of couples who have planned their perfect wedding with us
+      - generic [ref=e299]:
+        - link "Get Started Free" [ref=e300] [cursor=pointer]:
           - /url: /register
           - text: Get Started Free
           - img
-        - link "Contact Us" [ref=e299] [cursor=pointer]:
+        - link "Contact Us" [ref=e301] [cursor=pointer]:
           - /url: /contact
-    - generic [ref=e301]:
-      - generic [ref=e302]:
-        - generic [ref=e303]:
-          - link "Wedding.lk" [ref=e304] [cursor=pointer]:
+    - generic [ref=e303]:
+      - generic [ref=e304]:
+        - generic [ref=e305]:
+          - link "Wedding.lk" [ref=e306] [cursor=pointer]:
             - /url: /
-            - img [ref=e306]
-            - generic [ref=e308]: Wedding.lk
-          - paragraph [ref=e309]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
-          - generic [ref=e310]:
-            - button [ref=e311] [cursor=pointer]:
-              - img
-            - button [ref=e312] [cursor=pointer]:
-              - img
+            - img [ref=e308]
+            - generic [ref=e310]: Wedding.lk
+          - paragraph [ref=e311]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+          - generic [ref=e312]:
             - button [ref=e313] [cursor=pointer]:
               - img
             - button [ref=e314] [cursor=pointer]:
               - img
-        - generic [ref=e315]:
-          - heading "Services" [level=3] [ref=e316]
-          - list [ref=e317]:
-            - listitem [ref=e318]:
-              - link "Venues" [ref=e319] [cursor=pointer]:
-                - /url: /venues
+            - button [ref=e315] [cursor=pointer]:
+              - img
+            - button [ref=e316] [cursor=pointer]:
+              - img
+        - generic [ref=e317]:
+          - heading "Services" [level=3] [ref=e318]
+          - list [ref=e319]:
             - listitem [ref=e320]:
-              - link "Vendors" [ref=e321] [cursor=pointer]:
-                - /url: /vendors
+              - link "Venues" [ref=e321] [cursor=pointer]:
+                - /url: /venues
             - listitem [ref=e322]:
-              - button "Planning Tools" [ref=e323] [cursor=pointer]
+              - link "Vendors" [ref=e323] [cursor=pointer]:
+                - /url: /vendors
             - listitem [ref=e324]:
-              - link "Gallery" [ref=e325] [cursor=pointer]:
+              - button "Planning Tools" [ref=e325] [cursor=pointer]
+            - listitem [ref=e326]:
+              - link "Gallery" [ref=e327] [cursor=pointer]:
                 - /url: /gallery
-        - generic [ref=e326]:
-          - heading "Company" [level=3] [ref=e327]
-          - list [ref=e328]:
-            - listitem [ref=e329]:
-              - link "About" [ref=e330] [cursor=pointer]:
-                - /url: /about
+        - generic [ref=e328]:
+          - heading "Company" [level=3] [ref=e329]
+          - list [ref=e330]:
             - listitem [ref=e331]:
-              - link "Contact" [ref=e332] [cursor=pointer]:
-                - /url: /contact
+              - link "About" [ref=e332] [cursor=pointer]:
+                - /url: /about
             - listitem [ref=e333]:
-              - link "Privacy" [ref=e334] [cursor=pointer]:
-                - /url: /privacy
+              - link "Contact" [ref=e334] [cursor=pointer]:
+                - /url: /contact
             - listitem [ref=e335]:
-              - link "Terms" [ref=e336] [cursor=pointer]:
+              - link "Privacy" [ref=e336] [cursor=pointer]:
+                - /url: /privacy
+            - listitem [ref=e337]:
+              - link "Terms" [ref=e338] [cursor=pointer]:
                 - /url: /terms
-      - paragraph [ref=e338]: © 2024 Wedding.lk. All rights reserved.
-  - alert [ref=e341]
+      - paragraph [ref=e340]: © 2024 Wedding.lk. All rights reserved.
+  - alert [ref=e343]
 ```
