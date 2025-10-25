@@ -1,9 +1,7 @@
 "use client"
 
-import { useState } from "react"
-// Removed NextAuth - using custom auth
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-// Removed NextAuth - using custom auth
 import dynamic from "next/dynamic"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -186,16 +184,39 @@ const navigationItems: NavigationItem[] = [
 ]
 
 function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
-  const { data: session } = useSession()
+  const [user, setUser] = useState(null)
+  const [status, setStatus] = useState('loading')
   const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
-  if (!session) {
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          setUser(data.user)
+          setStatus('authenticated')
+        } else {
+          setStatus('unauthenticated')
+          router.push('/login')
+        }
+      })
+      .catch(() => {
+        setStatus('unauthenticated')
+        router.push('/login')
+      })
+  }, [router])
+
+  if (status === 'loading') {
+    return <div>Loading...</div>
+  }
+
+  if (!user) {
     return null
   }
 
-  const userRole = session.user?.role as string
+  const userRole = user.role as string
   const theme = getRoleTheme(userRole)
   const roleDisplayName = getRoleDisplayName(userRole)
 
@@ -205,7 +226,8 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
   )
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: "/login" })
+    await fetch('/api/auth/signout', { method: 'POST' })
+    router.push('/login')
   }
 
   return (
@@ -266,16 +288,16 @@ function DashboardLayoutComponent({ children }: DashboardLayoutProps) {
         {/* User Info */}
         <div className="p-4 border-b border-gray-200 flex-shrink-0" data-testid="dashboard-user-info">
           <div className="flex items-center space-x-3">
-            <Avatar className="h-10 w-10">
-              <AvatarImage src={session.user?.image || ""} />
-              <AvatarFallback>
-                {session.user?.name?.charAt(0).toUpperCase() || "U"}
-              </AvatarFallback>
-            </Avatar>
+                <Avatar className="h-10 w-10">
+                  <AvatarImage src={user?.image || ""} />
+                  <AvatarFallback>
+                    {user?.name?.charAt(0).toUpperCase() || "U"}
+                  </AvatarFallback>
+                </Avatar>
             {!sidebarCollapsed && (
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate">
-                  {session.user?.name}
+                  {user?.name}
                 </p>
                 <Badge variant="outline" className={cn("text-xs", theme.text, theme.border)}>
                   {roleDisplayName}

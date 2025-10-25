@@ -1,0 +1,397 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e4]:
+      - link "Wedding.lk" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - img [ref=e7]
+        - generic [ref=e9]: Wedding.lk
+      - generic [ref=e10]:
+        - button "Toggle theme" [ref=e12] [cursor=pointer]:
+          - generic [ref=e13]:
+            - img
+            - img
+          - generic [ref=e14]: Toggle theme
+        - button [ref=e15] [cursor=pointer]:
+          - img
+  - main [ref=e16]:
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - img [ref=e24]
+          - generic [ref=e26]: AI-Powered Wedding Search
+        - heading "Find Your Perfect Wedding Experience" [level=1] [ref=e27]:
+          - text: Find Your Perfect
+          - generic [ref=e28]: Wedding Experience
+        - paragraph [ref=e29]: Describe your dream wedding in natural language and let our AI find the perfect venues, vendors, and packages for you
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - generic [ref=e35]:
+            - img [ref=e36]
+            - generic [ref=e38]: Describe your dream wedding
+          - generic [ref=e39]:
+            - textbox "e.g., 'I want a beach wedding in Galle for 200 guests with traditional Sri Lankan cuisine and live music'" [ref=e40]
+            - button [ref=e41] [cursor=pointer]:
+              - img
+        - generic [ref=e42]:
+          - generic [ref=e43]: "Quick searches:"
+          - generic [ref=e44] [cursor=pointer]: Beach wedding venues in Galle
+          - generic [ref=e45] [cursor=pointer]: Garden wedding under 200k
+          - generic [ref=e46] [cursor=pointer]: Luxury hotel ballrooms Colombo
+          - generic [ref=e47] [cursor=pointer]: Mountain view venues for 150 guests
+          - generic [ref=e48] [cursor=pointer]: Traditional wedding venues Kandy
+        - generic [ref=e49]:
+          - generic [ref=e50]:
+            - text: Location
+            - combobox [ref=e51] [cursor=pointer]:
+              - generic [ref=e52]:
+                - img
+                - text: Select location
+              - img
+          - generic [ref=e53]:
+            - text: Wedding Date
+            - generic [ref=e54]:
+              - img [ref=e55]
+              - textbox [ref=e57]
+          - generic [ref=e58]:
+            - text: Guest Count
+            - generic [ref=e59]:
+              - img [ref=e60]
+              - textbox "Number of guests" [ref=e65]
+        - button "Find My Perfect Wedding" [ref=e66] [cursor=pointer]:
+          - img
+          - text: Find My Perfect Wedding
+    - generic [ref=e68]:
+      - generic [ref=e69]:
+        - heading "Everything You Need for Your Perfect Day" [level=2] [ref=e70]
+        - paragraph [ref=e71]: Our platform provides all the tools and services to plan your dream wedding
+      - generic [ref=e72]:
+        - generic [ref=e76]:
+          - img [ref=e78]
+          - heading "Event Planning" [level=3] [ref=e80]
+          - paragraph [ref=e81]: Comprehensive timeline and checklist management for your wedding day.
+        - generic [ref=e85]:
+          - img [ref=e87]
+          - heading "Venue Discovery" [level=3] [ref=e90]
+          - paragraph [ref=e91]: Find and book the perfect venue from our curated collection.
+        - generic [ref=e95]:
+          - img [ref=e97]
+          - heading "Vendor Network" [level=3] [ref=e102]
+          - paragraph [ref=e103]: Connect with trusted photographers, caterers, and decorators.
+        - generic [ref=e107]:
+          - img [ref=e109]
+          - heading "Guest Management" [level=3] [ref=e111]
+          - paragraph [ref=e112]: Manage invitations, RSVPs, and seating arrangements effortlessly.
+        - generic [ref=e116]:
+          - img [ref=e118]
+          - heading "Photo Sharing" [level=3] [ref=e121]
+          - paragraph [ref=e122]: Create shared albums for guests to upload and share memories.
+        - generic [ref=e126]:
+          - img [ref=e128]
+          - heading "Entertainment" [level=3] [ref=e132]
+          - paragraph [ref=e133]: Book DJs, bands, and entertainment for your special day.
+    - generic [ref=e135]:
+      - generic [ref=e136]:
+        - generic [ref=e137]:
+          - img [ref=e138]
+          - heading "AI-Recommended Wedding Packages" [level=2] [ref=e140]
+        - paragraph [ref=e141]: Discover perfectly curated wedding packages tailored to your preferences, featuring our top-rated venues and trusted vendors
+      - generic [ref=e142]:
+        - generic [ref=e145]:
+          - generic [ref=e146]: Most Popular
+          - generic [ref=e147]:
+            - generic [ref=e148]:
+              - img [ref=e150]
+              - generic [ref=e152]:
+                - heading "Colombo Elite Package" [level=3] [ref=e153]
+                - paragraph [ref=e154]: Premium venues in the heart of Colombo
+            - generic [ref=e155]:
+              - generic [ref=e156]:
+                - img [ref=e157]
+                - generic [ref=e159]: "4.9"
+              - generic [ref=e160]: (156 reviews)
+            - generic [ref=e161]:
+              - generic [ref=e162]:
+                - generic [ref=e163]: LKR 850,000
+                - generic [ref=e164]: LKR 1,200,000
+              - generic [ref=e165]:
+                - generic [ref=e166]: Save 29%
+                - generic [ref=e167]: You save LKR 350,000
+          - generic [ref=e168]:
+            - generic [ref=e169]:
+              - heading "Package Includes:" [level=4] [ref=e170]
+              - generic [ref=e171]:
+                - generic [ref=e172]:
+                  - img [ref=e173]
+                  - generic [ref=e175]: 5-star luxury venue in Colombo
+                - generic [ref=e176]:
+                  - img [ref=e177]
+                  - generic [ref=e179]: Award-winning photographer
+                - generic [ref=e180]:
+                  - img [ref=e181]
+                  - generic [ref=e183]: Premium catering (50+ menu options)
+                - generic [ref=e184]:
+                  - img [ref=e185]
+                  - generic [ref=e187]: Live band & DJ services
+                - generic [ref=e188]:
+                  - img [ref=e189]
+                  - generic [ref=e191]: Bridal suite & decoration
+                - generic [ref=e192]:
+                  - img [ref=e193]
+                  - generic [ref=e195]: Wedding coordinator
+                - generic [ref=e196]: +2 more features
+            - heading "Featured Venues:" [level=4] [ref=e198]
+            - heading "Top Vendors:" [level=4] [ref=e200]
+            - generic [ref=e201]:
+              - button "Book This Package" [ref=e202] [cursor=pointer]
+              - generic [ref=e203]:
+                - button "View Details" [ref=e204] [cursor=pointer]:
+                  - img
+                  - text: View Details
+                - button "Save" [ref=e205] [cursor=pointer]:
+                  - img
+                  - text: Save
+                - button "Share" [ref=e206] [cursor=pointer]:
+                  - img
+                  - text: Share
+        - generic [ref=e209]:
+          - generic [ref=e210]: Best Value
+          - generic [ref=e211]:
+            - generic [ref=e212]:
+              - img [ref=e214]
+              - generic [ref=e216]:
+                - heading "Kandy Heritage Package" [level=3] [ref=e217]
+                - paragraph [ref=e218]: Traditional venues in the hill capital
+            - generic [ref=e219]:
+              - generic [ref=e220]:
+                - img [ref=e221]
+                - generic [ref=e223]: "4.7"
+              - generic [ref=e224]: (203 reviews)
+            - generic [ref=e225]:
+              - generic [ref=e226]:
+                - generic [ref=e227]: LKR 650,000
+                - generic [ref=e228]: LKR 900,000
+              - generic [ref=e229]:
+                - generic [ref=e230]: Save 28%
+                - generic [ref=e231]: You save LKR 250,000
+          - generic [ref=e232]:
+            - generic [ref=e233]:
+              - heading "Package Includes:" [level=4] [ref=e234]
+              - generic [ref=e235]:
+                - generic [ref=e236]:
+                  - img [ref=e237]
+                  - generic [ref=e239]: 4-star heritage venue in Kandy
+                - generic [ref=e240]:
+                  - img [ref=e241]
+                  - generic [ref=e243]: Professional photographer
+                - generic [ref=e244]:
+                  - img [ref=e245]
+                  - generic [ref=e247]: Traditional Sri Lankan cuisine
+                - generic [ref=e248]:
+                  - img [ref=e249]
+                  - generic [ref=e251]: Cultural music & entertainment
+                - generic [ref=e252]:
+                  - img [ref=e253]
+                  - generic [ref=e255]: Traditional decoration package
+                - generic [ref=e256]:
+                  - img [ref=e257]
+                  - generic [ref=e259]: Wedding planning assistance
+                - generic [ref=e260]: +2 more features
+            - heading "Featured Venues:" [level=4] [ref=e262]
+            - heading "Top Vendors:" [level=4] [ref=e264]
+            - generic [ref=e265]:
+              - button "Book This Package" [ref=e266] [cursor=pointer]
+              - generic [ref=e267]:
+                - button "View Details" [ref=e268] [cursor=pointer]:
+                  - img
+                  - text: View Details
+                - button "Save" [ref=e269] [cursor=pointer]:
+                  - img
+                  - text: Save
+                - button "Share" [ref=e270] [cursor=pointer]:
+                  - img
+                  - text: Share
+        - generic [ref=e273]:
+          - generic [ref=e274]: Featured
+          - generic [ref=e275]:
+            - generic [ref=e276]:
+              - img [ref=e278]
+              - generic [ref=e280]:
+                - heading "Galle Coastal Package" [level=3] [ref=e281]
+                - paragraph [ref=e282]: Beachfront venues in historic Galle
+            - generic [ref=e283]:
+              - generic [ref=e284]:
+                - img [ref=e285]
+                - generic [ref=e287]: "4.8"
+              - generic [ref=e288]: (89 reviews)
+            - generic [ref=e289]:
+              - generic [ref=e290]:
+                - generic [ref=e291]: LKR 750,000
+                - generic [ref=e292]: LKR 1,100,000
+              - generic [ref=e293]:
+                - generic [ref=e294]: Save 32%
+                - generic [ref=e295]: You save LKR 350,000
+          - generic [ref=e296]:
+            - generic [ref=e297]:
+              - heading "Package Includes:" [level=4] [ref=e298]
+              - generic [ref=e299]:
+                - generic [ref=e300]:
+                  - img [ref=e301]
+                  - generic [ref=e303]: Beachfront venue in Galle
+                - generic [ref=e304]:
+                  - img [ref=e305]
+                  - generic [ref=e307]: Experienced photographer
+                - generic [ref=e308]:
+                  - img [ref=e309]
+                  - generic [ref=e311]: Seafood & coastal cuisine
+                - generic [ref=e312]:
+                  - img [ref=e313]
+                  - generic [ref=e315]: Ocean view ceremony setup
+                - generic [ref=e316]:
+                  - img [ref=e317]
+                  - generic [ref=e319]: Tropical decoration theme
+                - generic [ref=e320]:
+                  - img [ref=e321]
+                  - generic [ref=e323]: Beach wedding coordinator
+                - generic [ref=e324]: +2 more features
+            - heading "Featured Venues:" [level=4] [ref=e326]
+            - heading "Top Vendors:" [level=4] [ref=e328]
+            - generic [ref=e329]:
+              - button "Book This Package" [ref=e330] [cursor=pointer]
+              - generic [ref=e331]:
+                - button "View Details" [ref=e332] [cursor=pointer]:
+                  - img
+                  - text: View Details
+                - button "Save" [ref=e333] [cursor=pointer]:
+                  - img
+                  - text: Save
+                - button "Share" [ref=e334] [cursor=pointer]:
+                  - img
+                  - text: Share
+      - generic [ref=e336]:
+        - button "View All Packages" [ref=e337] [cursor=pointer]
+        - button "Create Custom Package" [ref=e338] [cursor=pointer]
+    - generic [ref=e340]:
+      - generic [ref=e341]:
+        - heading "Explore Vendor Categories" [level=2] [ref=e342]
+        - paragraph [ref=e343]: Discover specialized vendors for every aspect of your perfect wedding
+      - button "View All Vendors" [ref=e345] [cursor=pointer]
+    - generic [ref=e351]:
+      - generic [ref=e352]:
+        - generic [ref=e353]:
+          - img [ref=e354]
+          - generic [ref=e357]: Our Impact
+        - heading "Numbers That Tell Our Story" [level=2] [ref=e358]
+        - paragraph [ref=e359]: From our humble beginnings to becoming Sri Lanka's most trusted wedding platform, these numbers reflect our commitment to excellence.
+      - generic [ref=e360]:
+        - generic [ref=e362]:
+          - img [ref=e366]
+          - generic [ref=e371]: 10,000+
+          - generic [ref=e372]: Happy Couples
+          - generic [ref=e373]: Couples who found their perfect wedding through our platform
+        - generic [ref=e376]:
+          - img [ref=e380]
+          - generic [ref=e383]: 500+
+          - generic [ref=e384]: Venues
+          - generic [ref=e385]: Stunning venues across all 9 provinces of Sri Lanka
+        - generic [ref=e388]:
+          - img [ref=e392]
+          - generic [ref=e394]: 2,000+
+          - generic [ref=e395]: Vendors
+          - generic [ref=e396]: Trusted vendors from photographers to traditional dancers
+        - generic [ref=e399]:
+          - img [ref=e403]
+          - generic [ref=e405]: 15,000+
+          - generic [ref=e406]: Events Planned
+          - generic [ref=e407]: Successful weddings and celebrations organized
+        - generic [ref=e410]:
+          - img [ref=e414]
+          - generic [ref=e416]: 4.9/5
+          - generic [ref=e417]: Average Rating
+          - generic [ref=e418]: Customer satisfaction rating from our couples
+        - generic [ref=e421]:
+          - img [ref=e425]
+          - generic [ref=e428]: 50+
+          - generic [ref=e429]: Awards Won
+          - generic [ref=e430]: Recognition for excellence in wedding services
+        - generic [ref=e433]:
+          - img [ref=e437]
+          - generic [ref=e439]: "25"
+          - generic [ref=e440]: Districts Covered
+          - generic [ref=e441]: Complete coverage across Sri Lanka
+        - generic [ref=e444]:
+          - img [ref=e448]
+          - generic [ref=e451]: 95%
+          - generic [ref=e452]: Success Rate
+          - generic [ref=e453]: Couples who successfully planned their dream wedding
+      - generic [ref=e456]:
+        - heading "Ready to Be Part of Our Success Story?" [level=3] [ref=e457]
+        - paragraph [ref=e458]: Let's make your wedding dreams come true.
+        - generic [ref=e459]:
+          - button "Start Planning Today" [ref=e460] [cursor=pointer]
+          - button "Explore Venues" [ref=e461] [cursor=pointer]
+    - paragraph [ref=e465]: No featured vendors available at the moment
+    - paragraph [ref=e469]: No featured venues available at the moment
+    - paragraph [ref=e473]: No testimonials available at the moment
+    - generic [ref=e478]:
+      - img [ref=e479]
+      - heading "Ready to Start Planning?" [level=2] [ref=e481]
+      - paragraph [ref=e482]: Join thousands of couples who have planned their perfect wedding with us
+      - generic [ref=e483]:
+        - link "Get Started Free" [ref=e484] [cursor=pointer]:
+          - /url: /register
+          - text: Get Started Free
+          - img
+        - link "Contact Us" [ref=e485] [cursor=pointer]:
+          - /url: /contact
+    - generic [ref=e487]:
+      - generic [ref=e488]:
+        - generic [ref=e489]:
+          - link "Wedding.lk" [ref=e490] [cursor=pointer]:
+            - /url: /
+            - img [ref=e492]
+            - generic [ref=e494]: Wedding.lk
+          - paragraph [ref=e495]: Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease.
+          - generic [ref=e496]:
+            - button [ref=e497] [cursor=pointer]:
+              - img
+            - button [ref=e498] [cursor=pointer]:
+              - img
+            - button [ref=e499] [cursor=pointer]:
+              - img
+            - button [ref=e500] [cursor=pointer]:
+              - img
+        - generic [ref=e501]:
+          - heading "Services" [level=3] [ref=e502]
+          - list [ref=e503]:
+            - listitem [ref=e504]:
+              - link "Venues" [ref=e505] [cursor=pointer]:
+                - /url: /venues
+            - listitem [ref=e506]:
+              - link "Vendors" [ref=e507] [cursor=pointer]:
+                - /url: /vendors
+            - listitem [ref=e508]:
+              - button "Planning Tools" [ref=e509] [cursor=pointer]
+            - listitem [ref=e510]:
+              - link "Gallery" [ref=e511] [cursor=pointer]:
+                - /url: /gallery
+        - generic [ref=e512]:
+          - heading "Company" [level=3] [ref=e513]
+          - list [ref=e514]:
+            - listitem [ref=e515]:
+              - link "About" [ref=e516] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e517]:
+              - link "Contact" [ref=e518] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=e519]:
+              - link "Privacy" [ref=e520] [cursor=pointer]:
+                - /url: /privacy
+            - listitem [ref=e521]:
+              - link "Terms" [ref=e522] [cursor=pointer]:
+                - /url: /terms
+      - paragraph [ref=e524]: © 2024 Wedding.lk. All rights reserved.
+  - alert [ref=e527]
+```

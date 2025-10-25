@@ -188,7 +188,6 @@ export default function RootLayout({
         </ErrorBoundary>
         <Analytics />
         <SpeedInsights />
-        <script src="/pwa-script.js" defer></script>
       </body>
     </html>
   );
