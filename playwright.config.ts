@@ -46,32 +46,22 @@ export default defineConfig({
     ignoreHTTPSErrors: true,
   },
 
-  /* Configure projects for major browsers */
+  /* Configure projects for major browsers - CHROMIUM ONLY */
   projects: [
+    // Only Chromium - Firefox and Mobile Chrome disabled for now
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-        // Disable WebKit for now due to compatibility issues
-        // {
-        //   name: 'webkit',
-        //   use: { 
-        //     ...devices['Desktop Safari'],
-        //     // Disable problematic WebKit settings
-        //     launchOptions: {
-        //       args: ['--disable-web-security', '--disable-features=VizDisplayCompositor']
-        //     }
-        //   },
-        // },
-    /* Test against mobile viewports. */
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
+    // DISABLED: Firefox and Mobile Chrome for now (focus on Chromium only)
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
+    // {
+    //   name: 'Mobile Chrome',
+    //   use: { ...devices['Pixel 5'] },
+    // },
   ],
 
   /* Run your local dev server before starting the tests */
