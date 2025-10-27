@@ -3,59 +3,72 @@ import { connectDB } from '@/lib/db';
 import { Vendor } from '@/lib/models';
 import { vendorSchemas } from '@/lib/validations/api-validators';
 import { handleApiError, createSuccessResponse, createPaginatedResponse } from '@/lib/utils/error-handler';
+import { apiCache, cacheKeys, cacheTTL } from '@/lib/api-cache';
+import { DatabaseOptimizer, APIResponse, QueryOptimizer, ResponseOptimizer, TimeoutHandler } from '@/lib/api-optimization';
 
 export async function GET(request: NextRequest) {
   try {
-    await connectDB();
-
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
     const category = searchParams.get('category');
     const search = searchParams.get('search');
 
+    // Check cache first
+    const cacheKey = cacheKeys.vendors(page, limit) + (category ? `:category:${category}` : '') + (search ? `:search:${search}` : '');
+    const cached = apiCache.get(cacheKey);
+    if (cached) {
+      return NextResponse.json(APIResponse.success(cached));
+    }
+
     console.log('📊 Fetching vendors from MongoDB...');
 
-    // Build query
-    const query: any = { isActive: true };
-    
-    if (category) {
-      query.category = category;
-    }
+    // Optimize database operations with timeout
+    const result = await TimeoutHandler.withTimeout(async () => {
+      await DatabaseOptimizer.ensureConnection();
 
-    if (search) {
-      query.$or = [
-        { businessName: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        { category: { $regex: search, $options: 'i' } }
-      ];
-    }
-
-    // Calculate skip value for pagination
-    const skip = (page - 1) * limit;
-
-    // Execute query with pagination
-    const [vendors, total] = await Promise.all([
-      Vendor.find(query)
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-      Vendor.countDocuments(query)
-    ]);
-
-    console.log(`✅ Found ${vendors.length} vendors`);
-
-    return NextResponse.json({
-      success: true,
-      vendors,
-      pagination: {
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit)
+      // Build query
+      const query: any = { isActive: true };
+      
+      if (category) {
+        query.category = category;
       }
-    });
+
+      if (search) {
+        query.$or = [
+          { businessName: { $regex: search, $options: 'i' } },
+          { description: { $regex: search, $options: 'i' } },
+          { category: { $regex: search, $options: 'i' } }
+        ];
+      }
+
+      // Execute optimized query with pagination
+      const [vendors, total] = await Promise.all([
+        QueryOptimizer.optimizeQuery(Vendor.find(query), ['_id', 'businessName', 'name', 'category', 'location', 'rating', 'isActive', 'isVerified', 'description'])
+          .sort({ createdAt: -1 })
+          .skip((page - 1) * limit)
+          .limit(Math.min(limit, 100))
+          .lean(),
+        Vendor.countDocuments(query)
+      ]);
+
+      console.log(`✅ Found ${vendors.length} vendors`);
+
+      return {
+        vendors: vendors.map(ResponseOptimizer.compressVendor),
+        pagination: {
+          total,
+          page,
+          limit,
+          totalPages: Math.ceil(total / limit)
+        }
+      };
+    }, 6000, 'Vendors fetch timed out');
+
+    // Cache the result
+    apiCache.set(cacheKey, result, cacheTTL.MEDIUM);
+
+    return NextResponse.json(APIResponse.success(result));
 
   } catch (error) {
     console.error('❌ Error fetching vendors:', error);
