@@ -227,7 +227,7 @@ function UnifiedDashboardLayoutComponent({ children }: UnifiedDashboardLayoutPro
   }, [router])
 
   if (!user) {
-    return <div>Loading...</div>
+    return <div data-testid="dashboard-layout">Loading...</div>
   }
 
   const userRole = user.role as UserRole
@@ -250,7 +250,7 @@ function UnifiedDashboardLayoutComponent({ children }: UnifiedDashboardLayoutPro
   }
 
   return (
-    <div className="h-screen flex bg-gray-50 overflow-hidden">
+    <div className="h-screen flex bg-gray-50 overflow-hidden" data-testid="dashboard-layout">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
@@ -430,4 +430,4 @@ function UnifiedDashboardLayoutComponent({ children }: UnifiedDashboardLayoutPro
   )
 }
 
-export const UnifiedDashboardLayout = dynamic(() => Promise.resolve(UnifiedDashboardLayoutComponent), { ssr: false });
+export const UnifiedDashboardLayout = UnifiedDashboardLayoutComponent;

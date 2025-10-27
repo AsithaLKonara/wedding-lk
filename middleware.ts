@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 // Simple JWT verification for middleware (no Mongoose)
 function verifyToken(token: string) {
   try {
-    return jwt.verify(token, process.env.NEXTAUTH_SECRET || 'your-secret-key')
+    return jwt.verify(token, process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET || 'your-secret-key')
   } catch {
     return null
   }
@@ -21,6 +21,8 @@ const PUBLIC_ROUTES = [
   '/venues',
   '/api/auth/signin',
   '/api/auth/signup',
+  '/api/health',
+  '/api/test',
   '/_next',
   '/favicon.ico'
 ]
@@ -47,16 +49,25 @@ export function middleware(request: NextRequest) {
   }
   
   // RBAC checks for dashboard routes
-  if (pathname.startsWith('/dashboard/admin') && user.role !== 'admin' && user.role !== 'maintainer') {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+  if (pathname.startsWith('/dashboard/admin')) {
+    const userRole = (user as any).role
+    if (userRole !== 'admin' && userRole !== 'maintainer') {
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
   }
   
-  if (pathname.startsWith('/dashboard/vendor') && user.role !== 'vendor') {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+  if (pathname.startsWith('/dashboard/vendor')) {
+    const userRole = (user as any).role
+    if (userRole !== 'vendor') {
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
   }
   
-  if (pathname.startsWith('/dashboard/planner') && user.role !== 'wedding_planner') {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+  if (pathname.startsWith('/dashboard/planner')) {
+    const userRole = (user as any).role
+    if (userRole !== 'wedding_planner') {
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
   }
   
   return NextResponse.next()

@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/api-auth';
 import { connectDB } from '@/lib/db';
-import { getAuthenticatedUser, requireAuth, requireAdmin, requireVendor, requireWeddingPlanner } from '@/lib/auth-utils';
 import { User, Vendor, Venue, Booking, Payment, Review, Task, Post } from '@/lib/models';
+
 export async function GET(request: NextRequest) {
-  const authResult = await requireAdmin(request);
-  if (!authResult.success) {
+  const authResult = await requireAuth(request, ['admin', 'maintainer']);
+  if (!authResult.authorized) {
     return NextResponse.json({ error: authResult.error }, { status: 401 });
   }
   try {

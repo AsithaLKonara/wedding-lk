@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -45,8 +46,10 @@ interface RecentActivity {
 }
 
 export default function AdminDashboard() {
+  const router = useRouter()
   const [user, setUser] = useState(null);
   const [status, setStatus] = useState('loading');
+  const [unauthorized, setUnauthorized] = useState(false);
   const [stats, setStats] = useState<AdminStats>({
     totalUsers: 0,
     totalVendors: 0,
@@ -59,10 +62,6 @@ export default function AdminDashboard() {
   })
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([])
   const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetchAdminData()
-  }, [])
 
   const fetchAdminData = async () => {
     try {
@@ -114,6 +113,54 @@ export default function AdminDashboard() {
       default:
         return "text-gray-600 bg-gray-100"
     }
+  }
+
+  useEffect(() => {
+    // Check user authentication and role
+    fetch('/api/auth/me')
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          setUser(data.user)
+          // Check if user is admin or maintainer
+          if (data.user.role !== 'admin' && data.user.role !== 'maintainer') {
+            setUnauthorized(true)
+            // Redirect immediately
+            router.push('/dashboard')
+          } else {
+            setStatus('authenticated')
+            fetchAdminData()
+          }
+        } else {
+          setStatus('unauthenticated')
+          window.location.href = '/login'
+        }
+      })
+      .catch(() => {
+        setStatus('unauthenticated')
+        window.location.href = '/login'
+      })
+  }, [])
+
+  if (unauthorized) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-96">
+          <Card className="w-full max-w-md">
+            <CardHeader>
+              <CardTitle className="text-red-600 flex items-center gap-2">
+                <AlertTriangle className="h-6 w-6" />
+                Unauthorized Access
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600">You do not have permission to access this page.</p>
+              <p className="text-sm text-gray-500 mt-2">Redirecting to your dashboard...</p>
+            </CardContent>
+          </Card>
+        </div>
+      </DashboardLayout>
+    )
   }
 
   if (loading) {

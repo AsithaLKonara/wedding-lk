@@ -71,21 +71,6 @@ export default function UnifiedDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [activeTab, setActiveTab] = useState('overview')
 
-  useEffect(() => {
-    fetch('/api/auth/me')
-      .then(res => res.json())
-      .then(data => {
-        if (data.user) {
-          setUser(data.user)
-          fetchDashboardData()
-        } else {
-          router.push('/login')
-        }
-      })
-      .catch(() => router.push('/login'))
-      .finally(() => setIsLoading(false))
-  }, [router])
-
   const fetchDashboardData = async () => {
     try {
       setIsLoading(true)
@@ -157,6 +142,43 @@ export default function UnifiedDashboard() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(res => res.json())
+      .then(data => {
+        if (data.user) {
+          setUser(data.user)
+          fetchDashboardData()
+        } else {
+          router.push('/login')
+        }
+      })
+      .catch((error) => {
+        console.error('Dashboard auth error:', error)
+        router.push('/login')
+      })
+      .finally(() => setIsLoading(false))
+  }, [router])
+
+  // Add error boundary handling
+  const [error, setError] = useState<Error | null>(null)
+  
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Dashboard Error</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-gray-600">{error.message}</p>
+            <Button onClick={() => setError(null)} className="mt-4">Try Again</Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   // Show loading state
@@ -243,7 +265,7 @@ export default function UnifiedDashboard() {
   const RoleIcon = roleConfig.icon
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="dashboard-layout">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">

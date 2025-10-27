@@ -39,11 +39,27 @@ const testData = {
 
 // Helper function to get auth token
 async function getAuthToken(page: any, email: string, password: string) {
-  const response = await page.request.post('/api/login', {
-    data: { email, password }
-  });
-  const data = await response.json();
-  return data.token;
+  try {
+    const response = await page.request.post('/api/auth/signin', {
+      data: { email, password }
+    });
+    const data = await response.json();
+    
+    // Extract token from response or cookies
+    if (data.token) {
+      return data.token;
+    }
+    
+    // Fallback: try to get token from login endpoint
+    const loginResponse = await page.request.post('/api/login', {
+      data: { email, password }
+    });
+    const loginData = await loginResponse.json();
+    return loginData.token;
+  } catch (error) {
+    console.error('Error getting auth token:', error);
+    return null;
+  }
 }
 
 // Helper function to make authenticated API request

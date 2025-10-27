@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
-import { Review } from '@/lib/models';
+import { Review, Booking } from '@/lib/models';
 import { User, Vendor } from '@/lib/models';
 import { withAuth, requireUser } from '@/lib/middleware/auth-middleware';
 import { withRateLimit, rateLimitConfigs } from '@/lib/middleware/rate-limit-middleware';

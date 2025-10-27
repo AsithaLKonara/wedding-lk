@@ -19,7 +19,7 @@ export const TEST_USERS = {
   }
 }
 
-export async function seedTestUsers(baseUrl: string = 'http://localhost:3000') {
+export async function seedTestUsers(baseUrl: string = 'https://wedding-4twyhvelc-asithalkonaras-projects.vercel.app') {
   console.log('[DB Seed] Starting test user seeding...')
   
   try {
@@ -46,7 +46,7 @@ export async function seedTestUsers(baseUrl: string = 'http://localhost:3000') {
 export async function verifyTestUser(
   email: string,
   password: string,
-  baseUrl: string = 'http://localhost:3000'
+  baseUrl: string = 'https://wedding-4twyhvelc-asithalkonaras-projects.vercel.app'
 ) {
   console.log(`[DB Seed] Verifying test user: ${email}`)
   
@@ -72,7 +72,7 @@ export async function verifyTestUser(
   }
 }
 
-export async function setupTestDatabase(baseUrl: string = 'http://localhost:3000') {
+export async function setupTestDatabase(baseUrl: string = 'https://wedding-4twyhvelc-asithalkonaras-projects.vercel.app') {
   console.log('[DB Seed] Setting up test database...')
   
   try {

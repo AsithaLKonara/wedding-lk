@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from '@/lib/db'
 import { User, Venue, Vendor, Booking } from '@/lib/models'
 import { verifyToken } from '@/lib/auth/custom-auth'
+import { apiCache, cacheKeys, cacheTTL } from '@/lib/api-cache'
+import { DatabaseOptimizer, APIResponse, QueryOptimizer, ResponseOptimizer, TimeoutHandler } from '@/lib/api-optimization'
 
 export async function GET(request: NextRequest) {
   try {
@@ -23,20 +25,24 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    await connectDB()
-
-    // Get user-specific dashboard data based on role
-    const userRole = user.role
-    let dashboardData: any = {
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role
-      },
-      stats: {},
-      recentActivity: []
+    // Check cache first
+    const cacheKey = cacheKeys.dashboardStats(user.role)
+    const cached = apiCache.get(cacheKey)
+    if (cached) {
+      return NextResponse.json(APIResponse.success(cached))
     }
+
+    // Optimize database operations with timeout
+    const dashboardData = await TimeoutHandler.withTimeout(async () => {
+      await DatabaseOptimizer.ensureConnection()
+
+      // Get user-specific dashboard data based on role
+      const userRole = user.role
+      let dashboardData: any = {
+        user: ResponseOptimizer.compressUser(user),
+        stats: {},
+        recentActivity: []
+      }
 
     if (userRole === 'user') {
       // User dashboard stats
@@ -141,15 +147,18 @@ export async function GET(request: NextRequest) {
       }))
     }
 
-    return NextResponse.json({
-      success: true,
-      dashboard: dashboardData
-    })
+      return dashboardData
+    }, 8000, 'Dashboard data fetch timed out')
+
+    // Cache the result
+    apiCache.set(cacheKey, dashboardData, cacheTTL.MEDIUM)
+
+    return NextResponse.json(APIResponse.success(dashboardData))
 
   } catch (error) {
     console.error('[Dashboard API] Error:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch dashboard data' },
+      APIResponse.error('Failed to fetch dashboard data', 'DASHBOARD_ERROR', error instanceof Error ? error.message : 'Unknown error'),
       { status: 500 }
     )
   }

@@ -26,7 +26,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.3 }}
-          className="md:hidden border-t bg-white/95 backdrop-blur-md dark:bg-gray-900/95"
+          className="md:hidden border-t bg-white/95 backdrop-blur-md dark:bg-gray-900/95 relative z-50"
         >
           <div className="container mx-auto px-4 py-4">
             <nav className="flex flex-col space-y-4">

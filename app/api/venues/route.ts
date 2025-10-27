@@ -3,11 +3,11 @@ import { connectDB } from '@/lib/db';
 import { Venue } from '@/lib/models';
 import { venueSchemas } from '@/lib/validations/api-validators';
 import { handleApiError, createSuccessResponse, createPaginatedResponse } from '@/lib/utils/error-handler';
+import { apiCache, cacheKeys, cacheTTL } from '@/lib/api-cache';
+import { DatabaseOptimizer, APIResponse, QueryOptimizer, ResponseOptimizer, TimeoutHandler } from '@/lib/api-optimization';
 
 export async function GET(request: NextRequest) {
   try {
-    await connectDB();
-
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
@@ -16,56 +16,69 @@ export async function GET(request: NextRequest) {
     const maxPrice = parseInt(searchParams.get('maxPrice') || '999999999');
     const search = searchParams.get('search');
 
+    // Check cache first
+    const cacheKey = cacheKeys.venues(page, limit) + (city ? `:city:${city}` : '') + (search ? `:search:${search}` : '');
+    const cached = apiCache.get(cacheKey);
+    if (cached) {
+      return NextResponse.json(APIResponse.success(cached));
+    }
+
     console.log('📊 Fetching venues from MongoDB Atlas...');
 
-    // Build query
-    const query: any = { isActive: true };
-    
-    if (city) {
-      query['location.city'] = city;
-    }
+    // Optimize database operations with timeout
+    const result = await TimeoutHandler.withTimeout(async () => {
+      await DatabaseOptimizer.ensureConnection();
 
-    if (minCapacity > 0) {
-      query['capacity.min'] = { $gte: minCapacity };
-    }
-
-    if (maxPrice < 999999999) {
-      query['pricing.startingPrice'] = { $lte: maxPrice };
-    }
-
-    if (search) {
-      query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        { 'location.address': { $regex: search, $options: 'i' } }
-      ];
-    }
-
-    // Calculate skip value for pagination
-    const skip = (page - 1) * limit;
-
-    // Execute query with pagination
-    const [venues, total] = await Promise.all([
-      Venue.find(query)
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
-      Venue.countDocuments(query)
-    ]);
-
-    console.log(`✅ Found ${venues.length} venues`);
-
-    return NextResponse.json({
-      success: true,
-      venues,
-      pagination: {
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit)
+      // Build query
+      const query: any = { isActive: true };
+      
+      if (city) {
+        query['location.city'] = city;
       }
-    });
+
+      if (minCapacity > 0) {
+        query['capacity.min'] = { $gte: minCapacity };
+      }
+
+      if (maxPrice < 999999999) {
+        query['pricing.startingPrice'] = { $lte: maxPrice };
+      }
+
+      if (search) {
+        query.$or = [
+          { name: { $regex: search, $options: 'i' } },
+          { description: { $regex: search, $options: 'i' } },
+          { 'location.address': { $regex: search, $options: 'i' } }
+        ];
+      }
+
+      // Execute optimized query with pagination
+      const [venues, total] = await Promise.all([
+        QueryOptimizer.optimizeQuery(Venue.find(query), ['_id', 'name', 'description', 'location', 'capacity', 'pricing', 'images', 'amenities', 'rating', 'isActive'])
+          .sort({ createdAt: -1 })
+          .skip((page - 1) * limit)
+          .limit(Math.min(limit, 100))
+          .lean(),
+        Venue.countDocuments(query)
+      ]);
+
+      console.log(`✅ Found ${venues.length} venues`);
+
+      return {
+        venues: venues.map(ResponseOptimizer.compressVenue),
+        pagination: {
+          total,
+          page,
+          limit,
+          totalPages: Math.ceil(total / limit)
+        }
+      };
+    }, 6000, 'Venues fetch timed out');
+
+    // Cache the result
+    apiCache.set(cacheKey, result, cacheTTL.MEDIUM);
+
+    return NextResponse.json(APIResponse.success(result));
 
   } catch (error) {
     console.error('❌ Error fetching venues:', error);

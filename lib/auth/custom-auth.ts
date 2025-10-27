@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import { User } from '@/lib/models/user'
 import { connectDB } from '@/lib/db'
 
-const JWT_SECRET = process.env.NEXTAUTH_SECRET || 'your-secret-key'
+const JWT_SECRET = process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET || 'your-secret-key'
 
 export interface AuthUser {
   id: string

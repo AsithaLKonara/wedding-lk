@@ -10,6 +10,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { verifyToken } from '@/lib/auth/custom-auth'
 // Removed NextAuth - using custom auth
 
 // Role definitions
@@ -238,15 +239,13 @@ export class AuthHelpers {
       }
 
       // Verify token using custom auth
-      const jwt = require('jsonwebtoken')
-      const decoded = jwt.verify(token, process.env.NEXTAUTH_SECRET || 'your-secret-key')
+      const user = verifyToken(token)
       
-      const user: AuthUser = {
-        id: decoded.id,
-        name: decoded.name,
-        email: decoded.email,
-        role: decoded.role || 'user',
-        isActive: true
+      if (!user) {
+        return {
+          success: false,
+          error: 'Invalid authentication token'
+        }
       }
 
       return {
