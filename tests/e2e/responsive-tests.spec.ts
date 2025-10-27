@@ -116,7 +116,7 @@ test.describe('📱 Responsive Design Tests - Phase 5', () => {
     test('✅ Text is readable on mobile', async ({ page }) => {
       await page.goto('/')
       
-      const heading = page.locator('h1, h2')
+      const heading = page.locator('h1, h2').first()
       if (await heading.isVisible()) {
         const fontSize = await heading.evaluate(el => 
           window.getComputedStyle(el).fontSize
