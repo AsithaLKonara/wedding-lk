@@ -6,7 +6,7 @@ async function globalSetup(config: FullConfig) {
   console.log('║         🌍 GLOBAL TEST SETUP STARTING                  ║')
   console.log('╚════════════════════════════════════════════════════════╝\n')
 
-  const baseUrl = process.env.E2E_BASE_URL || 'https://wedding-4twyhvelc-asithalkonaras-projects.vercel.app'
+  const baseUrl = process.env.E2E_BASE_URL || 'https://wedding-86gvvuikv-asithalkonaras-projects.vercel.app'
   
   try {
     // Step 1: Verify server is reachable
