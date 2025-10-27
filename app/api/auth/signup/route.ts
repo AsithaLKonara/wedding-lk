@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     
     if (!result.success || !result.user) {
       return NextResponse.json(
-        { error: result.error || 'Registration failed' },
+        { success: false, error: result.error || 'Registration failed' },
         { status: 400 }
       )
     }
@@ -18,10 +18,14 @@ export async function POST(request: NextRequest) {
     const token = generateToken(result.user)
     await setSession(token)
     
-    return NextResponse.json({ user: result.user })
+    return NextResponse.json({ 
+      success: true,
+      token,
+      user: result.user 
+    })
   } catch (error) {
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     )
   }
