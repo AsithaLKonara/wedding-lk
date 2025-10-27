@@ -255,9 +255,9 @@ test.describe('🚀 User Journey Tests - Phase 4', () => {
     test('✅ Public to authenticated user journey', async ({ page }) => {
       // Step 1: Browse as public
       await page.goto('/')
-      const venuesLink = page.locator('a[href="/venues"], a:has-text("Venues")')
-      if (await venuesLink.isVisible()) {
-        await venuesLink.first().click()
+      const venuesLink = page.locator('a[href="/venues"], a:has-text("Venues")').first()
+      if (await venuesLink.isVisible().catch(() => false)) {
+        await venuesLink.click()
       }
 
       // Step 2: Login
@@ -340,9 +340,9 @@ test.describe('🚀 User Journey Tests - Phase 4', () => {
       await page.context().setOffline(true)
       
       // Try to navigate
-      const venuesLink = page.locator('a[href="/venues"]')
-      if (await venuesLink.isVisible()) {
-        await venuesLink.first().click()
+      const venuesLink = page.locator('a[href="/venues"]').first()
+      if (await venuesLink.isVisible().catch(() => false)) {
+        await venuesLink.click()
       }
 
       // Come back online

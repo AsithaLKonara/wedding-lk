@@ -25,9 +25,9 @@ test.describe('🗺️ Page Navigation Tests - Phase 3', () => {
       await page.goto('/')
       
       // Find and click venues link
-      const venuesLink = page.locator('a[href="/venues"], a:has-text("Venues")')
+      const venuesLink = page.locator('a[href="/venues"], a:has-text("Venues")').first()
       await expect(venuesLink).toBeVisible()
-      await venuesLink.first().click()
+      await venuesLink.click()
       
       await expect(page).toHaveURL(/\/venues/)
     })
@@ -35,9 +35,9 @@ test.describe('🗺️ Page Navigation Tests - Phase 3', () => {
     test('✅ Navigate from homepage to vendors', async ({ page }) => {
       await page.goto('/')
       
-      const vendorsLink = page.locator('a[href="/vendors"], a:has-text("Vendors")')
+      const vendorsLink = page.locator('a[href="/vendors"], a:has-text("Vendors")').first()
       await expect(vendorsLink).toBeVisible()
-      await vendorsLink.first().click()
+      await vendorsLink.click()
       
       await expect(page).toHaveURL(/\/vendors/)
     })
@@ -45,9 +45,9 @@ test.describe('🗺️ Page Navigation Tests - Phase 3', () => {
     test('✅ Navigate from homepage to about', async ({ page }) => {
       await page.goto('/')
       
-      const aboutLink = page.locator('a[href="/about"], a:has-text("About")')
+      const aboutLink = page.locator('a[href="/about"], a:has-text("About")').first()
       await expect(aboutLink).toBeVisible()
-      await aboutLink.first().click()
+      await aboutLink.click()
       
       await expect(page).toHaveURL(/\/about/)
     })
@@ -400,9 +400,9 @@ test.describe('🗺️ Page Navigation Tests - Phase 3', () => {
       await page.goto('/')
       
       // Navigate to venues
-      const venuesLink = page.locator('a[href="/venues"], a:has-text("Venues")')
-      if (await venuesLink.isVisible()) {
-        await venuesLink.first().click()
+      const venuesLink = page.locator('a[href="/venues"], a:has-text("Venues")').first()
+      if (await venuesLink.isVisible().catch(() => false)) {
+        await venuesLink.click()
         await expect(page).toHaveURL(/\/venues/)
         
         // Go back
