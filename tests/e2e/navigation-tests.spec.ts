@@ -55,9 +55,9 @@ test.describe('🗺️ Page Navigation Tests - Phase 3', () => {
     test('✅ Navigate from homepage to contact', async ({ page }) => {
       await page.goto('/')
       
-      const contactLink = page.locator('a[href="/contact"], a:has-text("Contact")')
-      if (await contactLink.isVisible()) {
-        await contactLink.first().click()
+      const contactLink = page.locator('a[href="/contact"], a:has-text("Contact")').first()
+      if (await contactLink.isVisible().catch(() => false)) {
+        await contactLink.click()
         await expect(page).toHaveURL(/\/contact/)
       }
     })

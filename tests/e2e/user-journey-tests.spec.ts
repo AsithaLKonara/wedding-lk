@@ -24,7 +24,7 @@ test.describe('🚀 User Journey Tests - Phase 4', () => {
     test('✅ Complete bride journey: Explore > Favorite > Book vendor', async ({ page }) => {
       // Step 1: Browse homepage
       await page.goto('/')
-      await expect(page.locator('h1, h2')).toContainText(/Wedding|Venue|Vendor/)
+      await expect(page.locator('h1, h2').first()).toContainText(/Wedding|Venue|Vendor/)
 
       // Step 2: View venues
       const venuesLink = page.locator('a[href="/venues"], a:has-text("Venues")')
