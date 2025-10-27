@@ -33,10 +33,18 @@ export async function POST(req: NextRequest) {
       results.push({ email: user.email, role: user.role })
     }
 
-    return NextResponse.json({ success: true, users: results })
+    return NextResponse.json({ 
+      success: true, 
+      users: results,
+      message: 'Test users reset successfully'
+    })
   } catch (error) {
     console.error('Reset users error:', error)
-    return NextResponse.json({ error: 'Failed to reset users' }, { status: 500 })
+    return NextResponse.json({ 
+      success: false,
+      error: 'Failed to reset users',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 })
   }
 }
 
