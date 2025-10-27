@@ -43,9 +43,25 @@ async function getAuthToken(page: any, email: string, password: string) {
     const response = await page.request.post('/api/auth/signin', {
       data: { email, password }
     });
-    const data = await response.json();
     
-    // Extract token from response or cookies
+    // Log response for debugging
+    const status = await response.status();
+    const body = await response.text();
+    
+    if (status !== 200) {
+      console.error(`Auth failed with status ${status}: ${body}`);
+      return null;
+    }
+    
+    let data;
+    try {
+      data = JSON.parse(body);
+    } catch (e) {
+      console.error('Failed to parse JSON response:', body);
+      return null;
+    }
+    
+    // Extract token from response
     if (data.token) {
       return data.token;
     }
@@ -54,7 +70,8 @@ async function getAuthToken(page: any, email: string, password: string) {
     const loginResponse = await page.request.post('/api/login', {
       data: { email, password }
     });
-    const loginData = await loginResponse.json();
+    const loginBody = await loginResponse.text();
+    const loginData = JSON.parse(loginBody);
     return loginData.token;
   } catch (error) {
     console.error('Error getting auth token:', error);

@@ -40,6 +40,7 @@ export async function POST(request: NextRequest) {
     console.log(`[API] Sign in successful for ${email}`)
     return NextResponse.json({ 
       success: true,
+      token,
       user: result.user 
     })
   } catch (error) {
