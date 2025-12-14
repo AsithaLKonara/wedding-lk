@@ -1,0 +1,41 @@
+{
+  "admin": {
+    "name": "Test Admin",
+    "email": "admin@test.local",
+    "password": "AdminPass123!",
+    "role": "admin"
+  },
+  "vendor": {
+    "name": "Test Vendor",
+    "email": "vendor@test.local",
+    "password": "VendorPass123!",
+    "role": "vendor",
+    "businessName": "Test Photography Studio",
+    "category": "photographer",
+    "phone": "+94771234567"
+  },
+  "customer": {
+    "name": "Test Customer",
+    "email": "customer@test.local",
+    "password": "CustomerPass123!",
+    "role": "user"
+  },
+  "venue_owner": {
+    "name": "Test Venue Owner",
+    "email": "venue@test.local",
+    "password": "VenuePass123!",
+    "role": "vendor",
+    "businessName": "Test Wedding Venue",
+    "category": "venue",
+    "phone": "+94771234568"
+  },
+  "wedding_planner": {
+    "name": "Test Wedding Planner",
+    "email": "planner@test.local",
+    "password": "PlannerPass123!",
+    "role": "wedding_planner",
+    "businessName": "Test Wedding Planning Services",
+    "category": "wedding_planner",
+    "phone": "+94771234569"
+  }
+}

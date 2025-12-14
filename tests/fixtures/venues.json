@@ -1,0 +1,143 @@
+{
+  "garden_venue": {
+    "name": "Royal Garden Hotel",
+    "description": "Beautiful garden venue with indoor and outdoor facilities",
+    "location": {
+      "address": "123 Garden Road, Colombo 07",
+      "city": "Colombo",
+      "province": "Western Province",
+      "coordinates": {
+        "lat": 6.9271,
+        "lng": 79.8612
+      }
+    },
+    "capacity": {
+      "min": 50,
+      "max": 200
+    },
+    "pricing": {
+      "basePrice": 75000,
+      "currency": "LKR",
+      "pricePerGuest": 0
+    },
+    "amenities": [
+      "Parking",
+      "Air Conditioning",
+      "Garden",
+      "Indoor Hall",
+      "Sound System",
+      "Lighting",
+      "Kitchen",
+      "Restrooms"
+    ],
+    "images": [
+      "venue1.jpg",
+      "venue2.jpg",
+      "venue3.jpg"
+    ],
+    "availability": [
+      {
+        "date": "2024-12-25",
+        "isAvailable": false
+      },
+      {
+        "date": "2024-12-31",
+        "isAvailable": true
+      }
+    ]
+  },
+  "beach_venue": {
+    "name": "Tropical Beach Resort",
+    "description": "Stunning beachfront venue with ocean views",
+    "location": {
+      "address": "456 Beach Road, Negombo",
+      "city": "Negombo",
+      "province": "Western Province",
+      "coordinates": {
+        "lat": 7.2086,
+        "lng": 79.8356
+      }
+    },
+    "capacity": {
+      "min": 30,
+      "max": 150
+    },
+    "pricing": {
+      "basePrice": 95000,
+      "currency": "LKR",
+      "pricePerGuest": 0
+    },
+    "amenities": [
+      "Beach Access",
+      "Parking",
+      "Air Conditioning",
+      "Sound System",
+      "Lighting",
+      "Kitchen",
+      "Restrooms",
+      "Changing Rooms"
+    ],
+    "images": [
+      "beach1.jpg",
+      "beach2.jpg",
+      "beach3.jpg"
+    ],
+    "availability": [
+      {
+        "date": "2024-12-25",
+        "isAvailable": true
+      },
+      {
+        "date": "2024-12-31",
+        "isAvailable": false
+      }
+    ]
+  },
+  "indoor_venue": {
+    "name": "Grand Ballroom Hotel",
+    "description": "Elegant indoor venue with grand ballroom",
+    "location": {
+      "address": "789 Ballroom Avenue, Colombo 03",
+      "city": "Colombo",
+      "province": "Western Province",
+      "coordinates": {
+        "lat": 6.9147,
+        "lng": 79.8500
+      }
+    },
+    "capacity": {
+      "min": 100,
+      "max": 500
+    },
+    "pricing": {
+      "basePrice": 120000,
+      "currency": "LKR",
+      "pricePerGuest": 0
+    },
+    "amenities": [
+      "Parking",
+      "Air Conditioning",
+      "Grand Ballroom",
+      "Sound System",
+      "Professional Lighting",
+      "Kitchen",
+      "Restrooms",
+      "VIP Lounge"
+    ],
+    "images": [
+      "ballroom1.jpg",
+      "ballroom2.jpg",
+      "ballroom3.jpg"
+    ],
+    "availability": [
+      {
+        "date": "2024-12-25",
+        "isAvailable": true
+      },
+      {
+        "date": "2024-12-31",
+        "isAvailable": true
+      }
+    ]
+  }
+}

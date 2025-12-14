@@ -1,0 +1,93 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useEffect, ReactNode } from "react";
+import { Loader2, ShieldX } from "lucide-react";
+import { useAuth } from "@/lib/hooks/use-auth";
+
+interface ProtectedRouteProps {
+  children: ReactNode;
+  requiredRole?: string;
+  fallback?: ReactNode;
+}
+
+export function ProtectedRoute({ 
+  children, 
+  requiredRole, 
+  fallback 
+}: ProtectedRouteProps) {
+  const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (authLoading) return;
+
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    if (requiredRole && user.role !== requiredRole) {
+      router.push("/unauthorized");
+      return;
+    }
+  }, [user, authLoading, requiredRole, router]);
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Loading...</h2>
+          <p className="text-gray-600">Please wait while we verify your access</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return fallback || (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <ShieldX className="h-12 w-12 text-red-600 mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Access Denied</h2>
+          <p className="text-gray-600">Please log in to access this page</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (requiredRole && user?.role !== requiredRole) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <ShieldX className="h-12 w-12 text-red-600 mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Access Denied</h2>
+          <p className="text-gray-600">You don't have permission to access this page</p>
+          <p className="text-sm text-gray-500 mt-2">
+            Required role: {requiredRole} | Your role: {user?.role}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return <>{children}</>;
+}
+
+// Role-specific wrapper components
+export function AdminRoute({ children }: { children: ReactNode }) {
+  return <ProtectedRoute requiredRole="admin">{children}</ProtectedRoute>;
+}
+
+export function VendorRoute({ children }: { children: ReactNode }) {
+  return <ProtectedRoute requiredRole="vendor">{children}</ProtectedRoute>;
+}
+
+export function PlannerRoute({ children }: { children: ReactNode }) {
+  return <ProtectedRoute requiredRole="wedding_planner">{children}</ProtectedRoute>;
+}
+
+export function UserRoute({ children }: { children: ReactNode }) {
+  return <ProtectedRoute requiredRole="user">{children}</ProtectedRoute>;
+}
