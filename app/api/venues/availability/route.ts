@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   try {
     await connectDB()
 
-    const { searchParams } = new URL(request.url)
+    const { searchParams } = request.nextUrl
     const venueId = searchParams.get('venueId')
     const date = searchParams.get('date')
     const startTime = searchParams.get('startTime')

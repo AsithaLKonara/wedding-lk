@@ -125,8 +125,11 @@ export default function AdminDashboard() {
           // Check if user is admin or maintainer
           if (data.user.role !== 'admin' && data.user.role !== 'maintainer') {
             setUnauthorized(true)
-            // Redirect immediately
-            router.push('/dashboard')
+            // Redirect immediately - use window.location for immediate redirect
+            setTimeout(() => {
+              window.location.href = '/dashboard'
+            }, 100)
+            return
           } else {
             setStatus('authenticated')
             fetchAdminData()
@@ -140,7 +143,7 @@ export default function AdminDashboard() {
         setStatus('unauthenticated')
         window.location.href = '/login'
       })
-  }, [])
+  }, [router])
 
   if (unauthorized) {
     return (

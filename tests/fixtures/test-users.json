@@ -1,0 +1,105 @@
+{
+  "users": [
+    {
+      "email": "user@test.local",
+      "password": "Test123!",
+      "name": "Test User",
+      "role": "user",
+      "isEmailVerified": true,
+      "isActive": true
+    },
+    {
+      "email": "vendor@test.local",
+      "password": "Test123!",
+      "name": "Test Vendor",
+      "role": "vendor",
+      "isEmailVerified": true,
+      "isActive": true
+    },
+    {
+      "email": "admin@test.local",
+      "password": "Test123!",
+      "name": "Test Admin",
+      "role": "admin",
+      "isEmailVerified": true,
+      "isActive": true
+    },
+    {
+      "email": "planner@test.local",
+      "password": "Test123!",
+      "name": "Test Planner",
+      "role": "wedding_planner",
+      "isEmailVerified": true,
+      "isActive": true
+    }
+  ],
+  "vendors": [
+    {
+      "businessName": "Wedding Photography Co",
+      "category": "photography",
+      "email": "photography@test.local",
+      "phone": "+94771234567",
+      "location": {
+        "city": "Colombo",
+        "province": "Western Province"
+      },
+      "pricing": {
+        "startingPrice": 50000,
+        "currency": "LKR"
+      },
+      "isVerified": true,
+      "isActive": true
+    },
+    {
+      "businessName": "Garden Venue Hall",
+      "category": "venue",
+      "email": "venue@test.local",
+      "phone": "+94771234568",
+      "location": {
+        "city": "Kandy",
+        "province": "Central Province"
+      },
+      "pricing": {
+        "startingPrice": 100000,
+        "currency": "LKR"
+      },
+      "isVerified": true,
+      "isActive": true
+    }
+  ],
+  "venues": [
+    {
+      "name": "Grand Wedding Hall",
+      "description": "Beautiful wedding venue with garden and indoor hall",
+      "location": {
+        "address": "123 Wedding Road",
+        "city": "Colombo",
+        "province": "Western Province"
+      },
+      "capacity": {
+        "min": 50,
+        "max": 500
+      },
+      "pricing": {
+        "basePrice": 100000,
+        "currency": "LKR"
+      },
+      "amenities": ["Parking", "Air Conditioning", "Garden", "Indoor Hall"],
+      "isActive": true
+    }
+  ],
+  "bookings": [
+    {
+      "eventDate": "2024-12-25",
+      "eventTime": "18:00",
+      "guestCount": 100,
+      "status": "confirmed",
+      "payment": {
+        "amount": 150000,
+        "currency": "LKR",
+        "status": "completed"
+      }
+    }
+  ]
+}
+

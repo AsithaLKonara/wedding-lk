@@ -64,6 +64,8 @@ export function Header() {
               size="sm"
               className="lg:hidden"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              data-testid="mobile-menu-button"
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMobileMenuOpen ? <X /> : <Menu />}
             </Button>
@@ -74,8 +76,9 @@ export function Header() {
       {/* Mobile menu overlay */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden"
+          className="fixed inset-0 z-[55] bg-black bg-opacity-50 md:hidden"
           onClick={() => setIsMobileMenuOpen(false)}
+          data-testid="mobile-menu-overlay"
         />
       )}
       

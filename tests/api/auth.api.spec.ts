@@ -175,7 +175,9 @@ describe('Auth API', () => {
     });
   });
 
-  describe('POST /api/forgot-password', () => {
+  // Password reset feature has been removed from the application.
+  // Keep tests for historical reference but skip them by default.
+  describe.skip('POST /api/forgot-password - DISABLED (feature removed)', () => {
     test.skip('DISABLED: Password reset email for valid user', async () => {
       const response = await request(app)
         .post('/api/forgot-password')
@@ -196,7 +198,9 @@ describe('Auth API', () => {
     });
   });
 
-  describe('POST /api/auth/reset-password', () => {
+  // Reset password via token is no longer supported in the current API.
+  // These tests are kept for reference but skipped by default.
+  describe.skip('POST /api/auth/reset-password - DISABLED (feature removed)', () => {
     test('resets password with valid token', async () => {
       // First get a reset token (in real app, this would come from email)
       const resetToken = 'valid-reset-token-123';
@@ -223,7 +227,9 @@ describe('Auth API', () => {
     });
   });
 
-  describe('POST /api/auth/verify-email', () => {
+  // Email verification endpoints have been removed.
+  // These tests are disabled to match the current feature set.
+  describe.skip('POST /api/auth/verify-email - DISABLED (feature removed)', () => {
     test('verifies email with valid token', async () => {
       const verificationToken = 'valid-verification-token-123';
       

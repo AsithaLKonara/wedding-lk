@@ -262,22 +262,19 @@ test.describe('🔐 Critical Features - Phase 1 Tests', () => {
     
     // If not visible, try opening mobile menu first
     if (!(await venuesLink.isVisible({ timeout: 1000 }).catch(() => false))) {
-      // Try multiple selectors for mobile menu button
-      const mobileMenuSelectors = [
-        'button:has-text("Menu")',
-        'button[aria-label*="menu"]',
-        'button[aria-label*="Menu"]',
-        'button[class*="menu"]',
-        'button svg[class*="menu"]',
-        'button:has(svg)'
-      ]
-      
-      for (const selector of mobileMenuSelectors) {
-        const mobileMenuButton = page.locator(selector).first()
-        if (await mobileMenuButton.isVisible({ timeout: 500 }).catch(() => false)) {
-          await mobileMenuButton.click()
-          await page.waitForTimeout(1500) // Wait for animation
-          break
+      // Try data-testid first, then fallback to other selectors
+      const mobileMenuButton = page.locator('[data-testid="mobile-menu-button"]')
+      if (await mobileMenuButton.isVisible({ timeout: 1000 }).catch(() => false)) {
+        await mobileMenuButton.click()
+        await page.waitForTimeout(1500) // Wait for animation
+        
+        // Try to find the link in mobile menu
+        const mobileVenuesLink = page.locator('[data-testid="mobile-menu-link-venues"]')
+        if (await mobileVenuesLink.isVisible({ timeout: 2000 }).catch(() => false)) {
+          await mobileVenuesLink.click()
+          await page.waitForURL(/\/venues/, { timeout: 5000 })
+          await expect(page.url()).toContain('/venues')
+          return
         }
       }
     }
@@ -305,22 +302,19 @@ test.describe('🔐 Critical Features - Phase 1 Tests', () => {
     
     // If not visible, try opening mobile menu first
     if (!(await vendorsLink.isVisible({ timeout: 1000 }).catch(() => false))) {
-      // Try multiple selectors for mobile menu button
-      const mobileMenuSelectors = [
-        'button:has-text("Menu")',
-        'button[aria-label*="menu"]',
-        'button[aria-label*="Menu"]',
-        'button[class*="menu"]',
-        'button svg[class*="menu"]',
-        'button:has(svg)'
-      ]
-      
-      for (const selector of mobileMenuSelectors) {
-        const mobileMenuButton = page.locator(selector).first()
-        if (await mobileMenuButton.isVisible({ timeout: 500 }).catch(() => false)) {
-          await mobileMenuButton.click()
-          await page.waitForTimeout(1500) // Wait for animation
-          break
+      // Try data-testid first, then fallback to other selectors
+      const mobileMenuButton = page.locator('[data-testid="mobile-menu-button"]')
+      if (await mobileMenuButton.isVisible({ timeout: 1000 }).catch(() => false)) {
+        await mobileMenuButton.click()
+        await page.waitForTimeout(1500) // Wait for animation
+        
+        // Try to find the link in mobile menu
+        const mobileVendorsLink = page.locator('[data-testid="mobile-menu-link-vendors"]')
+        if (await mobileVendorsLink.isVisible({ timeout: 2000 }).catch(() => false)) {
+          await mobileVendorsLink.click()
+          await page.waitForURL(/\/vendors/, { timeout: 5000 })
+          await expect(page.url()).toContain('/vendors')
+          return
         }
       }
     }

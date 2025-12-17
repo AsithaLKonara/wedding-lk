@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   try {
     await connectDB();
 
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
     const clientId = searchParams.get('clientId');
@@ -160,7 +160,7 @@ export async function PUT(request: NextRequest) {
   try {
     await connectDB();
 
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const paymentId = searchParams.get('id');
     const paymentData = await request.json();
 
@@ -222,7 +222,7 @@ export async function DELETE(request: NextRequest) {
   try {
     await connectDB();
 
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const paymentId = searchParams.get('id');
 
     if (!paymentId) {

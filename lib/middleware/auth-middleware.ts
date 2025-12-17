@@ -15,13 +15,23 @@ export interface AuthRequest extends NextRequest {
 
 export function withAuth(handler: (req: AuthRequest) => Promise<NextResponse>) {
   return async (req: NextRequest): Promise<NextResponse> => {
+    let user: AuthUser | null = null;
+
+    // First, resolve the authenticated user from the request.
     try {
-      const user = getUserFromRequest(req);
+      user = getUserFromRequest(req);
+    } catch (error) {
+      console.error('Auth middleware error:', error);
+      return NextResponse.json(
+        { error: 'Authentication failed' },
+        { status: 500 },
+      );
+    }
       
       if (!user) {
         return NextResponse.json(
           { error: 'Authentication required' },
-          { status: 401 }
+        { status: 401 },
         );
       }
 
@@ -35,12 +45,17 @@ export function withAuth(handler: (req: AuthRequest) => Promise<NextResponse>) {
         image: (user as any).image || undefined,
       };
 
-      return handler(authReq);
+    // Ensure handler errors are surfaced as a 500 JSON response instead of
+    // bubbling up as unhandled rejections.
+    try {
+      return await handler(authReq);
     } catch (error) {
-      console.error('Auth middleware error:', error);
+      console.error('Handler error in withAuth:', error);
+      const message =
+        error instanceof Error ? error.message : 'Internal server error';
       return NextResponse.json(
-        { error: 'Authentication failed' },
-        { status: 500 }
+        { error: message },
+        { status: 500 },
       );
     }
   };

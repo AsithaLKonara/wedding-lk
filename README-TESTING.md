@@ -76,16 +76,18 @@ tests/
    Add to `.env.test`:
    ```env
    NODE_ENV=test
-   MONGODB_URI=mongodb://localhost:27017/weddinglk_test
+   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/weddinglk_test?retryWrites=true&w=majority
    NEXTAUTH_SECRET=test-secret
    NEXTAUTH_URL=http://localhost:3000
    CURSOR_API_KEY=your-cursor-api-key
    ```
 
-4. **Start test database:**
+   **Note:** This project uses MongoDB Atlas (cloud) only. Local MongoDB is not supported due to macOS compatibility constraints.
+
+4. **Database Setup:**
    ```bash
-   # Using Docker
-   docker run -d -p 27017:27017 --name weddinglk-test-db mongo:6.0
+   # No local database setup needed - uses MongoDB Atlas
+   # Ensure MONGODB_URI is set to your Atlas connection string
    
    # Or using local MongoDB
    mongod --dbpath ./test-data
@@ -282,10 +284,13 @@ npx playwright test --list
 
 #### Database Connection Issues
 ```bash
-# Check MongoDB connection
-mongosh mongodb://localhost:27017/weddinglk_test
+# Check MongoDB Atlas connection (replace with your Atlas URI)
+mongosh "mongodb+srv://username:password@cluster.mongodb.net/weddinglk_test"
 
-# Reset test database
+# Verify environment variable is set
+echo $MONGODB_URI
+
+# Reset test database (drops test database on Atlas)
 npm run test:cleanup
 ```
 

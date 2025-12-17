@@ -77,21 +77,41 @@ export default function UnifiedDashboard() {
       
       // Fetch real data from API
       const [statsResponse, activityResponse] = await Promise.all([
-        fetch('/api/dashboard/stats'),
-        fetch('/api/dashboard/activity')
+        fetch('/api/dashboard/stats').catch(() => null),
+        fetch('/api/dashboard/activity').catch(() => null)
       ])
       
-      if (statsResponse.ok && activityResponse.ok) {
-        const [statsData, activityData] = await Promise.all([
-          statsResponse.json(),
-          activityResponse.json()
-        ])
-        
-        setStats({
-          overview: statsData.stats.overview,
-          performance: statsData.stats.performance,
-          recentActivity: activityData.activities
-        })
+      if (statsResponse?.ok && activityResponse?.ok) {
+        try {
+          const [statsData, activityData] = await Promise.all([
+            statsResponse.json(),
+            activityResponse.json()
+          ])
+          
+          // Safely extract data with fallbacks
+          setStats({
+            overview: statsData?.stats?.overview || {
+              totalBookings: 0,
+              totalRevenue: 0,
+              totalUsers: 0,
+              totalVenues: 0,
+              totalVendors: 0,
+              averageRating: 0,
+              conversionRate: 0,
+              growthRate: 0
+            },
+            performance: statsData?.stats?.performance || {
+              apiCalls: 0,
+              responseTime: 0,
+              errorRate: 0,
+              uptime: 99.9
+            },
+            recentActivity: activityData?.activities || []
+          })
+        } catch (parseError) {
+          console.error('Failed to parse dashboard data:', parseError)
+          throw new Error('Failed to parse dashboard data')
+        }
       } else {
         throw new Error('Failed to fetch dashboard data')
       }

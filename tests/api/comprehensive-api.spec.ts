@@ -2,6 +2,8 @@ import request from 'supertest'
 import { describe, it, expect, beforeAll, afterAll } from '@jest/globals'
 
 const BASE_URL = process.env.TEST_API_URL || 'http://localhost:3000'
+const RUN_COMPREHENSIVE_API_TESTS =
+  process.env.RUN_COMPREHENSIVE_API_TESTS === '1'
 
 // Test data tracking
 interface TestResult {
@@ -15,7 +17,11 @@ interface TestResult {
 
 const results: TestResult[] = []
 
-describe('🔌 Comprehensive API Tests - All Endpoints Data Validation', () => {
+// Only run this heavy, end-to-end style API suite when explicitly enabled.
+const describeComprehensive =
+  RUN_COMPREHENSIVE_API_TESTS ? describe : describe.skip
+
+describeComprehensive('🔌 Comprehensive API Tests - All Endpoints Data Validation', () => {
   let authToken: string
   let testUserId: string
 

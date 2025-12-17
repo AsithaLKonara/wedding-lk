@@ -26,16 +26,18 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.3 }}
-          className="md:hidden border-t bg-white/95 backdrop-blur-md dark:bg-gray-900/95 relative z-50"
+          className="md:hidden border-t bg-white/95 backdrop-blur-md dark:bg-gray-900/95 relative z-[60]"
+          data-testid="mobile-menu"
         >
           <div className="container mx-auto px-4 py-4">
-            <nav className="flex flex-col space-y-4">
+            <nav className="flex flex-col space-y-4" data-testid="mobile-menu-nav">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={onClose}
-                  className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors"
+                  className="text-gray-700 hover:text-rose-500 dark:text-gray-300 dark:hover:text-rose-400 font-medium transition-colors py-2 block"
+                  data-testid={`mobile-menu-link-${item.href.replace('/', '')}`}
                 >
                   {item.label}
                 </Link>

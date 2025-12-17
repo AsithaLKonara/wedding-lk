@@ -79,17 +79,29 @@ export class DatabasePoolManager {
 
   // Setup event listeners for monitoring
   private setupEventListeners(): void {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/ac6188d0-f3a1-4899-9380-8b8e4db474a8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'db-pool-manager.ts:81',message:'setupEventListeners entry',data:{connectedListeners:mongoose.connection.listenerCount('connected')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
     mongoose.connection.on('connected', () => {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/ac6188d0-f3a1-4899-9380-8b8e4db474a8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'db-pool-manager.ts:83',message:'pool manager connected event',data:{listenerCount:mongoose.connection.listenerCount('connected')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
       this.updatePoolStats();
       console.log('✅ Database connected - Pool stats updated');
     });
 
     mongoose.connection.on('disconnected', () => {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/ac6188d0-f3a1-4899-9380-8b8e4db474a8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'db-pool-manager.ts:88',message:'pool manager disconnected event',data:{readyState:mongoose.connection.readyState},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
       this.updatePoolStats();
       console.log('⚠️ Database disconnected - Pool stats updated');
     });
 
     mongoose.connection.on('error', (error) => {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/ac6188d0-f3a1-4899-9380-8b8e4db474a8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'db-pool-manager.ts:93',message:'pool manager error event',data:{error:error.message},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
       console.error('❌ Database connection error:', error);
       this.updatePoolStats();
     });
@@ -110,6 +122,9 @@ export class DatabasePoolManager {
     mongoose.connection.on('connectionPoolClosed', () => {
       this.updatePoolStats();
     });
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/ac6188d0-f3a1-4899-9380-8b8e4db474a8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'db-pool-manager.ts:113',message:'setupEventListeners exit',data:{connectedListeners:mongoose.connection.listenerCount('connected')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
   }
 
   // Update pool statistics
@@ -250,10 +265,19 @@ export class DatabasePoolManager {
 
   // Close all connections gracefully
   public async closePool(): Promise<void> {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/ac6188d0-f3a1-4899-9380-8b8e4db474a8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'db-pool-manager.ts:267',message:'closePool entry',data:{readyState:mongoose.connection.readyState,listenerCount:mongoose.connection.listenerCount('connected')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+    // #endregion
     try {
       await mongoose.connection.close();
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/ac6188d0-f3a1-4899-9380-8b8e4db474a8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'db-pool-manager.ts:270',message:'After closePool close',data:{readyState:mongoose.connection.readyState,listenerCount:mongoose.connection.listenerCount('connected')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+      // #endregion
       console.log('🔒 Database pool closed gracefully');
     } catch (error) {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/ac6188d0-f3a1-4899-9380-8b8e4db474a8',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'db-pool-manager.ts:273',message:'closePool error',data:{error:error.message},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+      // #endregion
       console.error('Error closing database pool:', error);
     }
   }

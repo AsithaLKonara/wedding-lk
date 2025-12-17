@@ -3,6 +3,46 @@ import { requireAuth } from '@/lib/api-auth'
 import { connectDB } from '@/lib/db'
 import { Booking, Payment } from '@/lib/models'
 
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const authResult = await requireAuth(request)
+    
+    if (!authResult.authorized || !authResult.user) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const { id } = await params
+    await connectDB()
+
+    const booking = await Booking.findById(id)
+    if (!booking) {
+      return NextResponse.json(
+        { success: false, error: 'Booking not found' },
+        { status: 404 }
+      )
+    }
+
+    // Get payments for this booking
+    const payments = await Payment.find({ bookingId: id })
+      .sort({ createdAt: -1 })
+      .lean()
+
+    return NextResponse.json({ success: true, payments })
+  } catch (error) {
+    console.error('Error fetching booking payments:', error)
+    return NextResponse.json(
+      { success: false, error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}
+
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -17,11 +57,10 @@ export async function POST(
       )
     }
 
-    const { id: bookingId } = await params
+    const { id } = await params
     await connectDB()
 
-    // Get booking
-    const booking = await Booking.findById(bookingId)
+    const booking = await Booking.findById(id)
     if (!booking) {
       return NextResponse.json(
         { success: false, error: 'Booking not found' },
@@ -29,46 +68,23 @@ export async function POST(
       )
     }
 
-    // Verify user owns booking
-    if (booking.userId?.toString() !== authResult.user.id && authResult.user.role !== 'admin') {
-      return NextResponse.json(
-        { success: false, error: 'Forbidden' },
-        { status: 403 }
-      )
-    }
+    const { amount, method, transactionId } = await request.json()
 
-    const { method, amount, paymentMethod } = await request.json()
-
-    // Create payment record
+    // Create payment
     const payment = new Payment({
-      bookingId: booking._id,
-      userId: booking.userId,
-      amount: amount || booking.totalPrice,
-      currency: 'LKR',
+      userId: authResult.user.id,
+      bookingId: id,
+      amount,
+      method,
+      transactionId,
       status: 'pending',
-      method: paymentMethod || method || 'card',
-      metadata: {
-        bookingNumber: booking.bookingNumber
-      }
+      createdAt: new Date()
     })
 
     await payment.save()
 
-    // Update booking with payment reference
-    booking.paymentId = payment._id
-    booking.paymentStatus = 'pending'
-    await booking.save()
-
     return NextResponse.json(
-      { 
-        success: true, 
-        payment: {
-          id: payment._id,
-          amount: payment.amount,
-          status: payment.status,
-          method: payment.method
-        }
-      },
+      { success: true, payment },
       { status: 201 }
     )
   } catch (error) {
@@ -79,4 +95,3 @@ export async function POST(
     )
   }
 }
-
