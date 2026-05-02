@@ -26,14 +26,14 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit
 
     // Build query
-    const query: MongoQuery<BookingSearchCriteria> = { client: userId }
+    const query: any = { user: userId }
     if (status) query.status = status
 
     // Get bookings with pagination
     const bookings = await Booking.find(query)
       .populate('venue', 'name location')
       .populate('vendor', 'businessName category')
-      .sort({ date: 1 })
+      .sort({ eventDate: 1 })
       .skip(skip)
       .limit(limit)
 

@@ -41,46 +41,37 @@ export default function VendorServicesPage() {
       return
     }
 
-    // Mock data - replace with actual API call
-    setServices([
-      {
-        id: '1',
-        name: 'Wedding Photography Package',
-        description: 'Full day wedding photography with edited photos and online gallery',
-        category: 'Photography',
-        price: 150000,
-        duration: 8,
-        status: 'active',
-        bookings: 12,
-        rating: 4.8,
-        createdAt: '2024-01-15'
-      },
-      {
-        id: '2',
-        name: 'Bridal Makeup & Hair',
-        description: 'Professional bridal makeup and hairstyling for the big day',
-        category: 'Beauty',
-        price: 25000,
-        duration: 3,
-        status: 'active',
-        bookings: 8,
-        rating: 4.9,
-        createdAt: '2024-01-20'
-      },
-      {
-        id: '3',
-        name: 'Wedding Videography',
-        description: 'Cinematic wedding video with highlights reel',
-        category: 'Videography',
-        price: 200000,
-        duration: 10,
-        status: 'pending',
-        bookings: 0,
-        rating: 0,
-        createdAt: '2024-02-01'
+    const fetchServices = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/dashboard/vendor/services');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            // Map API data to component state
+            const mappedServices = data.services.map((s: any) => ({
+              id: s.id,
+              name: s.name,
+              description: s.description || 'No description provided.',
+              category: s.category,
+              price: s.price,
+              duration: 1, // Default duration if not provided
+              status: s.isActive ? 'active' : 'inactive',
+              bookings: s.bookings || 0,
+              rating: s.rating || 0,
+              createdAt: new Date().toISOString()
+            }));
+            setServices(mappedServices);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      } finally {
+        setLoading(false);
       }
-    ])
-    setLoading(false)
+    };
+
+    fetchServices();
   }, [user, authLoading, router])
 
   const filteredServices = services.filter(service => {

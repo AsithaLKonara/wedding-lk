@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     console.log('📊 Fetching vendor services from MongoDB Atlas...');
 
     // Get vendor profile with services
-    const vendor = await Vendor.findOne({ userId: authUser.id });
+    const vendor = await Vendor.findOne({ owner: authUser.id });
     if (!vendor) {
       return NextResponse.json({ error: "Vendor profile not found" }, { status: 404 });
     }
@@ -84,7 +84,7 @@ export async function PATCH(request: NextRequest) {
     console.log('📝 Updating vendor service:', { serviceId, updates });
 
     // Get vendor profile
-    const vendor = await Vendor.findOne({ userId: authUser.id });
+    const vendor = await Vendor.findOne({ owner: authUser.id });
     if (!vendor) {
       return NextResponse.json({ error: "Vendor profile not found" }, { status: 404 });
     }

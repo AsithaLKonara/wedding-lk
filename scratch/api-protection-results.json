@@ -1,0 +1,1232 @@
+[
+  {
+    "route": "app/api/admin/bulk/route.ts",
+    "protection": [
+      "withAdmin (Legacy)"
+    ]
+  },
+  {
+    "route": "app/api/admin/comprehensive-seed/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/admin/reset-database/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/admin/seed/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/admin/simple-seed/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/admin/users/[userId]/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/admin/users/route.ts",
+    "protection": [
+      "withAdmin (Legacy)"
+    ]
+  },
+  {
+    "route": "app/api/ads-payments/[paymentId]/confirm/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/ads-payments/budget-recommendations/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/ads-payments/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/advanced-ai/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/ai/custom-llm/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/ai-recommendations/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/ai-search/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/ai-search-enhanced/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/analytics/payments/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/analytics/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/analytics/vendor/route.ts",
+    "protection": [
+      "NextAuth Session"
+    ]
+  },
+  {
+    "route": "app/api/auth/me/route.ts",
+    "protection": [
+      "verifyToken (Custom)"
+    ]
+  },
+  {
+    "route": "app/api/auth/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/auth/signin/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/auth/signout/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/auth/signup/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/availability/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/background-sync/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/bookings/[id]/cancel/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/bookings/[id]/confirm/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/bookings/[id]/invoice/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/bookings/[id]/payment/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/bookings/[id]/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/bookings/route.ts",
+    "protection": [
+      "verifyToken (Custom)"
+    ]
+  },
+  {
+    "route": "app/api/bookings/vendor-package/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/cache-demo/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/chatbot/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/checkout/session/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/comments/[id]/like/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/comments/[id]/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/comments/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/compare/route.ts",
+    "protection": [
+      "withAuth (Legacy)"
+    ]
+  },
+  {
+    "route": "app/api/conversations/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/activity/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/admin/activity/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/admin/analytics/route.ts",
+    "protection": [
+      "requireAdmin"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/admin/platform-stats/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/admin/settings/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/admin/stats/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/admin/users/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/admin/vendors/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/planner/clients/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/planner/stats/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/planner/tasks/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/planner/timeline/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/route.ts",
+    "protection": [
+      "verifyToken (Custom)"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/stats/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/user/activity/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/user/bookings/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/user/events/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/user/favorites/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/user/messages/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/user/payments/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/user/profile/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/user/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/user/stats/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/user/tasks/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/user-stats/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/vendor/analytics/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/vendor/bookings/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/vendor/messages/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/vendor/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/vendor/services/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/dashboard/vendor/stats/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/db-analysis/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/db-cleanup/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/db-final-cleanup/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/db-fix/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/db-test/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/debug-admin-user/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/debug-auth/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/debug-db/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/disputes/route.ts",
+    "protection": [
+      "withAuth (Legacy)"
+    ]
+  },
+  {
+    "route": "app/api/email/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/email-templates/[id]/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/email-templates/preview/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/email-templates/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/enhanced-bookings/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/enhanced-posts/[id]/interactions/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/enhanced-posts/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/env-test/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/errors/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/explore/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/favorites/[id]/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/favorites/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/fix-runtime-errors/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/gallery/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/gallery/stats/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/groups/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/guest-list/route.ts",
+    "protection": [
+      "withAuth (Legacy)"
+    ]
+  },
+  {
+    "route": "app/api/health/db/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/health/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/home/featured-vendors/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/home/featured-venues/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/home/stats/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/home/testimonials/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/invoices/generate/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/login/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/messages/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/messages/upload/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/messages/upload/test/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/mobile/dashboard/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/mobile/notifications/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/mobile/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/monitoring/dashboard/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/monitoring/health/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/monitoring/metrics/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/monitoring/performance/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/monitoring/scaling/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/notifications/[id]/read/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/notifications/[id]/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/notifications/read-all/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/notifications/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/notifications/test/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/packages/[id]/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/packages/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/payments/[id]/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/payments/create-intent/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/payments/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/payments/session/[sessionId]/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/payments/test/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/payments/webhook/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/performance/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/push-subscription/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/quick-fix/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/quick-test/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/referrals/route.ts",
+    "protection": [
+      "withAuth (Legacy)"
+    ]
+  },
+  {
+    "route": "app/api/register/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/reviews/[id]/helpful/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/reviews/[id]/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/reviews/route.ts",
+    "protection": [
+      "withAuth (Legacy)"
+    ]
+  },
+  {
+    "route": "app/api/reviews-debug/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/search/public/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/search/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/security/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/seed-database/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/simple-auth/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/simple-health/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/sms/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/social-media/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/status/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/stories/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/tasks/[id]/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/tasks/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test/create-test-user/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test/reset-users/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test/seed-test-data/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test-all-services/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test-auth/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test-dashboard/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test-dashboard-debug/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test-db/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test-fixes/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test-login/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test-models/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test-nextauth/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test-reviews/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test-role-access/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/test-users/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/third-party/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/trending/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/upload/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/upload/test/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/user/favorites/[id]/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/user/favorites/route.ts",
+    "protection": [
+      "verifyToken (Custom)"
+    ]
+  },
+  {
+    "route": "app/api/user/planning/route.ts",
+    "protection": [
+      "withAuth (Legacy)"
+    ]
+  },
+  {
+    "route": "app/api/user/planning/tasks/[taskId]/route.ts",
+    "protection": [
+      "withAuth (Legacy)"
+    ]
+  },
+  {
+    "route": "app/api/user/planning/tasks/route.ts",
+    "protection": [
+      "withAuth (Legacy)"
+    ]
+  },
+  {
+    "route": "app/api/user/profile/route.ts",
+    "protection": [
+      "withAuth (Legacy)"
+    ]
+  },
+  {
+    "route": "app/api/users/[id]/bookings/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/users/[id]/preferences/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/users/[id]/profile/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/users/avatars/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/users/profile/route.ts",
+    "protection": [
+      "verifyToken (Custom)"
+    ]
+  },
+  {
+    "route": "app/api/users/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/vendor-packages/[id]/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/vendor-packages/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/vendors/[id]/availability/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/vendors/[id]/portfolio/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/vendors/[id]/reviews/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/vendors/[id]/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/vendors/[id]/services/[serviceId]/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/vendors/[id]/services/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/vendors/categories/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/vendors/register/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/vendors/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/vendors/search/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/vendors/with-avatars/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/venues/[id]/favorite/route.ts",
+    "protection": [
+      "requireAuth"
+    ]
+  },
+  {
+    "route": "app/api/venues/[id]/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/venues/availability/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/venues/pricing/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/venues/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/venues/search/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/venues/with-avatars/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/verification/documents/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/verification/status/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  },
+  {
+    "route": "app/api/webhooks/stripe/route.ts",
+    "protection": [
+      "UNPROTECTED"
+    ]
+  }
+]

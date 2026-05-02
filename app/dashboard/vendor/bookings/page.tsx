@@ -54,46 +54,32 @@ export default function VendorBookingsPage() {
   const fetchBookings = async () => {
     try {
       setLoading(true);
-      // Mock data - replace with actual API call
-      const mockBookings: Booking[] = [
-        {
-          id: '1',
-          clientName: 'Sarah & Michael Johnson',
-          clientEmail: 'sarah.michael@email.com',
-          clientPhone: '+1 (555) 123-4567',
-          serviceName: 'Wedding Photography Package',
-          bookingDate: '2024-06-15',
-          eventDate: '2024-08-15',
-          status: 'confirmed',
-          totalAmount: 2500,
-          paidAmount: 1250,
-          guestCount: 150,
-          location: 'Garden Manor, New York',
-          specialRequests: 'Outdoor ceremony photos, sunset shots',
-          notes: 'Very organized couple, prefers natural lighting',
-          createdAt: '2024-06-15',
-          updatedAt: '2024-06-20'
-        },
-        {
-          id: '2',
-          clientName: 'Emma & David Wilson',
-          clientEmail: 'emma.david@email.com',
-          clientPhone: '+1 (555) 234-5678',
-          serviceName: 'Catering Service',
-          bookingDate: '2024-06-10',
-          eventDate: '2024-09-22',
-          status: 'pending',
-          totalAmount: 1800,
-          paidAmount: 0,
-          guestCount: 100,
-          location: 'Riverside Hotel, Los Angeles',
-          specialRequests: 'Vegetarian options, gluten-free menu',
-          notes: 'Waiting for final guest count',
-          createdAt: '2024-06-10',
-          updatedAt: '2024-06-10'
+      const response = await fetch('/api/dashboard/vendor/bookings');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          // Map API data to component state
+          const mappedBookings = data.bookings.map((b: any) => ({
+            id: b.id,
+            clientName: b.clientName,
+            clientEmail: b.clientEmail,
+            clientPhone: b.clientPhone || 'N/A',
+            serviceName: b.service,
+            bookingDate: b.date,
+            eventDate: b.date,
+            status: b.status,
+            totalAmount: b.amount,
+            paidAmount: b.amount, // For now assuming full payment for seed data
+            guestCount: b.guestCount,
+            location: 'TBD', // API doesn't return this yet
+            specialRequests: b.specialRequirements,
+            notes: b.specialRequirements,
+            createdAt: b.date,
+            updatedAt: b.date
+          }));
+          setBookings(mappedBookings);
         }
-      ];
-      setBookings(mockBookings);
+      }
     } catch (error) {
       console.error('Error fetching bookings:', error);
     } finally {
@@ -101,12 +87,27 @@ export default function VendorBookingsPage() {
     }
   };
 
-  const handleStatusChange = (bookingId: string, newStatus: string) => {
-    setBookings(prev => prev.map(booking => 
-      booking.id === bookingId 
-        ? { ...booking, status: newStatus as any, updatedAt: new Date().toISOString().split('T')[0] }
-        : booking
-    ));
+  const handleStatusChange = async (bookingId: string, newStatus: string) => {
+    try {
+      const action = newStatus === 'confirmed' ? 'confirm' : (newStatus === 'cancelled' ? 'reject' : null);
+      if (!action) return;
+
+      const response = await fetch('/api/dashboard/vendor/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bookingId, action })
+      });
+
+      if (response.ok) {
+        setBookings(prev => prev.map(booking => 
+          booking.id === bookingId 
+            ? { ...booking, status: newStatus as any, updatedAt: new Date().toISOString() }
+            : booking
+        ));
+      }
+    } catch (error) {
+      console.error('Error updating booking status:', error);
+    }
   };
 
   const handleBulkAction = (action: string) => {

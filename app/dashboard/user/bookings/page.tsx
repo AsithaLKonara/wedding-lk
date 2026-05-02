@@ -54,70 +54,34 @@ export default function UserBookingsPage() {
   const fetchBookings = async () => {
     try {
       setLoading(true);
-      // Mock data - replace with actual API call
-      const mockBookings: Booking[] = [
-        {
-          id: '1',
-          serviceName: 'Wedding Photography Package',
-          vendorName: 'Elegant Photography Studio',
-          vendorEmail: 'contact@elegantphoto.com',
-          vendorPhone: '+1 (555) 123-4567',
-          bookingDate: '2024-06-15',
-          eventDate: '2024-08-15',
-          status: 'confirmed',
-          totalAmount: 2500,
-          paidAmount: 1250,
-          guestCount: 150,
-          location: 'Garden Manor, New York',
-          specialRequests: 'Outdoor ceremony photos, sunset shots',
-          notes: 'Very professional team, highly recommended',
-          rating: 5,
-          review: 'Amazing photography service! The team was professional and captured every special moment perfectly.',
-          createdAt: '2024-06-15',
-          updatedAt: '2024-06-20'
-        },
-        {
-          id: '2',
-          serviceName: 'Catering Service',
-          vendorName: 'Garden Catering Co.',
-          vendorEmail: 'info@gardencatering.com',
-          vendorPhone: '+1 (555) 234-5678',
-          bookingDate: '2024-06-10',
-          eventDate: '2024-09-22',
-          status: 'pending',
-          totalAmount: 1800,
-          paidAmount: 0,
-          guestCount: 100,
-          location: 'Riverside Hotel, Los Angeles',
-          specialRequests: 'Vegetarian options, gluten-free menu',
-          notes: 'Waiting for final guest count confirmation',
-          rating: 0,
-          review: '',
-          createdAt: '2024-06-10',
-          updatedAt: '2024-06-10'
-        },
-        {
-          id: '3',
-          serviceName: 'Wedding Decoration',
-          vendorName: 'Dreamy Decorations',
-          vendorEmail: 'hello@dreamydecor.com',
-          vendorPhone: '+1 (555) 345-6789',
-          bookingDate: '2024-05-20',
-          eventDate: '2024-07-30',
-          status: 'completed',
-          totalAmount: 1200,
-          paidAmount: 1200,
-          guestCount: 80,
-          location: 'Grand Ballroom, Chicago',
-          specialRequests: 'Rustic theme with fairy lights',
-          notes: 'Beautiful decorations, exceeded expectations!',
-          rating: 5,
-          review: 'Absolutely stunning decorations! The team brought our vision to life perfectly.',
-          createdAt: '2024-05-20',
-          updatedAt: '2024-07-30'
+      const response = await fetch('/api/dashboard/user/bookings');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.bookings) {
+          // Map API data to component state
+          const mappedBookings = data.bookings.map((b: any) => ({
+            id: b._id,
+            serviceName: b.service?.name || 'Standard Service',
+            vendorName: b.vendor?.businessName || 'Wedding Vendor',
+            vendorEmail: b.vendor?.contact?.email || 'N/A',
+            vendorPhone: b.vendor?.contact?.phone || 'N/A',
+            bookingDate: b.createdAt,
+            eventDate: b.eventDate,
+            status: b.status,
+            totalAmount: b.payment?.amount || 0,
+            paidAmount: b.payment?.status === 'completed' ? b.payment?.amount : 0,
+            guestCount: b.guestCount || 0,
+            location: b.venue?.name || 'Venue',
+            specialRequests: b.notes || 'None',
+            notes: b.notes || '',
+            rating: 0,
+            review: '',
+            createdAt: b.createdAt,
+            updatedAt: b.updatedAt
+          }));
+          setBookings(mappedBookings);
         }
-      ];
-      setBookings(mockBookings);
+      }
     } catch (error) {
       console.error('Error fetching bookings:', error);
     } finally {

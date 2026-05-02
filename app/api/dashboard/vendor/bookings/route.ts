@@ -21,30 +21,27 @@ export async function GET(request: NextRequest) {
     console.log('📊 Fetching vendor bookings from MongoDB Atlas...');
 
     // Get vendor profile
-    const vendor = await Vendor.findOne({ userId: authUser.id });
+    const vendor = await Vendor.findOne({ owner: authUser.id });
     if (!vendor) {
       return NextResponse.json({ error: "Vendor profile not found" }, { status: 404 });
     }
 
     // Get vendor bookings with populated client data
     const bookings = await Booking.find({ vendor: vendor._id })
-      .populate('client', 'name email')
+      .populate('user', 'name email')
       .sort({ createdAt: -1 })
       .lean();
 
     // Format bookings for frontend
     const vendorBookings = bookings.map(booking => ({
       id: String(booking._id),
-      clientName: booking.client?.name || 'Unknown Client',
-      clientEmail: booking.client?.email || 'unknown@example.com',
-      service: booking.service?.name || 'Service',
-      date: booking.date,
-      time: booking.date ? new Date(booking.date).toLocaleTimeString('en-US', { 
-        hour: '2-digit', 
-        minute: '2-digit' 
-      }) : 'TBD',
+      clientName: (booking.user as any)?.name || 'Unknown Client',
+      clientEmail: (booking.user as any)?.email || 'unknown@example.com',
+      service: booking.service?.name || 'Standard Package',
+      date: booking.eventDate,
+      time: booking.eventTime || '18:00',
       status: booking.status,
-      amount: booking.totalAmount || 0,
+      amount: booking.payment?.amount || 0,
       guestCount: booking.guestCount || 0,
       specialRequirements: booking.notes || 'None'
     }));
@@ -95,7 +92,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify vendor owns this booking
-    const vendor = await Vendor.findOne({ userId: authUser.id });
+    const vendor = await Vendor.findOne({ owner: authUser.id });
     if (!vendor || booking.vendor.toString() !== vendor._id.toString()) {
       return NextResponse.json({
         success: false,

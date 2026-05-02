@@ -31,6 +31,34 @@ export default function AdminUsersPage() {
   const [roleFilter, setRoleFilter] = useState<'all' | 'user' | 'vendor' | 'wedding_planner' | 'admin'>('all')
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive' | 'suspended' | 'pending'>('all')
 
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/dashboard/admin/users');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setUsers(data.users.map((u: any) => ({
+            id: u._id,
+            name: u.name,
+            email: u.email,
+            role: u.role,
+            status: u.status,
+            isVerified: u.isVerified,
+            createdAt: u.createdAt,
+            lastLogin: u.lastLogin,
+            bookings: 0,
+            reviews: 0
+          })));
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (authLoading) return
 
@@ -44,58 +72,7 @@ export default function AdminUsersPage() {
       return
     }
 
-        // Mock data - replace with actual API call
-    setUsers([
-          {
-            id: '1',
-            name: 'John Doe',
-            email: 'john@example.com',
-            role: 'user',
-            status: 'active',
-            isVerified: true,
-            createdAt: '2024-01-15',
-        lastLogin: '2024-02-15',
-        bookings: 3,
-        reviews: 2
-          },
-          {
-            id: '2',
-        name: 'Sarah Wilson',
-        email: 'sarah@example.com',
-            role: 'vendor',
-            status: 'active',
-            isVerified: true,
-            createdAt: '2024-01-10',
-        lastLogin: '2024-02-14',
-        bookings: 15,
-        reviews: 8
-          },
-          {
-            id: '3',
-            name: 'Mike Johnson',
-            email: 'mike@example.com',
-            role: 'wedding_planner',
-            status: 'pending',
-            isVerified: false,
-        createdAt: '2024-02-01',
-        lastLogin: '2024-02-10',
-        bookings: 0,
-        reviews: 0
-          },
-          {
-            id: '4',
-        name: 'Emily Brown',
-        email: 'emily@example.com',
-        role: 'user',
-        status: 'suspended',
-            isVerified: true,
-        createdAt: '2024-01-20',
-        lastLogin: '2024-02-05',
-        bookings: 1,
-        reviews: 1
-      }
-    ])
-    setLoading(false)
+    fetchUsers();
   }, [user, authLoading, router])
 
   const filteredUsers = users.filter(user => {
@@ -127,11 +104,6 @@ export default function AdminUsersPage() {
     }
   }
 
-  const handleUserAction = (userId: string, action: string) => {
-    console.log(`Performing ${action} on user ${userId}`)
-    // Implement actual user actions here
-  }
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -143,13 +115,11 @@ export default function AdminUsersPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-      {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">User Management</h1>
           <p className="text-gray-600">Manage all users, vendors, and wedding planners on the platform</p>
         </div>
 
-        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardContent className="p-6">
@@ -187,11 +157,11 @@ export default function AdminUsersPage() {
                     {users.filter(u => u.status === 'suspended').length}
                   </p>
                 </div>
-      </div>
+              </div>
             </CardContent>
           </Card>
 
-      <Card>
+          <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
                 <Filter className="w-8 h-8 text-yellow-600" />
@@ -206,56 +176,54 @@ export default function AdminUsersPage() {
           </Card>
         </div>
 
-        {/* Search and Filters */}
         <Card className="mb-6">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <Input
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Input
                     placeholder="Search users by name or email..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
               </div>
               <div className="flex gap-2">
-            <select
-              value={roleFilter}
+                <select
+                  value={roleFilter}
                   onChange={(e) => setRoleFilter(e.target.value as any)}
                   className="px-3 py-2 border border-gray-300 rounded-md text-sm"
-            >
-              <option value="all">All Roles</option>
+                >
+                  <option value="all">All Roles</option>
                   <option value="user">Users</option>
                   <option value="vendor">Vendors</option>
                   <option value="wedding_planner">Wedding Planners</option>
                   <option value="admin">Admins</option>
-            </select>
-            <select
-              value={statusFilter}
+                </select>
+                <select
+                  value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as any)}
                   className="px-3 py-2 border border-gray-300 rounded-md text-sm"
-            >
-              <option value="all">All Status</option>
-              <option value="active">Active</option>
+                >
+                  <option value="all">All Status</option>
+                  <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                   <option value="suspended">Suspended</option>
-              <option value="pending">Pending</option>
-            </select>
+                  <option value="pending">Pending</option>
+                </select>
               </div>
-          </div>
-        </CardContent>
-      </Card>
+            </div>
+          </CardContent>
+        </Card>
 
-      {/* Users Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Users ({filteredUsers.length})</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
+        <Card>
+          <CardHeader>
+            <CardTitle>Users ({filteredUsers.length})</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
@@ -269,7 +237,7 @@ export default function AdminUsersPage() {
                   </tr>
                 </thead>
                 <tbody>
-                {filteredUsers.map((user) => (
+                  {filteredUsers.map((user) => (
                     <tr key={user.id} className="border-b hover:bg-gray-50">
                       <td className="py-4 px-4">
                         <div>
@@ -284,8 +252,8 @@ export default function AdminUsersPage() {
                       </td>
                       <td className="py-4 px-4">
                         <Badge className={getStatusColor(user.status)}>
-                        {user.status}
-                      </Badge>
+                          {user.status}
+                        </Badge>
                       </td>
                       <td className="py-4 px-4">
                         <Badge variant={user.isVerified ? 'default' : 'secondary'}>
@@ -299,9 +267,9 @@ export default function AdminUsersPage() {
                         </div>
                       </td>
                       <td className="py-4 px-4">
-                      <div className="text-sm text-gray-500">
-                        {new Date(user.createdAt).toLocaleDateString()}
-                      </div>
+                        <div className="text-sm text-gray-500">
+                          {new Date(user.createdAt).toLocaleDateString()}
+                        </div>
                       </td>
                       <td className="py-4 px-4">
                         <div className="flex items-center space-x-2">
@@ -332,11 +300,11 @@ export default function AdminUsersPage() {
                     : "No users have been registered yet."
                   }
                 </p>
-          </div>
+              </div>
             )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
-} 
+}
