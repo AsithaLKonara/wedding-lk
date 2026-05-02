@@ -233,7 +233,7 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
     if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
     if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)}d ago`;
     
-    return date.toLocaleDateString();
+    return date.toLocaleDateString('en-GB');
   };
 
   const getInitials = (name: string) => {

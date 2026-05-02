@@ -103,7 +103,7 @@ export default function EnhancedFeedPage() {
             className="mb-8"
           >
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              Enhanced Wedding Feed
+              Wedding Feed
             </h1>
             <p className="text-gray-600 dark:text-gray-300">
               Discover, share, and connect with the wedding community
@@ -226,7 +226,7 @@ export default function EnhancedFeedPage() {
                         <h4 className="font-medium text-sm mb-1">{event.title}</h4>
                         <div className="flex items-center space-x-2 text-xs text-gray-600 mb-2">
                           <Calendar className="h-3 w-3" />
-                          <span>{new Date(event.date).toLocaleDateString()}</span>
+                          <span>{new Date(event.date).toLocaleDateString('en-GB')}</span>
                         </div>
                         <div className="flex items-center space-x-2 text-xs text-gray-600 mb-2">
                           <MapPin className="h-3 w-3" />

@@ -9,18 +9,9 @@ const nextConfig = {
   },
   // Enable standalone output for Docker
   output: 'standalone',
-  // Experimental features for better performance
+  // Experimental features disabled for stability
   experimental: {
-    optimizePackageImports: ['@mui/material', '@mui/icons-material', 'lucide-react'],
     optimizeCss: true,
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
   },
   // Image optimization
   images: {
@@ -55,18 +46,11 @@ const nextConfig = {
         fs: false,
         net: false,
         tls: false,
+        crypto: false,
       };
     }
     
-    // Optimize CSS extraction - simplified and safer
-    if (!isServer && config.optimization?.splitChunks?.cacheGroups) {
-      config.optimization.splitChunks.cacheGroups.styles = {
-        name: 'styles',
-        test: /\.(css|scss)$/,
-        chunks: 'all',
-        enforce: true,
-      };
-    }
+    // Legacy CSS optimization removed for Next.js 15 compatibility
     
     return config;
   },

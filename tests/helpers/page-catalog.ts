@@ -69,7 +69,7 @@ export const PAGE_CATALOG: PageInfo[] = [
   { path: '/messages', title: 'Messages', requiresAuth: true, allowedRoles: ['user'], category: 'user' },
   { path: '/timeline', title: 'Timeline', requiresAuth: true, allowedRoles: ['user'], category: 'user' },
   { path: '/budget-planner', title: 'Budget Planner', requiresAuth: true, allowedRoles: ['user'], category: 'user' },
-  { path: '/enhanced-feed', title: 'Enhanced Feed', requiresAuth: true, allowedRoles: ['user'], category: 'user' },
+  { path: '/feed', title: 'Wedding Feed', requiresAuth: true, allowedRoles: ['user'], category: 'user' },
 
   // Vendor-Specific Pages
   { path: '/dashboard/vendor', title: 'Vendor Dashboard', requiresAuth: true, allowedRoles: ['vendor'], category: 'vendor' },

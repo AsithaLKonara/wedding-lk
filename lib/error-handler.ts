@@ -19,8 +19,12 @@ class ErrorHandler {
   private userId: string | null = null;
 
   constructor() {
-    this.sessionId = this.getOrCreateSessionId();
-    this.setupGlobalErrorHandlers();
+    if (typeof window !== 'undefined') {
+      this.sessionId = this.getOrCreateSessionId();
+      this.setupGlobalErrorHandlers();
+    } else {
+      this.sessionId = 'server_session';
+    }
   }
 
   private getOrCreateSessionId(): string {
@@ -170,7 +174,6 @@ class ErrorHandler {
 // Global error handler instance
 export const errorHandler = new ErrorHandler();
 
-// Export for use in components
 export const useErrorHandler = () => {
   return {
     logError: errorHandler.logError.bind(errorHandler),
@@ -182,6 +185,8 @@ export const useErrorHandler = () => {
 
 // API error interceptor for fetch
 export const createApiClient = () => {
+  if (typeof window === 'undefined') return fetch;
+  
   const originalFetch = window.fetch;
   
   window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
