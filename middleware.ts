@@ -48,8 +48,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
   
-  // RBAC checks for dashboard routes
-  if (pathname.startsWith('/dashboard/admin')) {
+  // RBAC checks for dashboard and admin routes
+  if (pathname.startsWith('/dashboard/admin') || pathname.startsWith('/admin')) {
     const userRole = (user as any).role
     if (userRole !== 'admin' && userRole !== 'maintainer') {
       return NextResponse.redirect(new URL('/dashboard', request.url))

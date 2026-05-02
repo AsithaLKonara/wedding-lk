@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getUserFromRequestWithError } from '@/lib/auth/get-user-from-request';
 import { connectDB } from "@/lib/db"
 import { User } from "@/lib/models/user"
 import { Vendor } from "@/lib/models/vendor"
@@ -7,21 +6,11 @@ import { Venue } from "@/lib/models/venue"
 import { Booking } from "@/lib/models/booking"
 import { Payment } from "@/lib/models"
 import { Review } from "@/lib/models/review"
+import { Middleware } from "@/lib/rbac";
 
-export async function GET(request: NextRequest) {
+async function handler(request: NextRequest) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
-    if (error) return error;
-    if (!authUser) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     await connectDB()
-
-    const user = await User.findOne({ email: authUser.email })
-    if (!user || user.role !== 'admin') {
-      return NextResponse.json({ error: "Admin access required" }, { status: 403 })
-    }
 
     // Get total counts
     const totalUsers = await User.countDocuments({ role: 'user' })
@@ -138,4 +127,6 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     )
   }
-} 
+}
+
+export const GET = Middleware.requireAdmin(handler);

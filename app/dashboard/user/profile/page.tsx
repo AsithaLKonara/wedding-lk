@@ -114,62 +114,35 @@ export default function UserProfilePage() {
   const fetchProfile = async () => {
     try {
       setLoading(true);
-      // Mock data - replace with actual API call
-      const mockProfile: UserProfile = {
-        id: '1',
-        name: 'John Doe',
-        email: 'john.doe@email.com',
-        phone: '+1 (555) 123-4567',
-        dateOfBirth: '1990-05-15',
-        gender: 'male',
-        location: {
-          country: 'US',
-          state: 'California',
-          city: 'Los Angeles',
-          zipCode: '90210'
-        },
-        preferences: {
-          language: 'en',
-          currency: 'USD',
-          timezone: 'America/New_York',
-          notifications: {
-            email: true,
-            sms: false,
-            push: true
-          },
-          marketing: {
-            email: false,
-            sms: false,
-            push: false
-          }
-        },
-        avatar: '',
-        bio: 'Wedding planning enthusiast looking for the perfect venue and vendors for my special day.',
-        createdAt: '2024-01-15',
-        updatedAt: '2024-06-20'
-      };
-      setProfile(mockProfile);
-      setFormData({
-        name: mockProfile.name,
-        email: mockProfile.email,
-        phone: mockProfile.phone,
-        dateOfBirth: mockProfile.dateOfBirth,
-        gender: mockProfile.gender,
-        country: mockProfile.location.country,
-        state: mockProfile.location.state,
-        city: mockProfile.location.city,
-        zipCode: mockProfile.location.zipCode,
-        language: mockProfile.preferences.language,
-        currency: mockProfile.preferences.currency,
-        timezone: mockProfile.preferences.timezone,
-        bio: mockProfile.bio,
-        emailNotifications: mockProfile.preferences.notifications.email,
-        smsNotifications: mockProfile.preferences.notifications.sms,
-        pushNotifications: mockProfile.preferences.notifications.push,
-        emailMarketing: mockProfile.preferences.marketing.email,
-        smsMarketing: mockProfile.preferences.marketing.sms,
-        pushMarketing: mockProfile.preferences.marketing.push
-      });
+      const response = await fetch('/api/dashboard/user/profile');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.user) {
+          const user = data.user;
+          setProfile(user);
+          setFormData({
+            name: user.name || '',
+            email: user.email || '',
+            phone: user.phone || '',
+            dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split('T')[0] : '',
+            gender: user.gender || '',
+            country: user.location?.country || '',
+            state: user.location?.state || '',
+            city: user.location?.city || '',
+            zipCode: user.location?.zipCode || '',
+            language: user.preferences?.language || 'en',
+            currency: user.preferences?.currency || 'LKR',
+            timezone: user.preferences?.timezone || 'Asia/Colombo',
+            bio: user.bio || '',
+            emailNotifications: user.preferences?.notifications?.email ?? true,
+            smsNotifications: user.preferences?.notifications?.sms ?? false,
+            pushNotifications: user.preferences?.notifications?.push ?? true,
+            emailMarketing: user.preferences?.marketing?.email ?? false,
+            smsMarketing: user.preferences?.marketing?.sms ?? false,
+            pushMarketing: user.preferences?.marketing?.push ?? false
+          });
+        }
+      }
     } catch (error) {
       console.error('Error fetching profile:', error);
     } finally {
@@ -180,42 +153,51 @@ export default function UserProfilePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Update profile - replace with actual API call
-      console.log('Updating profile:', formData);
-      setProfile(prev => prev ? {
-        ...prev,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        dateOfBirth: formData.dateOfBirth,
-        gender: formData.gender,
-        location: {
-          country: formData.country,
-          state: formData.state,
-          city: formData.city,
-          zipCode: formData.zipCode
-        },
-        preferences: {
-          language: formData.language,
-          currency: formData.currency,
-          timezone: formData.timezone,
-          notifications: {
-            email: formData.emailNotifications,
-            sms: formData.smsNotifications,
-            push: formData.pushNotifications
+      const response = await fetch('/api/dashboard/user/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          dateOfBirth: formData.dateOfBirth,
+          gender: formData.gender,
+          location: {
+            country: formData.country,
+            state: formData.state,
+            city: formData.city,
+            zipCode: formData.zipCode
           },
-          marketing: {
-            email: formData.emailMarketing,
-            sms: formData.smsMarketing,
-            push: formData.pushMarketing
-          }
-        },
-        bio: formData.bio,
-        updatedAt: new Date().toISOString().split('T')[0]
-      } : null);
-      setEditing(false);
+          preferences: {
+            language: formData.language,
+            currency: formData.currency,
+            timezone: formData.timezone,
+            notifications: {
+              email: formData.emailNotifications,
+              sms: formData.smsNotifications,
+              push: formData.pushNotifications
+            },
+            marketing: {
+              email: formData.emailMarketing,
+              sms: formData.smsMarketing,
+              push: formData.pushMarketing
+            }
+          },
+          bio: formData.bio
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setProfile(data.user);
+          setEditing(false);
+          // Show success message (using alert for now or a toast if available)
+          alert('Profile updated successfully!');
+        }
+      }
     } catch (error) {
       console.error('Error updating profile:', error);
+      alert('Failed to update profile');
     }
   };
 

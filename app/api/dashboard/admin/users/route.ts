@@ -1,20 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { User } from '@/lib/models/user';
-import { getUserFromRequestWithError } from '@/lib/auth/get-user-from-request';
+import { Middleware } from '@/lib/rbac';
 
 // GET - Fetch users with filtering and pagination
-export async function GET(request: NextRequest) {
+async function getHandler(request: NextRequest) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
-    if (error) return error;
-    if (!authUser || authUser.role !== 'admin') {
-      return NextResponse.json(
-        { error: 'Unauthorized - Admin access required' },
-        { status: 401 }
-      );
-    }
-
     await connectDB();
 
     const { searchParams } = new URL(request.url);
@@ -93,17 +84,8 @@ export async function GET(request: NextRequest) {
 }
 
 // POST - Create new admin/maintainer user
-export async function POST(request: NextRequest) {
+async function postHandler(request: NextRequest, authUser: any) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
-    if (error) return error;
-    if (!authUser || authUser.role !== 'admin') {
-      return NextResponse.json(
-        { error: 'Unauthorized - Admin access required' },
-        { status: 401 }
-      );
-    }
-
     await connectDB();
 
     const body = await request.json();
@@ -182,17 +164,8 @@ export async function POST(request: NextRequest) {
 }
 
 // PUT - Update user role and status
-export async function PUT(request: NextRequest) {
+async function putHandler(request: NextRequest, authUser: any) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
-    if (error) return error;
-    if (!authUser || authUser.role !== 'admin') {
-      return NextResponse.json(
-        { error: 'Unauthorized - Admin access required' },
-        { status: 401 }
-      );
-    }
-
     await connectDB();
 
     const body = await request.json();
@@ -262,17 +235,8 @@ export async function PUT(request: NextRequest) {
 }
 
 // DELETE - Delete user (soft delete)
-export async function DELETE(request: NextRequest) {
+async function deleteHandler(request: NextRequest, authUser: any) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
-    if (error) return error;
-    if (!authUser || authUser.role !== 'admin') {
-      return NextResponse.json(
-        { error: 'Unauthorized - Admin access required' },
-        { status: 401 }
-      );
-    }
-
     await connectDB();
 
     const { searchParams } = new URL(request.url);

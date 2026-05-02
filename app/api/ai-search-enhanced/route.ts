@@ -4,8 +4,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { enhancedAISearchService } from '@/lib/ai-search-enhanced';
 import { SecurityMiddleware } from '@/lib/security-middleware';
+import { Middleware } from '@/lib/rbac';
 
-export async function POST(request: NextRequest) {
+async function postHandler(request: NextRequest) {
   try {
     // Security validation
     const security = SecurityMiddleware.getInstance();
@@ -77,7 +78,9 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export const POST = Middleware.requireAuth(postHandler);
+
+async function getHandler(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const action = searchParams.get('action') || 'demo';
@@ -131,6 +134,8 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export const GET = Middleware.requireAuth(getHandler);
 
 // Handle demo request
 async function handleDemo() {

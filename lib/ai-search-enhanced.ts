@@ -7,6 +7,7 @@ import { Venue } from './models/venue';
 import { Vendor } from './models/vendor';
 import { Package } from './models/package';
 import { enhancedCacheManager } from './enhanced-cache-manager';
+import { escapeRegExp } from './utils/regex-utils';
 
 const openai = process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'test-key-for-build' ? new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -232,7 +233,7 @@ export class EnhancedAISearchService {
       const venues = await Venue.find({
         $and: [
           { capacity: { $gte: context.guestCount } },
-          { location: { $regex: context.location, $options: 'i' } },
+          { location: { $regex: escapeRegExp(context.location), $options: 'i' } },
           { priceRange: { $lte: context.budget * 0.4 } } // 40% of budget for venue
         ]
       })
@@ -276,7 +277,7 @@ export class EnhancedAISearchService {
       
       const vendors = await Vendor.find({
         $and: [
-          { location: { $regex: context.location, $options: 'i' } },
+          { location: { $regex: escapeRegExp(context.location), $options: 'i' } },
           { isActive: true }
         ]
       })

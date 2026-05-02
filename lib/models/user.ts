@@ -116,6 +116,7 @@ const UserSchema: Schema = new Schema(
         return !this.socialAccounts || Object.keys(this.socialAccounts).length === 0;
       },
       minlength: 8,
+      select: false,
     },
     name: {
       type: String,
@@ -311,17 +312,21 @@ const UserSchema: Schema = new Schema(
     // Password Reset
     resetPasswordToken: {
       type: String,
+      select: false,
     },
     resetPasswordExpires: {
       type: Date,
+      select: false,
     },
     
     // Email Verification
     emailVerificationToken: {
       type: String,
+      select: false,
     },
     emailVerificationExpires: {
       type: Date,
+      select: false,
     },
     
     // Wedding Details

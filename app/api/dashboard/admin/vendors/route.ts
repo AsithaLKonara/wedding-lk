@@ -1,16 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { connectDB } from "@/lib/db"
 import { Vendor } from "@/lib/models/vendor"
-import { getUserFromRequestWithError } from '@/lib/auth/get-user-from-request';
+import { Middleware } from '@/lib/rbac';
 
-export async function GET(request: NextRequest) {
+async function getHandler(request: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(request);
-    if (error) return error;
-    if (!user || user.role !== 'admin') {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     await connectDB()
     
     const { searchParams } = new URL(request.url)
@@ -68,14 +62,8 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+async function postHandler(request: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(request);
-    if (error) return error;
-    if (!user || user.role !== 'admin') {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     await connectDB()
     
     const body = await request.json()
@@ -117,14 +105,8 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function PUT(request: NextRequest) {
+async function putHandler(request: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(request);
-    if (error) return error;
-    if (!user || user.role !== 'admin') {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     await connectDB()
     
     const body = await request.json()
@@ -161,14 +143,8 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-export async function DELETE(request: NextRequest) {
+async function deleteHandler(request: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(request);
-    if (error) return error;
-    if (!user || user.role !== 'admin') {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     await connectDB()
     
     const { searchParams } = new URL(request.url)

@@ -1,20 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { resetAndSeedDatabase } from '@/lib/database-cleanup-and-seed';
+import { Middleware } from '@/lib/rbac';
 
-export async function POST(request: NextRequest) {
+async function handler(request: NextRequest) {
   try {
-    // Check if user is admin (you can add proper authentication here)
-    const { searchParams } = new URL(request.url);
-    const adminKey = searchParams.get('adminKey');
-    
-    // Simple admin key check (replace with proper authentication)
-    if (adminKey !== 'weddinglk-admin-2024') {
-      return NextResponse.json(
-        { error: 'Unauthorized. Admin key required.' },
-        { status: 401 }
-      );
-    }
-
     console.log('🚀 Starting database reset and seeding...');
     
     // Run the database reset and seeding
@@ -47,10 +36,12 @@ export async function POST(request: NextRequest) {
   }
 }
 
+export const POST = Middleware.requireAdmin(handler);
+
 export async function GET(_request: NextRequest) {
   return NextResponse.json({
     message: 'Database reset endpoint',
-    usage: 'POST /api/admin/reset-database?adminKey=weddinglk-admin-2024',
+    usage: 'POST /api/admin/reset-database',
     warning: 'This will clear ALL data and create new seed data'
   });
 }

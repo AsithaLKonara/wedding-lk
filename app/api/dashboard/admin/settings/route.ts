@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { connectDB } from "@/lib/db"
-import { getUserFromRequestWithError } from '@/lib/auth/get-user-from-request';
+import { Middleware } from '@/lib/rbac';
 
 // In-memory settings store (in production, use database)
 let platformSettings = {
@@ -40,14 +40,8 @@ let platformSettings = {
   }
 }
 
-export async function GET(request: NextRequest) {
+async function getHandler(request: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(request);
-    if (error) return error;
-    if (!user || user.role !== 'admin') {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     await connectDB()
 
     // Get settings by category
@@ -71,14 +65,8 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function PATCH(request: NextRequest) {
+async function patchHandler(request: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(request);
-    if (error) return error;
-    if (!user || user.role !== 'admin') {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     await connectDB()
 
     const body = await request.json()
@@ -118,14 +106,8 @@ export async function PATCH(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+async function postHandler(request: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(request);
-    if (error) return error;
-    if (!user || user.role !== 'admin') {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     await connectDB()
 
     const body = await request.json()
@@ -234,4 +216,8 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
-} 
+}
+
+export const GET = Middleware.requireAdmin(getHandler);
+export const PATCH = Middleware.requireAdmin(patchHandler);
+export const POST = Middleware.requireAdmin(postHandler);

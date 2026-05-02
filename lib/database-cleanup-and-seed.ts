@@ -2,38 +2,21 @@ import { connectDB } from './db';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { 
-  User, Vendor, Venue, Booking, Payment, Review, Service, 
-  Message, Notification, Task, Client, Conversation, 
-  VendorProfile, WeddingPlannerProfile, Document, Post, 
-  BoostPackage, Favorite, Availability, Quotation, 
-  QuotationRequest, Invoice, Story, Reel, Verification, 
-  ServicePackage, Subscription, SubscriptionPlan, Moderation, 
-  Commission, EnhancedPost, Group, EnhancedBooking, 
-  DynamicPricing, VendorPackage, Comment, 
-  MetaAdsCampaign, MetaAdsAdSet, MetaAdsCreative, MetaAdsAccount, 
-  Testimonial 
+  User, Vendor, Venue, Booking, Review, Service
 } from './models';
 
 // Database cleanup function
 export async function clearAllCollections() {
   try {
     await connectDB();
-    
     console.log('🧹 Starting database cleanup...');
-    
-    // Get all collection names
     const db = mongoose.connection.db;
-    if (!db) {
-      throw new Error('Database connection not established');
-    }
+    if (!db) throw new Error('Database connection not established');
     const collections = await db.listCollections().toArray();
-    
-    // Clear all collections
     for (const collection of collections) {
       await db.collection(collection.name).deleteMany({});
       console.log(`✅ Cleared collection: ${collection.name}`);
     }
-    
     console.log('🎉 Database cleanup completed successfully!');
   } catch (error) {
     console.error('❌ Database cleanup failed:', error);
@@ -47,14 +30,29 @@ export async function createComprehensiveSeedData() {
     await connectDB();
     console.log('🌱 Starting comprehensive seed data creation...');
 
-    // Create users with different roles
-    const users = await createUsers();
-    const vendors = await createVendors();
-    const planners = await createWeddingPlanners();
+    // 1. Create Admins
     const admins = await createAdmins();
     
-    // Create related data for each user type
-    await createRelatedData(users, vendors, planners, admins);
+    // 2. Create Regular Users (Couples)
+    const users = await createUsers();
+    
+    // 3. Create Vendors (Users + Profiles)
+    const vendors = await createVendors();
+    
+    // 4. Create Wedding Planners (Users)
+    const planners = await createWeddingPlanners();
+    
+    // 5. Create Venues (linked to Admins)
+    const venues = await createVenues(admins);
+    
+    // 6. Create Services (linked to Vendors)
+    const services = await createServices(vendors);
+    
+    // 7. Create Bookings (linked to Users, Vendors, Venues)
+    await createBookings(users, vendors, venues);
+    
+    // 8. Create Reviews
+    await createReviews(users, vendors, venues);
     
     console.log('🎉 Comprehensive seed data creation completed!');
   } catch (error) {
@@ -63,881 +61,229 @@ export async function createComprehensiveSeedData() {
   }
 }
 
-// Create 5 regular users (couples)
-async function createUsers() {
-  const users = [];
-  const hashedPassword = await bcrypt.hash('password123', 12);
-  
-  const userData = [
-    {
-      email: 'john.doe@email.com',
-      password: hashedPassword,
-      name: 'John Doe',
-      role: 'user',
-      profile: {
-        firstName: 'John',
-        lastName: 'Doe',
-        phone: '+94 77 123 4567',
-        dateOfBirth: new Date('1990-05-15'),
-        gender: 'male',
-        location: {
-          country: 'Sri Lanka',
-          state: 'Western Province',
-          city: 'Colombo',
-          zipCode: '00300'
-        },
-        preferences: {
-          weddingStyle: 'traditional',
-          budget: 2000000,
-          guestCount: 150,
-          preferredVenue: 'outdoor'
-        }
-      }
-    },
-    {
-      email: 'jane.smith@email.com',
-      password: hashedPassword,
-      name: 'Jane Smith',
-      role: 'user',
-      profile: {
-        firstName: 'Jane',
-        lastName: 'Smith',
-        phone: '+94 77 234 5678',
-        dateOfBirth: new Date('1992-08-22'),
-        gender: 'female',
-        location: {
-          country: 'Sri Lanka',
-          state: 'Central Province',
-          city: 'Kandy',
-          zipCode: '20000'
-        },
-        preferences: {
-          weddingStyle: 'modern',
-          budget: 1500000,
-          guestCount: 100,
-          preferredVenue: 'indoor'
-        }
-      }
-    },
-    {
-      email: 'mike.wilson@email.com',
-      password: hashedPassword,
-      name: 'Mike Wilson',
-      role: 'user',
-      profile: {
-        firstName: 'Mike',
-        lastName: 'Wilson',
-        phone: '+94 77 345 6789',
-        dateOfBirth: new Date('1988-12-10'),
-        gender: 'male',
-        location: {
-          country: 'Sri Lanka',
-          state: 'Southern Province',
-          city: 'Galle',
-          zipCode: '80000'
-        },
-        preferences: {
-          weddingStyle: 'beach',
-          budget: 3000000,
-          guestCount: 200,
-          preferredVenue: 'beach'
-        }
-      }
-    },
-    {
-      email: 'sarah.brown@email.com',
-      password: hashedPassword,
-      name: 'Sarah Brown',
-      role: 'user',
-      profile: {
-        firstName: 'Sarah',
-        lastName: 'Brown',
-        phone: '+94 77 456 7890',
-        dateOfBirth: new Date('1991-03-18'),
-        gender: 'female',
-        location: {
-          country: 'Sri Lanka',
-          state: 'Western Province',
-          city: 'Negombo',
-          zipCode: '11500'
-        },
-        preferences: {
-          weddingStyle: 'rustic',
-          budget: 1800000,
-          guestCount: 120,
-          preferredVenue: 'garden'
-        }
-      }
-    },
-    {
-      email: 'david.jones@email.com',
-      password: hashedPassword,
-      name: 'David Jones',
-      role: 'user',
-      profile: {
-        firstName: 'David',
-        lastName: 'Jones',
-        phone: '+94 77 567 8901',
-        dateOfBirth: new Date('1989-07-25'),
-        gender: 'male',
-        location: {
-          country: 'Sri Lanka',
-          state: 'North Central Province',
-          city: 'Anuradhapura',
-          zipCode: '50000'
-        },
-        preferences: {
-          weddingStyle: 'cultural',
-          budget: 1200000,
-          guestCount: 80,
-          preferredVenue: 'temple'
-        }
-      }
-    }
-  ];
-
-  for (const userDataItem of userData) {
-    const user = new User(userDataItem);
-    await user.save();
-    users.push(user);
-    console.log(`✅ Created user: ${user.name}`);
-  }
-
-  return users;
-}
-
-// Create 5 vendors
-async function createVendors() {
-  const vendors = [];
-  const hashedPassword = await bcrypt.hash('vendor123', 12);
-  
-  const vendorData = [
-    {
-      email: 'elegant.events@vendor.com',
-      password: hashedPassword,
-      name: 'Sarah Johnson',
-      role: 'vendor',
-      businessName: 'Elegant Events by Sarah',
-      phone: '+94 77 111 2222',
-      category: 'decorator',
-      description: 'Professional wedding planner with 10+ years of experience creating magical moments.',
-      location: {
-        address: '123 Galle Road, Colombo 03',
-        city: 'Colombo',
-        province: 'Western Province',
-        serviceAreas: ['Colombo', 'Negombo', 'Kalutara']
-      },
-      contact: {
-        phone: '+94 77 111 2222',
-        email: 'elegant.events@vendor.com',
-        website: 'https://elegantevents.com'
-      },
-      services: [
-        {
-          name: 'Full Wedding Planning',
-          description: 'Complete wedding planning service',
-          price: 150000,
-          duration: '6 months'
-        },
-        {
-          name: 'Day-of Coordination',
-          description: 'Wedding day coordination',
-          price: 75000,
-          duration: '1 day'
-        }
-      ],
-      pricing: {
-        startingPrice: 150000,
-        currency: 'LKR'
-      },
-      rating: {
-        average: 4.8,
-        count: 127
-      },
-      isVerified: true,
-      isActive: true,
-      featured: true
-    },
-    {
-      email: 'royal.photography@vendor.com',
-      password: hashedPassword,
-      name: 'Michael Chen',
-      role: 'vendor',
-      businessName: 'Royal Photography Studio',
-      phone: '+94 77 222 3333',
-      category: 'photographer',
-      description: 'Award-winning wedding photographer specializing in candid moments and artistic compositions.',
-      location: {
-        address: '456 Temple Road, Kandy',
-        city: 'Kandy',
-        province: 'Central Province',
-        serviceAreas: ['Kandy', 'Matale', 'Nuwara Eliya']
-      },
-      contact: {
-        phone: '+94 77 222 3333',
-        email: 'royal.photography@vendor.com',
-        website: 'https://royalphotography.com'
-      },
-      services: [
-        {
-          name: 'Wedding Photography',
-          description: 'Full day wedding photography',
-          price: 80000,
-          duration: '8 hours'
-        },
-        {
-          name: 'Pre-wedding Shoots',
-          description: 'Engagement photo session',
-          price: 25000,
-          duration: '2 hours'
-        }
-      ],
-      pricing: {
-        startingPrice: 80000,
-        currency: 'LKR'
-      },
-      rating: {
-        average: 4.9,
-        count: 89
-      },
-      isVerified: true,
-      isActive: true,
-      featured: true
-    },
-    {
-      email: 'garden.catering@vendor.com',
-      password: hashedPassword,
-      name: 'Priya Fernando',
-      role: 'vendor',
-      businessName: 'Garden Fresh Catering',
-      phone: '+94 77 333 4444',
-      category: 'Catering',
-      description: 'Premium catering service specializing in traditional Sri Lankan cuisine with modern twists.',
-      location: {
-        city: 'Galle',
-        province: 'Southern Province',
-        address: '789 Beach Road, Galle',
-        coordinates: [80.2177, 6.0329]
-      },
-      services: ['Wedding Catering', 'Buffet Service', 'Custom Menus'],
-      pricing: {
-        startingPrice: 120000,
-        currency: 'LKR'
-      },
-      rating: {
-        average: 4.7,
-        count: 156
-      },
-      isVerified: true,
-      isActive: true,
-      featured: false
-    },
-    {
-      email: 'bloom.florist@vendor.com',
-      password: hashedPassword,
-      name: 'Rajesh Kumar',
-      role: 'vendor',
-      businessName: 'Bloom & Blossom Florist',
-      phone: '+94 77 444 5555',
-      category: 'Floral Design',
-      description: 'Creative floral designer creating stunning arrangements for your special day.',
-      location: {
-        city: 'Negombo',
-        province: 'Western Province',
-        address: '321 Airport Road, Negombo',
-        coordinates: [79.8350, 7.2086]
-      },
-      services: ['Wedding Bouquets', 'Centerpieces', 'Venue Decoration'],
-      pricing: {
-        startingPrice: 60000,
-        currency: 'LKR'
-      },
-      rating: {
-        average: 4.6,
-        count: 73
-      },
-      isVerified: true,
-      isActive: true,
-      featured: false
-    },
-    {
-      email: 'melody.music@vendor.com',
-      password: hashedPassword,
-      name: 'Samantha Perera',
-      role: 'vendor',
-      businessName: 'Melody Music Ensemble',
-      phone: '+94 77 555 6666',
-      category: 'Music & Entertainment',
-      description: 'Professional musicians providing live music for weddings and special events.',
-      location: {
-        city: 'Anuradhapura',
-        province: 'North Central Province',
-        address: '654 Ancient City Road, Anuradhapura',
-        coordinates: [80.4139, 8.3114]
-      },
-      services: ['Live Music', 'DJ Services', 'Sound System'],
-      pricing: {
-        startingPrice: 100000,
-        currency: 'LKR'
-      },
-      rating: {
-        average: 4.5,
-        count: 94
-      },
-      isVerified: true,
-      isActive: true,
-      featured: false
-    }
-  ];
-
-  for (const vendorDataItem of vendorData) {
-    const vendor = new Vendor(vendorDataItem);
-    await vendor.save();
-    vendors.push(vendor);
-    console.log(`✅ Created vendor: ${vendor.businessName}`);
-  }
-
-  return vendors;
-}
-
-// Create 5 wedding planners
-async function createWeddingPlanners() {
-  const planners = [];
-  const hashedPassword = await bcrypt.hash('planner123', 12);
-  
-  const plannerData = [
-    {
-      email: 'dream.weddings@planner.com',
-      password: hashedPassword,
-      name: 'Emma Thompson',
-      role: 'wedding_planner',
-      businessName: 'Dream Weddings by Emma',
-      phone: '+94 77 666 7777',
-      category: 'Wedding Planning',
-      description: 'Full-service wedding planner creating unforgettable experiences for couples.',
-      location: {
-        city: 'Colombo',
-        province: 'Western Province',
-        address: '987 Independence Avenue, Colombo 07',
-        coordinates: [79.8612, 6.9271]
-      },
-      experience: '8 years',
-      specialties: ['Luxury Weddings', 'Destination Weddings', 'Cultural Ceremonies'],
-      rating: {
-        average: 4.9,
-        count: 45
-      },
-      isVerified: true,
-      isActive: true,
-      featured: true
-    },
-    {
-      email: 'perfect.day@planner.com',
-      password: hashedPassword,
-      name: 'James Rodriguez',
-      role: 'wedding_planner',
-      businessName: 'Perfect Day Events',
-      phone: '+94 77 777 8888',
-      category: 'Event Planning',
-      description: 'Detail-oriented wedding planner ensuring every moment is perfect.',
-      location: {
-        city: 'Kandy',
-        province: 'Central Province',
-        address: '555 Peradeniya Road, Kandy',
-        coordinates: [80.6337, 7.2906]
-      },
-      experience: '6 years',
-      specialties: ['Intimate Weddings', 'Garden Weddings', 'Traditional Ceremonies'],
-      rating: {
-        average: 4.8,
-        count: 38
-      },
-      isVerified: true,
-      isActive: true,
-      featured: true
-    },
-    {
-      email: 'bliss.events@planner.com',
-      password: hashedPassword,
-      name: 'Lisa Anderson',
-      role: 'wedding_planner',
-      businessName: 'Bliss Events & Planning',
-      phone: '+94 77 888 9999',
-      category: 'Wedding Planning',
-      description: 'Creative wedding planner specializing in unique and personalized celebrations.',
-      location: {
-        city: 'Galle',
-        province: 'Southern Province',
-        address: '777 Fort Road, Galle',
-        coordinates: [80.2177, 6.0329]
-      },
-      experience: '5 years',
-      specialties: ['Beach Weddings', 'Rustic Weddings', 'Modern Ceremonies'],
-      rating: {
-        average: 4.7,
-        count: 52
-      },
-      isVerified: true,
-      isActive: true,
-      featured: false
-    },
-    {
-      email: 'elegance.planning@planner.com',
-      password: hashedPassword,
-      name: 'Robert Silva',
-      role: 'wedding_planner',
-      businessName: 'Elegance Planning Studio',
-      phone: '+94 77 999 0000',
-      category: 'Event Planning',
-      description: 'Professional wedding planner with expertise in luxury and high-end celebrations.',
-      location: {
-        city: 'Negombo',
-        province: 'Western Province',
-        address: '888 Beach Road, Negombo',
-        coordinates: [79.8350, 7.2086]
-      },
-      experience: '10 years',
-      specialties: ['Luxury Weddings', 'Corporate Events', 'International Weddings'],
-      rating: {
-        average: 4.9,
-        count: 67
-      },
-      isVerified: true,
-      isActive: true,
-      featured: true
-    },
-    {
-      email: 'harmony.events@planner.com',
-      password: hashedPassword,
-      name: 'Maria Garcia',
-      role: 'wedding_planner',
-      businessName: 'Harmony Events & Design',
-      phone: '+94 77 000 1111',
-      category: 'Wedding Planning',
-      description: 'Passionate wedding planner creating harmonious and beautiful celebrations.',
-      location: {
-        city: 'Anuradhapura',
-        province: 'North Central Province',
-        address: '999 Sacred City Road, Anuradhapura',
-        coordinates: [80.4139, 8.3114]
-      },
-      experience: '7 years',
-      specialties: ['Cultural Weddings', 'Religious Ceremonies', 'Family Traditions'],
-      rating: {
-        average: 4.6,
-        count: 41
-      },
-      isVerified: true,
-      isActive: true,
-      featured: false
-    }
-  ];
-
-  for (const plannerDataItem of plannerData) {
-    const planner = new User(plannerDataItem);
-    await planner.save();
-    planners.push(planner);
-    console.log(`✅ Created wedding planner: ${planner.businessName}`);
-  }
-
-  return planners;
-}
-
-// Create 5 admins
 async function createAdmins() {
-  const admins = [];
   const hashedPassword = await bcrypt.hash('admin123', 12);
-  
   const adminData = [
     {
       email: 'admin@weddinglk.com',
       password: hashedPassword,
       name: 'System Administrator',
       role: 'admin',
-      profile: {
-        firstName: 'System',
-        lastName: 'Administrator',
-        phone: '+94 77 000 0000',
-        permissions: ['all'],
-        department: 'IT'
-      }
+      location: { country: 'Sri Lanka', state: 'Western', city: 'Colombo' },
+      preferences: { language: 'en', currency: 'LKR', timezone: 'Asia/Colombo', notifications: { email: true, sms: true, push: true }, marketing: { email: false, sms: false, push: false } },
+      isEmailVerified: true, status: 'active', isVerified: true, isActive: true
     },
     {
-      email: 'support@weddinglk.com',
+      email: 'maintainer@weddinglk.com',
       password: hashedPassword,
-      name: 'Support Admin',
-      role: 'admin',
-      profile: {
-        firstName: 'Support',
-        lastName: 'Admin',
-        phone: '+94 77 000 0001',
-        permissions: ['support', 'moderation'],
-        department: 'Customer Support'
-      }
-    },
-    {
-      email: 'moderator@weddinglk.com',
-      password: hashedPassword,
-      name: 'Content Moderator',
-      role: 'admin',
-      profile: {
-        firstName: 'Content',
-        lastName: 'Moderator',
-        phone: '+94 77 000 0002',
-        permissions: ['moderation', 'content'],
-        department: 'Content Management'
-      }
-    },
-    {
-      email: 'finance@weddinglk.com',
-      password: hashedPassword,
-      name: 'Finance Admin',
-      role: 'admin',
-      profile: {
-        firstName: 'Finance',
-        lastName: 'Admin',
-        phone: '+94 77 000 0003',
-        permissions: ['finance', 'payments'],
-        department: 'Finance'
-      }
-    },
-    {
-      email: 'analytics@weddinglk.com',
-      password: hashedPassword,
-      name: 'Analytics Admin',
-      role: 'admin',
-      profile: {
-        firstName: 'Analytics',
-        lastName: 'Admin',
-        phone: '+94 77 000 0004',
-        permissions: ['analytics', 'reports'],
-        department: 'Analytics'
-      }
+      name: 'Platform Maintainer',
+      role: 'maintainer',
+      location: { country: 'Sri Lanka', state: 'Western', city: 'Colombo' },
+      preferences: { language: 'en', currency: 'LKR', timezone: 'Asia/Colombo', notifications: { email: true, sms: true, push: true }, marketing: { email: false, sms: false, push: false } },
+      isEmailVerified: true, status: 'active', isVerified: true, isActive: true
     }
   ];
 
-  for (const adminDataItem of adminData) {
-    const admin = new User(adminDataItem);
+  const admins = [];
+  for (const data of adminData) {
+    const admin = new User(data);
     await admin.save();
     admins.push(admin);
-    console.log(`✅ Created admin: ${admin.name}`);
+    console.log(`✅ Created admin: ${admin.email}`);
   }
-
   return admins;
 }
 
-// Create related data for all users
-async function createRelatedData(users: any[], vendors: any[], planners: any[], admins: any[]) {
-  console.log('🔗 Creating related data...');
-  
-  // Create venues
-  await createVenues();
-  
-  // Create services
-  await createServices(vendors);
-  
-  // Create bookings
-  await createBookings(users, vendors);
-  
-  // Create reviews
-  await createReviews(users, vendors);
-  
-  // Create posts and social content
-  await createSocialContent(users, vendors, planners);
-  
-  // Create notifications
-  await createNotifications(users, vendors, planners);
-  
-  // Create tasks
-  await createTasks(users, planners);
-  
-  // Create subscriptions
-  await createSubscriptions(vendors, planners);
-  
-  console.log('✅ Related data creation completed!');
-}
-
-// Create venues
-async function createVenues() {
-  const venues = [
+async function createUsers() {
+  const hashedPassword = await bcrypt.hash('password123', 12);
+  const usersData = [
     {
-      name: 'Grand Ballroom Colombo',
-      location: {
-        city: 'Colombo',
-        province: 'Western Province',
-        address: '123 Galle Road, Colombo 03',
-        coordinates: [79.8612, 6.9271]
-      },
-      capacity: 300,
-      amenities: ['Air Conditioning', 'Parking', 'Catering Kitchen', 'Sound System'],
-      pricing: {
-        basePrice: 500000,
-        currency: 'LKR'
-      },
-      isActive: true,
-      featured: true
+      email: 'john.doe@email.com',
+      password: hashedPassword,
+      name: 'John Doe',
+      role: 'user',
+      phone: '+94 77 123 4567',
+      gender: 'male',
+      location: { country: 'Sri Lanka', state: 'Western', city: 'Colombo', zipCode: '00300' },
+      preferences: { language: 'en', currency: 'LKR', timezone: 'Asia/Colombo', notifications: { email: true, sms: false, push: true }, marketing: { email: false, sms: false, push: false } },
+      isEmailVerified: true, status: 'active', isVerified: true, isActive: true,
+      weddingDetails: { weddingDate: new Date('2025-12-25'), guestCount: 200, budget: 2500000 }
     },
     {
-      name: 'Temple Gardens Kandy',
-      location: {
-        city: 'Kandy',
-        province: 'Central Province',
-        address: '456 Temple Road, Kandy',
-        coordinates: [80.6337, 7.2906]
-      },
-      capacity: 200,
-      amenities: ['Garden Setting', 'Parking', 'Restrooms', 'Lighting'],
-      pricing: {
-        basePrice: 350000,
-        currency: 'LKR'
-      },
-      isActive: true,
-      featured: true
-    },
-    {
-      name: 'Beach Resort Galle',
-      location: {
-        city: 'Galle',
-        province: 'Southern Province',
-        address: '789 Beach Road, Galle',
-        coordinates: [80.2177, 6.0329]
-      },
-      capacity: 150,
-      amenities: ['Beach Access', 'Resort Facilities', 'Catering', 'Accommodation'],
-      pricing: {
-        basePrice: 400000,
-        currency: 'LKR'
-      },
-      isActive: true,
-      featured: false
-    },
-    {
-      name: 'Garden Villa Negombo',
-      location: {
-        city: 'Negombo',
-        province: 'Western Province',
-        address: '321 Airport Road, Negombo',
-        coordinates: [79.8350, 7.2086]
-      },
-      capacity: 100,
-      amenities: ['Garden Setting', 'Villa Facilities', 'Parking', 'Catering'],
-      pricing: {
-        basePrice: 250000,
-        currency: 'LKR'
-      },
-      isActive: true,
-      featured: false
-    },
-    {
-      name: 'Sacred Grounds Anuradhapura',
-      location: {
-        city: 'Anuradhapura',
-        province: 'North Central Province',
-        address: '654 Ancient City Road, Anuradhapura',
-        coordinates: [80.4139, 8.3114]
-      },
-      capacity: 80,
-      amenities: ['Sacred Setting', 'Parking', 'Basic Facilities', 'Cultural Significance'],
-      pricing: {
-        basePrice: 200000,
-        currency: 'LKR'
-      },
-      isActive: true,
-      featured: false
+      email: 'jane.smith@email.com',
+      password: hashedPassword,
+      name: 'Jane Smith',
+      role: 'user',
+      phone: '+94 77 234 5678',
+      gender: 'female',
+      location: { country: 'Sri Lanka', state: 'Central', city: 'Kandy', zipCode: '20000' },
+      preferences: { language: 'en', currency: 'LKR', timezone: 'Asia/Colombo', notifications: { email: true, sms: false, push: true }, marketing: { email: false, sms: false, push: false } },
+      isEmailVerified: true, status: 'active', isVerified: true, isActive: true,
+      weddingDetails: { weddingDate: new Date('2025-08-15'), guestCount: 150, budget: 1800000 }
     }
   ];
 
-  for (const venueData of venues) {
-    const venue = new Venue(venueData);
+  const users = [];
+  for (const data of usersData) {
+    const user = new User(data);
+    await user.save();
+    users.push(user);
+    console.log(`✅ Created user: ${user.email}`);
+  }
+  return users;
+}
+
+async function createVendors() {
+  const hashedPassword = await bcrypt.hash('vendor123', 12);
+  const vendorProfiles = [
+    {
+      email: 'elegant.events@vendor.com',
+      password: hashedPassword,
+      name: 'Sarah Johnson',
+      businessName: 'Elegant Events by Sarah',
+      category: 'decorator',
+      description: 'Award winning wedding decorators.',
+      pricing: { startingPrice: 150000 },
+      location: { address: '123 Galle Rd', city: 'Colombo', province: 'Western' },
+      contact: { phone: '+94 77 111 2222', email: 'elegant.events@vendor.com' }
+    },
+    {
+      email: 'royal.photography@vendor.com',
+      password: hashedPassword,
+      name: 'Michael Chen',
+      businessName: 'Royal Photography',
+      category: 'photographer',
+      description: 'Capturing your best moments.',
+      pricing: { startingPrice: 85000 },
+      location: { address: '456 Temple Rd', city: 'Kandy', province: 'Central' },
+      contact: { phone: '+94 77 222 3333', email: 'royal.photography@vendor.com' }
+    }
+  ];
+
+  const vendors = [];
+  for (const data of vendorProfiles) {
+    const user = new User({
+      email: data.email,
+      password: data.password,
+      name: data.name,
+      role: 'vendor',
+      isEmailVerified: true,
+      status: 'active'
+    });
+    await user.save();
+
+    const vendor = new Vendor({
+      ...data,
+      owner: user._id,
+      onboardingComplete: true,
+      isActive: true,
+      isVerified: true
+    });
+    await vendor.save();
+    vendors.push(vendor);
+    console.log(`✅ Created vendor profile: ${vendor.businessName}`);
+  }
+  return vendors;
+}
+
+async function createWeddingPlanners() {
+  const hashedPassword = await bcrypt.hash('planner123', 12);
+  const plannerData = [
+    {
+      email: 'dream.weddings@planner.com',
+      password: hashedPassword,
+      name: 'Emma Thompson',
+      role: 'wedding_planner',
+      isEmailVerified: true,
+      status: 'active'
+    }
+  ];
+
+  const planners = [];
+  for (const data of plannerData) {
+    const user = new User(data);
+    await user.save();
+    planners.push(user);
+    console.log(`✅ Created wedding planner: ${user.email}`);
+  }
+  return planners;
+}
+
+async function createVenues(admins: any[]) {
+  const venueData = [
+    {
+      name: 'Grand Ballroom Colombo',
+      description: 'Premier ballroom in Colombo.',
+      location: { address: '123 Galle Rd', city: 'Colombo', province: 'Western' },
+      capacity: { min: 100, max: 500 },
+      pricing: { basePrice: 450000 },
+      owner: admins[0]._id,
+      isActive: true
+    },
+    {
+      name: 'Kingsbury Garden',
+      description: 'Beautiful outdoor garden.',
+      location: { address: '456 Lake Rd', city: 'Kandy', province: 'Central' },
+      capacity: { min: 50, max: 200 },
+      pricing: { basePrice: 250000 },
+      owner: admins[0]._id,
+      isActive: true
+    }
+  ];
+
+  const venues = [];
+  for (const data of venueData) {
+    const venue = new Venue(data);
     await venue.save();
+    venues.push(venue);
     console.log(`✅ Created venue: ${venue.name}`);
   }
+  return venues;
 }
 
-// Create services for vendors
 async function createServices(vendors: any[]) {
+  const services = [];
   for (const vendor of vendors) {
-    const services = [
-      {
-        vendorId: vendor._id,
-        name: `${vendor.category} Service`,
-        description: `Professional ${vendor.category.toLowerCase()} service`,
-        category: vendor.category,
-        pricing: {
-          basePrice: vendor.pricing.startingPrice,
-          currency: 'LKR'
-        },
-        isActive: true
-      }
-    ];
-
-    for (const serviceData of services) {
-      const service = new Service(serviceData);
-      await service.save();
-      console.log(`✅ Created service for vendor: ${vendor.businessName}`);
-    }
-  }
-}
-
-// Create bookings
-async function createBookings(users: any[], vendors: any[]) {
-  for (let i = 0; i < users.length; i++) {
-    const user = users[i];
-    const vendor = vendors[i % vendors.length];
-    
-    const booking = new Booking({
-      userId: user._id,
-      vendorId: vendor._id,
-      serviceId: null, // Will be linked to service
-      date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-      time: '18:00',
-      duration: 8,
-      guestCount: user.profile.preferences.guestCount,
-      totalAmount: vendor.pricing.startingPrice,
-      status: 'confirmed',
-      notes: `Wedding booking for ${user.name}`
+    const service = new Service({
+      vendor: vendor._id,
+      name: 'Premium ' + vendor.category,
+      description: 'Best in class ' + vendor.category + ' service.',
+      category: vendor.category,
+      price: vendor.pricing.startingPrice,
+      priceType: 'fixed'
     });
-    
-    await booking.save();
-    console.log(`✅ Created booking for user: ${user.name}`);
+    await service.save();
+    services.push(service);
+    console.log(`✅ Created service for: ${vendor.businessName}`);
   }
+  return services;
 }
 
-// Create reviews
-async function createReviews(users: any[], vendors: any[]) {
-  for (let i = 0; i < users.length; i++) {
-    const user = users[i];
-    const vendor = vendors[i % vendors.length];
-    
-    const review = new Review({
-      userId: user._id,
-      vendorId: vendor._id,
-      rating: 4 + Math.random(), // Random rating between 4-5
-      comment: `Excellent service from ${vendor.businessName}. Highly recommended!`,
-      isVerified: true,
-      createdAt: new Date()
-    });
-    
-    await review.save();
-    console.log(`✅ Created review from user: ${user.name}`);
-  }
+async function createBookings(users: any[], vendors: any[], venues: any[]) {
+  const booking = new Booking({
+    user: users[0]._id,
+    vendor: vendors[0]._id,
+    venue: venues[0]._id,
+    eventDate: new Date('2025-12-25'),
+    eventTime: '18:00',
+    guestCount: 200,
+    status: 'confirmed',
+    payment: { amount: 600000, status: 'completed', method: 'card' }
+  });
+  await booking.save();
+  console.log('✅ Created sample booking');
 }
 
-// Create social content
-async function createSocialContent(users: any[], vendors: any[], planners: any[]) {
-  const allUsers = [...users, ...vendors, ...planners];
-  
-  for (let i = 0; i < allUsers.length; i++) {
-    const user = allUsers[i];
-    
-    // Create posts
-    const post = new Post({
-      authorId: user._id,
-      content: `Excited to share our latest work! #wedding #${user.role}`,
-      images: ['https://images.unsplash.com/photo-1519741497674-611481863552?w=500'],
-      likes: Math.floor(Math.random() * 50),
-      comments: Math.floor(Math.random() * 20),
-      createdAt: new Date()
-    });
-    
-    await post.save();
-    console.log(`✅ Created post for user: ${user.name}`);
-  }
-}
-
-// Create notifications
-async function createNotifications(users: any[], vendors: any[], planners: any[]) {
-  const allUsers = [...users, ...vendors, ...planners];
-  
-  for (const user of allUsers) {
-    const notification = new Notification({
-      userId: user._id,
-      type: 'welcome',
-      title: 'Welcome to WeddingLK!',
-      message: 'Thank you for joining our platform. Start exploring amazing wedding services!',
-      isRead: false,
-      priority: 'medium',
-      createdAt: new Date()
-    });
-    
-    await notification.save();
-    console.log(`✅ Created notification for user: ${user.name}`);
-  }
-}
-
-// Create tasks
-async function createTasks(users: any[], planners: any[]) {
-  for (const user of users) {
-    const tasks = [
-      {
-        userId: user._id,
-        title: 'Choose Wedding Venue',
-        description: 'Research and select the perfect venue for your wedding',
-        dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
-        status: 'pending',
-        priority: 'high',
-        category: 'planning'
-      },
-      {
-        userId: user._id,
-        title: 'Book Photographer',
-        description: 'Find and book a professional wedding photographer',
-        dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 days from now
-        status: 'pending',
-        priority: 'medium',
-        category: 'vendor'
-      }
-    ];
-
-    for (const taskData of tasks) {
-      const task = new Task(taskData);
-      await task.save();
-      console.log(`✅ Created task for user: ${user.name}`);
-    }
-  }
-}
-
-// Create subscriptions
-async function createSubscriptions(vendors: any[], planners: any[]) {
-  const allVendors = [...vendors, ...planners];
-  
-  for (const vendor of allVendors) {
-    const subscription = new Subscription({
-      userId: vendor._id,
-      planId: 'premium',
-      status: 'active',
-      startDate: new Date(),
-      endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year from now
-      autoRenew: true,
-      features: ['unlimited_bookings', 'analytics', 'priority_support']
-    });
-    
-    await subscription.save();
-    console.log(`✅ Created subscription for vendor: ${vendor.name || vendor.businessName}`);
-  }
-}
-
-// Main function to run cleanup and seeding
-export async function resetAndSeedDatabase() {
-  try {
-    console.log('🚀 Starting database reset and seeding process...');
-    
-    // Step 1: Clear all collections
-    await clearAllCollections();
-    
-    // Step 2: Create comprehensive seed data
-    await createComprehensiveSeedData();
-    
-    console.log('🎉 Database reset and seeding completed successfully!');
-    console.log('📊 Summary:');
-    console.log('   - 5 Regular Users (couples)');
-    console.log('   - 5 Vendors');
-    console.log('   - 5 Wedding Planners');
-    console.log('   - 5 Admins');
-    console.log('   - Related data for all collections');
-    
-  } catch (error) {
-    console.error('❌ Database reset and seeding failed:', error);
-    throw error;
-  }
+async function createReviews(users: any[], vendors: any[], venues: any[]) {
+  const review = new Review({
+    userId: users[0]._id,
+    vendorId: vendors[0]._id,
+    overallRating: 5,
+    title: 'Amazing Experience!',
+    comment: 'Excellent service from ' + vendors[0].businessName + '. Highly recommended!',
+    isVerified: true,
+    status: 'approved'
+  });
+  await review.save();
+  console.log('✅ Created sample review');
 }

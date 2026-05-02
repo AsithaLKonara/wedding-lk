@@ -1,22 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
-import { getUserFromRequestWithError } from '@/lib/auth/get-user-from-request';
 import { User, Vendor, Venue, Booking, Payment, Review } from '@/lib/models';
+import { Middleware } from '@/lib/rbac';
 
-export async function GET(request: NextRequest) {
+async function handler(request: NextRequest) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
-    if (error) return error;
-    if (!authUser) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     await connectDB();
-
-    const user = await User.findOne({ email: authUser.email });
-    if (!user || user.role !== 'admin') {
-      return NextResponse.json({ error: "Admin access required" }, { status: 403 });
-    }
 
     console.log('📊 Fetching admin stats from MongoDB Atlas...');
 
@@ -67,3 +56,5 @@ export async function GET(request: NextRequest) {
     }, { status: 500 });
   }
 }
+
+export const GET = Middleware.requireAdmin(handler);
