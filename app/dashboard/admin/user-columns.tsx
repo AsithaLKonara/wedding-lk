@@ -33,7 +33,7 @@ export const columns: ColumnDef<User>[] = [
       return (
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-            <span className="text-sm font-medium text-gray-600">
+            <span className="text-sm font-medium text-gray-400">
               {user.name.charAt(0).toUpperCase()}
             </span>
           </div>

@@ -122,34 +122,56 @@ export class ResponseOptimizer {
   /**
    * Compress venue data
    */
-  static compressVenue(venue: VenueData | null | undefined) {
+  static compressVenue(venue: any) {
     if (!venue) return null
     
     return {
-      id: venue._id || venue.id,
+      _id: venue._id?.toString() || venue.id,
       name: venue.name,
-      location: venue.location,
+      location: {
+        city: venue.location?.city || 'Unknown',
+        state: venue.location?.province || 'Sri Lanka',
+        country: 'Sri Lanka'
+      },
+      capacity: venue.capacity?.max || venue.capacity || 0,
       pricing: venue.pricing,
-      images: venue.images?.slice(0, 3), // Only first 3 images
-      rating: venue.rating,
-      isActive: venue.isActive
+      priceRange: venue.pricing?.basePrice ? (venue.pricing.basePrice > 300000 ? '$$$$' : venue.pricing.basePrice > 150000 ? '$$$' : '$$') : '$$',
+      images: venue.images || [],
+      coverImage: venue.images?.[0],
+      rating: venue.rating?.average || 0,
+      reviewCount: venue.rating?.count || 0,
+      isActive: venue.isActive,
+      description: venue.description,
+      venueType: venue.venueType || 'Hotel',
+      isAvailable: venue.isAvailable ?? true
     }
   }
 
   /**
    * Compress vendor data
    */
-  static compressVendor(vendor: VendorData | null | undefined) {
+  static compressVendor(vendor: any) {
     if (!vendor) return null
     
     return {
-      id: vendor._id || vendor.id,
+      _id: vendor._id?.toString() || vendor.id,
       businessName: vendor.businessName,
+      name: vendor.name || vendor.businessName,
       category: vendor.category,
-      location: vendor.location,
-      rating: vendor.rating,
+      location: {
+        city: vendor.location?.city || 'Unknown',
+        state: vendor.location?.province || 'Sri Lanka',
+        country: 'Sri Lanka'
+      },
+      rating: vendor.rating?.average || 0,
+      reviewCount: vendor.rating?.count || 0,
       isActive: vendor.isActive,
-      isVerified: vendor.isVerified
+      isVerified: vendor.isVerified,
+      description: vendor.description,
+      priceRange: vendor.pricing?.startingPrice ? (vendor.pricing.startingPrice > 200000 ? '$$$$' : vendor.pricing.startingPrice > 100000 ? '$$$' : '$$') : '$$',
+      coverImage: vendor.portfolio?.[0] || vendor.images?.[0],
+      yearsInBusiness: vendor.yearsInBusiness || 5,
+      responseTime: vendor.responseTime || 'Under 2 hours'
     }
   }
 

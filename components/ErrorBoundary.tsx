@@ -43,7 +43,7 @@ export class ErrorBoundary extends Component<Props, State> {
     });
 
     // Log error to console in development
-    if (process.env.NODE_ENV === 'development') {
+    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
     }
 
@@ -141,7 +141,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 We're sorry, but something unexpected happened. Our team has been notified and is working to fix it.
               </p>
 
-              {process.env.NODE_ENV === 'development' && this.state.error && (
+              {typeof process !== 'undefined' && process.env.NODE_ENV === 'development' && this.state.error && (
                 <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg text-left">
                   <h3 className="font-semibold text-red-800 dark:text-red-200 mb-2">
                     Error Details (Development Only)

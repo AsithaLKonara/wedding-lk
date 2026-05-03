@@ -11,26 +11,21 @@ import {
   Calendar, 
   Settings, 
   TrendingUp, 
-  FileText, 
   Clock,
   Plus,
-  Edit,
-  Trash2,
   Star,
-  MapPin,
-  Phone,
-  Mail,
-  Heart,
-  Gift,
   Camera,
   Music,
   Utensils,
   Flower2,
   Car,
-  Building2
+  Building2,
+  Activity,
+  Gift,
+  Zap
 } from "lucide-react"
-import { DashboardLayout } from "@/components/layouts/dashboard-layout"
-import { formatCurrency, formatNumber, getRelativeTime, daysUntil } from "@/lib/utils/format"
+
+import { formatCurrency, formatNumber, getRelativeTime } from "@/lib/utils/format"
 
 interface PlannerStats {
   totalTasks: number
@@ -53,8 +48,6 @@ interface Task {
   priority: "high" | "medium" | "low"
   dueDate: string
   status: "pending" | "in_progress" | "completed" | "overdue"
-  estimatedHours: number
-  actualHours?: number
 }
 
 interface Client {
@@ -69,7 +62,6 @@ interface Client {
   tasksCompleted: number
   totalTasks: number
   lastContact: string
-  rating?: number
 }
 
 interface Timeline {
@@ -81,12 +73,9 @@ interface Timeline {
   time: string
   status: "upcoming" | "completed" | "cancelled"
   category: string
-  notes?: string
 }
 
 export default function PlannerDashboard() {
-  const [user, setUser] = useState(null);
-  const [status, setStatus] = useState('loading');
   const [stats, setStats] = useState<PlannerStats>({
     totalTasks: 0,
     completedTasks: 0,
@@ -109,29 +98,21 @@ export default function PlannerDashboard() {
   const fetchPlannerData = async () => {
     try {
       setLoading(true)
-      
-      // Fetch planner stats
       const statsResponse = await fetch("/api/dashboard/planner/stats")
       if (statsResponse.ok) {
         const statsData = await statsResponse.json()
         setStats(statsData.stats)
       }
-
-      // Fetch tasks
       const tasksResponse = await fetch("/api/dashboard/planner/tasks")
       if (tasksResponse.ok) {
         const tasksData = await tasksResponse.json()
         setTasks(tasksData.tasks)
       }
-
-      // Fetch clients
       const clientsResponse = await fetch("/api/dashboard/planner/clients")
       if (clientsResponse.ok) {
         const clientsData = await clientsResponse.json()
         setClients(clientsData.clients)
       }
-
-      // Fetch timeline
       const timelineResponse = await fetch("/api/dashboard/planner/timeline")
       if (timelineResponse.ok) {
         const timelineData = await timelineResponse.json()
@@ -151,10 +132,7 @@ export default function PlannerDashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ taskId, action }),
       })
-      
-      if (response.ok) {
-        fetchPlannerData() // Refresh data
-      }
+      if (response.ok) fetchPlannerData()
     } catch (error) {
       console.error("Error updating task:", error)
     }
@@ -162,480 +140,206 @@ export default function PlannerDashboard() {
 
   const getTaskIcon = (category: string) => {
     switch (category.toLowerCase()) {
-      case "venue":
-        return <Building2 className="h-4 w-4" />
-      case "photography":
-        return <Camera className="h-4 w-4" />
-      case "music":
-        return <Music className="h-4 w-4" />
-      case "catering":
-        return <Utensils className="h-4 w-4" />
-      case "flowers":
-        return <Flower2 className="h-4 w-4" />
-      case "gifts":
-        return <Gift className="h-4 w-4" />
-      case "transportation":
-        return <Car className="h-4 w-4" />
-      default:
-        return <CheckSquare className="h-4 w-4" />
+      case "venue": return <Building2 className="h-4 w-4" />
+      case "photography": return <Camera className="h-4 w-4" />
+      case "music": return <Music className="h-4 w-4" />
+      case "catering": return <Utensils className="h-4 w-4" />
+      case "flowers": return <Flower2 className="h-4 w-4" />
+      case "gifts": return <Gift className="h-4 w-4" />
+      case "transportation": return <Car className="h-4 w-4" />
+      default: return <CheckSquare className="h-4 w-4" />
     }
   }
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "completed":
-        return "bg-green-100 text-green-800"
-      case "in_progress":
-        return "bg-blue-100 text-blue-800"
-      case "pending":
-        return "bg-yellow-100 text-yellow-800"
-      case "overdue":
-        return "bg-red-100 text-red-800"
-      default:
-        return "bg-gray-100 text-gray-800"
-    }
-  }
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case "high":
-        return "bg-red-100 text-red-800"
-      case "medium":
-        return "bg-yellow-100 text-yellow-800"
-      case "low":
-        return "bg-green-100 text-green-800"
-      default:
-        return "bg-gray-100 text-gray-800"
-    }
-  }
-
-  const getClientStatusColor = (status: string) => {
-    switch (status) {
-      case "active":
-        return "bg-green-100 text-green-800"
-      case "completed":
-        return "bg-blue-100 text-blue-800"
-      case "on_hold":
-        return "bg-yellow-100 text-yellow-800"
-      default:
-        return "bg-gray-100 text-gray-800"
+      case "completed": return "bg-green-500/10 text-green-500 border-green-500/20"
+      case "in_progress": return "bg-blue-500/10 text-blue-500 border-blue-500/20"
+      case "pending": return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20"
+      case "overdue": return "bg-red-500/10 text-red-500 border-red-500/20"
+      default: return "bg-gray-500/10 text-gray-500 border-gray-500/20"
     }
   }
 
   if (loading) {
     return (
-      <DashboardLayout>
-        <div className="flex items-center justify-center min-h-96">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading planner dashboard...</p>
-          </div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-purple-600 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-gray-400 font-medium">Loading planner workspace...</p>
         </div>
-      </DashboardLayout>
-    )
+      </div>
+    );
   }
 
   const taskCompletionPercentage = stats.totalTasks > 0 ? (stats.completedTasks / stats.totalTasks) * 100 : 0
 
   return (
-    <DashboardLayout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="p-3 bg-green-100 rounded-full">
-              <CheckSquare className="h-8 w-8 text-green-600" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Wedding Planner Dashboard</h1>
-              <p className="text-gray-600 mt-1">Manage your wedding planning business</p>
-            </div>
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center space-x-4">
+          <div className="p-3 bg-purple-500/10 border border-purple-500/20 rounded-2xl shadow-lg shadow-purple-500/5">
+            <CheckSquare className="h-8 w-8 text-purple-500" />
           </div>
-          <div className="flex items-center space-x-2">
-            <Button variant="outline" size="sm">
-              <Settings className="h-4 w-4 mr-2" />
-              Settings
-            </Button>
+          <div>
+            <h1 className="text-3xl font-black text-white tracking-tight uppercase">Planner Studio</h1>
+            <p className="text-gray-400 font-medium">Manage your portfolio and clients</p>
           </div>
         </div>
-
-        {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Tasks</CardTitle>
-              <CheckSquare className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatNumber(stats.totalTasks)}</div>
-              <p className="text-xs text-muted-foreground">
-                {stats.completedTasks} completed
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Clients</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatNumber(stats.activeClients)}</div>
-              <p className="text-xs text-muted-foreground">Currently planning</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Upcoming Events</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatNumber(stats.upcomingEvents)}</div>
-              <p className="text-xs text-muted-foreground">Next 30 days</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatCurrency(stats.totalRevenue)}</div>
-              <p className="text-xs text-muted-foreground">
-                {formatCurrency(stats.monthlyRevenue)} this month
-              </p>
-            </CardContent>
-          </Card>
+        <div className="flex items-center space-x-2">
+          <Button variant="outline" className="bg-white/5 border-white/10 hover:bg-white/10 text-white rounded-xl h-10 px-4">
+            <Settings className="h-4 w-4 mr-2" />
+            Settings
+          </Button>
+          <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-none rounded-xl h-10 px-6 font-black shadow-lg shadow-purple-500/20">
+            <Plus className="h-4 w-4 mr-2" />
+            NEW PROJECT
+          </Button>
         </div>
-
-        {/* Progress Overview */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Task Completion Progress</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Tasks Completed</span>
-                  <span>{Math.round(taskCompletionPercentage)}%</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-green-600 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${taskCompletionPercentage}%` }}
-                  ></div>
-                </div>
-                <p className="text-xs text-gray-500">
-                  {stats.completedTasks} of {stats.totalTasks} tasks completed
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Client Satisfaction</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center space-x-4">
-                <div className="text-3xl font-bold text-green-600">
-                  {stats.averageRating.toFixed(1)}
-                </div>
-                <div>
-                  <div className="flex items-center space-x-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star 
-                        key={i} 
-                        className={`h-4 w-4 ${
-                          i < Math.floor(stats.averageRating) 
-                            ? "text-yellow-400 fill-current" 
-                            : "text-gray-300"
-                        }`} 
-                      />
-                    ))}
-                  </div>
-                  <p className="text-xs text-gray-500">
-                    Based on {stats.completedWeddings} completed weddings
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Main Content Tabs */}
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="tasks">Tasks</TabsTrigger>
-            <TabsTrigger value="clients">Clients</TabsTrigger>
-            <TabsTrigger value="timeline">Timeline</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <TrendingUp className="h-5 w-5 mr-2" />
-                    Recent Activity
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">New client added</p>
-                        <p className="text-xs text-gray-500">2 hours ago</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">Task completed</p>
-                        <p className="text-xs text-gray-500">4 hours ago</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">Wedding scheduled</p>
-                        <p className="text-xs text-gray-500">1 day ago</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium">Task Management</p>
-                        <p className="text-xs text-gray-500">Manage planning tasks</p>
-                      </div>
-                      <Button size="sm" variant="outline">
-                        Manage Tasks
-                      </Button>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium">Client Management</p>
-                        <p className="text-xs text-gray-500">Manage client relationships</p>
-                      </div>
-                      <Button size="sm" variant="outline">
-                        Manage Clients
-                      </Button>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium">Timeline Planning</p>
-                        <p className="text-xs text-gray-500">Create wedding timelines</p>
-                      </div>
-                      <Button size="sm" variant="outline">
-                        View Timeline
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="tasks" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>Task Management</span>
-                  <Button size="sm">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Task
-                  </Button>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {tasks.map((task) => (
-                    <div key={task.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-gray-100 rounded-lg">
-                          {getTaskIcon(task.category)}
-                        </div>
-                        <div>
-                          <p className="font-medium">{task.title}</p>
-                          <p className="text-sm text-gray-500">{task.clientName}</p>
-                          <p className="text-sm text-gray-500">{task.category}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Badge className={getStatusColor(task.status)}>
-                          {task.status.replace("_", " ")}
-                        </Badge>
-                        <Badge className={getPriorityColor(task.priority)}>
-                          {task.priority}
-                        </Badge>
-                        <span className="text-sm text-gray-500">
-                          Due: {new Date(task.dueDate).toLocaleDateString()}
-                        </span>
-                        {task.status === "pending" && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleTaskAction(task.id, "start")}
-                          >
-                            Start
-                          </Button>
-                        )}
-                        {task.status === "in_progress" && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleTaskAction(task.id, "complete")}
-                          >
-                            Complete
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="clients" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>Client Management</span>
-                  <Button size="sm">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Client
-                  </Button>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {clients.map((client) => (
-                    <div key={client.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                          <Users className="h-5 w-5 text-blue-600" />
-                        </div>
-                        <div>
-                          <p className="font-medium">{client.name}</p>
-                          <p className="text-sm text-gray-500">{client.email}</p>
-                          <p className="text-sm text-gray-500">
-                            Wedding: {new Date(client.weddingDate).toLocaleDateString()}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Badge className={getClientStatusColor(client.status)}>
-                          {client.status.replace("_", " ")}
-                        </Badge>
-                        <span className="text-sm text-gray-500">
-                          {client.tasksCompleted}/{client.totalTasks} tasks
-                        </span>
-                        <span className="text-sm font-medium">
-                          {formatCurrency(client.budget)}
-                        </span>
-                        {client.rating && (
-                          <div className="flex items-center space-x-1">
-                            <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                            <span className="text-sm">{client.rating.toFixed(1)}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="timeline" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>Wedding Timeline</span>
-                  <Button size="sm">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Event
-                  </Button>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {timeline.map((event) => (
-                    <div key={event.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-purple-100 rounded-lg">
-                          <Calendar className="h-5 w-5 text-purple-600" />
-                        </div>
-                        <div>
-                          <p className="font-medium">{event.event}</p>
-                          <p className="text-sm text-gray-500">{event.clientName}</p>
-                          <p className="text-sm text-gray-500">{event.category}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Badge className={getStatusColor(event.status)}>
-                          {event.status}
-                        </Badge>
-                        <span className="text-sm text-gray-500">
-                          {new Date(event.date).toLocaleDateString()}
-                        </span>
-                        <span className="text-sm text-gray-500">{event.time}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="settings" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Settings className="h-5 w-5 mr-2" />
-                  Account Settings
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center">
-                        <Settings className="h-5 w-5 text-gray-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium">Account Configuration</p>
-                        <p className="text-sm text-gray-500">Manage your account settings</p>
-                      </div>
-                    </div>
-                    <Button>Configure</Button>
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    Settings functionality will be implemented here. This will include account preferences, 
-                    notification settings, and business profile management.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
       </div>
-    </DashboardLayout>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <MetricCard label="Active Tasks" value={stats.totalTasks} trend={`${stats.completedTasks} Done`} icon={CheckSquare} color="purple" />
+        <MetricCard label="Live Clients" value={stats.activeClients} trend="Currently Planning" icon={Users} color="blue" />
+        <MetricCard label="Avg Rating" value={stats.averageRating.toFixed(1)} trend={`${stats.completedWeddings} Events`} icon={Star} color="yellow" />
+        <MetricCard label="Total Revenue" value={formatCurrency(stats.totalRevenue)} trend={formatCurrency(stats.monthlyRevenue)} icon={TrendingUp} color="emerald" />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="bg-white/5 border-white/10">
+          <CardHeader><CardTitle className="text-xs font-black text-gray-500 uppercase tracking-widest">Global Progress</CardTitle></CardHeader>
+          <CardContent>
+            <div className="flex justify-between items-end mb-4">
+              <div>
+                <p className="text-4xl font-black text-white">{Math.round(taskCompletionPercentage)}%</p>
+                <p className="text-[10px] text-gray-600 font-black uppercase">Tasks Finished</p>
+              </div>
+              <p className="text-sm font-bold text-gray-400">{stats.completedTasks} / {stats.totalTasks}</p>
+            </div>
+            <div className="w-full bg-white/5 rounded-full h-2">
+              <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full shadow-lg shadow-purple-500/20" style={{ width: `${taskCompletionPercentage}%` }} />
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="bg-white/5 border-white/10 flex items-center px-8">
+          <div className="flex-1">
+            <h3 className="text-xl font-black text-white mb-1">Scale Your Business</h3>
+            <p className="text-xs text-gray-400 font-medium">Unlock premium tools for faster planning</p>
+          </div>
+          <Button className="bg-white/5 hover:bg-white/10 text-white border-white/10 font-black h-12 rounded-xl px-6">
+            <Zap className="h-4 w-4 mr-2 text-yellow-400" />
+            GO PRO
+          </Button>
+        </Card>
+      </div>
+
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="bg-white/5 border border-white/10 p-1 rounded-xl h-12">
+          <TabsTrigger value="overview" className="rounded-lg data-[state=active]:bg-white/10 font-black px-6 text-[10px] uppercase tracking-widest">Overview</TabsTrigger>
+          <TabsTrigger value="tasks" className="rounded-lg data-[state=active]:bg-white/10 font-black px-6 text-[10px] uppercase tracking-widest">Tasks</TabsTrigger>
+          <TabsTrigger value="clients" className="rounded-lg data-[state=active]:bg-white/10 font-black px-6 text-[10px] uppercase tracking-widest">Clients</TabsTrigger>
+          <TabsTrigger value="timeline" className="rounded-lg data-[state=active]:bg-white/10 font-black px-6 text-[10px] uppercase tracking-widest">Timeline</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader><CardTitle className="text-xs font-black text-white uppercase tracking-widest">Recent Activity</CardTitle></CardHeader>
+              <CardContent className="space-y-4">
+                <ActivityRow label="New client added" time="2h ago" color="emerald" />
+                <ActivityRow label="Task 'Venue Setup' done" time="4h ago" color="blue" />
+                <ActivityRow label="Budget approved" time="1d ago" color="purple" />
+              </CardContent>
+            </Card>
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader><CardTitle className="text-xs font-black text-white uppercase tracking-widest">Quick Actions</CardTitle></CardHeader>
+              <CardContent className="grid grid-cols-2 gap-4">
+                <ActionBtn icon={CheckSquare} label="Manage Tasks" color="blue" />
+                <ActionBtn icon={Users} label="View Clients" color="purple" />
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="tasks" className="space-y-6">
+          <Card className="bg-white/5 border-white/10">
+            <CardHeader className="flex flex-row items-center justify-between"><CardTitle className="text-xs font-black text-white uppercase tracking-widest">Planning Queue</CardTitle></CardHeader>
+            <CardContent className="space-y-4">
+              {tasks.map(task => (
+                <div key={task.id} className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-all">
+                  <div className="flex items-center space-x-4">
+                    <div className="p-3 bg-white/5 border border-white/10 rounded-xl text-gray-500">{getTaskIcon(task.category)}</div>
+                    <div>
+                      <p className="font-bold text-white">{task.title}</p>
+                      <p className="text-[10px] text-gray-500 font-black uppercase tracking-tighter">{task.clientName} • {task.category}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <Badge className={`${getStatusColor(task.status)} uppercase text-[9px] font-black tracking-widest`}>{task.status.replace('_', ' ')}</Badge>
+                    <Button size="sm" variant="ghost" className="text-[10px] font-black uppercase tracking-widest text-purple-400" onClick={() => handleTaskAction(task.id, 'complete')}>Complete</Button>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="timeline" className="space-y-6">
+          <Card className="bg-white/5 border-white/10">
+            <CardHeader><CardTitle className="text-xs font-black text-white uppercase tracking-widest">Event Timeline</CardTitle></CardHeader>
+            <CardContent className="space-y-6">
+              {timeline.map(event => (
+                <div key={event.id} className="flex gap-6 group">
+                  <div className="w-12 h-12 bg-white/5 border-2 border-white/5 rounded-2xl flex items-center justify-center text-pink-400 shadow-xl group-hover:border-pink-500/30 transition-all"><Clock className="h-5 w-5" /></div>
+                  <div className="flex-1 p-4 bg-white/5 border border-white/10 rounded-2xl">
+                    <div className="flex justify-between items-center mb-1">
+                      <h4 className="font-black text-white">{event.event}</h4>
+                      <span className="text-[10px] font-black text-pink-400 uppercase tracking-widest">{event.category}</span>
+                    </div>
+                    <p className="text-[10px] text-gray-500 font-bold uppercase">{event.clientName} • {event.date} at {event.time}</p>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
+}
+
+function MetricCard({ label, value, trend, icon: Icon, color }: any) {
+  return (
+    <Card className="bg-white/5 border-white/10 group overflow-hidden relative">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{label}</CardTitle>
+        <Icon className={`h-4 w-4 text-${color}-400 opacity-50 group-hover:opacity-100 transition-opacity`} />
+      </CardHeader>
+      <CardContent>
+        <div className="text-3xl font-black text-white tracking-tighter">{value}</div>
+        <p className="text-[10px] text-gray-500 font-bold uppercase mt-1 tracking-tight">{trend}</p>
+      </CardContent>
+    </Card>
+  )
+}
+
+function ActivityRow({ label, time, color }: any) {
+  return (
+    <div className="flex items-center space-x-3 p-3 rounded-xl bg-white/5 border border-white/5">
+      <div className={`w-2 h-2 bg-${color}-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(0,0,0,0.5)]`} />
+      <div className="flex-1">
+        <p className="text-sm font-bold text-white">{label}</p>
+        <p className="text-[10px] text-gray-600 font-black uppercase mt-0.5">{time}</p>
+      </div>
+    </div>
+  )
+}
+
+function ActionBtn({ icon: Icon, label, color }: any) {
+  return (
+    <Button variant="outline" className="h-24 flex flex-col justify-center items-center bg-white/5 border-white/10 hover:bg-white/10 text-white rounded-2xl group transition-all">
+      <Icon className={`h-6 w-6 mb-2 text-${color}-400 group-hover:scale-110 transition-transform`} />
+      <span className="font-black text-[10px] uppercase tracking-widest">{label}</span>
+    </Button>
   )
 }

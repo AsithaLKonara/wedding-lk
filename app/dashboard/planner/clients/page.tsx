@@ -37,90 +37,24 @@ export default function PlannerClientsPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 
   useEffect(() => {
-    if (authLoading) return
-
-    if (!user) {
-      router.push('/auth/signin')
-      return
-    }
-
-    if (user.role !== 'wedding_planner') {
-      router.push('/unauthorized')
-      return
-    }
-
-    // Mock data - replace with actual API call
-    setClients([
-      {
-        id: '1',
-        name: 'John & Sarah Wilson',
-        email: 'john.sarah@email.com',
-        phone: '+94 77 123 4567',
-        weddingDate: '2024-06-15',
-        status: 'active',
-        budget: 2500000,
-        guestCount: 150,
-        venue: 'Grand Hotel Colombo',
-        lastContact: '2024-02-10',
-        notes: 'Very organized couple, prefers outdoor ceremonies',
-        createdAt: '2023-12-01',
-        tasksCompleted: 12,
-        totalTasks: 25,
-        satisfaction: 4.8
-      },
-      {
-        id: '2',
-        name: 'Mike & Emily Johnson',
-        email: 'mike.emily@email.com',
-        phone: '+94 77 234 5678',
-        weddingDate: '2024-08-20',
-        status: 'active',
-        budget: 1800000,
-        guestCount: 100,
-        venue: 'Beach Resort Galle',
-        lastContact: '2024-02-08',
-        notes: 'Budget-conscious, wants simple elegant wedding',
-        createdAt: '2024-01-15',
-        tasksCompleted: 8,
-        totalTasks: 20,
-        satisfaction: 4.6
-      },
-      {
-        id: '3',
-        name: 'David & Lisa Brown',
-        email: 'david.lisa@email.com',
-        phone: '+94 77 345 6789',
-        weddingDate: '2024-03-10',
-        status: 'completed',
-        budget: 3200000,
-        guestCount: 200,
-        venue: 'Luxury Resort Kandy',
-        lastContact: '2024-03-15',
-        notes: 'Perfect wedding, very happy clients',
-        createdAt: '2023-10-01',
-        tasksCompleted: 30,
-        totalTasks: 30,
-        satisfaction: 5.0
-      },
-      {
-        id: '4',
-        name: 'Tom & Jessica Davis',
-        email: 'tom.jessica@email.com',
-        phone: '+94 77 456 7890',
-        weddingDate: '2024-09-05',
-        status: 'on_hold',
-        budget: 1500000,
-        guestCount: 80,
-        venue: 'Garden Venue Negombo',
-        lastContact: '2024-01-20',
-        notes: 'Postponed due to family emergency',
-        createdAt: '2023-11-15',
-        tasksCompleted: 5,
-        totalTasks: 18,
-        satisfaction: 4.2
+    const fetchClients = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/dashboard/planner/clients');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            setClients(data.clients);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching clients:', error);
+      } finally {
+        setLoading(false);
       }
-    ])
-    setLoading(false)
+    };
+
+    fetchClients();
   }, [user, authLoading, router])
 
   const filteredClients = clients.filter(client => {
@@ -134,11 +68,11 @@ export default function PlannerClientsPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800'
-      case 'completed': return 'bg-blue-100 text-blue-800'
-      case 'on_hold': return 'bg-yellow-100 text-yellow-800'
-      case 'cancelled': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'active': return 'bg-green-500/10 text-green-400 border-green-500/20'
+      case 'completed': return 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+      case 'on_hold': return 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
+      case 'cancelled': return 'bg-red-500/10 text-red-400 border-red-500/20'
+      default: return 'bg-gray-500/10 text-gray-400 border-gray-500/20'
     }
   }
 
@@ -171,14 +105,14 @@ export default function PlannerClientsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-[#050208] p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Client Management</h1>
-              <p className="text-gray-600">Manage your wedding planning clients and their events</p>
+              <h1 className="text-3xl font-bold text-white mb-2">Client Management</h1>
+              <p className="text-gray-400">Manage your wedding planning clients and their events</p>
             </div>
             <div className="flex space-x-3">
               <Button 
@@ -206,8 +140,8 @@ export default function PlannerClientsPage() {
               <div className="flex items-center">
                 <Users className="w-8 h-8 text-purple-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Clients</p>
-                  <p className="text-2xl font-bold text-gray-900">{clients.length}</p>
+                  <p className="text-sm font-medium text-gray-400">Total Clients</p>
+                  <p className="text-2xl font-bold text-white">{clients.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -218,8 +152,8 @@ export default function PlannerClientsPage() {
               <div className="flex items-center">
                 <Calendar className="w-8 h-8 text-green-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Active Clients</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Active Clients</p>
+                  <p className="text-2xl font-bold text-white">
                     {clients.filter(client => client.status === 'active').length}
                   </p>
                 </div>
@@ -232,8 +166,8 @@ export default function PlannerClientsPage() {
               <div className="flex items-center">
                 <Heart className="w-8 h-8 text-red-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Completed</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Completed</p>
+                  <p className="text-2xl font-bold text-white">
                     {clients.filter(client => client.status === 'completed').length}
                   </p>
                 </div>
@@ -246,8 +180,8 @@ export default function PlannerClientsPage() {
               <div className="flex items-center">
                 <MessageSquare className="w-8 h-8 text-blue-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Avg Satisfaction</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Avg Satisfaction</p>
+                  <p className="text-2xl font-bold text-white">
                     {(clients.reduce((sum, client) => sum + client.satisfaction, 0) / clients.length).toFixed(1)}
                   </p>
                 </div>
@@ -271,7 +205,7 @@ export default function PlannerClientsPage() {
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as any)}
-                  className="px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  className="px-3 py-2 bg-[#0e0918] border border-white/10 rounded-md text-sm text-white"
                 >
                   <option value="all">All Status</option>
                   <option value="active">Active</option>
@@ -325,15 +259,15 @@ export default function PlannerClientsPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="flex items-center text-sm text-gray-600">
+                    <div className="flex items-center text-sm text-gray-400">
                       <Mail className="w-4 h-4 mr-2" />
                       {client.email}
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
+                    <div className="flex items-center text-sm text-gray-400">
                       <Phone className="w-4 h-4 mr-2" />
                       {client.phone}
                     </div>
-                    <div className="flex items-center text-sm text-gray-600">
+                    <div className="flex items-center text-sm text-gray-400">
                       <Calendar className="w-4 h-4 mr-2" />
                       {new Date(client.weddingDate).toLocaleDateString()}
                       <span className="ml-2 text-blue-600 font-medium">
@@ -342,8 +276,8 @@ export default function PlannerClientsPage() {
                     </div>
                     
                     <div className="pt-3 border-t">
-                      <div className="text-sm text-gray-600 mb-2">Planning Progress</div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="text-sm text-gray-400 mb-2">Planning Progress</div>
+                      <div className="w-full bg-white/5 rounded-full h-2">
                         <div 
                           className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full"
                           style={{width: `${getProgressPercentage(client.tasksCompleted, client.totalTasks)}%`}}
@@ -385,8 +319,8 @@ export default function PlannerClientsPage() {
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-3">
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900">{client.name}</h3>
-                          <p className="text-gray-600">{client.venue}</p>
+                          <h3 className="text-lg font-semibold text-white">{client.name}</h3>
+                          <p className="text-gray-400">{client.venue}</p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <Badge className={getStatusColor(client.status)}>
@@ -452,8 +386,8 @@ export default function PlannerClientsPage() {
         {filteredClients.length === 0 && (
           <div className="text-center py-12">
             <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No clients found</h3>
-            <p className="text-gray-600 mb-6">
+            <h3 className="text-lg font-medium text-white mb-2">No clients found</h3>
+            <p className="text-gray-400 mb-6">
               {searchTerm || statusFilter !== 'all'
                 ? "Try adjusting your search criteria or filters."
                 : "You don't have any clients yet. Add your first client to get started."

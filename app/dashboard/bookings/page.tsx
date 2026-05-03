@@ -79,7 +79,7 @@ export default function BookingsPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">My Bookings</h1>
-        <p className="text-gray-600 dark:text-gray-400">Manage your venue bookings and track their status</p>
+        <p className="text-gray-400 dark:text-gray-400">Manage your venue bookings and track their status</p>
       </div>
 
       <div className="space-y-6">
@@ -106,10 +106,10 @@ export default function BookingsPage() {
                       </Badge>
                     </div>
                     <div className="text-right mt-4 md:mt-0">
-                      <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                      <p className="text-2xl font-bold text-white dark:text-white">
                         LKR {booking.totalAmount.toLocaleString()}
                       </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-gray-400 dark:text-gray-400">
                         Booked on {new Date(booking.createdAt).toLocaleDateString()}
                       </p>
                     </div>
@@ -164,7 +164,7 @@ export default function BookingsPage() {
           <CardContent>
             <Calendar className="h-12 w-12 mx-auto mb-4 text-gray-400" />
             <h3 className="text-lg font-medium mb-2">No bookings yet</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
+            <p className="text-gray-400 dark:text-gray-400 mb-4">
               Start planning your dream wedding by booking a venue
             </p>
             <Link href="/venues">

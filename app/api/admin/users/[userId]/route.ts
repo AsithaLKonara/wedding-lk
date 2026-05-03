@@ -123,7 +123,7 @@ export async function GET(
   req: NextRequest,
   context: { params: Promise<{ userId: string }> }
 ) {
-  const { user, error } = getUserFromRequestWithError(req);
+  const { user, error } = await getUserFromRequestWithError(req);
   if (error) return error;
   if (!user || user.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -135,7 +135,7 @@ export async function PATCH(
   req: NextRequest,
   context: { params: Promise<{ userId: string }> }
 ) {
-  const { user, error } = getUserFromRequestWithError(req);
+  const { user, error } = await getUserFromRequestWithError(req);
   if (error) return error;
   if (!user || user.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -147,7 +147,7 @@ export async function DELETE(
   req: NextRequest,
   context: { params: Promise<{ userId: string }> }
 ) {
-  const { user, error } = getUserFromRequestWithError(req);
+  const { user, error } = await getUserFromRequestWithError(req);
   if (error) return error;
   if (!user || user.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

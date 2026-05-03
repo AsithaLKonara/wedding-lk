@@ -131,14 +131,14 @@ export default function AdminAnalyticsPage() {
       case 'critical':
         return 'text-red-600';
       default:
-        return 'text-gray-600';
+        return 'text-gray-400';
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-[#050208]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
       </div>
     );
   }
@@ -147,8 +147,8 @@ export default function AdminAnalyticsPage() {
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">Analytics Dashboard</h1>
-          <p className="text-gray-600">Monitor your platform performance and user activity</p>
+          <h1 className="text-3xl font-bold text-white">Analytics Dashboard</h1>
+          <p className="text-gray-400">Monitor your platform performance and user activity</p>
         </div>
         <div className="flex gap-2">
           <Select value={timeRange} onValueChange={setTimeRange}>
@@ -161,7 +161,7 @@ export default function AdminAnalyticsPage() {
               <SelectItem value="90d">Last 90 days</SelectItem>
             </SelectContent>
           </Select>
-          <Button onClick={fetchAnalyticsData} variant="outline">
+          <Button onClick={fetchAnalyticsData} variant="outline" className="border-white/10 text-white hover:bg-white/5">
             Refresh
           </Button>
         </div>
@@ -349,10 +349,10 @@ export default function AdminAnalyticsPage() {
             </CardHeader>
             <CardContent>
               {chartData ? (
-                <div className="h-96 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg">
+                <div className="h-96 flex items-center justify-center border-2 border-dashed border-white/5 rounded-lg bg-white/5">
                   <div className="text-center">
-                    <Activity className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500">Chart visualization would be implemented here</p>
+                    <Activity className="h-12 w-12 text-gray-500 mx-auto mb-4" />
+                    <p className="text-white font-medium">Chart visualization would be implemented here</p>
                     <p className="text-sm text-gray-400 mt-2">
                       Data available: {chartData.labels.length} data points
                     </p>

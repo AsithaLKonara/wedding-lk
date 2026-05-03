@@ -47,7 +47,7 @@ const PostSchema = new Schema<IPost>({
     type: String,
     validate: {
       validator: function(v: string) {
-        return /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i.test(v);
+        return /^https?:\/\/.+$/i.test(v);
       },
       message: 'Invalid image URL format'
     }

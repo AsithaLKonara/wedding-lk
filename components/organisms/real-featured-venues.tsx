@@ -23,8 +23,8 @@ interface FeaturedVenue {
     basePrice: number
     currency: string
   }
-  reviewStats?: {
-    averageRating?: number
+  rating?: {
+    average?: number
     count?: number
   }
   isVerified: boolean
@@ -44,8 +44,8 @@ export default function RealFeaturedVenues() {
     try {
       const response = await fetch('/api/home/featured-venues')
       if (response.ok) {
-        const data = await response.json()
-        setVenues(data.venues)
+        const result = await response.json()
+        setVenues(result.data?.venues || [])
       }
     } catch (error) {
       console.error('Failed to fetch featured venues:', error)
@@ -56,11 +56,11 @@ export default function RealFeaturedVenues() {
 
   if (loading) {
     return (
-      <section className="py-16 bg-gray-50">
+      <section className="py-24 bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading featured venues...</p>
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+            <p className="text-muted-foreground animate-pulse">Finding breathtaking venues...</p>
           </div>
         </div>
       </section>
@@ -69,10 +69,10 @@ export default function RealFeaturedVenues() {
 
   if (!venues || venues.length === 0) {
     return (
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center text-gray-600">
-            <p>No featured venues available at the moment</p>
+      <section className="py-24 bg-muted/30">
+        <div className="container mx-auto px-4 text-center">
+          <div className="max-w-md mx-auto p-8 rounded-2xl border border-dashed border-muted-foreground/20">
+            <p className="text-muted-foreground italic">No featured venues available at the moment. Your dream venue is coming soon!</p>
           </div>
         </div>
       </section>
@@ -80,71 +80,87 @@ export default function RealFeaturedVenues() {
   }
 
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Featured Wedding Venues
+    <section className="py-24 bg-muted/30 relative overflow-hidden">
+      {/* Subtle patterns/decorations */}
+      <div className="absolute top-0 left-1/4 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-rose-500/5 rounded-full blur-3xl" />
+
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+            Featured Wedding <span className="gradient-text">Venues</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Discover stunning venues that will provide the perfect backdrop for your special day
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {venues.map((venue) => (
-            <Card key={venue._id} className="hover:shadow-lg transition-shadow duration-300">
+            <Card key={venue._id} className="group hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden">
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="text-lg font-semibold text-gray-900 mb-1">
+                  <div className="flex-1">
+                    <CardTitle className="text-xl font-bold group-hover:text-purple-500 transition-colors duration-300">
                       {venue?.name || 'N/A'}
                     </CardTitle>
-                    <CardDescription className="text-sm text-gray-600">
+                    <CardDescription className="text-sm font-medium text-muted-foreground/80 mt-1 flex items-center">
+                      <MapPin className="h-3 w-3 mr-1 text-purple-500" />
                       {venue?.location?.city || 'N/A'}, {venue?.location?.province || 'N/A'}
                     </CardDescription>
                   </div>
                   {venue?.isVerified && (
-                    <Badge variant="default" className="text-xs">
+                    <Badge className="bg-purple-500 hover:bg-purple-600 text-white border-none px-3 py-1 shadow-sm shadow-purple-500/20">
                       Verified
                     </Badge>
                   )}
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-4">
-                <p className="text-gray-700 text-sm line-clamp-3">
+              <CardContent className="space-y-6">
+                <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 min-h-[4.5rem]">
                   {venue?.description || 'No description available'}
                 </p>
 
-                <div className="flex items-center space-x-2">
-                  <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                  <span className="text-sm font-medium text-gray-900">
-                    {venue.reviewStats?.averageRating || 4.5}
-                  </span>
-                  <span className="text-sm text-gray-500">
-                    ({venue.reviewStats?.count || 0} reviews)
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="flex items-center justify-between py-4 border-y border-border/50">
                   <div className="flex items-center space-x-2">
-                    <Users className="h-4 w-4 text-blue-600" />
-                    <span className="text-gray-700">
-                      {venue?.capacity?.min || 0}-{venue?.capacity?.max || 0} guests
+                    <div className="flex items-center">
+                      {[...Array(5)].map((_, i) => (
+                        <Star 
+                          key={i} 
+                          className={`h-4 w-4 ${i < Math.floor(venue.rating?.average || 4.5) ? 'text-yellow-400 fill-current' : 'text-muted'}`} 
+                        />
+                      ))}
+                    </div>
+                    <span className="text-sm font-bold">
+                      {venue.rating?.average || 4.5}
                     </span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <DollarSign className="h-4 w-4 text-green-600" />
-                    <span className="text-gray-700">
-                      From {venue?.pricing?.currency || "LKR"} {venue?.pricing?.basePrice?.toLocaleString() || "0"}
-                    </span>
+                  <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest bg-muted/50 px-3 py-1 rounded-full">
+                    {venue.rating?.count || 0} Reviews
                   </div>
                 </div>
 
-                <div className="pt-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col space-y-1">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Capacity</span>
+                    <div className="flex items-center text-sm font-semibold">
+                      <Users className="h-4 w-4 mr-2 text-purple-500" />
+                      {venue?.capacity?.min || 0}-{venue?.capacity?.max || 0}
+                    </div>
+                  </div>
+                  <div className="flex flex-col space-y-1">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Starting From</span>
+                    <div className="flex items-center text-sm font-semibold text-rose-500">
+                      <DollarSign className="h-4 w-4 mr-1" />
+                      {venue?.pricing?.basePrice?.toLocaleString() || "0"}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-2">
                   <Link href={`/venues/${venue?._id || ''}`}>
-                    <Button className="w-full" variant="default">
+                    <Button className="w-full h-12 bg-purple-500 hover:bg-purple-600 text-white shadow-lg shadow-purple-500/20 transition-all duration-300 group-hover:scale-[1.02]" variant="default">
                       View Venue
                     </Button>
                   </Link>
@@ -154,14 +170,15 @@ export default function RealFeaturedVenues() {
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        <div className="text-center mt-20">
           <Link href="/venues">
-            <Button variant="outline" size="lg">
-              View All Venues
+            <Button variant="outline" size="lg" className="px-12 h-14 rounded-full border-2 hover:bg-purple-500 hover:text-white hover:border-purple-500 transition-all duration-300 font-bold tracking-wide">
+              Explore All Venues
             </Button>
           </Link>
         </div>
       </div>
     </section>
   )
-} 
+}
+ 

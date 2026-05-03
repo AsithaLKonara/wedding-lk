@@ -31,61 +31,38 @@ export default function VendorPortfolioPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 
   useEffect(() => {
-    if (authLoading) return
-
-    if (!user) {
-      router.push('/auth/signin')
-      return
-    }
-
-    if (user.role !== 'vendor') {
-      router.push('/unauthorized')
-      return
-    }
-
-    // Mock data - replace with actual API call
-    setPortfolioItems([
-      {
-        id: '1',
-        title: 'Elegant Garden Wedding',
-        description: 'A beautiful outdoor wedding ceremony with natural lighting and floral arrangements.',
-        category: 'wedding',
-        images: ['/images/portfolio/wedding-1.jpg', '/images/portfolio/wedding-2.jpg'],
-        tags: ['outdoor', 'garden', 'natural', 'elegant'],
-        featured: true,
-        views: 1250,
-        likes: 89,
-        createdAt: '2024-01-15',
-        updatedAt: '2024-01-20'
-      },
-      {
-        id: '2',
-        title: 'Romantic Engagement Session',
-        description: 'Intimate engagement photoshoot at sunset with golden hour lighting.',
-        category: 'engagement',
-        images: ['/images/portfolio/engagement-1.jpg'],
-        tags: ['sunset', 'romantic', 'golden hour', 'intimate'],
-        featured: false,
-        views: 890,
-        likes: 67,
-        createdAt: '2024-01-10',
-        updatedAt: '2024-01-12'
-      },
-      {
-        id: '3',
-        title: 'Modern City Wedding',
-        description: 'Contemporary wedding in an urban setting with industrial architecture.',
-        category: 'wedding',
-        images: ['/images/portfolio/city-1.jpg', '/images/portfolio/city-2.jpg', '/images/portfolio/city-3.jpg'],
-        tags: ['modern', 'urban', 'industrial', 'contemporary'],
-        featured: true,
-        views: 2100,
-        likes: 156,
-        createdAt: '2024-01-05',
-        updatedAt: '2024-01-08'
+    const fetchPortfolio = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/dashboard/vendor/portfolio');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            // Map string array to component state objects
+            const mappedItems = data.portfolio.map((url: string, index: number) => ({
+              id: `${index}`,
+              title: `Project ${index + 1}`,
+              description: 'Vendor portfolio item',
+              category: 'wedding',
+              images: [url],
+              tags: ['portfolio'],
+              featured: false,
+              views: 0,
+              likes: 0,
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString()
+            }));
+            setPortfolioItems(mappedItems);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching portfolio:', error);
+      } finally {
+        setLoading(false);
       }
-    ])
-    setLoading(false)
+    };
+
+    fetchPortfolio();
   }, [user, authLoading, router])
 
   const filteredItems = portfolioItems.filter(item => {
@@ -118,8 +95,8 @@ export default function VendorPortfolioPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Portfolio Management</h1>
-              <p className="text-gray-600">Showcase your work and attract more clients</p>
+              <h1 className="text-3xl font-bold text-white mb-2">Portfolio Management</h1>
+              <p className="text-gray-400">Showcase your work and attract more clients</p>
             </div>
             <div className="flex space-x-3">
               <Button 
@@ -147,8 +124,8 @@ export default function VendorPortfolioPage() {
               <div className="flex items-center">
                 <ImageIcon className="w-8 h-8 text-purple-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Projects</p>
-                  <p className="text-2xl font-bold text-gray-900">{portfolioItems.length}</p>
+                  <p className="text-sm font-medium text-gray-400">Total Projects</p>
+                  <p className="text-2xl font-bold text-white">{portfolioItems.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -159,8 +136,8 @@ export default function VendorPortfolioPage() {
               <div className="flex items-center">
                 <Eye className="w-8 h-8 text-blue-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Views</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Total Views</p>
+                  <p className="text-2xl font-bold text-white">
                     {portfolioItems.reduce((sum, item) => sum + item.views, 0).toLocaleString()}
                   </p>
                 </div>
@@ -173,8 +150,8 @@ export default function VendorPortfolioPage() {
               <div className="flex items-center">
                 <Heart className="w-8 h-8 text-red-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Likes</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Total Likes</p>
+                  <p className="text-2xl font-bold text-white">
                     {portfolioItems.reduce((sum, item) => sum + item.likes, 0)}
                   </p>
                 </div>
@@ -187,8 +164,8 @@ export default function VendorPortfolioPage() {
               <div className="flex items-center">
                 <Share2 className="w-8 h-8 text-green-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Featured Projects</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Featured Projects</p>
+                  <p className="text-2xl font-bold text-white">
                     {portfolioItems.filter(item => item.featured).length}
                   </p>
                 </div>
@@ -259,19 +236,19 @@ export default function VendorPortfolioPage() {
                 
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-lg font-bold text-gray-900">{item.title}</h3>
+                    <h3 className="text-lg font-bold text-white">{item.title}</h3>
                     <Badge className={getCategoryColor(item.category)}>
                       {item.category}
                     </Badge>
                   </div>
                   
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">
                     {item.description}
                   </p>
                   
                   <div className="flex flex-wrap gap-1 mb-4">
                     {item.tags.slice(0, 3).map((tag, index) => (
-                      <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                      <span key={index} className="text-xs bg-gray-100 text-gray-400 px-2 py-1 rounded">
                         #{tag}
                       </span>
                     ))}
@@ -312,8 +289,8 @@ export default function VendorPortfolioPage() {
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-2">
                         <div>
-                          <h3 className="text-lg font-bold text-gray-900">{item.title}</h3>
-                          <p className="text-gray-600 text-sm">{item.description}</p>
+                          <h3 className="text-lg font-bold text-white">{item.title}</h3>
+                          <p className="text-gray-400 text-sm">{item.description}</p>
                         </div>
                         <div className="flex items-center space-x-2">
                           {item.featured && (
@@ -327,7 +304,7 @@ export default function VendorPortfolioPage() {
                       
                       <div className="flex flex-wrap gap-1 mb-3">
                         {item.tags.map((tag, index) => (
-                          <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                          <span key={index} className="text-xs bg-gray-100 text-gray-400 px-2 py-1 rounded">
                             #{tag}
                           </span>
                         ))}
@@ -371,8 +348,8 @@ export default function VendorPortfolioPage() {
         {filteredItems.length === 0 && (
           <div className="text-center py-12">
             <ImageIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No portfolio items found</h3>
-            <p className="text-gray-600 mb-6">
+            <h3 className="text-lg font-medium text-white mb-2">No portfolio items found</h3>
+            <p className="text-gray-400 mb-6">
               {filter === 'all' 
                 ? "You haven't added any work to your portfolio yet. Start showcasing your talent!"
                 : `No ${filter} projects found.`

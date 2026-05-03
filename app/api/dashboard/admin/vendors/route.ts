@@ -1,178 +1,72 @@
-import { NextRequest, NextResponse } from "next/server"
-import { connectDB } from "@/lib/db"
-import { Vendor } from "@/lib/models/vendor"
-import { Middleware } from '@/lib/rbac';
+import { NextRequest, NextResponse } from 'next/server';
+import { connectDB } from '@/lib/db';
+import { getUserFromRequestWithError } from '@/lib/auth/get-user-from-request';
+import { Vendor } from '@/lib/models';
 
-async function getHandler(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    await connectDB()
-    
-    const { searchParams } = new URL(request.url)
-    const page = parseInt(searchParams.get('page') || '1')
-    const limit = parseInt(searchParams.get('limit') || '10')
-    const search = searchParams.get('search') || ''
-    const status = searchParams.get('status') || ''
-    const category = searchParams.get('category') || ''
-
-    const skip = (page - 1) * limit
-
-    // Build query
-    const query: any = {}
-    
-    if (search) {
-      query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { businessName: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } }
-      ]
+    const { user, error } = await getUserFromRequestWithError(request);
+    if (error) return error;
+    if (!user || user.role !== 'admin') {
+      return NextResponse.json({ error: "Admin access required" }, { status: 403 });
     }
 
-    if (status) {
-      query.status = status
-    }
+    await connectDB();
+    const vendors = await Vendor.find().sort({ createdAt: -1 });
 
-    if (category) {
-      query.category = category
-    }
-
-    const vendors = await Vendor.find(query)
-      .select('name businessName email category status isActive isVerified createdAt')
-      .skip(skip)
-      .limit(limit)
-      .sort({ createdAt: -1 })
-
-    const total = await Vendor.countDocuments(query)
+    const mappedVendors = vendors.map(v => ({
+      id: v._id,
+      name: v.businessName,
+      email: v.contact?.email || 'N/A',
+      phone: v.contact?.phone || 'N/A',
+      category: v.category,
+      location: v.location?.city || 'Sri Lanka',
+      status: v.status || 'pending',
+      isVerified: v.isVerified || false,
+      rating: v.rating?.average || 0,
+      totalBookings: 0, // Need aggregation for real counts
+      totalRevenue: 0,  // Need aggregation for real revenue
+      joinedDate: (v as any).createdAt,
+      lastActive: (v as any).updatedAt,
+      services: (v.services || []).map((s: any) => s.name),
+      documents: []
+    }));
 
     return NextResponse.json({
-      vendors,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit)
-      }
-    })
-
+      success: true,
+      vendors: mappedVendors
+    });
   } catch (error) {
-    console.error("Error fetching vendors:", error)
-    return NextResponse.json(
-      { error: "Failed to fetch vendors" },
-      { status: 500 }
-    )
+    console.error('Error fetching admin vendors:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-async function postHandler(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
   try {
-    await connectDB()
-    
-    const body = await request.json()
-    
-    // Validate required fields
-    if (!body.name || !body.email || !body.category) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      )
+    const { user, error } = await getUserFromRequestWithError(request);
+    if (error) return error;
+    if (!user || user.role !== 'admin') {
+      return NextResponse.json({ error: "Admin access required" }, { status: 403 });
     }
 
-    // Check if vendor already exists
-    const existingVendor = await Vendor.findOne({ email: body.email })
-    if (existingVendor) {
-      return NextResponse.json(
-        { error: "Vendor with this email already exists" },
-        { status: 400 }
-      )
-    }
+    const { vendorId, status, isVerified } = await request.json();
+    if (!vendorId) return NextResponse.json({ error: "Vendor ID required" }, { status: 400 });
 
-    const vendor = new Vendor({
-      ...body,
-      isActive: body.isActive ?? true,
-      isVerified: body.isVerified ?? false,
-      status: body.status ?? 'pending'
-    })
+    await connectDB();
+    const update: any = {};
+    if (status) update.status = status;
+    if (isVerified !== undefined) update.isVerified = isVerified;
 
-    await vendor.save()
+    const vendor = await Vendor.findByIdAndUpdate(vendorId, update, { new: true });
+    if (!vendor) return NextResponse.json({ error: "Vendor not found" }, { status: 404 });
 
-    return NextResponse.json({ vendor }, { status: 201 })
-
+    return NextResponse.json({
+      success: true,
+      vendor
+    });
   } catch (error) {
-    console.error("Error creating vendor:", error)
-    return NextResponse.json(
-      { error: "Failed to create vendor" },
-      { status: 500 }
-    )
+    console.error('Error updating vendor:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
-
-async function putHandler(request: NextRequest) {
-  try {
-    await connectDB()
-    
-    const body = await request.json()
-    const { id, ...updateData } = body
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "Vendor ID is required" },
-        { status: 400 }
-      )
-    }
-
-    const vendor = await Vendor.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true, runValidators: true }
-    )
-
-    if (!vendor) {
-      return NextResponse.json(
-        { error: "Vendor not found" },
-        { status: 404 }
-      )
-    }
-
-    return NextResponse.json({ vendor })
-
-  } catch (error) {
-    console.error("Error updating vendor:", error)
-    return NextResponse.json(
-      { error: "Failed to update vendor" },
-      { status: 500 }
-    )
-  }
-}
-
-async function deleteHandler(request: NextRequest) {
-  try {
-    await connectDB()
-    
-    const { searchParams } = new URL(request.url)
-    const id = searchParams.get('id')
-
-    if (!id) {
-      return NextResponse.json(
-        { error: "Vendor ID is required" },
-        { status: 400 }
-      )
-    }
-
-    const vendor = await Vendor.findByIdAndDelete(id)
-
-    if (!vendor) {
-      return NextResponse.json(
-        { error: "Vendor not found" },
-        { status: 404 }
-      )
-    }
-
-    return NextResponse.json({ message: "Vendor deleted successfully" })
-
-  } catch (error) {
-    console.error("Error deleting vendor:", error)
-    return NextResponse.json(
-      { error: "Failed to delete vendor" },
-      { status: 500 }
-    )
-  }
-} 

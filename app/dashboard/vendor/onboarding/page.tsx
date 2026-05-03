@@ -699,7 +699,7 @@ export default function VendorOnboardingWizard() {
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-rose-50 via-white to-pink-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
-      <Card className="w-full max-w-2xl shadow-2xl border-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md">
+      <Card className="w-full max-w-2xl shadow-2xl border-0 bg-[#0e0918]/90 dark:bg-gray-900/90 backdrop-blur-md">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-center text-rose-600">Vendor Onboarding</CardTitle>
           <Progress value={((currentStep + 1) / steps.length) * 100} className="mt-4" />

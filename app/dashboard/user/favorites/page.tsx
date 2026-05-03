@@ -64,82 +64,45 @@ export default function UserFavoritesPage() {
   const fetchFavorites = async () => {
     try {
       setLoading(true);
-      // Mock data - replace with actual API call
-      const mockFavorites: Favorite[] = [
-        {
-          id: '1',
-          type: 'venue',
-          name: 'Garden Manor',
-          description: 'Beautiful outdoor wedding venue with stunning garden views and elegant indoor spaces.',
-          image: '/placeholder-venue.jpg',
-          rating: 4.8,
-          reviewCount: 45,
-          price: 5000,
-          location: 'New York, NY',
-          category: 'Venue',
-          contact: {
-            email: 'info@gardenmanor.com',
-            phone: '+1 (555) 123-4567'
-          },
-          features: ['Outdoor Ceremony', 'Indoor Reception', 'Bridal Suite', 'Catering Available'],
-          addedDate: '2024-06-15'
-        },
-        {
-          id: '2',
-          type: 'vendor',
-          name: 'Elegant Photography Studio',
-          description: 'Professional wedding photography with 10+ years experience capturing special moments.',
-          image: '/placeholder-photographer.jpg',
-          rating: 4.9,
-          reviewCount: 32,
-          price: 2500,
-          location: 'Los Angeles, CA',
-          category: 'Photography',
-          contact: {
-            email: 'contact@elegantphoto.com',
-            phone: '+1 (555) 234-5678'
-          },
-          features: ['8 Hours Coverage', '500+ Edited Photos', 'Online Gallery', 'Engagement Session'],
-          addedDate: '2024-06-10'
-        },
-        {
-          id: '3',
-          type: 'package',
-          name: 'Luxury Wedding Package',
-          description: 'Complete wedding package including venue, catering, photography, and decoration.',
-          image: '/placeholder-package.jpg',
-          rating: 4.7,
-          reviewCount: 28,
-          price: 15000,
-          location: 'Chicago, IL',
-          category: 'Package',
-          contact: {
-            email: 'packages@luxuryweddings.com',
-            phone: '+1 (555) 345-6789'
-          },
-          features: ['Premium Venue', 'Gourmet Catering', 'Professional Photography', 'Full Decoration'],
-          addedDate: '2024-06-05'
-        },
-        {
-          id: '4',
-          type: 'vendor',
-          name: 'Dreamy Decorations',
-          description: 'Creative wedding decorations and floral arrangements for your special day.',
-          image: '/placeholder-decorator.jpg',
-          rating: 4.6,
-          reviewCount: 25,
-          price: 1200,
-          location: 'Miami, FL',
-          category: 'Decoration',
-          contact: {
-            email: 'hello@dreamydecor.com',
-            phone: '+1 (555) 456-7890'
-          },
-          features: ['Custom Design', 'Fresh Flowers', 'Setup & Cleanup', 'Consultation Included'],
-          addedDate: '2024-05-28'
+      const response = await fetch('/api/dashboard/user/favorites');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.favorites) {
+          const mappedVendors = (data.favorites.vendors || []).map((v: any) => ({
+            id: v._id,
+            type: 'vendor' as const,
+            name: v.businessName,
+            description: v.description || 'No description provided.',
+            image: '/placeholder-vendor.jpg',
+            rating: v.rating?.average || 0,
+            reviewCount: v.rating?.count || 0,
+            price: v.pricing?.startingPrice || 0,
+            location: v.location?.city || 'Sri Lanka',
+            category: v.category || 'Vendor',
+            contact: v.contact || { email: '', phone: '' },
+            features: [],
+            addedDate: new Date().toISOString()
+          }));
+
+          const mappedVenues = (data.favorites.venues || []).map((v: any) => ({
+            id: v._id,
+            type: 'venue' as const,
+            name: v.name,
+            description: v.description || 'No description provided.',
+            image: '/placeholder-venue.jpg',
+            rating: 0,
+            reviewCount: 0,
+            price: v.pricing?.basePrice || 0,
+            location: v.location?.city || 'Sri Lanka',
+            category: 'Venue',
+            contact: { email: '', phone: '' },
+            features: [],
+            addedDate: new Date().toISOString()
+          }));
+
+          setFavorites([...mappedVendors, ...mappedVenues]);
         }
-      ];
-      setFavorites(mockFavorites);
+      }
     } catch (error) {
       console.error('Error fetching favorites:', error);
     } finally {
@@ -184,7 +147,7 @@ export default function UserFavoritesPage() {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading favorites...</p>
+          <p className="mt-2 text-gray-400">Loading favorites...</p>
         </div>
       </div>
     );
@@ -194,8 +157,8 @@ export default function UserFavoritesPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">My Favorites</h1>
-          <p className="text-gray-600">Manage your saved venues, vendors, and packages</p>
+          <h1 className="text-3xl font-bold text-white">My Favorites</h1>
+          <p className="text-gray-400">Manage your saved venues, vendors, and packages</p>
         </div>
       </div>
 
@@ -206,7 +169,7 @@ export default function UserFavoritesPage() {
             <div className="flex items-center">
               <Heart className="h-8 w-8 text-red-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Favorites</p>
+                <p className="text-sm font-medium text-gray-400">Total Favorites</p>
                 <p className="text-2xl font-bold">{stats.total}</p>
               </div>
             </div>
@@ -217,7 +180,7 @@ export default function UserFavoritesPage() {
             <div className="flex items-center">
               <MapPin className="h-8 w-8 text-purple-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Venues</p>
+                <p className="text-sm font-medium text-gray-400">Venues</p>
                 <p className="text-2xl font-bold">{stats.venues}</p>
               </div>
             </div>
@@ -228,7 +191,7 @@ export default function UserFavoritesPage() {
             <div className="flex items-center">
               <Star className="h-8 w-8 text-blue-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Vendors</p>
+                <p className="text-sm font-medium text-gray-400">Vendors</p>
                 <p className="text-2xl font-bold">{stats.vendors}</p>
               </div>
             </div>
@@ -239,7 +202,7 @@ export default function UserFavoritesPage() {
             <div className="flex items-center">
               <Calendar className="h-8 w-8 text-green-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Packages</p>
+                <p className="text-sm font-medium text-gray-400">Packages</p>
                 <p className="text-2xl font-bold">{stats.packages}</p>
               </div>
             </div>
@@ -250,7 +213,7 @@ export default function UserFavoritesPage() {
             <div className="flex items-center">
               <DollarSign className="h-8 w-8 text-green-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Value</p>
+                <p className="text-sm font-medium text-gray-400">Total Value</p>
                 <p className="text-2xl font-bold">${stats.totalValue.toLocaleString()}</p>
               </div>
             </div>
@@ -311,7 +274,7 @@ export default function UserFavoritesPage() {
         <Card>
           <CardContent className="p-8 text-center">
             <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No favorites found</h3>
+            <h3 className="text-lg font-medium text-white mb-2">No favorites found</h3>
             <p className="text-gray-500">Start exploring venues and vendors to add them to your favorites</p>
           </CardContent>
         </Card>
@@ -347,7 +310,7 @@ export default function UserFavoritesPage() {
                 <div className="space-y-3">
                   <div>
                     <h3 className="font-semibold text-lg">{favorite.name}</h3>
-                    <p className="text-sm text-gray-600 line-clamp-2">{favorite.description}</p>
+                    <p className="text-sm text-gray-400 line-clamp-2">{favorite.description}</p>
                   </div>
                   
                   <div className="flex items-center justify-between">

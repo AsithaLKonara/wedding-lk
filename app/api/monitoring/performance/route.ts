@@ -4,7 +4,7 @@ import { getUserFromRequestWithError } from '@/lib/auth/get-user-from-request';
 
 export async function GET(req: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(req);
+    const { user, error } = await getUserFromRequestWithError(req);
     if (error) return error;
     if (!user || user.role !== 'admin') {
       return NextResponse.json(
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(req);
+    const { user, error } = await getUserFromRequestWithError(req);
     if (error) return error;
     if (!user || user.role !== 'admin') {
       return NextResponse.json(

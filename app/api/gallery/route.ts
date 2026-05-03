@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import Post from '@/lib/models/post';
+import { APIResponse } from '@/lib/api-optimization';
 
 export async function GET(request: NextRequest) {
   try {
@@ -68,18 +69,13 @@ export async function GET(request: NextRequest) {
       ? galleryPhotos 
       : galleryPhotos.filter(photo => photo.category === category);
 
-    return NextResponse.json({
-      success: true,
-      data: filteredPhotos,
-      pagination: {
-        page,
-        limit,
-        total: filteredPhotos.length,
-        pages: Math.ceil(filteredPhotos.length / limit),
-        hasNext: page < Math.ceil(filteredPhotos.length / limit),
-        hasPrev: page > 1,
-      },
-    });
+    return NextResponse.json(APIResponse.paginated(
+      filteredPhotos,
+      page,
+      limit,
+      total,
+      'Gallery photos fetched successfully'
+    ));
 
   } catch (error) {
     console.error('❌ Error fetching gallery photos:', error);

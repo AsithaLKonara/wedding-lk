@@ -5,7 +5,7 @@ import { getUserFromRequestWithError } from '@/lib/auth/get-user-from-request'
 
 export async function GET(request: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(request);
+    const { user, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(request);
+    const { user, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(request);
+    const { user, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

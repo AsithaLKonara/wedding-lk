@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    const token = generateToken(result.user)
+    const token = await generateToken(result.user)
     await setSession(token)
     
     console.log(`[API] Sign in successful for ${email}`)

@@ -29,22 +29,24 @@ export function VendorCategoryCard({ title, count, image, description, className
       className={`cursor-pointer ${className}`}
       onClick={handleClick}
     >
-      <Card className="h-full border-0 bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-        <div className="relative h-48">
-          <Image src={image || "/placeholder.svg"} alt={title} fill className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+      <Card className="h-full border border-border/50 bg-card shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group">
+        <div className="relative h-48 overflow-hidden">
+          <Image src={image || "/placeholder.svg"} alt={title} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           <div className="absolute bottom-4 left-4 text-white">
-            <div className="text-sm font-medium">{count}</div>
+            <div className="text-xs font-bold uppercase tracking-wider bg-rose-500 px-3 py-1 rounded-full shadow-lg">{count}</div>
           </div>
         </div>
 
-        <CardContent className="p-4">
+        <CardContent className="p-6">
           <div className="flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{title}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-300">{description}</p>
+            <div className="flex-1">
+              <h3 className="font-bold text-lg mb-2 group-hover:text-rose-500 transition-colors">{title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">{description}</p>
             </div>
-            <ArrowRight className="h-4 w-4 text-gray-400" />
+            <div className="ml-4 w-8 h-8 rounded-full bg-muted flex items-center justify-center group-hover:bg-rose-500 group-hover:text-white transition-all duration-300">
+              <ArrowRight className="h-4 w-4" />
+            </div>
           </div>
         </CardContent>
       </Card>

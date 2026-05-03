@@ -44,7 +44,7 @@ export const columns: ColumnDef<Message>[] = [
                 className="w-8 h-8 rounded-full object-cover"
               />
             ) : (
-              <span className="text-sm font-medium text-gray-600">
+              <span className="text-sm font-medium text-gray-400">
                 {message.client.name.charAt(0).toUpperCase()}
               </span>
             )}
@@ -69,7 +69,7 @@ export const columns: ColumnDef<Message>[] = [
           <div className={`inline-block p-2 rounded-lg ${
             isOutbound 
               ? 'bg-blue-100 text-blue-900' 
-              : 'bg-gray-100 text-gray-900'
+              : 'bg-gray-100 text-white'
           }`}>
             <div className="text-sm line-clamp-2">
               {message.messageType === 'image' && '📷 Image'}

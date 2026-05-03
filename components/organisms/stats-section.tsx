@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { Button } from "@/components/ui/button"
 import { Heart, Users, MapPin, Star, Calendar, Award, Sparkles, TrendingUp } from "lucide-react"
 
 const stats = [
@@ -64,12 +65,11 @@ const stats = [
 
 export function StatsSection() {
   return (
-    <section className="py-20 bg-white dark:bg-gray-900 relative overflow-hidden">
+    <section className="py-24 bg-background relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-pink-200/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-purple-200/20 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-blue-200/10 rounded-full blur-3xl" />
+        <div className="absolute top-20 left-10 w-32 h-32 bg-pink-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-purple-500/5 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -78,23 +78,22 @@ export function StatsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30 rounded-full px-6 py-3 mb-6 border border-pink-200/50 dark:border-pink-800/50">
+          <div className="inline-flex items-center gap-2 bg-pink-500/10 rounded-full px-6 py-3 mb-6 border border-pink-500/20">
             <TrendingUp className="w-5 h-5 text-pink-500" />
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Our Impact</span>
+            <span className="text-sm font-bold text-pink-600 dark:text-pink-400 uppercase tracking-wider">Our Impact</span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-            Numbers That Tell Our Story
+          <h2 className="text-4xl md:text-6xl font-bold mb-8 tracking-tight">
+            Numbers That Tell <span className="gradient-text">Our Story</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            From our humble beginnings to becoming Sri Lanka's most trusted wedding platform, these numbers reflect our
-            commitment to excellence.
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            From our humble beginnings to becoming Sri Lanka's most trusted wedding platform, these numbers reflect our commitment to excellence.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {stats.map((stat, index) => {
             const IconComponent = stat.icon
             return (
@@ -106,74 +105,59 @@ export function StatsSection() {
                 viewport={{ once: true }}
                 className="group"
               >
-                <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 border border-white/20 dark:border-gray-700/20 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:-translate-y-2">
-                  {/* Gradient background on hover */}
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`}
-                  />
+                <div className="relative h-full bg-card/50 backdrop-blur-sm rounded-[2rem] p-8 border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-5 rounded-[2rem] transition-opacity duration-500`} />
 
-                  {/* Icon */}
-                  <div className="relative mb-4">
-                    <div
-                      className={`w-12 h-12 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
-                    >
-                      <IconComponent className="w-6 h-6 text-white" />
-                    </div>
+                  <div className={`w-14 h-14 bg-gradient-to-br ${stat.color} rounded-2xl flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform duration-500`}>
+                    <IconComponent className="w-7 h-7 text-white" />
                   </div>
 
-                  {/* Number */}
-                  <div
-                    className={`text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}
-                  >
+                  <div className={`text-4xl font-black mb-3 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
                     {stat.number}
                   </div>
 
-                  {/* Label */}
-                  <div className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{stat.label}</div>
+                  <div className="text-xl font-bold mb-3">{stat.label}</div>
 
-                  {/* Description */}
-                  <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{stat.description}</div>
-
-                  {/* Decorative element */}
-                  <div className="absolute top-4 right-4 w-2 h-2 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="text-sm text-muted-foreground leading-relaxed">{stat.description}</div>
                 </div>
               </motion.div>
             )
           })}
         </div>
 
-        {/* Bottom CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mt-16"
+          className="text-center mt-24"
         >
-          <div className="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-2xl p-8 border border-pink-200/50 dark:border-pink-800/50 max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              Ready to Be Part of Our Success Story?
+          <div className="bg-card/50 backdrop-blur-xl rounded-[2.5rem] p-12 border border-border shadow-2xl max-w-4xl mx-auto relative overflow-hidden">
+            {/* Background accent */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+            
+            <h3 className="text-3xl md:text-4xl font-black mb-6">
+              Ready to Be Part of Our <span className="gradient-text">Success Story?</span>
             </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-4">
-              Let&apos;s make your wedding dreams come true.
+            <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
+              Join thousands of happy couples and top-tier vendors on Sri Lanka&apos;s premier wedding platform.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <Button
                 onClick={() => window.location.href = '/auth/signup'}
-                className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                size="lg"
+                className="bg-gradient-to-r from-rose-500 to-purple-600 hover:from-rose-600 hover:to-purple-700 text-white px-10 h-14 rounded-full font-bold shadow-xl shadow-rose-500/20 transition-all active:scale-95"
               >
                 Start Planning Today
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              </Button>
+              <Button
+                variant="outline"
                 onClick={() => window.location.href = '/venues'}
-                className="border-2 border-purple-300 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/20 px-8 py-3 rounded-full font-semibold transition-all duration-300"
+                size="lg"
+                className="border-2 h-14 px-10 rounded-full font-bold hover:bg-foreground hover:text-background transition-all"
               >
                 Explore Venues
-              </motion.button>
+              </Button>
             </div>
           </div>
         </motion.div>

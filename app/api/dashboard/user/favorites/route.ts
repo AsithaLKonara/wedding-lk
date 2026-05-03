@@ -5,7 +5,7 @@ import { getUserFromRequestWithError } from '@/lib/auth/get-user-from-request';
 
 export async function GET(request: NextRequest) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser || authUser.role !== 'user') {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -17,13 +17,24 @@ export async function GET(request: NextRequest) {
     const userId = authUser.id
 
     // Get user with favorites
-    const dbUser = await User.findById(userId).populate('favorites')
+    const dbUser = await User.findById(userId)
+      .populate('favorites.vendors', 'businessName category description location rating')
+      .populate('favorites.venues', 'name location description capacity pricing');
     
     if (!dbUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
-    return NextResponse.json({ favorites: (dbUser as any).favorites || [] })
+    const vendors = (dbUser as any).favorites?.vendors || [];
+    const venues = (dbUser as any).favorites?.venues || [];
+
+    return NextResponse.json({ 
+      success: true,
+      favorites: {
+        vendors,
+        venues
+      }
+    })
 
   } catch (error) {
     console.error("Error fetching user favorites:", error)

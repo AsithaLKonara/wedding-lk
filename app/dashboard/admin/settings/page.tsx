@@ -102,58 +102,17 @@ export default function AdminSettingsPage() {
   const fetchSettings = async () => {
     try {
       setLoading(true);
-      // Mock data - replace with actual API call
-      const mockSettings: SystemSettings = {
-        general: {
-          siteName: 'Wedding Dreams Lanka',
-          siteDescription: 'Sri Lanka\'s premier wedding planning platform',
-          siteUrl: 'https://wedding-lkcom.vercel.app',
-          adminEmail: 'admin@weddinglk.com',
-          timezone: 'Asia/Colombo',
-          language: 'en',
-          maintenanceMode: false
-        },
-        security: {
-          enableTwoFactor: true,
-          sessionTimeout: 30,
-          maxLoginAttempts: 5,
-          passwordMinLength: 8,
-          requireEmailVerification: true,
-          enableCORS: true
-        },
-        email: {
-          smtpHost: 'smtp.gmail.com',
-          smtpPort: 587,
-          smtpUser: 'noreply@weddinglk.com',
-          smtpPassword: '********',
-          fromEmail: 'noreply@weddinglk.com',
-          fromName: 'Wedding Dreams Lanka',
-          enableNotifications: true
-        },
-        payments: {
-          stripePublicKey: 'pk_test_...',
-          stripeSecretKey: 'sk_test_...',
-          stripeWebhookSecret: 'whsec_...',
-          enablePayments: true,
-          currency: 'USD',
-          taxRate: 0.15
-        },
-        features: {
-          enableUserRegistration: true,
-          enableVendorRegistration: true,
-          enableReviews: true,
-          enableMessaging: true,
-          enableNotifications: true,
-          enableAnalytics: true
-        },
-        database: {
-          connectionString: 'mongodb+srv://...',
-          maxConnections: 100,
-          enableLogging: true,
-          backupFrequency: 'daily'
+      const response = await fetch('/api/dashboard/admin/settings');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.settings) {
+          // Merge with default structure to avoid missing fields
+          setSettings(prev => ({
+            ...prev,
+            ...data.settings
+          }));
         }
-      };
-      setSettings(mockSettings);
+      }
     } catch (error) {
       console.error('Error fetching settings:', error);
     } finally {
@@ -162,13 +121,24 @@ export default function AdminSettingsPage() {
   };
 
   const handleSave = async () => {
+    if (!settings) return;
     try {
       setSaving(true);
-      // Mock save - replace with actual API call
-      console.log('Saving settings:', settings);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Save each section
+      for (const section of Object.keys(settings)) {
+        await fetch('/api/dashboard/admin/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ section, settings: (settings as any)[section] })
+        });
+      }
+      
       setHasChanges(false);
-      // Show success message
+      toast({
+        title: 'Settings Saved',
+        description: 'System configuration has been updated successfully.',
+      });
     } catch (error) {
       console.error('Error saving settings:', error);
     } finally {
@@ -202,7 +172,7 @@ export default function AdminSettingsPage() {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading settings...</p>
+          <p className="mt-2 text-gray-400">Loading settings...</p>
         </div>
       </div>
     );
@@ -214,8 +184,8 @@ export default function AdminSettingsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">System Settings</h1>
-          <p className="text-gray-600">Configure platform settings and preferences</p>
+          <h1 className="text-3xl font-bold text-white">System Settings</h1>
+          <p className="text-gray-400">Configure platform settings and preferences</p>
         </div>
         <div className="flex items-center space-x-4">
           {hasChanges && (

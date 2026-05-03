@@ -96,7 +96,7 @@ export default function VendorAnalyticsPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold">Vendor Analytics</h1>
-          <p className="text-gray-600">Track your business performance and growth</p>
+          <p className="text-gray-400">Track your business performance and growth</p>
         </div>
         <div className="flex gap-2">
           <Select value={timeRange} onValueChange={setTimeRange}>

@@ -1,4 +1,4 @@
-import { DashboardLayout as DashboardLayoutComponent } from "@/components/layouts/dashboard-layout";
+import { UnifiedDashboardLayout } from "@/components/layouts/unified-dashboard-layout";
 
 export default function DashboardLayout({
   children,
@@ -6,8 +6,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <DashboardLayoutComponent>
+    <UnifiedDashboardLayout>
       {children}
-    </DashboardLayoutComponent>
+    </UnifiedDashboardLayout>
   );
-} 
+}

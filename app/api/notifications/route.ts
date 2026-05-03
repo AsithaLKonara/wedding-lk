@@ -6,7 +6,7 @@ import { getUserFromRequest } from '@/lib/auth/get-user-from-request';
 export async function GET(request: NextRequest) {
   try {
     // Get authentication user
-    const authUser = getUserFromRequest(request);
+    const authUser = await getUserFromRequest(request);
 
     // If no user, return empty notifications instead of 401
     if (!authUser) {
@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Get authentication user
-    const authUser = getUserFromRequest(request);
+    const authUser = await getUserFromRequest(request);
 
     // If no user, return success but don't create notification
     if (!authUser) {

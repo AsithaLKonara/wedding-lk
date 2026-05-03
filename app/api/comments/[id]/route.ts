@@ -11,7 +11,7 @@ export async function GET(
   try {
     await connectDB();
     
-    const user = getUserFromRequest(request);
+    const user = await getUserFromRequest(request);
     const { id: commentId } = await params;
 
     console.log('📊 Fetching comment:', commentId);
@@ -84,7 +84,7 @@ export async function PUT(
   try {
     await connectDB();
     
-    const { user, error } = getUserFromRequestWithError(request);
+    const { user, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!user) {
       return NextResponse.json({
@@ -172,7 +172,7 @@ export async function DELETE(
   try {
     await connectDB();
     
-    const { user, error } = getUserFromRequestWithError(request);
+    const { user, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!user) {
       return NextResponse.json({

@@ -23,17 +23,17 @@ export default function CTASection(props: any) {
             <p className="mt-4 text-lg text-white/90">
               Join thousands of couples who have planned their perfect wedding with us
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" asChild className="group">
+            <div className="mt-8 flex flex-col sm:flex-row gap-6 justify-center">
+              <Button size="lg" className="bg-white text-rose-600 hover:bg-gray-100 dark:bg-foreground dark:text-background h-14 px-10 rounded-full font-bold shadow-xl transition-all duration-300 group" asChild>
                 <Link href="/register">
                   Get Started Free
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white/30 text-gray-600 hover:bg-white/10 hover:text-gray-600 backdrop-blur-sm bg-white/90"
+                className="border-white/40 text-white hover:bg-white/10 backdrop-blur-sm h-14 px-10 rounded-full font-bold transition-all duration-300"
                 asChild
               >
                 <Link href="/contact">Contact Us</Link>

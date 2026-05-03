@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   try {
     await connectDB();
     
-    const { user, error } = getUserFromRequestWithError(request);
+    const { user, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!user) {
       return NextResponse.json({
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
   try {
     await connectDB();
     
-    const { user, error } = getUserFromRequestWithError(request);
+    const { user, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!user) {
       return NextResponse.json({

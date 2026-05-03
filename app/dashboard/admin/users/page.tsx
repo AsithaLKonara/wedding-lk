@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, Filter, MoreVertical, Eye, Edit, Trash2, Shield, UserCheck, UserX } from 'lucide-react'
+import { Search, Filter, Eye, Edit, Trash2, Shield, UserCheck, UserX } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -61,17 +61,8 @@ export default function AdminUsersPage() {
 
   useEffect(() => {
     if (authLoading) return
-
-    if (!user) {
-      router.push('/auth/signin')
-      return
-    }
-
-    if (user.role !== 'admin') {
-      router.push('/unauthorized')
-      return
-    }
-
+    if (!user) { router.push('/auth/signin'); return; }
+    if (user.role !== 'admin') { router.push('/unauthorized'); return; }
     fetchUsers();
   }, [user, authLoading, router])
 
@@ -80,231 +71,169 @@ export default function AdminUsersPage() {
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesRole = roleFilter === 'all' || user.role === roleFilter
     const matchesStatus = statusFilter === 'all' || user.status === statusFilter
-    
     return matchesSearch && matchesRole && matchesStatus
   })
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800'
-      case 'inactive': return 'bg-gray-100 text-gray-800'
-      case 'suspended': return 'bg-red-100 text-red-800'
-      case 'pending': return 'bg-yellow-100 text-yellow-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'active': return 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+      case 'inactive': return 'bg-gray-500/10 text-gray-400 border-gray-500/20'
+      case 'suspended': return 'bg-red-500/10 text-red-500 border-red-500/20'
+      case 'pending': return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20'
+      default: return 'bg-gray-500/10 text-gray-400 border-gray-500/20'
     }
   }
 
   const getRoleColor = (role: string) => {
     switch (role) {
-      case 'admin': return 'bg-purple-100 text-purple-800'
-      case 'vendor': return 'bg-blue-100 text-blue-800'
-      case 'wedding_planner': return 'bg-green-100 text-green-800'
-      case 'user': return 'bg-gray-100 text-gray-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'admin': return 'bg-red-500/10 text-red-500 border-red-500/20'
+      case 'vendor': return 'bg-blue-500/10 text-blue-500 border-blue-500/20'
+      case 'wedding_planner': return 'bg-purple-500/10 text-purple-500 border-purple-500/20'
+      case 'user': return 'bg-gray-500/10 text-gray-400 border-gray-500/20'
+      default: return 'bg-gray-500/10 text-gray-400 border-gray-500/20'
     }
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-red-600 border-t-transparent mx-auto"></div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">User Management</h1>
-          <p className="text-gray-600">Manage all users, vendors, and wedding planners on the platform</p>
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center space-x-4">
+          <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-2xl">
+            <Shield className="h-8 w-8 text-red-500" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-black text-white tracking-tight uppercase">User Directory</h1>
+            <p className="text-gray-400 font-medium">Manage platform access and roles</p>
+          </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Shield className="w-8 h-8 text-purple-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Users</p>
-                  <p className="text-2xl font-bold text-gray-900">{users.length}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <UserCheck className="w-8 h-8 text-green-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Active Users</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {users.filter(u => u.status === 'active').length}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <UserX className="w-8 h-8 text-red-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Suspended Users</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {users.filter(u => u.status === 'suspended').length}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Filter className="w-8 h-8 text-yellow-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Pending Approval</p>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {users.filter(u => u.status === 'pending').length}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card className="mb-6">
-          <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <Input
-                    placeholder="Search users by name or email..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <select
-                  value={roleFilter}
-                  onChange={(e) => setRoleFilter(e.target.value as any)}
-                  className="px-3 py-2 border border-gray-300 rounded-md text-sm"
-                >
-                  <option value="all">All Roles</option>
-                  <option value="user">Users</option>
-                  <option value="vendor">Vendors</option>
-                  <option value="wedding_planner">Wedding Planners</option>
-                  <option value="admin">Admins</option>
-                </select>
-                <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value as any)}
-                  className="px-3 py-2 border border-gray-300 rounded-md text-sm"
-                >
-                  <option value="all">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="suspended">Suspended</option>
-                  <option value="pending">Pending</option>
-                </select>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Users ({filteredUsers.length})</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">User</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Role</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Status</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Verified</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Activity</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Joined</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.map((user) => (
-                    <tr key={user.id} className="border-b hover:bg-gray-50">
-                      <td className="py-4 px-4">
-                        <div>
-                          <div className="font-medium text-gray-900">{user.name}</div>
-                          <div className="text-sm text-gray-500">{user.email}</div>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4">
-                        <Badge className={getRoleColor(user.role)}>
-                          {user.role.replace('_', ' ')}
-                        </Badge>
-                      </td>
-                      <td className="py-4 px-4">
-                        <Badge className={getStatusColor(user.status)}>
-                          {user.status}
-                        </Badge>
-                      </td>
-                      <td className="py-4 px-4">
-                        <Badge variant={user.isVerified ? 'default' : 'secondary'}>
-                          {user.isVerified ? 'Verified' : 'Unverified'}
-                        </Badge>
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="text-sm">
-                          <div>{user.bookings} bookings</div>
-                          <div>{user.reviews} reviews</div>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="text-sm text-gray-500">
-                          {new Date(user.createdAt).toLocaleDateString()}
-                        </div>
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex items-center space-x-2">
-                          <Button variant="ghost" size="sm">
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm">
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700">
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {filteredUsers.length === 0 && (
-              <div className="text-center py-12">
-                <Shield className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No users found</h3>
-                <p className="text-gray-600">
-                  {searchTerm || roleFilter !== 'all' || statusFilter !== 'all'
-                    ? "Try adjusting your search criteria or filters."
-                    : "No users have been registered yet."
-                  }
-                </p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
       </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <StatCard label="Total Base" value={users.length} icon={Shield} color="purple" />
+        <StatCard label="Active Now" value={users.filter(u => u.status === 'active').length} icon={UserCheck} color="emerald" />
+        <StatCard label="Suspended" value={users.filter(u => u.status === 'suspended').length} icon={UserX} color="red" />
+        <StatCard label="Pending" value={users.filter(u => u.status === 'pending').length} icon={Filter} color="yellow" />
+      </div>
+
+      <Card className="bg-white/5 border-white/10">
+        <CardContent className="p-4">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />
+              <Input
+                placeholder="Search by name or email..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-gray-600 focus:border-red-500/50"
+              />
+            </div>
+            <div className="flex gap-2">
+              <SelectFilter value={roleFilter} onChange={setRoleFilter} options={['all', 'user', 'vendor', 'wedding_planner', 'admin']} label="All Roles" />
+              <SelectFilter value={statusFilter} onChange={setStatusFilter} options={['all', 'active', 'inactive', 'suspended', 'pending']} label="All Status" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-white/5 border-white/10 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-white/10 bg-white/5">
+                <th className="py-4 px-6 text-[10px] font-black text-gray-500 uppercase tracking-widest">User Identity</th>
+                <th className="py-4 px-6 text-[10px] font-black text-gray-500 uppercase tracking-widest">Platform Role</th>
+                <th className="py-4 px-6 text-[10px] font-black text-gray-500 uppercase tracking-widest">Status</th>
+                <th className="py-4 px-6 text-[10px] font-black text-gray-500 uppercase tracking-widest">Activity</th>
+                <th className="py-4 px-6 text-[10px] font-black text-gray-500 uppercase tracking-widest text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {filteredUsers.map((user) => (
+                <tr key={user.id} className="hover:bg-white/5 transition-colors group">
+                  <td className="py-4 px-6">
+                    <div>
+                      <div className="font-bold text-white group-hover:text-red-400 transition-colors">{user.name}</div>
+                      <div className="text-xs text-gray-500">{user.email}</div>
+                    </div>
+                  </td>
+                  <td className="py-4 px-6">
+                    <Badge className={`${getRoleColor(user.role)} uppercase text-[9px] font-black tracking-widest`}>{user.role.replace('_', ' ')}</Badge>
+                  </td>
+                  <td className="py-4 px-6">
+                    <Badge className={`${getStatusColor(user.status)} uppercase text-[9px] font-black tracking-widest`}>{user.status}</Badge>
+                  </td>
+                  <td className="py-4 px-6">
+                    <div className="text-[10px] font-black text-gray-500 uppercase">Joined {new Date(user.createdAt).toLocaleDateString()}</div>
+                  </td>
+                  <td className="py-4 px-6 text-right">
+                    <div className="flex justify-end gap-1">
+                      <ActionBtn icon={Eye} color="blue" />
+                      <ActionBtn icon={Edit} color="purple" />
+                      <ActionBtn icon={Trash2} color="red" />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {filteredUsers.length === 0 && <EmptyState />}
+      </Card>
+    </div>
+  )
+}
+
+function StatCard({ label, value, icon: Icon, color }: any) {
+  return (
+    <Card className="bg-white/5 border-white/10">
+      <CardContent className="p-6 flex items-center gap-4">
+        <div className={`p-3 rounded-xl bg-${color}-500/10 text-${color}-500`}><Icon className="w-6 h-6" /></div>
+        <div>
+          <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{label}</p>
+          <p className="text-2xl font-black text-white">{value}</p>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function SelectFilter({ value, onChange, options, label }: any) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="bg-white/5 border border-white/10 rounded-xl px-4 text-[10px] font-black uppercase tracking-widest text-white focus:outline-none focus:border-red-500/50 h-10"
+    >
+      <option value="all">{label}</option>
+      {options.filter((o: any) => o !== 'all').map((opt: any) => (
+        <option key={opt} value={opt} className="bg-[#0e0918]">{opt.toUpperCase().replace('_', ' ')}</option>
+      ))}
+    </select>
+  )
+}
+
+function ActionBtn({ icon: Icon, color }: any) {
+  const colors: any = { blue: 'text-blue-400 hover:bg-blue-400/10', purple: 'text-purple-400 hover:bg-purple-400/10', red: 'text-red-400 hover:bg-red-400/10' }
+  return (
+    <Button variant="ghost" size="icon" className={`h-8 w-8 rounded-lg ${colors[color]}`}>
+      <Icon className="w-4 h-4" />
+    </Button>
+  )
+}
+
+function EmptyState() {
+  return (
+    <div className="text-center py-20 bg-white/5">
+      <Shield className="w-12 h-12 text-gray-700 mx-auto mb-4 opacity-20" />
+      <h3 className="text-xs font-black text-gray-500 uppercase tracking-[0.2em]">Zero results found</h3>
     </div>
   )
 }

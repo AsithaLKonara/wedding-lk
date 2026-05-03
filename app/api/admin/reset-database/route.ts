@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { resetAndSeedDatabase } from '@/lib/database-cleanup-and-seed';
-import { Middleware } from '@/lib/rbac';
+import { Middleware } from '@/lib/rbac/server';
 
 async function handler(request: NextRequest) {
   try {

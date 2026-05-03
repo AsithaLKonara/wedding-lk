@@ -20,41 +20,42 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-background border-t border-border/50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="col-span-1 md:col-span-2">
-            <Logo variant="light" />
-            <p className="mt-4 text-gray-400 max-w-md">
-              Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your
-              special day with ease.
+            <Logo />
+            <p className="mt-6 text-muted-foreground max-w-md leading-relaxed">
+              Your trusted partner in creating unforgettable wedding experiences. Plan, organize, and celebrate your special day with ease and elegance.
             </p>
-            <SocialLinks className="mt-6" />
+            <div className="mt-8">
+              <SocialLinks />
+            </div>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4">Services</h3>
-            <ul className="space-y-2 text-gray-400">
+            <h3 className="font-bold text-lg mb-6">Services</h3>
+            <ul className="space-y-4 text-muted-foreground">
               <li>
-                <Link href="/venues" className="hover:text-white transition-colors">
+                <Link href="/venues" className="hover:text-rose-500 transition-colors font-medium">
                   Venues
                 </Link>
               </li>
               <li>
-                <Link href="/vendors" className="hover:text-white transition-colors">
+                <Link href="/vendors" className="hover:text-rose-500 transition-colors font-medium">
                   Vendors
                 </Link>
               </li>
               <li>
                 <button 
                   onClick={handlePlanningToolsClick}
-                  className="hover:text-white transition-colors text-left"
+                  className="hover:text-rose-500 transition-colors text-left font-medium"
                 >
                   Planning Tools
                 </button>
               </li>
               <li>
-                <Link href="/gallery" className="hover:text-white transition-colors">
+                <Link href="/gallery" className="hover:text-rose-500 transition-colors font-medium">
                   Gallery
                 </Link>
               </li>
@@ -62,34 +63,38 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4">Company</h3>
-            <ul className="space-y-2 text-gray-400">
+            <h3 className="font-bold text-lg mb-6">Company</h3>
+            <ul className="space-y-4 text-muted-foreground">
               <li>
-                <Link href="/about" className="hover:text-white transition-colors">
-                  About
+                <Link href="/about" className="hover:text-rose-500 transition-colors font-medium">
+                  About Us
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-white transition-colors">
+                <Link href="/contact" className="hover:text-rose-500 transition-colors font-medium">
                   Contact
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="hover:text-white transition-colors">
-                  Privacy
+                <Link href="/privacy" className="hover:text-rose-500 transition-colors font-medium">
+                  Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="hover:text-white transition-colors">
-                  Terms
+                <Link href="/terms" className="hover:text-rose-500 transition-colors font-medium">
+                  Terms of Service
                 </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 Wedding.lk. All rights reserved.</p>
+        <div className="border-t border-border/50 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Wedding.lk. All rights reserved.</p>
+          <div className="flex items-center space-x-6 text-sm text-muted-foreground">
+            <Link href="/cookies" className="hover:text-rose-500 transition-colors">Cookies</Link>
+            <Link href="/sitemap" className="hover:text-rose-500 transition-colors">Sitemap</Link>
+          </div>
         </div>
       </div>
     </footer>

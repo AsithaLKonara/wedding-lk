@@ -119,6 +119,9 @@ mongoose.connection.on('open', () => {
   // Enable query logging in development
   if (process.env.NODE_ENV === 'development') {
     mongoose.set('debug', (collectionName, method, query, doc) => {
+      // Filter out noisy index creation logs in development
+      if (method === 'createIndex') return;
+      
       console.log(`🔍 MongoDB Query: ${collectionName}.${method}`, {
         query: JSON.stringify(query),
         doc: doc ? JSON.stringify(doc) : 'N/A'

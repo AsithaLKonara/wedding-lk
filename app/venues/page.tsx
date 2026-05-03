@@ -7,14 +7,15 @@ import {
   Star, 
   Search, 
   Filter, 
+  DollarSign,
+  Sparkles,
   Heart,
   Camera,
   ExternalLink,
-  Calendar,
-  DollarSign
+  Calendar
 } from 'lucide-react';
-import { Header } from '@/components/organisms/header';
-import { Footer } from '@/components/organisms/footer';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MainLayout } from '@/components/templates/main-layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -55,8 +56,9 @@ export default function VenuesPage() {
     try {
       const response = await fetch('/api/venues');
       if (response.ok) {
-        const data = await response.json();
-        setVenues(data.venues || []);
+        const result = await response.json();
+        console.log('API Response (Venues):', result);
+        setVenues(result.data?.venues || []);
       }
     } catch (error) {
       console.error('Error fetching venues:', error);
@@ -69,11 +71,11 @@ export default function VenuesPage() {
     const matchesSearch = (venue?.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
                          (venue?.description || '').toLowerCase().includes(searchTerm.toLowerCase());
     const matchesLocation = !locationFilter || 
-                          venue.location.city.toLowerCase().includes(locationFilter.toLowerCase()) ||
-                          venue.location.state.toLowerCase().includes(locationFilter.toLowerCase());
-    const matchesCapacity = !capacityFilter || venue.capacity >= parseInt(capacityFilter);
-    const matchesPrice = !priceFilter || venue.priceRange === priceFilter;
-    const matchesType = !typeFilter || venue.venueType === typeFilter;
+                          (venue?.location?.city || '').toLowerCase().includes(locationFilter.toLowerCase()) ||
+                          (venue?.location?.state || '').toLowerCase().includes(locationFilter.toLowerCase());
+    const matchesCapacity = !capacityFilter || (venue?.capacity || 0) >= parseInt(capacityFilter);
+    const matchesPrice = !priceFilter || venue?.priceRange === priceFilter;
+    const matchesType = !typeFilter || (venue?.venueType || '').toLowerCase() === typeFilter.toLowerCase();
     
     return matchesSearch && matchesLocation && matchesCapacity && matchesPrice && matchesType;
   });
@@ -99,226 +101,272 @@ export default function VenuesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      <MainLayout>
+        <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <p className="text-muted-foreground animate-pulse font-medium">Exploring breathtaking venues...</p>
         </div>
-        <Footer />
-      </div>
+      </MainLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
-      
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="p-3 bg-blue-100 rounded-lg">
-              <MapPin className="w-6 h-6 text-blue-600" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Wedding Venues</h1>
-              <p className="text-gray-600">Discover the perfect venue for your special day</p>
-            </div>
+    <MainLayout>
+      <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-rose-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
+        <motion.div
+          animate={{
+            background: [
+              "radial-gradient(circle at 80% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%)",
+              "radial-gradient(circle at 20% 20%, rgba(147, 51, 234, 0.15) 0%, transparent 50%)",
+              "radial-gradient(circle at 60% 80%, rgba(37, 99, 235, 0.15) 0%, transparent 50%)",
+              "radial-gradient(circle at 80% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%)",
+            ],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0"
+        />
+      </div>
+
+      <main className="container mx-auto px-4 py-16 relative z-10">
+        {/* Page Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center bg-card/80 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-border/50">
+            <Sparkles className="h-4 w-4 text-blue-500 mr-2" />
+            <span className="text-xs font-bold text-muted-foreground tracking-widest uppercase">Breath-taking Locations</span>
           </div>
           
-          {/* Search and Filters */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <input
-                  type="text"
-                  placeholder="Search venues..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                />
+          <h1 className="text-5xl md:text-7xl font-black text-foreground mb-6 tracking-tighter">
+            Discover Your <span className="gradient-text">Dream Venue</span>
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-medium">
+            From luxury ballrooms to serene beachfronts, find the perfect backdrop for your love story.
+          </p>
+        </motion.div>
+          
+        {/* Glassmorphic Filters */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mb-12"
+        >
+          <Card className="border border-border/50 shadow-2xl bg-card/60 backdrop-blur-xl rounded-[2.5rem] overflow-hidden">
+            <CardContent className="p-8">
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                  <input
+                    type="text"
+                    placeholder="Search venues..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-12 pr-4 h-12 bg-muted/50 border border-border/50 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 outline-none transition-all text-sm font-medium"
+                  />
+                </div>
+                
+                <div className="relative">
+                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                  <input
+                    type="text"
+                    placeholder="Location"
+                    value={locationFilter}
+                    onChange={(e) => setLocationFilter(e.target.value)}
+                    className="w-full pl-12 pr-4 h-12 bg-muted/50 border border-border/50 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 outline-none transition-all text-sm font-medium"
+                  />
+                </div>
+                
+                <select
+                  value={capacityFilter}
+                  onChange={(e) => setCapacityFilter(e.target.value)}
+                  className="w-full px-4 h-12 bg-muted/50 border border-border/50 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 outline-none transition-all text-sm font-medium appearance-none"
+                >
+                  <option value="">Min Capacity</option>
+                  <option value="50">50+ guests</option>
+                  <option value="100">100+ guests</option>
+                  <option value="200">200+ guests</option>
+                  <option value="300">300+ guests</option>
+                  <option value="500">500+ guests</option>
+                </select>
+                
+                <select
+                  value={priceFilter}
+                  onChange={(e) => setPriceFilter(e.target.value)}
+                  className="w-full px-4 h-12 bg-muted/50 border border-border/50 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 outline-none transition-all text-sm font-medium appearance-none"
+                >
+                  <option value="">Price Range</option>
+                  <option value="$">Budget ($)</option>
+                  <option value="$$">Moderate ($$)</option>
+                  <option value="$$$">Premium ($$$)</option>
+                  <option value="$$$$">Luxury ($$$$)</option>
+                </select>
+                
+                <select
+                  value={typeFilter}
+                  onChange={(e) => setTypeFilter(e.target.value)}
+                  className="w-full px-4 h-12 bg-muted/50 border border-border/50 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 outline-none transition-all text-sm font-medium appearance-none"
+                >
+                  <option value="">Venue Type</option>
+                  <option value="hotel">Hotel</option>
+                  <option value="garden">Garden</option>
+                  <option value="beach">Beach</option>
+                  <option value="hall">Banquet Hall</option>
+                  <option value="church">Church</option>
+                  <option value="outdoor">Outdoor</option>
+                </select>
               </div>
-              
-              <input
-                type="text"
-                placeholder="Location (city, state)"
-                value={locationFilter}
-                onChange={(e) => setLocationFilter(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              />
-              
-              <select
-                value={capacityFilter}
-                onChange={(e) => setCapacityFilter(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              >
-                <option value="">Min Capacity</option>
-                <option value="50">50+ guests</option>
-                <option value="100">100+ guests</option>
-                <option value="200">200+ guests</option>
-                <option value="300">300+ guests</option>
-                <option value="500">500+ guests</option>
-              </select>
-              
-              <select
-                value={priceFilter}
-                onChange={(e) => setPriceFilter(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              >
-                <option value="">Price Range</option>
-                <option value="$">Budget ($)</option>
-                <option value="$$">Moderate ($$)</option>
-                <option value="$$$">Premium ($$$)</option>
-                <option value="$$$$">Luxury ($$$$)</option>
-              </select>
-              
-              <select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              >
-                <option value="">Venue Type</option>
-                <option value="hotel">Hotel</option>
-                <option value="garden">Garden</option>
-                <option value="beach">Beach</option>
-                <option value="hall">Banquet Hall</option>
-                <option value="church">Church</option>
-                <option value="outdoor">Outdoor</option>
-              </select>
-            </div>
-          </div>
-        </div>
+            </CardContent>
+          </Card>
+        </motion.div>
 
-        {/* Results Count */}
-        <div className="mb-6">
-          <p className="text-gray-600">
-            Showing {filteredVenues.length} of {venues.length} venues
+        {/* Results Info */}
+        <div className="flex items-center justify-between mb-8 px-4">
+          <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest">
+            Showing <span className="text-foreground">{filteredVenues.length}</span> Exclusive Venues
           </p>
         </div>
 
         {/* Venues Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredVenues.map((venue) => (
-            <Card key={venue._id} className="overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="relative">
-                {venue.coverImage ? (
-                  <img
-                    src={venue.coverImage}
-                    alt={venue?.name || 'Venue'}
-                    className="w-full h-48 object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-48 bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center">
-                    <Camera className="w-12 h-12 text-blue-400" />
-                  </div>
-                )}
-                
-                <button
-                  onClick={() => handleFavorite(venue._id)}
-                  className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-red-50 hover:text-red-600 transition-colors"
-                >
-                  <Heart className="w-4 h-4" />
-                </button>
-                
-                {!venue.isAvailable && (
-                  <div className="absolute top-2 left-2 px-2 py-1 bg-red-500 text-white text-xs rounded">
-                    Unavailable
-                  </div>
-                )}
-              </div>
-              
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between mb-2">
-                  <h3 className="font-semibold text-lg text-gray-900">{venue?.name || 'Unknown Venue'}</h3>
-                  <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                    {venue.venueType}
-                  </span>
-                </div>
-                
-                <div className="flex items-center space-x-1 mb-2">
-                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                  <span className="text-sm font-medium">{venue.rating}</span>
-                  <span className="text-sm text-gray-500">({venue.reviewCount} reviews)</span>
-                </div>
-                
-                <div className="flex items-center space-x-1 mb-3">
-                  <MapPin className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600">
-                    {venue.location.city}, {venue.location.state}
-                  </span>
-                </div>
-                
-                <div className="flex items-center space-x-1 mb-3">
-                  <Users className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600">
-                    Up to {venue.capacity} guests
-                  </span>
-                </div>
-                
-                <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                  {venue.description}
-                </p>
-                
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center space-x-1">
-                    <DollarSign className="w-4 h-4 text-green-500" />
-                    <span className="text-sm font-medium text-green-600">
-                      {venue.priceRange}
-                    </span>
+        <motion.div 
+          layout
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredVenues.map((venue, index) => (
+              <motion.div
+                key={venue._id}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+              >
+                <Card className="group overflow-hidden border border-border/50 shadow-xl bg-card/40 backdrop-blur-md rounded-3xl hover:border-blue-500/50 transition-all duration-500 hover:shadow-blue-500/10">
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    {venue.coverImage ? (
+                      <img
+                        src={venue.coverImage}
+                        alt={venue?.name || 'Venue'}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-blue-500/10 to-emerald-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-700">
+                        <Camera className="w-12 h-12 text-blue-400 opacity-50" />
+                      </div>
+                    )}
+                    
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    
+                    <button
+                      onClick={() => handleFavorite(venue._id)}
+                      className="absolute top-4 right-4 p-2.5 bg-white/90 dark:bg-black/50 backdrop-blur-md rounded-2xl shadow-lg hover:bg-rose-500 hover:text-white transition-all duration-300 z-10"
+                    >
+                      <Heart className="w-4 h-4" />
+                    </button>
+                    
+                    {!venue.isAvailable && (
+                      <div className="absolute top-4 left-4 px-3 py-1 bg-red-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-lg shadow-red-500/20">
+                        Fully Booked
+                      </div>
+                    )}
+
+                    <div className="absolute bottom-4 left-4 right-4 translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                       <Button 
+                         className="w-full bg-white text-black hover:bg-blue-500 hover:text-white font-bold rounded-xl"
+                         onClick={() => window.open(`/venues/${venue._id}`, '_blank')}
+                       >
+                         Check Availability
+                       </Button>
+                    </div>
                   </div>
                   
-                  <div className="flex items-center space-x-1">
-                    <Calendar className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-gray-600">
-                      {venue.isAvailable ? 'Available' : 'Booked'}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="flex space-x-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="flex-1 flex items-center justify-center space-x-1"
-                    onClick={() => window.open(`/venues/${venue._id}`, '_blank')}
-                  >
-                    <ExternalLink className="w-3 h-3" />
-                    <span>View Details</span>
-                  </Button>
-                  
-                  <Button
-                    size="sm"
-                    className="flex-1"
-                    disabled={!venue.isAvailable}
-                  >
-                    {venue.isAvailable ? 'Book Now' : 'Unavailable'}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <h3 className="font-black text-xl text-foreground tracking-tight group-hover:text-blue-500 transition-colors duration-300">
+                          {venue?.name || 'Grand Venue'}
+                        </h3>
+                        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-1">
+                          {venue.venueType}
+                        </p>
+                      </div>
+                      <div className="flex items-center space-x-1 bg-yellow-400/10 text-yellow-600 px-2 py-1 rounded-lg">
+                        <Star className="w-3 h-3 fill-current" />
+                        <span className="text-xs font-black">{venue.rating}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-3 mb-6">
+                      <div className="flex items-center space-x-2 text-sm text-muted-foreground font-medium">
+                        <MapPin className="w-4 h-4 text-blue-500" />
+                        <span>{venue.location.city}, {venue.location.state}</span>
+                      </div>
+                      
+                      <div className="flex items-center space-x-2 text-sm text-muted-foreground font-medium">
+                        <Users className="w-4 h-4 text-blue-500" />
+                        <span>Accommodates up to {venue.capacity} Guests</span>
+                      </div>
+                      
+                      <div className="flex items-center justify-between pt-2">
+                        <div className="flex items-center space-x-1">
+                          {[1, 2, 3, 4].map((i) => (
+                            <DollarSign 
+                              key={i} 
+                              className={`w-4 h-4 ${i <= venue.priceRange.length ? 'text-green-500' : 'text-muted-foreground opacity-30'}`} 
+                            />
+                          ))}
+                        </div>
+                        <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-md ${
+                          venue.isAvailable ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'
+                        }`}>
+                          {venue.isAvailable ? 'AVAILABLE NOW' : 'NEXT AVAILABLE: OCT'}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 italic">
+                      "{venue.description}"
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
         
         {filteredVenues.length === 0 && (
-          <div className="text-center py-12">
-            <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No venues found</h3>
-            <p className="text-gray-500 mb-4">Try adjusting your search criteria or filters.</p>
-            <Button onClick={() => {
-              setSearchTerm('');
-              setLocationFilter('');
-              setCapacityFilter('');
-              setPriceFilter('');
-              setTypeFilter('');
-            }}>
-              Clear Filters
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-24"
+          >
+            <div className="w-20 h-20 bg-muted/50 rounded-full flex items-center justify-center mx-auto mb-6">
+              <MapPin className="w-10 h-10 text-muted-foreground opacity-20" />
+            </div>
+            <h3 className="text-2xl font-black text-foreground mb-2">No Venues Found</h3>
+            <p className="text-muted-foreground mb-8 font-medium">Try adjusting your filters to explore more locations.</p>
+            <Button 
+              variant="outline"
+              className="rounded-xl font-bold px-8 border-2"
+              onClick={() => {
+                setSearchTerm('');
+                setLocationFilter('');
+                setCapacityFilter('');
+                setPriceFilter('');
+                setTypeFilter('');
+              }}
+            >
+              Reset All Filters
             </Button>
-          </div>
+          </motion.div>
         )}
+      </main>
       </div>
-      
-      <Footer />
-    </div>
+    </MainLayout>
   );
 }

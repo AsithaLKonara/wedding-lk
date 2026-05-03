@@ -39,98 +39,34 @@ export default function VendorAvailabilityPage() {
   const [viewMode, setViewMode] = useState<'calendar' | 'list'>('calendar')
 
   useEffect(() => {
-    if (authLoading) return
-
-    if (!user) {
-      router.push('/auth/signin')
-      return
-    }
-
-    if (user.role !== 'vendor') {
-      router.push('/unauthorized')
-      return
-    }
-
-    // Mock data - replace with actual API call
-    setAvailabilitySlots([
-      {
-        id: '1',
-        date: '2024-02-15',
-        startTime: '09:00',
-        endTime: '12:00',
-        status: 'booked',
-        service: 'Wedding Photography',
-        client: 'John & Sarah',
-        notes: 'Outdoor ceremony',
-        createdAt: '2024-01-15'
-      },
-      {
-        id: '2',
-        date: '2024-02-15',
-        startTime: '14:00',
-        endTime: '17:00',
-        status: 'available',
-        service: 'Portrait Session',
-        createdAt: '2024-01-15'
-      },
-      {
-        id: '3',
-        date: '2024-02-16',
-        startTime: '10:00',
-        endTime: '16:00',
-        status: 'booked',
-        service: 'Wedding Photography',
-        client: 'Mike & Emily',
-        notes: 'Full day wedding',
-        createdAt: '2024-01-10'
-      },
-      {
-        id: '4',
-        date: '2024-02-17',
-        startTime: '09:00',
-        endTime: '11:00',
-        status: 'blocked',
-        service: 'Equipment Maintenance',
-        notes: 'Camera cleaning and calibration',
-        createdAt: '2024-01-20'
+    const fetchAvailability = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/dashboard/vendor/availability');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            // Map simple availability objects to component slots
+            const mappedSlots = data.availability.map((a: any, index: number) => ({
+              id: `${index}`,
+              date: new Date(a.date).toISOString().split('T')[0],
+              startTime: '00:00',
+              endTime: '23:59',
+              status: a.isAvailable ? 'available' : 'blocked',
+              service: 'General Availability',
+              createdAt: new Date().toISOString()
+            }));
+            setAvailabilitySlots(mappedSlots);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching availability:', error);
+      } finally {
+        setLoading(false);
       }
-    ])
+    };
 
-    setRecurringAvailability([
-      {
-        id: '1',
-        dayOfWeek: 1, // Monday
-        startTime: '09:00',
-        endTime: '17:00',
-        service: 'Wedding Photography',
-        isActive: true
-      },
-      {
-        id: '2',
-        dayOfWeek: 2, // Tuesday
-        startTime: '09:00',
-        endTime: '17:00',
-        service: 'Wedding Photography',
-        isActive: true
-      },
-      {
-        id: '3',
-        dayOfWeek: 6, // Saturday
-        startTime: '08:00',
-        endTime: '18:00',
-        service: 'Wedding Photography',
-        isActive: true
-      },
-      {
-        id: '4',
-        dayOfWeek: 0, // Sunday
-        startTime: '10:00',
-        endTime: '16:00',
-        service: 'Portrait Session',
-        isActive: true
-      }
-    ])
-    setLoading(false)
+    fetchAvailability();
   }, [user, authLoading, router])
 
   const getStatusColor = (status: string) => {
@@ -175,8 +111,8 @@ export default function VendorAvailabilityPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Availability Management</h1>
-              <p className="text-gray-600">Manage your schedule and availability for bookings</p>
+              <h1 className="text-3xl font-bold text-white mb-2">Availability Management</h1>
+              <p className="text-gray-400">Manage your schedule and availability for bookings</p>
             </div>
             <div className="flex space-x-3">
               <Button 
@@ -204,8 +140,8 @@ export default function VendorAvailabilityPage() {
               <div className="flex items-center">
                 <Calendar className="w-8 h-8 text-purple-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Slots</p>
-                  <p className="text-2xl font-bold text-gray-900">{availabilitySlots.length}</p>
+                  <p className="text-sm font-medium text-gray-400">Total Slots</p>
+                  <p className="text-2xl font-bold text-white">{availabilitySlots.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -216,8 +152,8 @@ export default function VendorAvailabilityPage() {
               <div className="flex items-center">
                 <CheckCircle className="w-8 h-8 text-green-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Available</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Available</p>
+                  <p className="text-2xl font-bold text-white">
                     {availabilitySlots.filter(slot => slot.status === 'available').length}
                   </p>
                 </div>
@@ -230,8 +166,8 @@ export default function VendorAvailabilityPage() {
               <div className="flex items-center">
                 <Calendar className="w-8 h-8 text-blue-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Booked</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Booked</p>
+                  <p className="text-2xl font-bold text-white">
                     {availabilitySlots.filter(slot => slot.status === 'booked').length}
                   </p>
                 </div>
@@ -244,8 +180,8 @@ export default function VendorAvailabilityPage() {
               <div className="flex items-center">
                 <XCircle className="w-8 h-8 text-red-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Blocked</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Blocked</p>
+                  <p className="text-2xl font-bold text-white">
                     {availabilitySlots.filter(slot => slot.status === 'blocked').length}
                   </p>
                 </div>
@@ -305,8 +241,8 @@ export default function VendorAvailabilityPage() {
                           {getStatusIcon(slot.status)}
                         </div>
                         <div>
-                          <div className="font-medium text-gray-900">{slot.service}</div>
-                          <div className="text-sm text-gray-600">
+                          <div className="font-medium text-white">{slot.service}</div>
+                          <div className="text-sm text-gray-400">
                             {slot.startTime} - {slot.endTime}
                           </div>
                           {slot.client && (
@@ -334,7 +270,7 @@ export default function VendorAvailabilityPage() {
               ) : (
                 <div className="text-center py-8">
                   <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">No availability slots for this date</p>
+                  <p className="text-gray-400">No availability slots for this date</p>
                   <Button 
                     onClick={() => router.push('/dashboard/vendor/availability/create')}
                     className="mt-4"
@@ -366,8 +302,8 @@ export default function VendorAvailabilityPage() {
                           <CheckCircle className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="font-medium text-gray-900">{getDayName(recurring.dayOfWeek)}</div>
-                          <div className="text-sm text-gray-600">
+                          <div className="font-medium text-white">{getDayName(recurring.dayOfWeek)}</div>
+                          <div className="text-sm text-gray-400">
                             {recurring.startTime} - {recurring.endTime}
                           </div>
                           <div className="text-sm text-gray-500">{recurring.service}</div>
@@ -390,7 +326,7 @@ export default function VendorAvailabilityPage() {
               ) : (
                 <div className="text-center py-8">
                   <Clock className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-600">No recurring availability set</p>
+                  <p className="text-gray-400">No recurring availability set</p>
                   <Button 
                     onClick={() => router.push('/dashboard/vendor/availability/recurring')}
                     className="mt-4"

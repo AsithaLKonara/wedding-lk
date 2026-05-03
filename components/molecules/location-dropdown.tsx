@@ -69,22 +69,22 @@ export function LocationDropdown({ value, onChange, placeholder = "Select locati
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between h-10">
+        <Button variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between h-12 rounded-xl bg-muted/50 border-border/50">
           <div className="flex items-center">
-            <MapPin className="mr-2 h-4 w-4 text-gray-400" />
-            {value || placeholder}
+            <MapPin className="mr-3 h-4 w-4 text-muted-foreground" />
+            <span className="font-medium">{value || placeholder}</span>
           </div>
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-0" align="start">
-        <Command>
-          <CommandInput placeholder="Search locations..." />
-          <CommandList>
-            <CommandEmpty>No location found.</CommandEmpty>
-            <div className="max-h-80 overflow-y-auto">
+      <PopoverContent className="w-80 p-0 rounded-2xl overflow-hidden border-border/50 shadow-2xl" align="start">
+        <Command className="bg-card">
+          <CommandInput placeholder="Search locations..." className="h-12 border-none" />
+          <CommandList className="max-h-80">
+            <CommandEmpty className="p-6 text-sm text-center text-muted-foreground">No location found.</CommandEmpty>
+            <div className="p-2">
               {Object.entries(locations).map(([province, cities]) => (
-                <CommandGroup key={province} heading={province}>
+                <CommandGroup key={province} heading={province} className="text-muted-foreground px-2 py-1.5">
                   {cities.map((city) => (
                     <CommandItem
                       key={`${city}-${province}`}
@@ -93,12 +93,13 @@ export function LocationDropdown({ value, onChange, placeholder = "Select locati
                         onChange(currentValue === value ? "" : currentValue)
                         setOpen(false)
                       }}
+                      className="rounded-lg px-2 py-2 cursor-pointer hover:bg-muted"
                     >
                       <Check
-                        className={cn("mr-2 h-4 w-4", value === `${city}, ${province}` ? "opacity-100" : "opacity-0")}
+                        className={cn("mr-2 h-4 w-4 text-rose-500", value === `${city}, ${province}` ? "opacity-100" : "opacity-0")}
                       />
-                      <MapPin className="mr-2 h-3 w-3 text-gray-400" />
-                      {city}
+                      <MapPin className="mr-2 h-3.5 w-3.5 text-muted-foreground" />
+                      <span className="font-medium">{city}</span>
                     </CommandItem>
                   ))}
                 </CommandGroup>

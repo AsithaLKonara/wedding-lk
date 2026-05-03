@@ -6,7 +6,7 @@ import { MongoQuery } from '@/lib/types/mongodb-queries';
 
 export async function GET(request: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(request);
+    const { user, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!user || user.role !== 'user') {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

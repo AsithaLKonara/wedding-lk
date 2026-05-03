@@ -192,21 +192,20 @@ export default function AISearchSection(props: any) {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
+          <div className="inline-flex items-center bg-card/80 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-border/50">
             <Sparkles className="h-4 w-4 text-purple-500 mr-2" />
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">AI-Powered Wedding Search</span>
+            <span className="text-sm font-bold text-muted-foreground tracking-wide uppercase">AI-Powered Wedding Search</span>
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+          <h1 className="text-5xl md:text-8xl font-black text-foreground mb-8 tracking-tighter">
             Find Your Perfect
-            <span className="block bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 bg-clip-text text-transparent">
+            <span className="block gradient-text pb-2">
               Wedding Experience
             </span>
           </h1>
 
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Describe your dream wedding in natural language and let our AI find the perfect venues, vendors, and
-            packages for you
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-medium">
+            Describe your dream wedding in natural language and let our AI find the perfect venues, vendors, and packages for you
           </p>
         </motion.div>
 
@@ -217,26 +216,28 @@ export default function AISearchSection(props: any) {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-4xl mx-auto"
         >
-          <Card className="border-0 shadow-2xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-md">
-            <CardContent className="p-8">
+          <Card className="border border-border/50 shadow-2xl bg-card/60 backdrop-blur-xl rounded-[2.5rem] overflow-hidden">
+            <CardContent className="p-10">
               {/* Natural Language Search */}
-              <div className="space-y-6">
+              <div className="space-y-10">
                 <div className="relative">
-                  <div className="flex items-center space-x-2 mb-3">
-                    <Sparkles className="h-5 w-5 text-purple-500" />
-                    <span className="font-medium text-gray-700 dark:text-gray-300">Describe your dream wedding</span>
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center">
+                      <Sparkles className="h-4 w-4 text-purple-500" />
+                    </div>
+                    <span className="font-bold text-sm uppercase tracking-widest text-muted-foreground">Describe your dream wedding</span>
                   </div>
                   <div className="relative">
                     <Input
                       placeholder="e.g., 'I want a beach wedding in Galle for 200 guests with traditional Sri Lankan cuisine and live music'"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pr-12 h-14 text-lg"
+                      className="pr-14 h-16 text-lg rounded-2xl bg-muted/50 border-border/50 focus-visible:ring-purple-500/20"
                     />
                     <Button
                       variant="ghost"
-                      size="sm"
-                      className={`absolute right-2 top-2 ${isListening ? "text-red-500" : "text-gray-400"}`}
+                      size="icon"
+                      className={`absolute right-3 top-3 h-10 w-10 rounded-xl ${isListening ? "text-red-500 bg-red-500/10" : "text-muted-foreground hover:bg-muted"}`}
                       onClick={handleVoiceSearch}
                     >
                       {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
@@ -245,13 +246,13 @@ export default function AISearchSection(props: any) {
                 </div>
 
                 {/* Quick Search Tags */}
-                <div className="flex flex-wrap gap-2">
-                  <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">Quick searches:</span>
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest mr-2">Quick searches:</span>
                   {quickSearches.map((search, index) => (
                     <Badge
                       key={index}
                       variant="secondary"
-                      className="cursor-pointer hover:bg-purple-100 dark:hover:bg-purple-900/50"
+                      className="cursor-pointer bg-muted/50 hover:bg-purple-500 hover:text-white transition-all duration-300 rounded-full px-4 py-1.5 border-none font-medium text-xs"
                       onClick={() => setSearchQuery(search)}
                     >
                       {search}
@@ -260,9 +261,9 @@ export default function AISearchSection(props: any) {
                 </div>
 
                 {/* Traditional Search Fields */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Location</label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="space-y-3">
+                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground px-1">Location</label>
                     <LocationDropdown
                       value={selectedLocation}
                       onChange={setSelectedLocation}
@@ -270,28 +271,28 @@ export default function AISearchSection(props: any) {
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Wedding Date</label>
+                  <div className="space-y-3">
+                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground px-1">Wedding Date</label>
                     <div className="relative">
-                      <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Calendar className="absolute left-4 top-3.5 h-4 w-4 text-muted-foreground" />
                       <Input
                         type="date"
                         value={selectedDate}
                         onChange={(e) => setSelectedDate(e.target.value)}
-                        className="pl-10"
+                        className="pl-12 h-12 rounded-xl bg-muted/50 border-border/50"
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Guest Count</label>
+                  <div className="space-y-3">
+                    <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground px-1">Guest Count</label>
                     <div className="relative">
-                      <Users className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      <Users className="absolute left-4 top-3.5 h-4 w-4 text-muted-foreground" />
                       <Input
                         placeholder="Number of guests"
                         value={guestCount}
                         onChange={(e) => setGuestCount(e.target.value)}
-                        className="pl-10"
+                        className="pl-12 h-12 rounded-xl bg-muted/50 border-border/50"
                       />
                     </div>
                   </div>
@@ -301,7 +302,7 @@ export default function AISearchSection(props: any) {
                 <Button
                   onClick={handleAISearch}
                   disabled={isSearching}
-                  className="w-full h-14 text-lg bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 hover:from-pink-600 hover:via-purple-600 hover:to-rose-600"
+                  className="w-full h-16 text-xl font-bold rounded-2xl bg-gradient-to-r from-rose-500 via-purple-500 to-rose-500 hover:opacity-90 shadow-xl shadow-rose-500/20 transition-all active:scale-[0.98]"
                 >
                   {isSearching ? (
                     <motion.div

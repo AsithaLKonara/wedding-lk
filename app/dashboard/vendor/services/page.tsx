@@ -81,10 +81,10 @@ export default function VendorServicesPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800'
-      case 'inactive': return 'bg-gray-100 text-gray-800'
-      case 'pending': return 'bg-yellow-100 text-yellow-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'active': return 'bg-green-500/10 text-green-500 border-green-500/20'
+      case 'inactive': return 'bg-gray-500/10 text-gray-400 border-gray-500/20'
+      case 'pending': return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20'
+      default: return 'bg-gray-500/10 text-gray-400 border-gray-500/20'
     }
   }
 
@@ -105,14 +105,14 @@ export default function VendorServicesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">My Services</h1>
-              <p className="text-gray-600">Manage your wedding services and packages</p>
+              <h1 className="text-3xl font-bold text-white mb-2">My Services</h1>
+              <p className="text-gray-400">Manage your wedding services and packages</p>
             </div>
             <Button 
               onClick={() => router.push('/dashboard/vendor/services/create')}
@@ -131,8 +131,8 @@ export default function VendorServicesPage() {
               <div className="flex items-center">
                 <Package className="w-8 h-8 text-purple-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Services</p>
-                  <p className="text-2xl font-bold text-gray-900">{services.length}</p>
+                  <p className="text-sm font-medium text-gray-400">Total Services</p>
+                  <p className="text-2xl font-bold text-white">{services.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -143,8 +143,8 @@ export default function VendorServicesPage() {
               <div className="flex items-center">
                 <DollarSign className="w-8 h-8 text-green-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Total Revenue</p>
+                  <p className="text-2xl font-bold text-white">
                     {formatPrice(services.reduce((sum, service) => sum + (service.price * service.bookings), 0))}
                   </p>
                 </div>
@@ -157,8 +157,8 @@ export default function VendorServicesPage() {
               <div className="flex items-center">
                 <Calendar className="w-8 h-8 text-blue-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Bookings</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Total Bookings</p>
+                  <p className="text-2xl font-bold text-white">
                     {services.reduce((sum, service) => sum + service.bookings, 0)}
                   </p>
                 </div>
@@ -171,8 +171,8 @@ export default function VendorServicesPage() {
               <div className="flex items-center">
                 <Star className="w-8 h-8 text-yellow-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Avg Rating</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Avg Rating</p>
+                  <p className="text-2xl font-bold text-white">
                     {services.length > 0 ? (services.reduce((sum, service) => sum + service.rating, 0) / services.length).toFixed(1) : '0.0'}
                   </p>
                 </div>
@@ -200,7 +200,7 @@ export default function VendorServicesPage() {
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredServices.map((service) => (
-            <Card key={service.id} className="hover:shadow-lg transition-shadow">
+            <Card key={service.id} className="hover:shadow-lg transition-all border-white/5 hover:border-white/10 group">
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -223,7 +223,7 @@ export default function VendorServicesPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                <p className="text-gray-400 text-sm mb-4 line-clamp-2">
                   {service.description}
                 </p>
                 
@@ -262,8 +262,8 @@ export default function VendorServicesPage() {
         {filteredServices.length === 0 && (
           <div className="text-center py-12">
             <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No services found</h3>
-            <p className="text-gray-600 mb-6">
+            <h3 className="text-lg font-medium text-white mb-2">No services found</h3>
+            <p className="text-gray-400 mb-6">
               {filter === 'all' 
                 ? "You haven't created any services yet. Get started by adding your first service."
                 : `No services with status "${filter}" found.`

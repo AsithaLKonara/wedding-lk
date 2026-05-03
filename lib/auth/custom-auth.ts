@@ -1,20 +1,12 @@
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 import { User } from '@/lib/models/user'
 import { connectDB } from '@/lib/db'
+import { AuthUser } from './tokens'
 
 const JWT_SECRET = process.env.JWT_SECRET || process.env.NEXTAUTH_SECRET || 'your-secret-key'
 
-export interface AuthUser {
-  id: string
-  email: string
-  name: string
-  role: 'user' | 'vendor' | 'wedding_planner' | 'admin' | 'maintainer'
-  image?: string
-  avatar?: string
-  isActive?: boolean
-  isVerified?: boolean
-}
+// Re-export AuthUser for compatibility
+export type { AuthUser }
 
 export async function signIn(email: string, password: string): Promise<{ success: boolean; user?: AuthUser; error?: string }> {
   try {
@@ -115,34 +107,5 @@ export async function signUp(name: string, email: string, password: string, role
   }
 }
 
-export function generateToken(user: AuthUser): string {
-  return jwt.sign(
-    {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      role: user.role,
-      isActive: user.isActive,
-      isVerified: user.isVerified
-    }, 
-    JWT_SECRET, 
-    { expiresIn: '7d' }
-  )
-}
-
-export function verifyToken(token: string): AuthUser | null {
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET) as any
-    return {
-      id: decoded.id,
-      email: decoded.email,
-      name: decoded.name,
-      role: decoded.role,
-      isActive: decoded.isActive,
-      isVerified: decoded.isVerified
-    }
-  } catch (error) {
-    console.warn('[Auth] Token verification failed:', error instanceof Error ? error.message : 'Unknown error')
-    return null
-  }
-}
+// Token functions moved to lib/auth/tokens.ts
+export { generateToken, verifyToken } from './tokens'

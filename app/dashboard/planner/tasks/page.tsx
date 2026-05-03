@@ -33,71 +33,24 @@ export default function PlannerTasksPage() {
   const [priorityFilter, setPriorityFilter] = useState<'all' | 'low' | 'medium' | 'high' | 'urgent'>('all')
 
   useEffect(() => {
-    if (authLoading) return
-
-    if (!user) {
-      router.push('/auth/signin')
-      return
-    }
-
-    if (user.role !== 'wedding_planner') {
-      router.push('/unauthorized')
-      return
-    }
-
-    // Mock data - replace with actual API call
-    setTasks([
-      {
-        id: '1',
-        title: 'Finalize ceremony timeline',
-        description: 'Create detailed timeline for wedding ceremony and reception',
-        status: 'in_progress',
-        priority: 'high',
-        dueDate: '2024-02-20',
-        client: 'John & Sarah',
-        category: 'planning',
-        assignedTo: 'Sarah Wilson',
-        createdAt: '2024-01-15',
-        updatedAt: '2024-02-10'
-      },
-      {
-        id: '2',
-        title: 'Confirm vendor deliveries',
-        description: 'Verify all vendor delivery times and locations',
-        status: 'pending',
-        priority: 'medium',
-        dueDate: '2024-02-18',
-        client: 'Mike & Emily',
-        category: 'coordination',
-        createdAt: '2024-01-20',
-        updatedAt: '2024-02-05'
-      },
-      {
-        id: '3',
-        title: 'Send rehearsal dinner invitations',
-        description: 'Send invitations for rehearsal dinner to wedding party',
-        status: 'completed',
-        priority: 'low',
-        dueDate: '2024-02-15',
-        client: 'David & Lisa',
-        category: 'communication',
-        createdAt: '2024-01-10',
-        updatedAt: '2024-02-12'
-      },
-      {
-        id: '4',
-        title: 'Arrange transportation',
-        description: 'Book transportation for wedding party and guests',
-        status: 'overdue',
-        priority: 'urgent',
-        dueDate: '2024-02-10',
-        client: 'Tom & Jessica',
-        category: 'logistics',
-        createdAt: '2024-01-05',
-        updatedAt: '2024-02-08'
+    const fetchTasks = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/dashboard/planner/tasks');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            setTasks(data.tasks);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      } finally {
+        setLoading(false);
       }
-    ])
-    setLoading(false)
+    };
+
+    fetchTasks();
   }, [user, authLoading, router])
 
   const filteredTasks = tasks.filter(task => {
@@ -112,11 +65,11 @@ export default function PlannerTasksPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'bg-green-100 text-green-800'
-      case 'in_progress': return 'bg-blue-100 text-blue-800'
-      case 'pending': return 'bg-yellow-100 text-yellow-800'
-      case 'overdue': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'completed': return 'bg-green-500/10 text-green-400 border-green-500/20'
+      case 'in_progress': return 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+      case 'pending': return 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
+      case 'overdue': return 'bg-red-500/10 text-red-400 border-red-500/20'
+      default: return 'bg-gray-500/10 text-gray-400 border-gray-500/20'
     }
   }
 
@@ -163,14 +116,14 @@ export default function PlannerTasksPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-[#050208] p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Task Management</h1>
-              <p className="text-gray-600">Manage your wedding planning tasks and deadlines</p>
+              <h1 className="text-3xl font-bold text-white mb-2">Task Management</h1>
+              <p className="text-gray-400">Manage your wedding planning tasks and deadlines</p>
             </div>
             <Button 
               onClick={() => router.push('/dashboard/planner/tasks/create')}
@@ -189,8 +142,8 @@ export default function PlannerTasksPage() {
               <div className="flex items-center">
                 <CheckCircle className="w-8 h-8 text-purple-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Tasks</p>
-                  <p className="text-2xl font-bold text-gray-900">{tasks.length}</p>
+                  <p className="text-sm font-medium text-gray-400">Total Tasks</p>
+                  <p className="text-2xl font-bold text-white">{tasks.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -201,8 +154,8 @@ export default function PlannerTasksPage() {
               <div className="flex items-center">
                 <Clock className="w-8 h-8 text-blue-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">In Progress</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">In Progress</p>
+                  <p className="text-2xl font-bold text-white">
                     {tasks.filter(task => task.status === 'in_progress').length}
                   </p>
                 </div>
@@ -215,8 +168,8 @@ export default function PlannerTasksPage() {
               <div className="flex items-center">
                 <AlertCircle className="w-8 h-8 text-red-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Overdue</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Overdue</p>
+                  <p className="text-2xl font-bold text-white">
                     {tasks.filter(task => task.status === 'overdue').length}
                   </p>
                 </div>
@@ -229,8 +182,8 @@ export default function PlannerTasksPage() {
               <div className="flex items-center">
                 <CheckCircle className="w-8 h-8 text-green-600" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Completed</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Completed</p>
+                  <p className="text-2xl font-bold text-white">
                     {tasks.filter(task => task.status === 'completed').length}
                   </p>
                 </div>
@@ -258,7 +211,7 @@ export default function PlannerTasksPage() {
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value as any)}
-                  className="px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  className="px-3 py-2 bg-[#0e0918] border border-white/10 rounded-md text-sm text-white"
                 >
                   <option value="all">All Status</option>
                   <option value="pending">Pending</option>
@@ -269,7 +222,7 @@ export default function PlannerTasksPage() {
                 <select
                   value={priorityFilter}
                   onChange={(e) => setPriorityFilter(e.target.value as any)}
-                  className="px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  className="px-3 py-2 bg-[#0e0918] border border-white/10 rounded-md text-sm text-white"
                 >
                   <option value="all">All Priority</option>
                   <option value="urgent">Urgent</option>
@@ -295,7 +248,7 @@ export default function PlannerTasksPage() {
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-2">
-                          <h3 className="text-lg font-semibold text-gray-900">{task.title}</h3>
+                          <h3 className="text-lg font-semibold text-white">{task.title}</h3>
                           <Badge className={getStatusColor(task.status)}>
                             {task.status.replace('_', ' ')}
                           </Badge>
@@ -306,7 +259,7 @@ export default function PlannerTasksPage() {
                             {task.category}
                           </Badge>
                         </div>
-                        <p className="text-gray-600 mb-3">{task.description}</p>
+                        <p className="text-gray-400 mb-3">{task.description}</p>
                         <div className="flex items-center space-x-6 text-sm text-gray-500">
                           <div className="flex items-center">
                             <User className="w-4 h-4 mr-1" />
@@ -350,8 +303,8 @@ export default function PlannerTasksPage() {
         {filteredTasks.length === 0 && (
           <div className="text-center py-12">
             <CheckCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No tasks found</h3>
-            <p className="text-gray-600 mb-6">
+            <h3 className="text-lg font-medium text-white mb-2">No tasks found</h3>
+            <p className="text-gray-400 mb-6">
               {searchTerm || statusFilter !== 'all' || priorityFilter !== 'all'
                 ? "Try adjusting your search criteria or filters."
                 : "You don't have any tasks yet. Create your first task to get started."

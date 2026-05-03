@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 
 export async function POST(request: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(request);
+    const { user, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!user) {
       return NextResponse.json({ 

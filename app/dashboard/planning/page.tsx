@@ -56,7 +56,7 @@ const taskCategories = [
   { id: 'music', name: 'Music', icon: Music, color: 'bg-green-100 text-green-600' },
   { id: 'flowers', name: 'Flowers', icon: Flower, color: 'bg-pink-100 text-pink-600' },
   { id: 'catering', name: 'Catering', icon: Utensils, color: 'bg-orange-100 text-orange-600' },
-  { id: 'transportation', name: 'Transportation', icon: Car, color: 'bg-gray-100 text-gray-600' },
+  { id: 'transportation', name: 'Transportation', icon: Car, color: 'bg-gray-100 text-gray-400' },
   { id: 'attire', name: 'Attire', icon: Heart, color: 'bg-red-100 text-red-600' },
   { id: 'gifts', name: 'Gifts', icon: Gift, color: 'bg-yellow-100 text-yellow-600' },
   { id: 'cake', name: 'Cake', icon: Cake, color: 'bg-indigo-100 text-indigo-600' },
@@ -210,8 +210,8 @@ export default function PlanningPage() {
                 <Calendar className="w-6 h-6 text-purple-600" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Wedding Planning</h1>
-                <p className="text-gray-600">Organize your wedding tasks and timeline</p>
+                <h1 className="text-3xl font-bold text-white">Wedding Planning</h1>
+                <p className="text-gray-400">Organize your wedding tasks and timeline</p>
               </div>
             </div>
             <Button
@@ -232,19 +232,19 @@ export default function PlanningPage() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div>
-                    <p className="text-sm text-gray-600">Wedding Date</p>
+                    <p className="text-sm text-gray-400">Wedding Date</p>
                     <p className="font-semibold">{new Date(weddingDetails.weddingDate).toLocaleDateString()}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Venue</p>
+                    <p className="text-sm text-gray-400">Venue</p>
                     <p className="font-semibold">{weddingDetails.venue || 'Not selected'}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Guest Count</p>
+                    <p className="text-sm text-gray-400">Guest Count</p>
                     <p className="font-semibold">{weddingDetails.guestCount || 'Not set'}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Budget</p>
+                    <p className="text-sm text-gray-400">Budget</p>
                     <p className="font-semibold">${weddingDetails.budget?.toLocaleString() || 'Not set'}</p>
                   </div>
                 </div>
@@ -261,7 +261,7 @@ export default function PlanningPage() {
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 selectedCategory === 'all'
                   ? 'bg-purple-600 text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-50'
+                  : 'bg-[#0e0918] text-gray-400 hover:bg-gray-50'
               }`}
             >
               All Tasks ({tasks.length})
@@ -276,7 +276,7 @@ export default function PlanningPage() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2 ${
                     selectedCategory === category.id
                       ? 'bg-purple-600 text-white'
-                      : 'bg-white text-gray-600 hover:bg-gray-50'
+                      : 'bg-[#0e0918] text-gray-400 hover:bg-gray-50'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -406,7 +406,7 @@ export default function PlanningPage() {
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center space-x-2">
                           <Icon className="w-4 h-4 text-gray-400" />
-                          <h4 className="font-medium text-gray-900">{task.title}</h4>
+                          <h4 className="font-medium text-white">{task.title}</h4>
                         </div>
                         <div className="flex items-center space-x-2">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(task.priority)}`}>
@@ -422,7 +422,7 @@ export default function PlanningPage() {
                       </div>
                       
                       {task.description && (
-                        <p className="text-sm text-gray-600 mb-2">{task.description}</p>
+                        <p className="text-sm text-gray-400 mb-2">{task.description}</p>
                       )}
                       
                       <div className="flex items-center justify-between">
@@ -481,7 +481,7 @@ export default function PlanningPage() {
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center space-x-2">
                           <Icon className="w-4 h-4 text-gray-400" />
-                          <h4 className="font-medium text-gray-900 line-through">{task.title}</h4>
+                          <h4 className="font-medium text-white line-through">{task.title}</h4>
                         </div>
                         <button
                           onClick={() => handleDeleteTask(task._id)}
@@ -492,7 +492,7 @@ export default function PlanningPage() {
                       </div>
                       
                       {task.description && (
-                        <p className="text-sm text-gray-600 mb-2 line-through">{task.description}</p>
+                        <p className="text-sm text-gray-400 mb-2 line-through">{task.description}</p>
                       )}
                       
                       <div className="flex items-center justify-between">

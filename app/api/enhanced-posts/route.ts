@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { EnhancedPost, User, Vendor } from '@/lib/models';
 import { getUserFromRequest } from '@/lib/auth/get-user-from-request';
+import { APIResponse } from '@/lib/api-optimization';
 
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
-    const authUser = getUserFromRequest(request);
+    const authUser = await getUserFromRequest(request);
 
     const { searchParams } = new URL(request.url);
     const filter = searchParams.get('filter') || 'all';
@@ -42,15 +43,17 @@ export async function GET(request: NextRequest) {
         .lean();
     }
 
-    return NextResponse.json({
-      success: true,
+    const total = await EnhancedPost.countDocuments(query);
+    
+    return NextResponse.json(APIResponse.success({
       posts,
       pagination: {
-        total: await EnhancedPost.countDocuments(query),
+        total,
         page,
-        limit
+        limit,
+        totalPages: Math.ceil(total / limit)
       }
-    });
+    }));
 
   } catch (error) {
     console.error('Error fetching enhanced posts:', error);

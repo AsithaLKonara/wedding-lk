@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { RBACManager, AuthHelpers } from '@/lib/rbac'
+import { RBACManager, AuthHelpers } from '@/lib/rbac/server'
 import { connectDB } from '@/lib/db'
 import { User } from '@/lib/models/user'
 import { Vendor } from '@/lib/models/vendor'

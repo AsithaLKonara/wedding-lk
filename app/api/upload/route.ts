@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Cloudinary not configured" }, { status: 503 })
     }
     
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
 // GET /api/upload - Get upload gallery
 export async function GET(request: NextRequest) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -220,7 +220,7 @@ export async function GET(request: NextRequest) {
 // DELETE /api/upload - Delete uploaded file
 export async function DELETE(request: NextRequest) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -282,7 +282,7 @@ export async function DELETE(request: NextRequest) {
 // PUT /api/upload - Update file metadata
 export async function PUT(request: NextRequest) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

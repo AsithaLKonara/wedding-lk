@@ -7,7 +7,7 @@ export async function POST(
   { params }: { params: Promise<{ paymentId: string }> }
 ) {
   try {
-    const { error } = getUserFromRequestWithError(req);
+    const { error } = await getUserFromRequestWithError(req);
     if (error) return error;
 
     const { paymentId } = await params;

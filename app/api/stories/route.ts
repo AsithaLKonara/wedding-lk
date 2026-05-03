@@ -8,7 +8,7 @@ import { PostSearchCriteria } from '@/lib/types/search-criteria';
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
-    const authUser = getUserFromRequest(request);
+    const authUser = await getUserFromRequest(request);
 
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
   try {
     await connectDB();
     
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser) {
       return NextResponse.json({

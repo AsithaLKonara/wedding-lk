@@ -232,8 +232,8 @@ export default function UserProfilePage() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading profile...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mx-auto"></div>
+          <p className="mt-2 text-gray-400">Loading profile...</p>
         </div>
       </div>
     );
@@ -245,8 +245,8 @@ export default function UserProfilePage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Profile Settings</h1>
-          <p className="text-gray-600">Manage your personal information and preferences</p>
+          <h1 className="text-3xl font-bold text-white">Profile Settings</h1>
+          <p className="text-gray-400">Manage your personal information and preferences</p>
         </div>
         <div className="flex space-x-2">
           {editing ? (
@@ -284,9 +284,9 @@ export default function UserProfilePage() {
                     {profile.name.split(' ').map(n => n[0]).join('')}
                   </AvatarFallback>
                 </Avatar>
-                <h3 className="text-xl font-semibold">{profile.name}</h3>
-                <p className="text-gray-500">{profile.email}</p>
-                <Badge variant="outline" className="mt-2">User</Badge>
+                <h3 className="text-xl font-semibold text-white">{profile.name}</h3>
+                <p className="text-gray-400">{profile.email}</p>
+                <Badge variant="outline" className="mt-2 border-purple-500/20 text-purple-400 bg-purple-500/10">User Account</Badge>
               </div>
               
               <div className="space-y-2 text-sm">
@@ -394,7 +394,7 @@ export default function UserProfilePage() {
                   <h3 className="text-lg font-medium mb-4">Location</h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="country">Country</Label>
+                      <Label htmlFor="country" className="text-gray-400">Country</Label>
                       <Select
                         value={formData.country}
                         onValueChange={(value) => setFormData(prev => ({ ...prev, country: value }))}

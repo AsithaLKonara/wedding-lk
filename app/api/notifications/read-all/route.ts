@@ -6,7 +6,7 @@ import { Notification } from '@/lib/models/notification';
 
 export async function PUT(request: NextRequest) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser) {
       return NextResponse.json(

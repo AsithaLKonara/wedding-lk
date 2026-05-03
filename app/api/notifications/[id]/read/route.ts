@@ -9,7 +9,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser) {
       return NextResponse.json(

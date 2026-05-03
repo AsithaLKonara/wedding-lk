@@ -17,8 +17,6 @@ import {
   Flag,
   Edit3,
   Trash2,
-  Smile,
-  ThumbsUp,
   Zap,
   Laugh,
   Angry,
@@ -26,7 +24,8 @@ import {
   Star,
   Users,
   Calendar,
-  ExternalLink
+  ExternalLink,
+  ThumbsUp
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { CommentSection } from './comment-section';
@@ -141,12 +140,12 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
   const { toast } = useToast();
 
   const reactionTypes = [
-    { key: 'like', icon: ThumbsUp, color: 'text-blue-500' },
-    { key: 'love', icon: Heart, color: 'text-red-500' },
-    { key: 'wow', icon: Zap, color: 'text-yellow-500' },
-    { key: 'laugh', icon: Laugh, color: 'text-green-500' },
-    { key: 'angry', icon: Angry, color: 'text-orange-500' },
-    { key: 'sad', icon: Frown, color: 'text-purple-500' }
+    { key: 'like', icon: ThumbsUp, color: 'text-blue-400' },
+    { key: 'love', icon: Heart, color: 'text-red-400' },
+    { key: 'wow', icon: Zap, color: 'text-yellow-400' },
+    { key: 'laugh', icon: Laugh, color: 'text-emerald-400' },
+    { key: 'angry', icon: Angry, color: 'text-orange-400' },
+    { key: 'sad', icon: Frown, color: 'text-purple-400' }
   ];
 
   useEffect(() => {
@@ -159,8 +158,8 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
       const response = await fetch(`/api/enhanced-posts?filter=${activeFilter}`);
       
       if (response.ok) {
-        const data = await response.json();
-        setPosts(data.posts || []);
+        const result = await response.json();
+        setPosts(result.data?.posts || []);
       }
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -248,7 +247,7 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
   const getAuthorIcon = (type: string) => {
     switch (type) {
       case 'vendor':
-        return <Star className="h-4 w-4 text-yellow-500" />;
+        return <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />;
       case 'admin':
         return <Users className="h-4 w-4 text-blue-500" />;
       case 'wedding_planner':
@@ -262,14 +261,14 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
     if (!boost.isBoosted) return null;
     
     const boostColors = {
-      paid: 'bg-green-100 text-green-800',
-      featured: 'bg-blue-100 text-blue-800',
-      sponsored: 'bg-purple-100 text-purple-800'
+      paid: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+      featured: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+      sponsored: 'bg-purple-500/10 text-purple-500 border-purple-500/20'
     };
 
     return (
-      <Badge className={boostColors[boost.boostType as keyof typeof boostColors] || 'bg-gray-100 text-gray-800'}>
-        {boost.boostType?.toUpperCase()}
+      <Badge className={`${boostColors[boost.boostType as keyof typeof boostColors] || 'bg-white/5 text-white border-white/10'} uppercase text-[10px] font-black tracking-widest`}>
+        {boost.boostType}
       </Badge>
     );
   };
@@ -278,19 +277,19 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
     return (
       <div className="space-y-6">
         {[...Array(3)].map((_, i) => (
-          <Card key={i} className="animate-pulse">
+          <Card key={i} className="bg-white/5 border-white/10 overflow-hidden">
             <CardHeader className="flex flex-row items-center space-x-4">
-              <div className="w-10 h-10 bg-gray-200 rounded-full" />
+              <div className="w-10 h-10 bg-white/5 rounded-full animate-pulse" />
               <div className="space-y-2 flex-1">
-                <div className="h-4 bg-gray-200 rounded w-1/4" />
-                <div className="h-3 bg-gray-200 rounded w-1/6" />
+                <div className="h-4 bg-white/5 rounded w-1/4 animate-pulse" />
+                <div className="h-3 bg-white/5 rounded w-1/6 animate-pulse" />
               </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <div className="h-4 bg-gray-200 rounded w-3/4" />
-                <div className="h-4 bg-gray-200 rounded w-1/2" />
-                <div className="h-64 bg-gray-200 rounded" />
+                <div className="h-4 bg-white/5 rounded w-3/4 animate-pulse" />
+                <div className="h-4 bg-white/5 rounded w-1/2 animate-pulse" />
+                <div className="h-64 bg-white/5 rounded animate-pulse" />
               </div>
             </CardContent>
           </Card>
@@ -302,7 +301,7 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
   return (
     <div className="space-y-6">
       {/* Filter Tabs */}
-      <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+      <div className="flex space-x-1 bg-white/5 border border-white/10 rounded-xl p-1 w-fit">
         {[
           { key: 'all', label: 'All Posts' },
           { key: 'following', label: 'Following' },
@@ -311,10 +310,10 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
         ].map((filter) => (
           <Button
             key={filter.key}
-            variant={activeFilter === filter.key ? 'default' : 'ghost'}
+            variant="ghost"
             size="sm"
             onClick={() => onFilterChange(filter.key)}
-            className="flex-1"
+            className={`px-6 rounded-lg transition-all font-bold ${activeFilter === filter.key ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}
           >
             {filter.label}
           </Button>
@@ -323,43 +322,47 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
 
       {/* Posts */}
       {posts.length === 0 ? (
-        <Card>
-          <CardContent className="p-8 text-center">
-            <div className="text-gray-500 mb-4">
-              <MessageCircle className="h-12 w-12 mx-auto mb-2" />
-              <p>No posts yet</p>
-              <p className="text-sm">Be the first to share something!</p>
+        <Card className="bg-white/5 border-white/10">
+          <CardContent className="p-12 text-center">
+            <div className="text-gray-500">
+              <MessageCircle className="h-16 w-16 mx-auto mb-4 opacity-20" />
+              <p className="text-xl font-black text-white mb-2">No posts yet</p>
+              <p className="text-sm font-medium">Be the first to share something with the community!</p>
+              <Button className="mt-6 bg-red-600 hover:bg-red-700 font-bold rounded-xl h-11 px-8">Create Post</Button>
             </div>
           </CardContent>
         </Card>
       ) : (
         posts.map((post) => (
-          <Card key={post._id} className="overflow-hidden">
+          <Card key={post._id} className="bg-white/5 border-white/10 overflow-hidden hover:border-white/20 transition-all group">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <Avatar className="h-10 w-10">
+                  <Avatar className="h-11 w-11 border-2 border-white/5 group-hover:border-white/10 transition-colors">
                     <AvatarImage src={post.author.avatar} />
-                    <AvatarFallback>{getInitials(post.author?.name || 'Unknown')}</AvatarFallback>
+                    <AvatarFallback className="bg-white/5 text-white font-black">{getInitials(post.author?.name || 'Unknown')}</AvatarFallback>
                   </Avatar>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h3 className="font-semibold">{post.author?.name || 'Unknown User'}</h3>
+                      <h3 className="font-black text-white tracking-tight">{post.author?.name || 'Unknown User'}</h3>
                       {getAuthorIcon(post.author.type)}
                       {post.author.verified && (
-                        <Badge variant="secondary" className="text-xs">
+                        <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20 uppercase text-[9px] font-black tracking-widest px-2 h-5">
                           Verified
                         </Badge>
                       )}
                       {getBoostBadge(post.boost)}
                     </div>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-xs text-gray-500 font-medium flex items-center gap-2 mt-0.5">
                       {formatTimeAgo(post.createdAt)}
                       {post.location?.address && (
-                        <span className="flex items-center">
-                          <MapPin className="h-3 w-3 mr-1" />
-                          {post.location.address}
-                        </span>
+                        <>
+                          <span className="text-[8px] opacity-30">•</span>
+                          <span className="flex items-center text-red-400/80">
+                            <MapPin className="h-3 w-3 mr-1" />
+                            {post.location.address}
+                          </span>
+                        </>
                       )}
                     </p>
                   </div>
@@ -367,20 +370,20 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
                 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <MoreHorizontal className="h-4 w-4" />
+                    <Button variant="ghost" size="icon" className="text-gray-500 hover:text-white hover:bg-white/5 rounded-xl">
+                      <MoreHorizontal className="h-5 w-5" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
+                  <DropdownMenuContent align="end" className="bg-[#0e0918] border-white/10 text-white p-1 rounded-xl shadow-2xl">
+                    <DropdownMenuItem className="rounded-lg hover:bg-white/5 font-medium py-2">
                       <Edit3 className="h-4 w-4 mr-2" />
                       Edit Post
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-600">
+                    <DropdownMenuItem className="text-red-500 rounded-lg hover:bg-red-500/10 font-medium py-2">
                       <Trash2 className="h-4 w-4 mr-2" />
                       Delete Post
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem className="rounded-lg hover:bg-white/5 font-medium py-2">
                       <Flag className="h-4 w-4 mr-2" />
                       Report Post
                     </DropdownMenuItem>
@@ -392,71 +395,38 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
             <CardContent className="space-y-4">
               {/* Post Content */}
               {post.content && (
-                <p className="text-gray-900 whitespace-pre-wrap">{post.content}</p>
-              )}
-
-              {/* Tags */}
-              {post.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {post.tags.map((tag, index) => (
-                    <Badge key={index} variant="outline" className="text-xs">
-                      <Tag className="h-3 w-3 mr-1" />
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              )}
-
-              {/* Group/Event Info */}
-              {(post.groupId || post.eventId) && (
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
-                  {post.groupId && (
-                    <div className="flex items-center">
-                      <Users className="h-4 w-4 mr-1" />
-                      {post.groupId?.name || 'Unknown Group'}
-                    </div>
-                  )}
-                  {post.eventId && (
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 mr-1" />
-                      {post.eventId?.title || 'Unknown Event'}
-                    </div>
-                  )}
-                </div>
+                <p className="text-gray-200 text-sm leading-relaxed whitespace-pre-wrap">{post.content}</p>
               )}
 
               {/* Media */}
               {post.media.length > 0 && (
-                <div className={`grid gap-2 ${
-                  post.media.length === 1 ? 'grid-cols-1' : 
-                  post.media.length === 2 ? 'grid-cols-2' :
-                  post.media.length === 3 ? 'grid-cols-2' :
-                  'grid-cols-2'
+                <div className={`grid gap-2 overflow-hidden rounded-2xl border border-white/5 ${
+                  post.media.length === 1 ? 'grid-cols-1' : 'grid-cols-2'
                 }`}>
                   {post.media.slice(0, 4).map((media, index) => (
-                    <div key={index} className="relative group">
+                    <div key={index} className="relative group/media overflow-hidden aspect-square sm:aspect-auto sm:h-80 bg-black/20">
                       {media.type === 'image' ? (
                         <img
                           src={media.url}
                           alt={`Post media ${index + 1}`}
-                          className="w-full h-64 object-cover rounded-lg"
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover/media:scale-110"
                         />
                       ) : media.type === 'video' ? (
                         <video
                           src={media.url}
                           poster={media.thumbnail}
-                          className="w-full h-64 object-cover rounded-lg"
+                          className="w-full h-full object-cover"
                           controls
                         />
                       ) : (
-                        <div className="w-full h-64 bg-gray-100 rounded-lg flex items-center justify-center">
-                          <ExternalLink className="h-8 w-8 text-gray-400" />
+                        <div className="w-full h-full flex items-center justify-center">
+                          <ExternalLink className="h-10 w-10 text-white/20" />
                         </div>
                       )}
                       {post.media.length > 4 && index === 3 && (
-                        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
-                          <span className="text-white text-lg font-semibold">
-                            +{post.media.length - 4} more
+                        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+                          <span className="text-white text-xl font-black">
+                            +{post.media.length - 4} MORE
                           </span>
                         </div>
                       )}
@@ -465,36 +435,75 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
                 </div>
               )}
 
-              {/* Engagement Stats */}
-              <div className="flex items-center justify-between text-sm text-gray-500 pt-2 border-t">
-                <div className="flex items-center space-x-4">
-                  <span>{Object.values(post.engagement.reactions).reduce((a, b) => a + b, 0)} reactions</span>
-                  <span>{post.engagement.comments} comments</span>
-                  <span>{post.engagement.shares} shares</span>
+              {/* Tags */}
+              {post.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {post.tags.map((tag, index) => (
+                    <Badge key={index} className="bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white border-white/5 transition-colors text-[10px] font-black uppercase tracking-widest px-3 py-1 cursor-pointer">
+                      <Tag className="h-3 w-3 mr-1 opacity-50" />
+                      {tag}
+                    </Badge>
+                  ))}
                 </div>
-                <div className="flex items-center space-x-1">
-                  <Eye className="h-4 w-4" />
-                  <span>{post.engagement.views}</span>
+              )}
+
+              {/* Group/Event Info */}
+              {(post.groupId || post.eventId) && (
+                <div className="flex items-center space-x-4 text-[10px] font-black uppercase tracking-widest text-gray-500 bg-white/5 p-2 px-3 rounded-lg w-fit border border-white/5">
+                  {post.groupId && (
+                    <div className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
+                      <Users className="h-3 w-3 text-blue-400" />
+                      {post.groupId?.name || 'Group'}
+                    </div>
+                  )}
+                  {post.eventId && (
+                    <div className="flex items-center gap-1.5 hover:text-white cursor-pointer transition-colors">
+                      <Calendar className="h-3 w-3 text-red-400" />
+                      {post.eventId?.title || 'Event'}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Engagement Stats */}
+              <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-[0.1em] text-gray-500 pt-3 border-t border-white/5">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center gap-1 hover:text-white transition-colors cursor-default">
+                    <span className="text-white">{Object.values(post.engagement.reactions).reduce((a, b) => a + b, 0)}</span>
+                    REACTIONS
+                  </div>
+                  <div className="flex items-center gap-1 hover:text-white transition-colors cursor-default">
+                    <span className="text-white">{post.engagement.comments}</span>
+                    COMMENTS
+                  </div>
+                  <div className="flex items-center gap-1 hover:text-white transition-colors cursor-default">
+                    <span className="text-white">{post.engagement.shares}</span>
+                    SHARES
+                  </div>
+                </div>
+                <div className="flex items-center space-x-1.5 bg-white/5 px-2 py-1 rounded-lg">
+                  <Eye className="h-3 w-3 opacity-50" />
+                  <span className="text-white">{post.engagement.views}</span>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center justify-between pt-2">
-                <div className="flex items-center space-x-4">
+              <div className="flex items-center justify-between pt-1">
+                <div className="flex items-center space-x-2">
                   <div className="relative">
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => setShowReactions(showReactions === post._id ? null : post._id)}
                       disabled={interactingPost === post._id}
-                      className={post.userInteractions.reactions.length > 0 ? 'text-blue-500' : ''}
+                      className={`h-10 px-4 rounded-xl font-bold transition-all ${post.userInteractions.reactions.length > 0 ? 'bg-red-500/10 text-red-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
                     >
-                      <Heart className="h-5 w-5 mr-1" />
-                      React
+                      <Heart className={`h-5 w-5 mr-2 ${post.userInteractions.reactions.length > 0 ? 'fill-current' : ''}`} />
+                      REACT
                     </Button>
                     
                     {showReactions === post._id && (
-                      <div className="absolute bottom-full left-0 mb-2 bg-white border rounded-lg shadow-lg p-2 flex space-x-1 z-10">
+                      <div className="absolute bottom-full left-0 mb-3 bg-[#0e0918] border border-white/10 rounded-2xl shadow-2xl p-2 flex space-x-1 z-50 animate-in fade-in slide-in-from-bottom-2 duration-300">
                         {reactionTypes.map((reaction) => {
                           const Icon = reaction.icon;
                           const count = post.engagement.reactions[reaction.key as keyof typeof post.engagement.reactions];
@@ -504,10 +513,11 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
                               variant="ghost"
                               size="sm"
                               onClick={() => handleReaction(post._id, reaction.key)}
-                              className={`${reaction.color} hover:bg-gray-100`}
+                              className={`h-10 w-10 p-0 rounded-xl ${reaction.color} hover:bg-white/5 transition-all hover:scale-125`}
+                              title={reaction.key.toUpperCase()}
                             >
-                              <Icon className="h-4 w-4" />
-                              {count > 0 && <span className="ml-1 text-xs">{count}</span>}
+                              <Icon className="h-5 w-5" />
+                              {count > 0 && <span className="absolute -top-1 -right-1 bg-white text-black text-[8px] font-black rounded-full h-4 w-4 flex items-center justify-center">{count}</span>}
                             </Button>
                           );
                         })}
@@ -518,28 +528,30 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
                   <Button
                     variant="ghost"
                     size="sm"
+                    className="h-10 px-4 rounded-xl font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-all"
                     onClick={() => setCommentPostId(post._id)}
                   >
-                    <MessageCircle className="h-5 w-5 mr-1" />
-                    Comment
+                    <MessageCircle className="h-5 w-5 mr-2" />
+                    COMMENT
                   </Button>
                   
                   <Button
                     variant="ghost"
                     size="sm"
+                    className="h-10 px-4 rounded-xl font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-all"
                     onClick={() => handleInteraction(post._id, 'share')}
                   >
-                    <Share2 className="h-5 w-5 mr-1" />
-                    Share
+                    <Share2 className="h-5 w-5 mr-2" />
+                    SHARE
                   </Button>
                 </div>
 
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="icon"
                   onClick={() => handleInteraction(post._id, 'bookmark')}
                   disabled={interactingPost === post._id}
-                  className={post.userInteractions.isBookmarked ? 'text-blue-500' : ''}
+                  className={`h-10 w-10 rounded-xl transition-all ${post.userInteractions.isBookmarked ? 'text-blue-400 bg-blue-500/10' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
                 >
                   <Bookmark className={`h-5 w-5 ${
                     post.userInteractions.isBookmarked ? 'fill-current' : ''

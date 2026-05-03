@@ -149,8 +149,8 @@ export default function ProfilePage() {
               <User className="w-6 h-6 text-purple-600" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
-              <p className="text-gray-600">Manage your personal information and preferences</p>
+              <h1 className="text-3xl font-bold text-white">My Profile</h1>
+              <p className="text-gray-400">Manage your personal information and preferences</p>
             </div>
           </div>
         </div>
@@ -191,7 +191,7 @@ export default function ProfilePage() {
                 {/* Status */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Account Status</span>
+                    <span className="text-sm text-gray-400">Account Status</span>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                       profile.status === 'active' ? 'bg-green-100 text-green-800' :
                       profile.status === 'pending_verification' ? 'bg-yellow-100 text-yellow-800' :
@@ -202,7 +202,7 @@ export default function ProfilePage() {
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Email Verified</span>
+                    <span className="text-sm text-gray-400">Email Verified</span>
                     <div className="flex items-center space-x-1">
                       {profile.isEmailVerified ? (
                         <>
@@ -222,7 +222,7 @@ export default function ProfilePage() {
                 {/* Quick Stats */}
                 <div className="space-y-3 pt-4 border-t">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Member Since</span>
+                    <span className="text-sm text-gray-400">Member Since</span>
                     <span className="text-sm font-medium">
                       {new Date(profile.createdAt).toLocaleDateString()}
                     </span>
@@ -230,7 +230,7 @@ export default function ProfilePage() {
                   
                   {profile.lastLogin && (
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Last Login</span>
+                      <span className="text-sm text-gray-400">Last Login</span>
                       <span className="text-sm font-medium">
                         {new Date(profile.lastLogin).toLocaleDateString()}
                       </span>
@@ -285,7 +285,7 @@ export default function ProfilePage() {
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         />
                       ) : (
-                        <p className="text-gray-900">{profile.name}</p>
+                        <p className="text-white">{profile.name}</p>
                       )}
                     </div>
 
@@ -295,7 +295,7 @@ export default function ProfilePage() {
                       </label>
                       <div className="flex items-center space-x-2">
                         <Mail className="w-4 h-4 text-gray-400" />
-                        <p className="text-gray-900">{profile.email}</p>
+                        <p className="text-white">{profile.email}</p>
                         {profile.isEmailVerified && (
                           <Shield className="w-4 h-4 text-green-500" />
                         )}
@@ -316,7 +316,7 @@ export default function ProfilePage() {
                       ) : (
                         <div className="flex items-center space-x-2">
                           <Phone className="w-4 h-4 text-gray-400" />
-                          <p className="text-gray-900">{profile.phone || 'Not provided'}</p>
+                          <p className="text-white">{profile.phone || 'Not provided'}</p>
                         </div>
                       )}
                     </div>
@@ -338,7 +338,7 @@ export default function ProfilePage() {
                           <option value="prefer_not_to_say">Prefer not to say</option>
                         </select>
                       ) : (
-                        <p className="text-gray-900 capitalize">{profile.gender || 'Not specified'}</p>
+                        <p className="text-white capitalize">{profile.gender || 'Not specified'}</p>
                       )}
                     </div>
                   </div>
@@ -359,7 +359,7 @@ export default function ProfilePage() {
                       ) : (
                         <div className="flex items-center space-x-2">
                           <MapPin className="w-4 h-4 text-gray-400" />
-                          <p className="text-gray-900">{profile.location?.city || 'Not specified'}</p>
+                          <p className="text-white">{profile.location?.city || 'Not specified'}</p>
                         </div>
                       )}
                     </div>
@@ -376,7 +376,7 @@ export default function ProfilePage() {
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         />
                       ) : (
-                        <p className="text-gray-900">{profile.location?.state || 'Not specified'}</p>
+                        <p className="text-white">{profile.location?.state || 'Not specified'}</p>
                       )}
                     </div>
 
@@ -392,7 +392,7 @@ export default function ProfilePage() {
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         />
                       ) : (
-                        <p className="text-gray-900">{profile.location?.country || 'Not specified'}</p>
+                        <p className="text-white">{profile.location?.country || 'Not specified'}</p>
                       )}
                     </div>
 
@@ -409,7 +409,7 @@ export default function ProfilePage() {
                           placeholder="Tell us about yourself..."
                         />
                       ) : (
-                        <p className="text-gray-900">{profile.bio || 'No bio provided'}</p>
+                        <p className="text-white">{profile.bio || 'No bio provided'}</p>
                       )}
                     </div>
                   </div>

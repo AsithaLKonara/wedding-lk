@@ -4,7 +4,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { enhancedAISearchService } from '@/lib/ai-search-enhanced';
 import { SecurityMiddleware } from '@/lib/security-middleware';
-import { Middleware } from '@/lib/rbac';
+import { Middleware } from '@/lib/rbac/server';
 
 async function postHandler(request: NextRequest) {
   try {

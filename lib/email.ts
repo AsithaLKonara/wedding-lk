@@ -28,8 +28,8 @@ function getTransporter(): nodemailer.Transporter {
     port: parseInt(process.env.SMTP_PORT || '587'),
     secure: false, // true for 465, false for other ports
     auth: {
-      user: process.env.SMTP_USER || 'asithalakmalkonara11992081@gmail.com',
-      pass: process.env.SMTP_PASS || 'xddgtmbfxkgzkrun'
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS
     }
   });
 
@@ -44,7 +44,7 @@ export async function sendEmail(options: EmailOptions): Promise<boolean> {
     const transporter = getTransporter();
     
     const mailOptions = {
-      from: options.from || process.env.SMTP_USER || 'asithalakmalkonara11992081@gmail.com',
+      from: options.from || process.env.SMTP_USER,
       to: Array.isArray(options.to) ? options.to.join(', ') : options.to,
       subject: options.subject,
       text: options.text,

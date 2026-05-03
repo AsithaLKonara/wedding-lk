@@ -122,6 +122,7 @@
     "gcp-metadata": "latest",
     "input-otp": "1.4.1",
     "ioredis": "^5.7.0",
+    "jose": "^6.2.3",
     "jsonwebtoken": "^9.0.2",
     "kerberos": "latest",
     "lucide-react": "^0.454.0",

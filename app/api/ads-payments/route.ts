@@ -4,7 +4,7 @@ import { getUserFromRequestWithError } from '@/lib/auth/get-user-from-request';
 
 export async function POST(req: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(req);
+    const { user, error } = await getUserFromRequestWithError(req);
     if (error) return error;
 
     const body = await req.json();
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    const { user, error } = getUserFromRequestWithError(req);
+    const { user, error } = await getUserFromRequestWithError(req);
     if (error) return error;
 
     const { searchParams } = new URL(req.url);

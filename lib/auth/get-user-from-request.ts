@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken, AuthUser } from '@/lib/auth/custom-auth';
+import { verifyToken, AuthUser } from '@/lib/auth/tokens'
 
 /**
  * Get authenticated user from request
  * Returns user object or null if not authenticated
  */
-export function getUserFromRequest(request: NextRequest): AuthUser | null {
+export async function getUserFromRequest(request: NextRequest): Promise<AuthUser | null> {
   const token = request.cookies.get('auth-token')?.value;
   if (!token) {
     return null;
   }
   
-  const user = verifyToken(token);
+  const user = await verifyToken(token);
   return user || null;
 }
 
@@ -19,11 +19,11 @@ export function getUserFromRequest(request: NextRequest): AuthUser | null {
  * Get authenticated user from request with error response
  * Returns { user, error } - if error is present, user will be null
  */
-export function getUserFromRequestWithError(request: NextRequest): {
+export async function getUserFromRequestWithError(request: NextRequest): Promise<{
   user: AuthUser | null;
   error: NextResponse | null;
-} {
-  const user = getUserFromRequest(request);
+}> {
+  const user = await getUserFromRequest(request);
   
   if (!user || !user.id) {
     return {

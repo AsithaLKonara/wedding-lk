@@ -129,7 +129,7 @@ export default function MessagesContent() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading messages...</p>
+          <p className="mt-4 text-gray-400">Loading messages...</p>
         </div>
       </div>
     )
@@ -158,7 +158,7 @@ export default function MessagesContent() {
   return (
     <div className="flex h-[calc(100vh-200px)] bg-gray-50 dark:bg-gray-900 max-w-7xl mx-auto">
       {/* Left Pane: Conversations List */}
-      <div className="w-1/3 border-r bg-white dark:bg-gray-800 dark:border-gray-700 flex flex-col">
+      <div className="w-1/3 border-r bg-[#0e0918] dark:bg-gray-800 dark:border-gray-700 flex flex-col">
         <div className="p-4 border-b dark:border-gray-700">
           <h2 className="text-xl font-semibold mb-4">Messages</h2>
           <div className="relative">
@@ -190,7 +190,7 @@ export default function MessagesContent() {
                   <p className="font-medium truncate">{conv.name}</p>
                   <span className="text-xs text-gray-500 dark:text-gray-400">{conv.time}</span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-300 truncate">{conv.lastMessage}</p>
+                <p className="text-sm text-gray-400 dark:text-gray-300 truncate">{conv.lastMessage}</p>
                 {conv.unread > 0 && (
                   <Badge variant="destructive" className="mt-1 text-xs">
                     {conv.unread}
@@ -203,7 +203,7 @@ export default function MessagesContent() {
       </div>
 
       {/* Right Pane: Chat Interface */}
-      <div className="flex-1 flex flex-col bg-white dark:bg-gray-800">
+      <div className="flex-1 flex flex-col bg-[#0e0918] dark:bg-gray-800">
         {/* Chat Header */}
         <div className="p-4 border-b dark:border-gray-700 flex items-center justify-between">
           <div className="flex items-center">

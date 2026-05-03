@@ -59,6 +59,9 @@ import { Mention } from './mentions';
 import { MessageAttachment } from './messageAttachments';
 import { NotificationPreferences } from './notificationPreferences';
 import { Package } from './package';
+import { BudgetItem } from './budget-item';
+import { SystemSettings } from './system-settings';
+import { TimelineEvent } from './timeline-event';
 
 // Export all models
 export {
@@ -124,6 +127,9 @@ export {
   MessageAttachment,
   NotificationPreferences,
   Package,
+  BudgetItem,
+  SystemSettings,
+  TimelineEvent
 };
 
 // Export VenueBoost as default

@@ -5,7 +5,7 @@ import { User, Vendor, Booking } from '@/lib/models';
 
 export async function GET(request: NextRequest) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser || authUser.role !== 'vendor') {
       return NextResponse.json({ error: "Vendor access required" }, { status: 403 });

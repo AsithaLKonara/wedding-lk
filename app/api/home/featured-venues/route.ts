@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { Venue } from '@/lib/models/venue';
+import { APIResponse } from '@/lib/api-optimization';
 
 export async function GET() {
   try {
@@ -11,10 +12,9 @@ export async function GET() {
       .limit(6)
       .lean();
 
-    return NextResponse.json({
-      success: true,
+    return NextResponse.json(APIResponse.success({
       venues
-    });
+    }));
 
   } catch (error) {
     console.error('Error fetching featured venues:', error);

@@ -1,68 +1,64 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAuth } from '@/lib/api-auth';
 import { connectDB } from '@/lib/db';
+import { getUserFromRequestWithError } from '@/lib/auth/get-user-from-request';
+import { User, Vendor, Booking } from '@/lib/models';
 
 export async function GET(request: NextRequest) {
-  const authResult = await requireAuth(request, ['admin', 'maintainer']);
-  if (!authResult.authorized) {
-    return NextResponse.json({ error: authResult.error }, { status: 401 });
-  }
   try {
+    const { user, error } = await getUserFromRequestWithError(request);
+    if (error) return error;
+    if (!user || user.role !== 'admin') {
+      return NextResponse.json({ error: "Admin access required" }, { status: 403 });
+    }
+
     await connectDB();
-    console.log('📊 Fetching admin activity from local database...');
+    
+    // Fetch recent users, vendors, and bookings to construct activity
+    const recentUsers = await User.find().sort({ createdAt: -1 }).limit(5);
+    const recentVendors = await Vendor.find().sort({ createdAt: -1 }).limit(5);
+    const recentBookings = await Booking.find().sort({ createdAt: -1 }).limit(5).populate('userId', 'name');
 
-    // Mock admin activity
-    const adminActivity = [
-      {
-        id: 'activity-1',
+    const activity: any[] = [];
+
+    recentUsers.forEach(u => {
+      activity.push({
+        id: `user-${u._id}`,
         type: 'user_registration',
-        description: 'New user registered',
-        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        description: `New user registered: ${u.name}`,
+        timestamp: u.createdAt,
         status: 'success'
-      },
-      {
-        id: 'activity-2',
+      });
+    });
+
+    recentVendors.forEach(v => {
+      activity.push({
+        id: `vendor-${v._id}`,
         type: 'vendor_approval',
-        description: 'Vendor approved',
-        timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-        status: 'success'
-      },
-      {
-        id: 'activity-3',
-        type: 'booking_created',
-        description: 'New booking created',
-        timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
-        status: 'success'
-      },
-      {
-        id: 'activity-4',
-        type: 'payment_received',
-        description: 'Payment received',
-        timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
-        status: 'success'
-      },
-      {
-        id: 'activity-5',
-        type: 'user_registration',
-        description: 'New user registered',
-        timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
-        status: 'success'
-      }
-    ];
+        description: `Vendor application: ${v.businessName}`,
+        timestamp: v.createdAt,
+        status: v.status === 'approved' ? 'success' : 'warning'
+      });
+    });
 
-    console.log('✅ Admin activity fetched successfully');
+    recentBookings.forEach(b => {
+      activity.push({
+        id: `booking-${b._id}`,
+        type: 'booking_created',
+        description: `New booking by ${(b.userId as any)?.name || 'User'}`,
+        timestamp: b.createdAt,
+        status: 'success'
+      });
+    });
+
+    // Sort by timestamp
+    activity.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
     return NextResponse.json({
       success: true,
-      activity: adminActivity
+      activity: activity.slice(0, 10)
     });
-
   } catch (error) {
-    console.error('❌ Error fetching admin activity:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'Failed to fetch admin activity',
-      message: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+    console.error('Error fetching admin activity:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

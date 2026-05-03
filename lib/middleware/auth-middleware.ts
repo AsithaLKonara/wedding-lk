@@ -19,7 +19,7 @@ export function withAuth(handler: (req: AuthRequest) => Promise<NextResponse>) {
 
     // First, resolve the authenticated user from the request.
     try {
-      user = getUserFromRequest(req);
+      user = await getUserFromRequest(req);
     } catch (error) {
       console.error('Auth middleware error:', error);
       return NextResponse.json(

@@ -9,7 +9,7 @@ export async function GET(
 ) {
   try {
     await connectDB();
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -56,7 +56,7 @@ export async function PUT(
 ) {
   try {
     await connectDB();
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser) {
       return NextResponse.json({
@@ -141,7 +141,7 @@ export async function DELETE(
 ) {
   try {
     await connectDB();
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser) {
       return NextResponse.json({

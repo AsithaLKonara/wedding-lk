@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { Vendor } from '@/lib/models/vendor';
+import { APIResponse } from '@/lib/api-optimization';
 
 export async function GET() {
   try {
@@ -11,10 +12,9 @@ export async function GET() {
       .limit(6)
       .lean();
 
-    return NextResponse.json({
-      success: true,
+    return NextResponse.json(APIResponse.success({
       vendors
-    });
+    }));
 
   } catch (error) {
     console.error('Error fetching featured vendors:', error);

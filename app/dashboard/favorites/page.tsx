@@ -163,8 +163,8 @@ export default function FavoritesPage() {
               <Heart className="w-6 h-6 text-red-600" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">My Favorites</h1>
-              <p className="text-gray-600">Your saved vendors and venues</p>
+              <h1 className="text-3xl font-bold text-white">My Favorites</h1>
+              <p className="text-gray-400">Your saved vendors and venues</p>
             </div>
           </div>
           
@@ -174,8 +174,8 @@ export default function FavoritesPage() {
               onClick={() => setActiveTab('vendors')}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'vendors'
-                  ? 'bg-white text-purple-600 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-[#0e0918] text-purple-600 shadow-sm'
+                  : 'text-gray-400 hover:text-white'
               }`}
             >
               Vendors ({favoriteVendors.length})
@@ -184,8 +184,8 @@ export default function FavoritesPage() {
               onClick={() => setActiveTab('venues')}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'venues'
-                  ? 'bg-white text-purple-600 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-[#0e0918] text-purple-600 shadow-sm'
+                  : 'text-gray-400 hover:text-white'
               }`}
             >
               Venues ({favoriteVenues.length})
@@ -195,7 +195,7 @@ export default function FavoritesPage() {
 
         {/* Search and Filter */}
         <div className="mb-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <div className="bg-[#0e0918] rounded-lg shadow-sm border border-gray-200 p-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -255,7 +255,7 @@ export default function FavoritesPage() {
                   )}
                   <button
                     onClick={() => handleRemoveFavorite('vendor', vendor._id)}
-                    className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-red-50 hover:text-red-600 transition-colors"
+                    className="absolute top-2 right-2 p-2 bg-[#0e0918] rounded-full shadow-md hover:bg-red-50 hover:text-red-600 transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -264,8 +264,8 @@ export default function FavoritesPage() {
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <h3 className="font-semibold text-lg text-gray-900">{vendor.name}</h3>
-                      <p className="text-sm text-gray-600">{vendor.businessName}</p>
+                      <h3 className="font-semibold text-lg text-white">{vendor.name}</h3>
+                      <p className="text-sm text-gray-400">{vendor.businessName}</p>
                     </div>
                     <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
                       {vendor.category}
@@ -280,12 +280,12 @@ export default function FavoritesPage() {
                   
                   <div className="flex items-center space-x-1 mb-3">
                     <MapPin className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-gray-400">
                       {vendor.location.city}, {vendor.location.state}
                     </span>
                   </div>
                   
-                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                  <p className="text-sm text-gray-400 mb-3 line-clamp-2">
                     {vendor.description}
                   </p>
                   
@@ -309,7 +309,7 @@ export default function FavoritesPage() {
             {filteredVendors.length === 0 && (
               <div className="col-span-full text-center py-12">
                 <Heart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No favorite vendors yet</h3>
+                <h3 className="text-lg font-medium text-white mb-2">No favorite vendors yet</h3>
                 <p className="text-gray-500 mb-4">Start exploring vendors and add them to your favorites!</p>
                 <Button onClick={() => router.push('/vendors')}>
                   Browse Vendors
@@ -335,7 +335,7 @@ export default function FavoritesPage() {
                   )}
                   <button
                     onClick={() => handleRemoveFavorite('venue', venue._id)}
-                    className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-red-50 hover:text-red-600 transition-colors"
+                    className="absolute top-2 right-2 p-2 bg-[#0e0918] rounded-full shadow-md hover:bg-red-50 hover:text-red-600 transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -343,7 +343,7 @@ export default function FavoritesPage() {
                 
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-2">
-                    <h3 className="font-semibold text-lg text-gray-900">{venue.name}</h3>
+                    <h3 className="font-semibold text-lg text-white">{venue.name}</h3>
                     <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
                       Venue
                     </span>
@@ -357,19 +357,19 @@ export default function FavoritesPage() {
                   
                   <div className="flex items-center space-x-1 mb-3">
                     <MapPin className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-gray-400">
                       {venue.location.city}, {venue.location.state}
                     </span>
                   </div>
                   
                   <div className="flex items-center space-x-1 mb-3">
                     <Users className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-gray-400">
                       Up to {venue.capacity} guests
                     </span>
                   </div>
                   
-                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                  <p className="text-sm text-gray-400 mb-3 line-clamp-2">
                     {venue.description}
                   </p>
                   
@@ -393,7 +393,7 @@ export default function FavoritesPage() {
             {filteredVenues.length === 0 && (
               <div className="col-span-full text-center py-12">
                 <Heart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No favorite venues yet</h3>
+                <h3 className="text-lg font-medium text-white mb-2">No favorite venues yet</h3>
                 <p className="text-gray-500 mb-4">Start exploring venues and add them to your favorites!</p>
                 <Button onClick={() => router.push('/venues')}>
                   Browse Venues

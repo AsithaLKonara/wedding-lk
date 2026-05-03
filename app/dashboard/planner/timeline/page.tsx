@@ -63,26 +63,26 @@ export default function PlannerTimelinePage() {
   });
 
   const categories = [
-    { value: 'ceremony', label: 'Ceremony', color: 'bg-purple-100 text-purple-800' },
-    { value: 'reception', label: 'Reception', color: 'bg-pink-100 text-pink-800' },
-    { value: 'preparation', label: 'Preparation', color: 'bg-blue-100 text-blue-800' },
-    { value: 'photography', label: 'Photography', color: 'bg-yellow-100 text-yellow-800' },
-    { value: 'transportation', label: 'Transportation', color: 'bg-green-100 text-green-800' },
-    { value: 'other', label: 'Other', color: 'bg-gray-100 text-gray-800' }
+    { value: 'ceremony', label: 'Ceremony', color: 'bg-purple-500/10 text-purple-500 border-purple-500/20' },
+    { value: 'reception', label: 'Reception', color: 'bg-pink-500/10 text-pink-500 border-pink-500/20' },
+    { value: 'preparation', label: 'Preparation', color: 'bg-blue-500/10 text-blue-500 border-blue-500/20' },
+    { value: 'photography', label: 'Photography', color: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' },
+    { value: 'transportation', label: 'Transportation', color: 'bg-green-500/10 text-green-500 border-green-500/20' },
+    { value: 'other', label: 'Other', color: 'bg-gray-500/10 text-gray-400 border-gray-500/20' }
   ];
 
   const statuses = [
-    { value: 'pending', label: 'Pending', color: 'bg-yellow-100 text-yellow-800' },
-    { value: 'confirmed', label: 'Confirmed', color: 'bg-blue-100 text-blue-800' },
-    { value: 'completed', label: 'Completed', color: 'bg-green-100 text-green-800' },
-    { value: 'cancelled', label: 'Cancelled', color: 'bg-red-100 text-red-800' }
+    { value: 'pending', label: 'Pending', color: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' },
+    { value: 'confirmed', label: 'Confirmed', color: 'bg-blue-500/10 text-blue-500 border-blue-500/20' },
+    { value: 'completed', label: 'Completed', color: 'bg-green-500/10 text-green-500 border-green-500/20' },
+    { value: 'cancelled', label: 'Cancelled', color: 'bg-red-500/10 text-red-500 border-red-500/20' }
   ];
 
   const priorities = [
-    { value: 'low', label: 'Low', color: 'bg-gray-100 text-gray-800' },
-    { value: 'medium', label: 'Medium', color: 'bg-blue-100 text-blue-800' },
-    { value: 'high', label: 'High', color: 'bg-orange-100 text-orange-800' },
-    { value: 'urgent', label: 'Urgent', color: 'bg-red-100 text-red-800' }
+    { value: 'low', label: 'Low', color: 'bg-gray-500/10 text-gray-400 border-gray-500/20' },
+    { value: 'medium', label: 'Medium', color: 'bg-blue-500/10 text-blue-500 border-blue-500/20' },
+    { value: 'high', label: 'High', color: 'bg-orange-500/10 text-orange-500 border-orange-500/20' },
+    { value: 'urgent', label: 'Urgent', color: 'bg-red-500/10 text-red-500 border-red-500/20' }
   ];
 
   useEffect(() => {
@@ -92,74 +92,13 @@ export default function PlannerTimelinePage() {
   const fetchEvents = async () => {
     try {
       setLoading(true);
-      // Mock data - replace with actual API call
-      const mockEvents: TimelineEvent[] = [
-        {
-          id: '1',
-          title: 'Bridal Hair & Makeup',
-          description: 'Professional hair and makeup for the bride',
-          date: '2024-08-15',
-          time: '08:00',
-          duration: 180,
-          category: 'preparation',
-          status: 'confirmed',
-          priority: 'high',
-          assignedTo: 'Sarah Johnson',
-          location: 'Bridal Suite, Garden Manor',
-          notes: 'Bring own foundation, prefer natural look',
-          createdAt: '2024-06-15',
-          updatedAt: '2024-06-20'
-        },
-        {
-          id: '2',
-          title: 'Wedding Ceremony',
-          description: 'Main wedding ceremony with vows exchange',
-          date: '2024-08-15',
-          time: '16:00',
-          duration: 60,
-          category: 'ceremony',
-          status: 'confirmed',
-          priority: 'urgent',
-          assignedTo: 'Reverend Smith',
-          location: 'Garden Pavilion, Garden Manor',
-          notes: 'Outdoor ceremony, weather backup plan ready',
-          createdAt: '2024-06-15',
-          updatedAt: '2024-06-20'
-        },
-        {
-          id: '3',
-          title: 'Cocktail Hour',
-          description: 'Cocktail reception with appetizers',
-          date: '2024-08-15',
-          time: '17:00',
-          duration: 60,
-          category: 'reception',
-          status: 'pending',
-          priority: 'medium',
-          assignedTo: 'Garden Catering Co.',
-          location: 'Garden Terrace, Garden Manor',
-          notes: 'Vegetarian options required',
-          createdAt: '2024-06-15',
-          updatedAt: '2024-06-15'
-        },
-        {
-          id: '4',
-          title: 'Wedding Photography',
-          description: 'Professional wedding photography session',
-          date: '2024-08-15',
-          time: '15:00',
-          duration: 480,
-          category: 'photography',
-          status: 'confirmed',
-          priority: 'high',
-          assignedTo: 'Elegant Photography Studio',
-          location: 'Garden Manor (Various Locations)',
-          notes: 'Sunset shots at 18:30, group photos at 19:00',
-          createdAt: '2024-06-15',
-          updatedAt: '2024-06-20'
+      const response = await fetch('/api/dashboard/planner/timeline');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setEvents(data.events);
         }
-      ];
-      setEvents(mockEvents);
+      }
     } catch (error) {
       console.error('Error fetching events:', error);
     } finally {
@@ -170,43 +109,35 @@ export default function PlannerTimelinePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (editingEvent) {
-        // Update existing event
-        setEvents(prev => prev.map(event => 
-          event.id === editingEvent.id 
-            ? { 
-                ...event, 
-                ...formData,
-                updatedAt: new Date().toISOString().split('T')[0]
-              }
-            : event
-        ));
-      } else {
-        // Create new event
-        const newEvent: TimelineEvent = {
-          id: Date.now().toString(),
-          ...formData,
-          createdAt: new Date().toISOString().split('T')[0],
-          updatedAt: new Date().toISOString().split('T')[0]
-        };
-        setEvents(prev => [...prev, newEvent]);
-      }
-      
-      setIsDialogOpen(false);
-      setEditingEvent(null);
-      setFormData({
-        title: '',
-        description: '',
-        date: '',
-        time: '',
-        duration: 60,
-        category: 'ceremony',
-        status: 'pending',
-        priority: 'medium',
-        assignedTo: '',
-        location: '',
-        notes: ''
+      const method = editingEvent ? 'PATCH' : 'POST';
+      const body = editingEvent 
+        ? { id: editingEvent.id, ...formData }
+        : formData;
+
+      const response = await fetch('/api/dashboard/planner/timeline', {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
       });
+
+      if (response.ok) {
+        fetchEvents();
+        setIsDialogOpen(false);
+        setEditingEvent(null);
+        setFormData({
+          title: '',
+          description: '',
+          date: '',
+          time: '',
+          duration: 60,
+          category: 'ceremony',
+          status: 'pending',
+          priority: 'medium',
+          assignedTo: '',
+          location: '',
+          notes: ''
+        });
+      }
     } catch (error) {
       console.error('Error saving event:', error);
     }
@@ -230,18 +161,36 @@ export default function PlannerTimelinePage() {
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (eventId: string) => {
+  const handleDelete = async (eventId: string) => {
     if (confirm('Are you sure you want to delete this event?')) {
-      setEvents(prev => prev.filter(event => event.id !== eventId));
+      try {
+        const response = await fetch('/api/dashboard/planner/timeline', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: eventId })
+        });
+        if (response.ok) {
+          fetchEvents();
+        }
+      } catch (error) {
+        console.error('Error deleting event:', error);
+      }
     }
   };
 
-  const handleStatusChange = (eventId: string, newStatus: string) => {
-    setEvents(prev => prev.map(event => 
-      event.id === eventId 
-        ? { ...event, status: newStatus as any, updatedAt: new Date().toISOString().split('T')[0] }
-        : event
-    ));
+  const handleStatusChange = async (eventId: string, newStatus: string) => {
+    try {
+      const response = await fetch('/api/dashboard/planner/timeline', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: eventId, status: newStatus })
+      });
+      if (response.ok) {
+        fetchEvents();
+      }
+    } catch (error) {
+      console.error('Error updating status:', error);
+    }
   };
 
   const getCategoryColor = (category: string) => {
@@ -294,7 +243,7 @@ export default function PlannerTimelinePage() {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading timeline...</p>
+          <p className="mt-2 text-gray-400">Loading timeline...</p>
         </div>
       </div>
     );
@@ -304,8 +253,8 @@ export default function PlannerTimelinePage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Wedding Timeline</h1>
-          <p className="text-gray-600">Plan and manage your wedding day timeline</p>
+          <h1 className="text-3xl font-bold text-white">Wedding Timeline</h1>
+          <p className="text-gray-400">Plan and manage your wedding day timeline</p>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
@@ -501,7 +450,7 @@ export default function PlannerTimelinePage() {
             <div className="flex items-center">
               <Calendar className="h-8 w-8 text-blue-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Events</p>
+                <p className="text-sm font-medium text-gray-400">Total Events</p>
                 <p className="text-2xl font-bold">{stats.total}</p>
               </div>
             </div>
@@ -512,7 +461,7 @@ export default function PlannerTimelinePage() {
             <div className="flex items-center">
               <Clock className="h-8 w-8 text-yellow-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Pending</p>
+                <p className="text-sm font-medium text-gray-400">Pending</p>
                 <p className="text-2xl font-bold">{stats.pending}</p>
               </div>
             </div>
@@ -523,7 +472,7 @@ export default function PlannerTimelinePage() {
             <div className="flex items-center">
               <CheckCircle className="h-8 w-8 text-green-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Confirmed</p>
+                <p className="text-sm font-medium text-gray-400">Confirmed</p>
                 <p className="text-2xl font-bold">{stats.confirmed}</p>
               </div>
             </div>
@@ -534,7 +483,7 @@ export default function PlannerTimelinePage() {
             <div className="flex items-center">
               <Star className="h-8 w-8 text-purple-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Completed</p>
+                <p className="text-sm font-medium text-gray-400">Completed</p>
                 <p className="text-2xl font-bold">{stats.completed}</p>
               </div>
             </div>
@@ -545,7 +494,7 @@ export default function PlannerTimelinePage() {
             <div className="flex items-center">
               <AlertCircle className="h-8 w-8 text-red-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Urgent</p>
+                <p className="text-sm font-medium text-gray-400">Urgent</p>
                 <p className="text-2xl font-bold">{stats.urgent}</p>
               </div>
             </div>
@@ -559,7 +508,7 @@ export default function PlannerTimelinePage() {
           <Card>
             <CardContent className="p-8 text-center">
               <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No events found</h3>
+              <h3 className="text-lg font-medium text-white mb-2">No events found</h3>
               <p className="text-gray-500">Start by adding events to your wedding timeline</p>
             </CardContent>
           </Card>
@@ -584,14 +533,14 @@ export default function PlannerTimelinePage() {
                     {dateEvents
                       .sort((a, b) => a.time.localeCompare(b.time))
                       .map((event) => (
-                        <div key={event.id} className="flex items-start space-x-4 p-4 border rounded-lg">
+                        <div key={event.id} className="flex items-start space-x-4 p-4 border border-white/5 rounded-lg hover:bg-white/5 transition-all group">
                           <div className="flex-shrink-0">
                             <div className="w-3 h-3 rounded-full bg-blue-500 mt-2"></div>
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center space-x-2">
-                                <h4 className="text-lg font-medium text-gray-900">{event.title}</h4>
+                                <h4 className="text-lg font-medium text-white">{event.title}</h4>
                                 <Badge className={getCategoryColor(event.category)}>
                                   {categories.find(c => c.value === event.category)?.label}
                                 </Badge>
@@ -623,7 +572,7 @@ export default function PlannerTimelinePage() {
                                 </Button>
                               </div>
                             </div>
-                            <p className="text-gray-600 mt-1">{event.description}</p>
+                            <p className="text-gray-400 mt-1">{event.description}</p>
                             <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
                               <div className="flex items-center">
                                 <Users className="h-4 w-4 mr-1" />
@@ -635,7 +584,7 @@ export default function PlannerTimelinePage() {
                               </div>
                             </div>
                             {event.notes && (
-                              <p className="text-sm text-gray-600 mt-2 italic">"{event.notes}"</p>
+                              <p className="text-sm text-gray-400 mt-2 italic">"{event.notes}"</p>
                             )}
                           </div>
                         </div>

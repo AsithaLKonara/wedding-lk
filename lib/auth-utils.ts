@@ -39,7 +39,7 @@ export interface AuthResult {
 export async function getAuthenticatedUser(request: NextRequest): Promise<AuthResult> {
   try {
     const { getUserFromRequest } = await import('./auth/get-user-from-request');
-    const authUser = getUserFromRequest(request);
+    const authUser = await getUserFromRequest(request);
 
     if (!authUser) {
       return {

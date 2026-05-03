@@ -244,116 +244,120 @@ export function CommentSection({ postId, isOpen, onClose }: CommentSectionProps)
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50">
-      <Card className="w-full max-w-2xl max-h-[80vh] flex flex-col">
-        <div className="p-4 border-b flex items-center justify-between">
-          <h3 className="text-lg font-semibold">Comments</h3>
-          <Button variant="ghost" size="sm" onClick={onClose}>
-            ×
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-4">
+      <Card className="w-full max-w-2xl max-h-[85vh] flex flex-col border border-border shadow-2xl rounded-[2rem] overflow-hidden">
+        <div className="p-6 border-b border-border/50 flex items-center justify-between bg-muted/30">
+          <h3 className="text-xl font-bold">Comments</h3>
+          <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full hover:bg-rose-500 hover:text-white transition-colors">
+            <span className="text-2xl">×</span>
           </Button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {loading ? (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {[...Array(3)].map((_, i) => (
-                <div key={i} className="flex space-x-3 animate-pulse">
-                  <div className="w-8 h-8 bg-gray-200 rounded-full" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-4 bg-gray-200 rounded w-1/4" />
-                    <div className="h-4 bg-gray-200 rounded w-3/4" />
+                <div key={i} className="flex space-x-4 animate-pulse">
+                  <div className="w-10 h-10 bg-muted rounded-full" />
+                  <div className="flex-1 space-y-3">
+                    <div className="h-4 bg-muted rounded w-1/4" />
+                    <div className="h-4 bg-muted rounded w-3/4" />
                   </div>
                 </div>
               ))}
             </div>
           ) : comments.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              <p>No comments yet</p>
-              <p className="text-sm">Be the first to comment!</p>
+            <div className="text-center py-12 text-muted-foreground">
+              <MessageCircle className="h-16 w-16 mx-auto mb-4 opacity-20" />
+              <p className="text-lg font-medium">No comments yet</p>
+              <p className="text-sm">Be the first to share your thoughts!</p>
             </div>
           ) : (
             comments.map((comment) => (
-              <div key={comment._id} className="space-y-3">
+              <div key={comment._id} className="space-y-4">
                 {/* Main Comment */}
-                <div className="flex space-x-3">
-                  <Avatar className="h-8 w-8">
+                <div className="flex space-x-4">
+                  <Avatar className="h-10 w-10 border-2 border-background shadow-sm">
                     <AvatarImage src={comment.author.avatar} />
-                    <AvatarFallback>{getInitials(comment.author.name)}</AvatarFallback>
+                    <AvatarFallback className="bg-muted text-xs font-bold">{getInitials(comment.author.name)}</AvatarFallback>
                   </Avatar>
                   
-                  <div className="flex-1 space-y-1">
-                    <div className="flex items-center space-x-2">
-                      <span className="font-semibold text-sm">{comment.author.name}</span>
-                      {comment.author.verified && (
-                        <Badge variant="secondary" className="text-xs">
-                          Verified
-                        </Badge>
-                      )}
-                      <span className="text-xs text-gray-500">
-                        {formatTimeAgo(comment.createdAt)}
-                      </span>
-                    </div>
-                    
-                    <p className="text-sm text-gray-900">{comment.content}</p>
-                    
-                    <div className="flex items-center space-x-4">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleLikeComment(comment._id)}
-                        className={`text-xs ${comment.isLiked ? 'text-red-500' : ''}`}
-                      >
-                        <Heart className={`h-3 w-3 mr-1 ${
-                          comment.isLiked ? 'fill-current' : ''
-                        }`} />
-                        {comment.likes}
-                      </Button>
-                      
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setReplyingTo(replyingTo === comment._id ? null : comment._id)}
-                        className="text-xs"
-                      >
-                        <Reply className="h-3 w-3 mr-1" />
-                        Reply
-                      </Button>
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <span className="font-bold text-sm">{comment.author.name}</span>
+                        {comment.author.verified && (
+                          <Badge className="bg-blue-500 text-white text-[10px] h-4 px-1.5 border-none">
+                            Verified
+                          </Badge>
+                        )}
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                          {formatTimeAgo(comment.createdAt)}
+                        </span>
+                      </div>
                       
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="text-xs">
-                            <MoreHorizontal className="h-3 w-3" />
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full">
+                            <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
+                        <DropdownMenuContent align="end" className="rounded-xl border-border/50">
                           <DropdownMenuItem 
-                            className="text-red-600"
+                            className="text-red-500 font-medium focus:text-red-500 focus:bg-red-50"
                             onClick={() => handleDeleteComment(comment._id)}
                           >
-                            <Trash2 className="h-3 w-3 mr-2" />
+                            <Trash2 className="h-4 w-4 mr-2" />
                             Delete
                           </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Flag className="h-3 w-3 mr-2" />
+                          <DropdownMenuItem className="font-medium">
+                            <Flag className="h-4 w-4 mr-2" />
                             Report
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
+                    
+                    <p className="text-sm text-foreground/90 leading-relaxed">{comment.content}</p>
+                    
+                    <div className="flex items-center space-x-6">
+                      <button
+                        onClick={() => handleLikeComment(comment._id)}
+                        className={`group flex items-center space-x-1.5 text-xs font-bold transition-colors ${comment.isLiked ? 'text-rose-500' : 'text-muted-foreground hover:text-rose-500'}`}
+                      >
+                        <Heart className={`h-4 w-4 transition-transform group-active:scale-125 ${
+                          comment.isLiked ? 'fill-current' : ''
+                        }`} />
+                        <span>{comment.likes}</span>
+                      </button>
+                      
+                      <button
+                        onClick={() => setReplyingTo(replyingTo === comment._id ? null : comment._id)}
+                        className="flex items-center space-x-1.5 text-xs font-bold text-muted-foreground hover:text-purple-500 transition-colors"
+                      >
+                        <Reply className="h-4 w-4" />
+                        <span>Reply</span>
+                      </button>
+                    </div>
 
                     {/* Reply Form */}
                     {replyingTo === comment._id && (
-                      <div className="mt-3 space-y-2">
+                      <motion.div 
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-4 space-y-3 p-4 rounded-2xl bg-muted/30 border border-border/50"
+                      >
                         <Textarea
                           placeholder="Write a reply..."
                           value={replyContent}
                           onChange={(e) => setReplyContent(e.target.value)}
-                          className="min-h-[60px] text-sm"
+                          className="min-h-[80px] text-sm bg-transparent border-none focus-visible:ring-0 resize-none p-0"
                         />
-                        <div className="flex justify-end space-x-2">
+                        <div className="flex justify-end space-x-2 pt-2 border-t border-border/50">
                           <Button
-                            variant="outline"
+                            variant="ghost"
                             size="sm"
+                            className="rounded-full font-bold h-9 px-4"
                             onClick={() => {
                               setReplyingTo(null);
                               setReplyContent('');
@@ -363,68 +367,67 @@ export function CommentSection({ postId, isOpen, onClose }: CommentSectionProps)
                           </Button>
                           <Button
                             size="sm"
+                            className="rounded-full bg-rose-500 hover:bg-rose-600 text-white font-bold h-9 px-6"
                             onClick={() => handleSubmitReply(comment._id)}
                             disabled={submitting || !replyContent.trim()}
                           >
                             {submitting ? 'Posting...' : 'Reply'}
                           </Button>
                         </div>
-                      </div>
+                      </motion.div>
                     )}
 
                     {/* Replies */}
                     {comment.replies.length > 0 && (
-                      <div className="ml-4 space-y-3">
+                      <div className="ml-4 mt-4 space-y-4 border-l-2 border-border/30 pl-6">
                         {comment.replies.map((reply) => (
                           <div key={reply._id} className="flex space-x-3">
-                            <Avatar className="h-6 w-6">
+                            <Avatar className="h-8 w-8 border border-background shadow-sm">
                               <AvatarImage src={reply.author.avatar} />
-                              <AvatarFallback>{getInitials(reply.author.name)}</AvatarFallback>
+                              <AvatarFallback className="bg-muted text-[10px] font-bold">{getInitials(reply.author.name)}</AvatarFallback>
                             </Avatar>
                             
                             <div className="flex-1 space-y-1">
                               <div className="flex items-center space-x-2">
-                                <span className="font-semibold text-xs">{reply.author.name}</span>
+                                <span className="font-bold text-xs">{reply.author.name}</span>
                                 {reply.author.verified && (
-                                  <Badge variant="secondary" className="text-xs">
-                                    Verified
+                                  <Badge className="bg-blue-500 text-white text-[8px] h-3.5 px-1 border-none">
+                                    V
                                   </Badge>
                                 )}
-                                <span className="text-xs text-gray-500">
+                                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                                   {formatTimeAgo(reply.createdAt)}
                                 </span>
                               </div>
                               
-                              <p className="text-xs text-gray-900">{reply.content}</p>
+                              <p className="text-sm text-foreground/80 leading-relaxed">{reply.content}</p>
                               
                               <div className="flex items-center space-x-4">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
+                                <button
                                   onClick={() => handleLikeComment(reply._id)}
-                                  className={`text-xs ${reply.isLiked ? 'text-red-500' : ''}`}
+                                  className={`group flex items-center space-x-1.5 text-[10px] font-bold transition-colors ${reply.isLiked ? 'text-rose-500' : 'text-muted-foreground hover:text-rose-500'}`}
                                 >
-                                  <Heart className={`h-3 w-3 mr-1 ${
+                                  <Heart className={`h-3 w-3 ${
                                     reply.isLiked ? 'fill-current' : ''
                                   }`} />
-                                  {reply.likes}
-                                </Button>
+                                  <span>{reply.likes}</span>
+                                </button>
                                 
                                 <DropdownMenu>
                                   <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="sm" className="text-xs">
+                                    <button className="text-muted-foreground hover:text-foreground">
                                       <MoreHorizontal className="h-3 w-3" />
-                                    </Button>
+                                    </button>
                                   </DropdownMenuTrigger>
-                                  <DropdownMenuContent align="end">
+                                  <DropdownMenuContent align="end" className="rounded-xl border-border/50">
                                     <DropdownMenuItem 
-                                      className="text-red-600"
+                                      className="text-red-500 font-medium focus:text-red-500 focus:bg-red-50"
                                       onClick={() => handleDeleteComment(reply._id)}
                                     >
                                       <Trash2 className="h-3 w-3 mr-2" />
                                       Delete
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem className="font-medium text-xs">
                                       <Flag className="h-3 w-3 mr-2" />
                                       Report
                                     </DropdownMenuItem>
@@ -444,37 +447,37 @@ export function CommentSection({ postId, isOpen, onClose }: CommentSectionProps)
         </div>
 
         {/* Comment Input */}
-        <div className="p-4 border-t">
-          <div className="flex space-x-3">
-            <Avatar className="h-8 w-8">
+        <div className="p-6 border-t border-border/50 bg-muted/20">
+          <div className="flex space-x-4">
+            <Avatar className="h-10 w-10 border-2 border-background shadow-md flex-shrink-0">
               <AvatarImage src="/placeholder-avatar.jpg" />
-              <AvatarFallback>U</AvatarFallback>
+              <AvatarFallback className="bg-muted font-bold text-xs">YOU</AvatarFallback>
             </Avatar>
             
-            <div className="flex-1 space-y-2">
+            <div className="flex-1 space-y-4">
               <Textarea
-                placeholder="Write a comment..."
+                placeholder="Share your thoughts..."
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
-                className="min-h-[60px] resize-none"
+                className="min-h-[100px] bg-card border-border/50 focus-visible:ring-rose-500/20 rounded-2xl resize-none p-4 text-sm font-medium"
               />
               
               <div className="flex justify-end">
                 <Button
                   onClick={handleSubmitComment}
                   disabled={submitting || !newComment.trim()}
-                  size="sm"
+                  className="rounded-full bg-gradient-to-r from-rose-500 to-purple-600 hover:from-rose-600 hover:to-purple-700 text-white font-bold h-12 px-10 shadow-lg shadow-rose-500/20 transition-all active:scale-95"
                 >
                   {submitting ? (
-                    <>
-                      <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2" />
+                    <div className="flex items-center">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
                       Posting...
-                    </>
+                    </div>
                   ) : (
-                    <>
-                      <Send className="h-3 w-3 mr-2" />
-                      Post
-                    </>
+                    <div className="flex items-center">
+                      <Send className="h-4 w-4 mr-2" />
+                      Post Comment
+                    </div>
                   )}
                 </Button>
               </div>
@@ -483,7 +486,7 @@ export function CommentSection({ postId, isOpen, onClose }: CommentSectionProps)
         </div>
       </Card>
     </div>
-  );
+  )
 }
 
 

@@ -201,7 +201,7 @@ export default function UserDashboard() {
       <div className="flex items-center justify-center min-h-96">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your wedding dashboard...</p>
+          <p className="text-gray-400">Loading your wedding dashboard...</p>
         </div>
       </div>
     )
@@ -218,8 +218,8 @@ export default function UserDashboard() {
           <Heart className="h-8 w-8 text-purple-600" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Wedding Planning Dashboard</h1>
-          <p className="text-gray-600 mt-1">Plan your perfect wedding day</p>
+          <h1 className="text-3xl font-bold text-white">Wedding Planning Dashboard</h1>
+          <p className="text-gray-400 mt-1">Plan your perfect wedding day</p>
         </div>
       </div>
 
@@ -232,8 +232,8 @@ export default function UserDashboard() {
                   <Calendar className="h-6 w-6 text-blue-600" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Days Until Wedding</p>
-                  <p className="text-2xl font-bold text-gray-900">{stats.daysUntilWedding}</p>
+                  <p className="text-sm font-medium text-gray-400">Days Until Wedding</p>
+                  <p className="text-2xl font-bold text-white">{stats.daysUntilWedding}</p>
                 </div>
               </div>
             </CardContent>
@@ -246,8 +246,8 @@ export default function UserDashboard() {
                   <CheckCircle className="h-6 w-6 text-green-600" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Tasks Completed</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Tasks Completed</p>
+                  <p className="text-2xl font-bold text-white">
                     {stats.tasksCompleted}/{stats.totalTasks}
                   </p>
                 </div>
@@ -262,8 +262,8 @@ export default function UserDashboard() {
                   <CreditCard className="h-6 w-6 text-purple-600" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Budget Used</p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-sm font-medium text-gray-400">Budget Used</p>
+                  <p className="text-2xl font-bold text-white">
                     {formatCurrency(stats.budgetUsed)}
                   </p>
                 </div>
@@ -278,8 +278,8 @@ export default function UserDashboard() {
                   <MessageSquare className="h-6 w-6 text-orange-600" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">New Messages</p>
-                  <p className="text-2xl font-bold text-gray-900">{stats.newMessages}</p>
+                  <p className="text-sm font-medium text-gray-400">New Messages</p>
+                  <p className="text-2xl font-bold text-white">{stats.newMessages}</p>
                 </div>
               </div>
             </CardContent>
@@ -355,7 +355,7 @@ export default function UserDashboard() {
                           activity.status === 'completed' ? 'bg-green-500' : 'bg-yellow-500'
                         }`} />
                         <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-900">{activity.action}</p>
+                          <p className="text-sm font-medium text-white">{activity.action}</p>
                           <p className="text-xs text-gray-500">
                             {getRelativeTime(activity.timestamp)}
                           </p>

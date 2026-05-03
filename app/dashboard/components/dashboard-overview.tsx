@@ -69,17 +69,17 @@ export function DashboardOverview({ stats }: DashboardOverviewProps) {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
-              <h3 className="font-medium mb-2">Find Venues</h3>
-              <p className="text-sm text-gray-600">Browse wedding venues</p>
+            <div className="p-4 border border-white/10 rounded-lg hover:bg-white/5 cursor-pointer transition-all">
+              <h3 className="font-medium mb-2 text-white">Find Venues</h3>
+              <p className="text-sm text-gray-400">Browse wedding venues</p>
             </div>
-            <div className="p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
-              <h3 className="font-medium mb-2">Find Vendors</h3>
-              <p className="text-sm text-gray-600">Browse wedding services</p>
+            <div className="p-4 border border-white/10 rounded-lg hover:bg-white/5 cursor-pointer transition-all">
+              <h3 className="font-medium mb-2 text-white">Find Vendors</h3>
+              <p className="text-sm text-gray-400">Browse wedding services</p>
             </div>
-            <div className="p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
-              <h3 className="font-medium mb-2">Wedding Planning</h3>
-              <p className="text-sm text-gray-600">Use planning tools</p>
+            <div className="p-4 border border-white/10 rounded-lg hover:bg-white/5 cursor-pointer transition-all">
+              <h3 className="font-medium mb-2 text-white">Wedding Planning</h3>
+              <p className="text-sm text-gray-400">Use planning tools</p>
             </div>
           </div>
         </CardContent>

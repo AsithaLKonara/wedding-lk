@@ -2,23 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { getUserFromRequestWithError } from '@/lib/auth/get-user-from-request';
 import { User, Vendor, Booking } from '@/lib/models';
+import mongoose from 'mongoose';
 
+// GET - Fetch vendor services
 export async function GET(request: NextRequest) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser || authUser.role !== 'vendor') {
       return NextResponse.json({ error: "Vendor access required" }, { status: 403 });
     }
 
     await connectDB();
-
-    const user = await User.findOne({ email: authUser.email });
-    if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-
-    console.log('📊 Fetching vendor services from MongoDB Atlas...');
 
     // Get vendor profile with services
     const vendor = await Vendor.findOne({ owner: authUser.id });
@@ -30,24 +25,22 @@ export async function GET(request: NextRequest) {
     const bookings = await Booking.find({ vendor: vendor._id });
 
     // Format services for frontend
-    const vendorServices = vendor.services ? vendor.services.map((service: { name: string; price: number; description?: string }, index: number) => {
+    const vendorServices = vendor.services ? vendor.services.map((service: any) => {
       const serviceBookings = bookings.filter(b => 
         b.service?.name === service.name
       ).length;
 
       return {
-        id: `${vendor._id}-service-${index}`,
+        id: service._id,
         name: service.name,
         category: vendor.category || 'general',
         price: service.price,
         description: service.description,
-        isActive: true, // All services in vendor profile are considered active
+        isActive: true,
         bookings: serviceBookings,
         rating: vendor.rating?.average || 0
       };
     }) : [];
-
-    console.log('✅ Vendor services fetched successfully');
 
     return NextResponse.json({
       success: true,
@@ -64,9 +57,10 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function PATCH(request: NextRequest) {
+// POST - Add new service
+export async function POST(request: NextRequest) {
   try {
-    const { user: authUser, error } = getUserFromRequestWithError(request);
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!authUser || authUser.role !== 'vendor') {
       return NextResponse.json({ error: "Vendor access required" }, { status: 403 });
@@ -74,36 +68,129 @@ export async function PATCH(request: NextRequest) {
 
     await connectDB();
 
-    const user = await User.findOne({ email: authUser.email });
-    if (!user || user.role !== 'vendor') {
-      return NextResponse.json({ error: "Vendor access required" }, { status: 403 });
+    const body = await request.json();
+    const { name, description, price, duration } = body;
+
+    if (!name || !price) {
+      return NextResponse.json({ error: "Name and price are required" }, { status: 400 });
     }
 
-    const { serviceId, updates } = await request.json();
-    
-    console.log('📝 Updating vendor service:', { serviceId, updates });
-
-    // Get vendor profile
     const vendor = await Vendor.findOne({ owner: authUser.id });
     if (!vendor) {
       return NextResponse.json({ error: "Vendor profile not found" }, { status: 404 });
     }
 
-    // For now, we'll just return success since service management
-    // would require more complex logic to update individual services
-    // in the vendor's services array
-    console.log('✅ Service update request received:', serviceId);
+    // Add service to array
+    vendor.services.push({
+      name,
+      description,
+      price,
+      duration: duration?.toString() || "1"
+    });
+
+    await vendor.save();
+
     return NextResponse.json({
       success: true,
-      message: 'Service update request received. Full service management will be implemented in future updates.'
+      message: 'Service added successfully',
+      service: vendor.services[vendor.services.length - 1]
+    });
+
+  } catch (error) {
+    console.error('❌ Error adding vendor service:', error);
+    return NextResponse.json({
+      success: false,
+      error: 'Failed to add vendor service'
+    }, { status: 500 });
+  }
+}
+
+// PATCH - Update service
+export async function PATCH(request: NextRequest) {
+  try {
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
+    if (error) return error;
+    if (!authUser || authUser.role !== 'vendor') {
+      return NextResponse.json({ error: "Vendor access required" }, { status: 403 });
+    }
+
+    await connectDB();
+
+    const { serviceId, updates } = await request.json();
+    
+    if (!serviceId) {
+      return NextResponse.json({ error: "Service ID is required" }, { status: 400 });
+    }
+
+    const vendor = await Vendor.findOne({ owner: authUser.id });
+    if (!vendor) {
+      return NextResponse.json({ error: "Vendor profile not found" }, { status: 404 });
+    }
+
+    // Find and update service in array
+    const serviceIndex = vendor.services.findIndex((s: any) => s._id.toString() === serviceId);
+    if (serviceIndex === -1) {
+      return NextResponse.json({ error: "Service not found" }, { status: 404 });
+    }
+
+    if (updates.name) vendor.services[serviceIndex].name = updates.name;
+    if (updates.description) vendor.services[serviceIndex].description = updates.description;
+    if (updates.price) vendor.services[serviceIndex].price = updates.price;
+    if (updates.duration) vendor.services[serviceIndex].duration = updates.duration.toString();
+
+    await vendor.save();
+
+    return NextResponse.json({
+      success: true,
+      message: 'Service updated successfully'
     });
 
   } catch (error) {
     console.error('❌ Error updating vendor service:', error);
     return NextResponse.json({
       success: false,
-      error: 'Failed to update vendor service',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      error: 'Failed to update vendor service'
+    }, { status: 500 });
+  }
+}
+
+// DELETE - Remove service
+export async function DELETE(request: NextRequest) {
+  try {
+    const { user: authUser, error } = await getUserFromRequestWithError(request);
+    if (error) return error;
+    if (!authUser || authUser.role !== 'vendor') {
+      return NextResponse.json({ error: "Vendor access required" }, { status: 403 });
+    }
+
+    await connectDB();
+
+    const { searchParams } = new URL(request.url);
+    const serviceId = searchParams.get('serviceId');
+
+    if (!serviceId) {
+      return NextResponse.json({ error: "Service ID is required" }, { status: 400 });
+    }
+
+    const vendor = await Vendor.findOne({ owner: authUser.id });
+    if (!vendor) {
+      return NextResponse.json({ error: "Vendor profile not found" }, { status: 404 });
+    }
+
+    // Remove service from array
+    vendor.services = vendor.services.filter((s: any) => s._id.toString() !== serviceId);
+    await vendor.save();
+
+    return NextResponse.json({
+      success: true,
+      message: 'Service deleted successfully'
+    });
+
+  } catch (error) {
+    console.error('❌ Error deleting vendor service:', error);
+    return NextResponse.json({
+      success: false,
+      error: 'Failed to delete vendor service'
     }, { status: 500 });
   }
 }

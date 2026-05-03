@@ -20,11 +20,9 @@ import {
   CheckCircle,
   Clock,
   BarChart3,
-  PieChart,
-  LineChart
+  PieChart
 } from "lucide-react"
-import { DashboardLayout } from "@/components/layouts/dashboard-layout"
-import { formatCurrency, formatNumber, formatPercentage, getRelativeTime } from "@/lib/utils/format"
+import { formatCurrency, formatNumber, getRelativeTime } from "@/lib/utils/format"
 
 interface AdminStats {
   totalUsers: number
@@ -48,7 +46,6 @@ interface RecentActivity {
 export default function AdminDashboard() {
   const router = useRouter()
   const [user, setUser] = useState(null);
-  const [status, setStatus] = useState('loading');
   const [unauthorized, setUnauthorized] = useState(false);
   const [stats, setStats] = useState<AdminStats>({
     totalUsers: 0,
@@ -66,15 +63,11 @@ export default function AdminDashboard() {
   const fetchAdminData = async () => {
     try {
       setLoading(true)
-      
-      // Fetch admin analytics
       const analyticsResponse = await fetch("/api/dashboard/admin/analytics")
       if (analyticsResponse.ok) {
         const analyticsData = await analyticsResponse.json()
         setStats(analyticsData.analytics.platform)
       }
-
-      // Fetch recent activity
       const activityResponse = await fetch("/api/dashboard/admin/activity")
       if (activityResponse.ok) {
         const activityData = await activityResponse.json()
@@ -89,373 +82,221 @@ export default function AdminDashboard() {
 
   const getActivityIcon = (type: string) => {
     switch (type) {
-      case "user_registration":
-        return <Users className="h-4 w-4" />
-      case "vendor_approval":
-        return <Building2 className="h-4 w-4" />
-      case "booking_created":
-        return <Calendar className="h-4 w-4" />
-      case "payment_received":
-        return <DollarSign className="h-4 w-4" />
-      default:
-        return <Activity className="h-4 w-4" />
+      case "user_registration": return <Users className="h-4 w-4" />
+      case "vendor_approval": return <Building2 className="h-4 w-4" />
+      case "booking_created": return <Calendar className="h-4 w-4" />
+      case "payment_received": return <DollarSign className="h-4 w-4" />
+      default: return <Activity className="h-4 w-4" />
     }
   }
 
   const getActivityColor = (status: string) => {
     switch (status) {
-      case "success":
-        return "text-green-600 bg-green-100"
-      case "warning":
-        return "text-yellow-600 bg-yellow-100"
-      case "error":
-        return "text-red-600 bg-red-100"
-      default:
-        return "text-gray-600 bg-gray-100"
+      case "success": return "text-green-400 bg-green-500/10 border-green-500/20"
+      case "warning": return "text-yellow-400 bg-yellow-500/10 border-yellow-500/20"
+      case "error": return "text-red-400 bg-red-500/10 border-red-500/20"
+      default: return "text-gray-400 bg-gray-500/10 border-gray-500/20"
     }
   }
 
   useEffect(() => {
-    // Check user authentication and role
     fetch('/api/auth/me')
       .then(res => res.json())
       .then(data => {
         if (data.user) {
           setUser(data.user)
-          // Check if user is admin or maintainer
           if (data.user.role !== 'admin' && data.user.role !== 'maintainer') {
             setUnauthorized(true)
-            // Redirect immediately - use window.location for immediate redirect
-            setTimeout(() => {
-              window.location.href = '/dashboard'
-            }, 100)
-            return
+            setTimeout(() => { router.push('/dashboard') }, 2000)
           } else {
-            setStatus('authenticated')
             fetchAdminData()
           }
         } else {
-          setStatus('unauthenticated')
-          window.location.href = '/login'
+          router.push('/login')
         }
       })
-      .catch(() => {
-        setStatus('unauthenticated')
-        window.location.href = '/login'
-      })
+      .catch(() => router.push('/login'))
   }, [router])
 
   if (unauthorized) {
     return (
-      <DashboardLayout>
-        <div className="flex items-center justify-center min-h-96">
-          <Card className="w-full max-w-md">
-            <CardHeader>
-              <CardTitle className="text-red-600 flex items-center gap-2">
-                <AlertTriangle className="h-6 w-6" />
-                Unauthorized Access
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">You do not have permission to access this page.</p>
-              <p className="text-sm text-gray-500 mt-2">Redirecting to your dashboard...</p>
-            </CardContent>
-          </Card>
-        </div>
-      </DashboardLayout>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Card className="w-full max-w-md bg-white/5 border-white/10">
+          <CardHeader>
+            <CardTitle className="text-red-500 flex items-center gap-2 font-black">
+              <AlertTriangle className="h-6 w-6" />
+              Unauthorized Access
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-gray-400 font-medium">You do not have permission to access this page.</p>
+            <p className="text-sm text-gray-500 mt-2 font-bold animate-pulse uppercase tracking-widest">Redirecting...</p>
+          </CardContent>
+        </Card>
+      </div>
     )
   }
 
   if (loading) {
     return (
-      <DashboardLayout>
-        <div className="flex items-center justify-center min-h-96">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading admin dashboard...</p>
-          </div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-red-600 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-gray-400 font-medium animate-pulse">Loading admin console...</p>
         </div>
-      </DashboardLayout>
+      </div>
     )
   }
 
   return (
-    <DashboardLayout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="p-3 bg-red-100 rounded-full">
-              <Shield className="h-8 w-8 text-red-600" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-              <p className="text-gray-600 mt-1">Platform overview and management</p>
-            </div>
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center space-x-4">
+          <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-2xl shadow-lg shadow-red-500/5">
+            <Shield className="h-8 w-8 text-red-500" />
           </div>
-          <Badge variant="destructive" className="text-sm">
-            Administrator Access
-          </Badge>
+          <div>
+            <h1 className="text-3xl font-black text-white tracking-tight uppercase">Admin Console</h1>
+            <p className="text-gray-400 font-medium">Manage platform ecosystem</p>
+          </div>
         </div>
+        <Badge className="bg-red-500/10 text-red-500 border-red-500/20 px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] h-fit w-fit">
+          Secure Access
+        </Badge>
+      </div>
 
-        {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatNumber(stats.totalUsers)}</div>
-              <p className="text-xs text-muted-foreground">
-                +{stats.userGrowth}% from last month
-              </p>
-            </CardContent>
-          </Card>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard label="Total Users" value={formatNumber(stats.totalUsers)} trend={`+${stats.userGrowth}%`} icon={Users} color="blue" />
+        <StatCard label="Vendors" value={formatNumber(stats.totalVendors)} trend="Active" icon={Building2} color="purple" />
+        <StatCard label="Venues" value={formatNumber(stats.totalVenues)} trend="Live" icon={Building2} color="pink" />
+        <StatCard label="Bookings" value={formatNumber(stats.totalBookings)} trend="Current" icon={Calendar} color="emerald" />
+      </div>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Vendors</CardTitle>
-              <Building2 className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatNumber(stats.totalVendors)}</div>
-              <p className="text-xs text-muted-foreground">Active vendors</p>
-            </CardContent>
-          </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card className="bg-gradient-to-br from-white/10 to-white/5 border-white/10 relative overflow-hidden group">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Platform Revenue</CardTitle>
+            <DollarSign className="h-4 w-4 text-yellow-400" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-black text-white">{formatCurrency(stats.totalRevenue)}</div>
+            <p className="text-xs text-green-400 font-bold mt-1">+{stats.revenueGrowth}% growth</p>
+          </CardContent>
+        </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Venues</CardTitle>
-              <Building2 className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatNumber(stats.totalVenues)}</div>
-              <p className="text-xs text-muted-foreground">Available venues</p>
-            </CardContent>
-          </Card>
+        <Card className="bg-white/5 border-white/10">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Avg Rating</CardTitle>
+            <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-black text-white">{stats.averageRating.toFixed(1)}</div>
+            <p className="text-xs text-gray-500 font-bold uppercase tracking-tighter mt-1">Platform excellence</p>
+          </CardContent>
+        </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Bookings</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatNumber(stats.totalBookings)}</div>
-              <p className="text-xs text-muted-foreground">Active bookings</p>
-            </CardContent>
-          </Card>
-        </div>
+        <Card className="bg-white/5 border-white/10">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Platform Health</CardTitle>
+            <CheckCircle className="h-4 w-4 text-emerald-400" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-black text-emerald-400">99.9%</div>
+            <p className="text-xs text-gray-500 font-bold uppercase tracking-tighter mt-1">System Uptime</p>
+          </CardContent>
+        </Card>
+      </div>
 
-        {/* Revenue and Performance */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{formatCurrency(stats.totalRevenue)}</div>
-              <p className="text-xs text-muted-foreground">
-                +{stats.revenueGrowth}% from last month
-              </p>
-            </CardContent>
-          </Card>
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="bg-white/5 border border-white/10 p-1 rounded-xl h-12 w-fit">
+          <TabsTrigger value="overview" className="rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white transition-all font-black px-6 text-[10px] uppercase tracking-widest">Overview</TabsTrigger>
+          <TabsTrigger value="management" className="rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white transition-all font-black px-6 text-[10px] uppercase tracking-widest">Management</TabsTrigger>
+          <TabsTrigger value="activity" className="rounded-lg data-[state=active]:bg-white/10 data-[state=active]:text-white transition-all font-black px-6 text-[10px] uppercase tracking-widest">Activity Log</TabsTrigger>
+        </TabsList>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Average Rating</CardTitle>
-              <Star className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.averageRating.toFixed(1)}</div>
-              <p className="text-xs text-muted-foreground">Platform average</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Platform Health</CardTitle>
-              <CheckCircle className="h-4 w-4 text-green-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">98.5%</div>
-              <p className="text-xs text-muted-foreground">Uptime</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Management Tabs */}
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="management">Management</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="activity">Activity</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <TrendingUp className="h-5 w-5 mr-2" />
-                    Recent Activity
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {recentActivity.slice(0, 5).map((activity) => (
-                      <div key={activity.id} className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-full ${getActivityColor(activity.status)}`}>
-                          {getActivityIcon(activity.type)}
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">{activity.description}</p>
-                          <p className="text-xs text-gray-500">
-                            {getRelativeTime(activity.timestamp)}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <Button className="w-full justify-start" variant="outline">
-                      <Users className="h-4 w-4 mr-2" />
-                      Manage Users
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <Building2 className="h-4 w-4 mr-2" />
-                      Manage Vendors
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <BarChart3 className="h-4 w-4 mr-2" />
-                      View Analytics
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <Settings className="h-4 w-4 mr-2" />
-                      System Settings
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="management" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>User Management</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Manage user accounts, roles, and permissions
-                  </p>
-                  <Button className="w-full">Manage Users</Button>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Vendor Management</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Approve and manage vendor accounts
-                  </p>
-                  <Button className="w-full">Manage Vendors</Button>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>System Settings</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-gray-600 mb-4">
-                    Configure system-wide settings
-                  </p>
-                  <Button className="w-full">System Settings</Button>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="analytics" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <BarChart3 className="h-5 w-5 mr-2" />
-                    Revenue Analytics
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-                    <p className="text-gray-500">Revenue chart will be implemented here</p>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <PieChart className="h-5 w-5 mr-2" />
-                    User Distribution
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-                    <p className="text-gray-500">User distribution chart will be implemented here</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="activity" className="space-y-6">
-            <Card>
+        <TabsContent value="overview" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="bg-white/5 border-white/10">
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Activity className="h-5 w-5 mr-2" />
-                  System Activity Log
-                </CardTitle>
+                <CardTitle className="text-white font-black text-xs uppercase tracking-widest">Recent Activity</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {recentActivity.map((activity) => (
-                    <div key={activity.id} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-full ${getActivityColor(activity.status)}`}>
-                          {getActivityIcon(activity.type)}
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">{activity.description}</p>
-                          <p className="text-xs text-gray-500">
-                            {getRelativeTime(activity.timestamp)}
-                          </p>
-                        </div>
+                  {recentActivity.slice(0, 5).map((activity) => (
+                    <div key={activity.id} className="flex items-center space-x-3 p-3 rounded-xl bg-white/5 border border-white/5 group hover:bg-white/10 transition-all">
+                      <div className={`p-2.5 rounded-xl border ${getActivityColor(activity.status)}`}>
+                        {getActivityIcon(activity.type)}
                       </div>
-                      <Badge variant="outline" className={getActivityColor(activity.status)}>
-                        {activity.status}
-                      </Badge>
+                      <div className="flex-1">
+                        <p className="text-sm font-bold text-white">{activity.description}</p>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">{getRelativeTime(activity.timestamp)}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </DashboardLayout>
+
+            <Card className="bg-white/5 border-white/10">
+              <CardHeader>
+                <CardTitle className="text-white font-black text-xs uppercase tracking-widest">Quick Actions</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-4">
+                  <QuickActionBtn icon={Users} label="Users" color="blue" />
+                  <QuickActionBtn icon={Building2} label="Vendors" color="purple" />
+                  <QuickActionBtn icon={BarChart3} label="Analytics" color="pink" />
+                  <QuickActionBtn icon={Settings} label="Settings" color="emerald" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="management" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <ManagementCard title="User Management" desc="Manage accounts and roles." btnLabel="Open Console" color="blue" />
+            <ManagementCard title="Vendor Approval" desc="Review vendor applications." btnLabel="Verify Now" color="purple" />
+            <ManagementCard title="System Settings" desc="Configure platform limits." btnLabel="Update" color="emerald" />
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
+}
+
+function StatCard({ label, value, trend, icon: Icon, color }: any) {
+  return (
+    <Card className="bg-white/5 border-white/10 group">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{label}</CardTitle>
+        <Icon className={`h-4 w-4 text-${color}-400 opacity-50 group-hover:opacity-100 transition-opacity`} />
+      </CardHeader>
+      <CardContent>
+        <div className="text-3xl font-black text-white">{value}</div>
+        <p className="text-[10px] text-gray-500 font-bold uppercase mt-1">{trend}</p>
+      </CardContent>
+    </Card>
+  )
+}
+
+function QuickActionBtn({ icon: Icon, label, color }: any) {
+  return (
+    <Button className="h-24 flex flex-col justify-center items-center bg-white/5 hover:bg-white/10 border-white/10 text-white rounded-2xl group transition-all" variant="outline">
+      <Icon className={`h-6 w-6 mb-2 text-${color}-400 group-hover:scale-110 transition-transform`} />
+      <span className="font-black text-[10px] uppercase tracking-widest">{label}</span>
+    </Button>
+  )
+}
+
+function ManagementCard({ title, desc, btnLabel, color }: any) {
+  return (
+    <Card className="bg-white/5 border-white/10">
+      <CardHeader><CardTitle className="text-white font-black text-sm uppercase">{title}</CardTitle></CardHeader>
+      <CardContent>
+        <p className="text-xs text-gray-500 font-medium mb-6">{desc}</p>
+        <Button className={`w-full bg-${color}-600 hover:bg-${color}-700 font-black rounded-xl h-11 text-[10px] uppercase tracking-widest`}>{btnLabel}</Button>
+      </CardContent>
+    </Card>
   )
 }

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { User } from '@/lib/models/user';
-import { Middleware } from '@/lib/rbac';
+import { Middleware } from '@/lib/rbac/server';
 
 // GET - Fetch users with filtering and pagination
 async function getHandler(request: NextRequest) {
@@ -293,3 +293,8 @@ async function deleteHandler(request: NextRequest, authUser: any) {
     );
   }
 } 
+// Export wrapped handlers
+export const GET = Middleware.requireAdmin(getHandler);
+export const POST = Middleware.requireAdmin(postHandler);
+export const PUT = Middleware.requireAdmin(putHandler);
+export const DELETE = Middleware.requireAdmin(deleteHandler);

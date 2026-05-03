@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import type { AuthUser } from '@/lib/auth/custom-auth'
+import type { AuthUser } from '@/lib/rbac'
 
 interface UseAuthReturn {
   user: AuthUser | null
@@ -38,7 +38,7 @@ export function useAuth(): UseAuthReturn {
 export function useSignOut() {
   return async () => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' })
+      await fetch('/api/auth/signout', { method: 'POST' })
       window.location.href = '/'
     } catch (error) {
       console.error('Logout error:', error)

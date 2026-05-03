@@ -221,7 +221,7 @@ export default function SettingsPage() {
     <div className="container mx-auto px-4 py-8 max-w-3xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Account Settings</h1>
-        <p className="text-gray-600 dark:text-gray-400">Manage your account preferences and settings</p>
+        <p className="text-gray-400 dark:text-gray-400">Manage your account preferences and settings</p>
       </div>
 
       <div className="space-y-8">
@@ -352,7 +352,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <Label htmlFor="emailBookings">Email Booking Updates</Label>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-400 dark:text-gray-400">
                   Receive email notifications about your bookings
                 </p>
               </div>
@@ -366,7 +366,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <Label htmlFor="emailPromotions">Promotional Emails</Label>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-gray-400 dark:text-gray-400">
                   Receive emails about special offers and promotions
                 </p>
               </div>
@@ -380,7 +380,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <Label htmlFor="smsReminders">SMS Reminders</Label>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Receive SMS reminders for important dates</p>
+                <p className="text-sm text-gray-400 dark:text-gray-400">Receive SMS reminders for important dates</p>
               </div>
               <Switch
                 id="smsReminders"
@@ -392,7 +392,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <Label htmlFor="pushNotifications">Push Notifications</Label>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Receive push notifications in your browser</p>
+                <p className="text-sm text-gray-400 dark:text-gray-400">Receive push notifications in your browser</p>
               </div>
               <Switch
                 id="pushNotifications"
@@ -419,7 +419,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <Label htmlFor="profileVisible">Public Profile</Label>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Make your profile visible to vendors</p>
+                <p className="text-sm text-gray-400 dark:text-gray-400">Make your profile visible to vendors</p>
               </div>
               <Switch
                 id="profileVisible"
@@ -431,7 +431,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <Label htmlFor="showWeddingDate">Show Wedding Date</Label>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Display your wedding date on your profile</p>
+                <p className="text-sm text-gray-400 dark:text-gray-400">Display your wedding date on your profile</p>
               </div>
               <Switch
                 id="showWeddingDate"
@@ -443,7 +443,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <Label htmlFor="allowMessages">Allow Messages</Label>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Allow vendors to send you direct messages</p>
+                <p className="text-sm text-gray-400 dark:text-gray-400">Allow vendors to send you direct messages</p>
               </div>
               <Switch
                 id="allowMessages"
@@ -470,7 +470,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <Label htmlFor="2fa-switch">Enable 2FA</Label>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Add an extra layer of security to your account</p>
+                <p className="text-sm text-gray-400 dark:text-gray-400">Add an extra layer of security to your account</p>
               </div>
               <Switch
                 id="2fa-switch"

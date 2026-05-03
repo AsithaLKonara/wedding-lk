@@ -39,33 +39,54 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section className="py-20 sm:py-32">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-24 sm:py-32 bg-background relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-rose-500/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+      
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
-          initial={{ y: 50, opacity: 0 }}
+          initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center"
+          className="text-center max-w-3xl mx-auto"
         >
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-            Everything You Need for Your Perfect Day
+          <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-rose-500/10 text-rose-500 text-sm font-bold mb-6 tracking-wide uppercase">
+            Platform Features
+          </div>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">
+            Everything You Need for Your <span className="gradient-text">Perfect Day</span>
           </h2>
-          <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-            Our platform provides all the tools and services to plan your dream wedding
+          <p className="text-xl text-muted-foreground leading-relaxed">
+            Our platform provides all the tools and services to plan your dream wedding with ease and elegance.
           </p>
         </motion.div>
 
-        <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              initial={{ y: 50, opacity: 0 }}
+              initial={{ y: 30, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
+              className="group"
             >
-              <FeatureCard {...feature} />
+              <div className="relative p-8 rounded-3xl bg-card border border-border/50 hover:border-rose-500/50 hover:shadow-2xl hover:shadow-rose-500/5 transition-all duration-500 h-full overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                  <feature.icon className="w-24 h-24 -mr-8 -mt-8" />
+                </div>
+                
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500 to-purple-600 flex items-center justify-center mb-8 shadow-lg shadow-rose-500/20 group-hover:scale-110 transition-transform duration-500">
+                  <feature.icon className="w-7 h-7 text-white" />
+                </div>
+                
+                <h3 className="text-2xl font-bold mb-4 group-hover:text-rose-500 transition-colors">
+                  {feature.title}
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>

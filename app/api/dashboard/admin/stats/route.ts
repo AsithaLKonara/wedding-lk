@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/db';
 import { User, Vendor, Venue, Booking, Payment, Review } from '@/lib/models';
-import { Middleware } from '@/lib/rbac';
+import { Middleware } from '@/lib/rbac/server';
 
 async function handler(request: NextRequest) {
   try {

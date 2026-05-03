@@ -52,19 +52,19 @@ export default function BookingsTab() {
         {bookings.length > 0 ? (
           <div className="space-y-4">
             {bookings.map((booking: any) => (
-              <div key={booking._id} className="flex items-center justify-between p-4 border rounded-lg">
+              <div key={booking._id} className="flex items-center justify-between p-4 border border-white/5 rounded-lg hover:bg-white/5 transition-colors">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Calendar className="h-5 w-5 text-blue-600" />
+                  <div className="w-10 h-10 bg-blue-500/10 rounded-full flex items-center justify-center">
+                    <Calendar className="h-5 w-5 text-blue-500" />
                   </div>
                   <div>
-                    <p className="font-medium">{booking.venue?.name || 'Vendor Service'}</p>
-                    <p className="text-sm text-gray-500">{new Date(booking.date).toLocaleDateString()}</p>
+                    <p className="font-medium text-white">{booking.venue?.name || 'Vendor Service'}</p>
+                    <p className="text-sm text-gray-400">{new Date(booking.date).toLocaleDateString()}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium">LKR {booking.totalAmount?.toLocaleString() || "0"}</p>
-                  <Badge variant={booking.status === 'confirmed' ? 'default' : 'secondary'}>
+                  <p className="font-medium text-white">LKR {booking.totalAmount?.toLocaleString() || "0"}</p>
+                  <Badge variant={booking.status === 'confirmed' ? 'default' : 'secondary'} className={booking.status === 'confirmed' ? 'bg-green-500/10 text-green-500 border-green-500/20' : 'bg-gray-500/10 text-gray-400 border-gray-500/20'}>
                     {booking.status}
                   </Badge>
                 </div>

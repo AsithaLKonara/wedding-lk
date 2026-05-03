@@ -1,5 +1,5 @@
 import { connectDB } from '@/lib/db';
-import { User, VendorProfile, WeddingPlannerProfile, Venue, Booking, Review, VendorPackage, Testimonial } from '@/lib/models';
+import { User, Vendor, VendorProfile, WeddingPlannerProfile, Venue, Booking, Review, VendorPackage, Testimonial, BudgetItem, SystemSettings, TimelineEvent } from '@/lib/models';
 import bcrypt from 'bcryptjs';
 
 // Comprehensive seed data for all user roles
@@ -13,7 +13,7 @@ export async function createComprehensiveSeedData() {
 
     // Create users with different roles
     const users = await createUsers();
-    const vendors = await createVendors();
+    const vendors = await createVendorUsers();
     const planners = await createWeddingPlanners();
     const admins = await createAdmins();
     
@@ -41,6 +41,7 @@ async function clearAllCollections() {
   try {
     console.log('🧹 Clearing all collections...');
     await User.deleteMany({});
+    await Vendor.deleteMany({});
     await VendorProfile.deleteMany({});
     await WeddingPlannerProfile.deleteMany({});
     await Venue.deleteMany({});
@@ -48,6 +49,9 @@ async function clearAllCollections() {
     await Review.deleteMany({});
     await VendorPackage.deleteMany({});
     await Testimonial.deleteMany({});
+    await BudgetItem.deleteMany({});
+    await SystemSettings.deleteMany({});
+    await TimelineEvent.deleteMany({});
     console.log('✅ All collections cleared');
   } catch (error) {
     console.error('❌ Error clearing collections:', error);
@@ -197,7 +201,7 @@ async function createUsers() {
 }
 
 // Create 5 vendors with business information
-async function createVendors() {
+async function createVendorUsers() {
   const vendors = [];
   const hashedPassword = await bcrypt.hash('password123', 12);
 
@@ -847,7 +851,9 @@ async function createAdmins() {
 // Create related data (venues, bookings, reviews, etc.)
 async function createRelatedData(users: any[], vendors: any[], planners: any[], admins: any[]) {
   // Create venues
-  await createVenues(admins[0]._id);
+  const createdVenues = await createVenues(admins[0]._id);
+  const createdVendors = await createVendors(vendors.map(v => v._id));
+  await createReviews(users, createdVendors, createdVenues);
   
   // Create packages
   await createPackages(vendors);
@@ -858,8 +864,14 @@ async function createRelatedData(users: any[], vendors: any[], planners: any[], 
   // Create bookings
   await createBookings(users, vendors);
   
-  // Create reviews
-  await createReviews(users, vendors);
+  // Create budget items for users
+  await createBudgetItems(users);
+  
+  // Create system settings for admins
+  await createSystemSettings(admins);
+  
+  // Create timeline events for planners
+  await createTimelineEvents(planners);
   
   console.log('✅ Created all related data');
 }
@@ -890,7 +902,7 @@ async function createVenues(adminId: string) {
       },
       images: ['/images/venues/grand-ballroom-1.jpg', '/images/venues/grand-ballroom-2.jpg'],
       isActive: true,
-      isFeatured: true
+      featured: true
     },
     {
       name: 'Kandy Garden Hotel',
@@ -916,7 +928,7 @@ async function createVenues(adminId: string) {
       },
       images: ['/images/venues/kandy-garden-1.jpg', '/images/venues/kandy-garden-2.jpg'],
       isActive: true,
-      isFeatured: false
+      featured: false
     },
     {
       name: 'Galle Fort Heritage',
@@ -942,13 +954,91 @@ async function createVenues(adminId: string) {
       },
       images: ['/images/venues/galle-fort-1.jpg', '/images/venues/galle-fort-2.jpg'],
       isActive: true,
-      isFeatured: true
+      featured: true
     }
   ];
 
   const createdVenues = await Venue.insertMany(venues);
   console.log(`✅ Created ${createdVenues.length} venues`);
   return createdVenues;
+}
+
+async function createVendors(userIds: string[]) {
+  const vendors = [
+    {
+      name: 'John Smith',
+      businessName: 'Royal Photography',
+      category: 'photographer',
+      description: 'Professional wedding photography services with 10+ years experience.',
+      location: {
+        address: '123 Main St',
+        city: 'Colombo',
+        province: 'Western',
+      },
+      contact: {
+        phone: '+94 77 123 4567',
+        email: 'john@royal.com',
+      },
+      pricing: {
+        startingPrice: 50000,
+      },
+      owner: userIds[0],
+      isVerified: true,
+      featured: true,
+      isActive: true,
+      rating: { average: 4.8, count: 25 }
+    },
+    {
+      name: 'Sarah Jane',
+      businessName: 'Elegant Decors',
+      category: 'decorator',
+      description: 'Stunning floral and theme decorations for your special day.',
+      location: {
+        address: '456 Flower Rd',
+        city: 'Kandy',
+        province: 'Central',
+      },
+      contact: {
+        phone: '+94 77 987 6543',
+        email: 'sarah@elegant.com',
+      },
+      pricing: {
+        startingPrice: 75000,
+      },
+      owner: userIds[1],
+      isVerified: true,
+      featured: true,
+      isActive: true,
+      rating: { average: 4.9, count: 42 }
+    },
+    {
+      name: 'Michael Perera',
+      businessName: 'Elite Catering',
+      category: 'catering',
+      description: 'Exquisite culinary experiences for wedding receptions.',
+      location: {
+        address: '789 Food Lane',
+        city: 'Galle',
+        province: 'Southern',
+      },
+      contact: {
+        phone: '+94 77 555 4444',
+        email: 'michael@elite.com',
+      },
+      pricing: {
+        startingPrice: 1500,
+      },
+      owner: userIds[2],
+      isVerified: true,
+      featured: true,
+      isActive: true,
+      rating: { average: 4.7, count: 38 }
+    }
+  ];
+
+  const createdVendors = await Vendor.insertMany(vendors);
+  console.log(`✅ Created ${createdVendors.length} vendors`);
+  return createdVendors;
 }
 
 async function createPackages(vendors: any[]) {
@@ -1159,40 +1249,43 @@ async function createBookings(users: any[], vendors: any[]) {
     {
       user: users[0]._id,
       vendor: vendors[0]._id,
-      date: new Date('2024-07-15'),
-      startTime: '08:00',
-      endTime: '20:00',
+      eventDate: new Date('2024-07-15'),
+      eventTime: '08:00',
       guestCount: 200,
       status: 'confirmed',
-      totalAmount: 150000,
-      depositAmount: 50000,
-      depositPaid: true,
+      payment: {
+        amount: 150000,
+        status: 'completed',
+        method: 'card'
+      },
       notes: 'Include drone photography'
     },
     {
       user: users[1]._id,
       vendor: vendors[1]._id,
-      date: new Date('2024-08-20'),
-      startTime: '07:00',
-      endTime: '22:00',
+      eventDate: new Date('2024-08-20'),
+      eventTime: '07:00',
       guestCount: 150,
       status: 'pending',
-      totalAmount: 100000,
-      depositAmount: 30000,
-      depositPaid: false,
+      payment: {
+        amount: 100000,
+        status: 'pending',
+        method: 'bank_transfer'
+      },
       notes: 'Traditional Sri Lankan theme'
     },
     {
       user: users[2]._id,
       vendor: vendors[2]._id,
-      date: new Date('2024-09-10'),
-      startTime: '06:00',
-      endTime: '23:00',
+      eventDate: new Date('2024-09-10'),
+      eventTime: '06:00',
       guestCount: 250,
       status: 'confirmed',
-      totalAmount: 500000,
-      depositAmount: 150000,
-      depositPaid: true,
+      payment: {
+        amount: 500000,
+        status: 'completed',
+        method: 'card'
+      },
       notes: 'Vegetarian options available'
     }
   ];
@@ -1202,10 +1295,10 @@ async function createBookings(users: any[], vendors: any[]) {
   return createdBookings;
 }
 
-async function createReviews(users: any[], vendors: any[]) {
+async function createReviews(users: any[], vendors: any[], venues: any[]) {
   const reviews = [
     {
-      userId: users[0]._id,
+      userId: users[1]._id,
       vendorId: vendors[0]._id,
       overallRating: 5,
       categoryRatings: {
@@ -1307,4 +1400,53 @@ export async function resetAndSeedDatabase() {
     console.error('❌ Comprehensive database seeding failed:', error);
     throw error;
   }
+}
+
+async function createBudgetItems(users: any[]) {
+  const budgetData = [
+    { category: 'Venue', name: 'Grand Ballroom Hotel', estimatedCost: 200000, actualCost: 200000, paid: 200000, status: 'paid' },
+    { category: 'Catering', name: 'Sweet Dreams Catering', estimatedCost: 500000, actualCost: 500000, paid: 150000, status: 'booked' },
+    { category: 'Photography', name: 'Perfect Moments Photography', estimatedCost: 150000, actualCost: 150000, paid: 50000, status: 'booked' },
+    { category: 'Attire', name: 'Bridal Saree', estimatedCost: 100000, actualCost: 0, paid: 0, status: 'planned' },
+  ];
+
+  for (const user of users) {
+    const items = budgetData.map(data => ({
+      userId: user._id,
+      ...data
+    }));
+    await BudgetItem.insertMany(items);
+  }
+  console.log('✅ Created budget items for users');
+}
+
+async function createSystemSettings(admins: any[]) {
+  const settingsData = [
+    { key: 'siteName', value: 'Wedding LK', category: 'general', description: 'The name of the website' },
+    { key: 'siteEmail', value: 'info@weddinglk.com', category: 'general', description: 'Contact email' },
+    { key: 'maintenanceMode', value: false, category: 'general', description: 'Toggle maintenance mode' },
+    { key: 'enableRegistration', value: true, category: 'security', description: 'Enable user registration' },
+    { key: 'stripePublicKey', value: 'pk_test_placeholder', category: 'payments', description: 'Stripe Public Key' },
+  ];
+
+  await SystemSettings.insertMany(settingsData);
+  console.log('✅ Created system settings');
+}
+
+async function createTimelineEvents(planners: any[]) {
+  const timelineData = [
+    { title: 'Morning Preparation', date: '2024-08-15', time: '06:00', duration: 120, category: 'preparation', priority: 'high', status: 'confirmed' },
+    { title: 'Ceremony Start', date: '2024-08-15', time: '10:00', duration: 60, category: 'ceremony', priority: 'urgent', status: 'confirmed' },
+    { title: 'Photo Session', date: '2024-08-15', time: '11:30', duration: 90, category: 'photography', priority: 'medium', status: 'pending' },
+    { title: 'Reception Lunch', date: '2024-08-15', time: '13:00', duration: 180, category: 'reception', priority: 'high', status: 'confirmed' },
+  ];
+
+  for (const planner of planners) {
+    const events = timelineData.map(data => ({
+      plannerId: planner._id,
+      ...data
+    }));
+    await TimelineEvent.insertMany(events);
+  }
+  console.log('✅ Created timeline events for planners');
 }

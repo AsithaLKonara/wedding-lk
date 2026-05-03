@@ -77,7 +77,7 @@ export default function PaymentsPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Payment History</h1>
-        <p className="text-gray-600 dark:text-gray-400">Track your payments and download receipts</p>
+        <p className="text-gray-400 dark:text-gray-400">Track your payments and download receipts</p>
       </div>
 
       {/* Payment Summary */}
@@ -130,7 +130,7 @@ export default function PaymentsPage() {
                     </Badge>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600 dark:text-gray-400">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-400 dark:text-gray-400">
                     <div>
                       <span className="font-medium">Payment ID:</span> {payment.id}
                     </div>
@@ -173,7 +173,7 @@ export default function PaymentsPage() {
           <CardContent>
             <CreditCard className="h-12 w-12 mx-auto mb-4 text-gray-400" />
             <h3 className="text-lg font-medium mb-2">No payments yet</h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-400 dark:text-gray-400">
               Your payment history will appear here once you make bookings
             </p>
           </CardContent>

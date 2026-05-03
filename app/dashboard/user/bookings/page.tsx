@@ -130,7 +130,7 @@ export default function UserBookingsPage() {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Loading bookings...</p>
+          <p className="mt-2 text-gray-400">Loading bookings...</p>
         </div>
       </div>
     );
@@ -140,8 +140,8 @@ export default function UserBookingsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">My Bookings</h1>
-          <p className="text-gray-600">Track and manage your wedding service bookings</p>
+          <h1 className="text-3xl font-bold text-white">My Bookings</h1>
+          <p className="text-gray-400">Track and manage your wedding service bookings</p>
         </div>
       </div>
 
@@ -152,7 +152,7 @@ export default function UserBookingsPage() {
             <div className="flex items-center">
               <Calendar className="h-8 w-8 text-blue-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Bookings</p>
+                <p className="text-sm font-medium text-gray-400">Total Bookings</p>
                 <p className="text-2xl font-bold">{stats.total}</p>
               </div>
             </div>
@@ -163,7 +163,7 @@ export default function UserBookingsPage() {
             <div className="flex items-center">
               <Clock className="h-8 w-8 text-yellow-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Pending</p>
+                <p className="text-sm font-medium text-gray-400">Pending</p>
                 <p className="text-2xl font-bold">{stats.pending}</p>
               </div>
             </div>
@@ -174,7 +174,7 @@ export default function UserBookingsPage() {
             <div className="flex items-center">
               <Star className="h-8 w-8 text-green-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Confirmed</p>
+                <p className="text-sm font-medium text-gray-400">Confirmed</p>
                 <p className="text-2xl font-bold">{stats.confirmed}</p>
               </div>
             </div>
@@ -185,7 +185,7 @@ export default function UserBookingsPage() {
             <div className="flex items-center">
               <CheckCircle className="h-8 w-8 text-purple-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Completed</p>
+                <p className="text-sm font-medium text-gray-400">Completed</p>
                 <p className="text-2xl font-bold">{stats.completed}</p>
               </div>
             </div>
@@ -196,7 +196,7 @@ export default function UserBookingsPage() {
             <div className="flex items-center">
               <DollarSign className="h-8 w-8 text-green-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Spent</p>
+                <p className="text-sm font-medium text-gray-400">Total Spent</p>
                 <p className="text-2xl font-bold">${stats.totalSpent.toLocaleString()}</p>
               </div>
             </div>

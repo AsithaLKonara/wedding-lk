@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   try {
     await connectDB();
     
-    const user = getUserFromRequest(request);
+    const user = await getUserFromRequest(request);
 
     const { searchParams } = new URL(request.url);
     const postId = searchParams.get('postId');
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
   try {
     await connectDB();
     
-    const { user, error } = getUserFromRequestWithError(request);
+    const { user, error } = await getUserFromRequestWithError(request);
     if (error) return error;
     if (!user) {
       return NextResponse.json({

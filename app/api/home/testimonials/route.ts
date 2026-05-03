@@ -11,21 +11,33 @@ export async function GET(_request: NextRequest) {
     // Get verified, high-rating reviews as testimonials
     const testimonials = await Review.find({
       isVerified: true,
-      rating: { $gte: 4 }
+      overallRating: { $gte: 4 },
+      status: 'approved'
     })
-      .sort({ rating: -1, createdAt: -1 })
+      .sort({ overallRating: -1, createdAt: -1 })
       .limit(limit)
       .populate('userId', 'name image')
+      .populate('vendorId', 'name businessName')
+      .populate('venueId', 'name')
       .lean()
 
     return NextResponse.json({
       success: true,
       testimonials: testimonials.map(t => ({
         _id: t._id,
-        author: t.userId?.name || 'Anonymous',
-        authorImage: t.userId?.image || null,
-        rating: t.rating,
-        content: t.content || t.review,
+        content: t.comment || t.title,
+        rating: t.overallRating,
+        user: {
+          name: t.userId?.name || 'Anonymous',
+          avatar: t.userId?.image || null
+        },
+        vendor: t.vendorId ? {
+          name: t.vendorId.name,
+          businessName: t.vendorId.businessName
+        } : null,
+        venue: t.venueId ? {
+          name: t.venueId.name
+        } : null,
         createdAt: t.createdAt
       }))
     })

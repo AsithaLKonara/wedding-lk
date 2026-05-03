@@ -22,7 +22,7 @@ export function LogoutButton({ user }: LogoutButtonProps) {
   const handleLogout = async () => {
     setIsLoading(true);
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
+      await fetch('/api/auth/signout', { method: 'POST' });
       window.location.href = '/';
     } catch (error) {
       console.error('Logout error:', error);

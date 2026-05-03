@@ -52,14 +52,14 @@ export default function FavoritesTab() {
         {favorites.length > 0 ? (
           <div className="space-y-4">
             {favorites.map((favorite: any) => (
-              <div key={favorite._id} className="flex items-center justify-between p-4 border rounded-lg">
+              <div key={favorite._id} className="flex items-center justify-between p-4 border border-white/5 rounded-lg hover:bg-white/5 transition-colors group">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
-                    <Heart className="h-5 w-5 text-pink-600" />
+                  <div className="w-10 h-10 bg-pink-500/10 rounded-full flex items-center justify-center">
+                    <Heart className="h-5 w-5 text-pink-500" />
                   </div>
                   <div>
-                    <p className="font-medium">{favorite.name || 'Favorite Item'}</p>
-                    <div className="flex items-center space-x-2 text-sm text-gray-500">
+                    <p className="font-medium text-white">{favorite.name || 'Favorite Item'}</p>
+                    <div className="flex items-center space-x-2 text-sm text-gray-400">
                       <MapPin className="h-3 w-3" />
                       <span>{favorite.location || 'Location not specified'}</span>
                     </div>
@@ -68,9 +68,9 @@ export default function FavoritesTab() {
                 <div className="text-right">
                   <div className="flex items-center space-x-1">
                     <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                    <span className="text-sm">{favorite.rating || 'N/A'}</span>
+                    <span className="text-sm text-white">{favorite.rating || 'N/A'}</span>
                   </div>
-                  <Badge variant="outline" className="mt-1">
+                  <Badge variant="outline" className="mt-1 border-white/10 text-gray-400">
                     {favorite.type || 'Item'}
                   </Badge>
                 </div>

@@ -2,7 +2,7 @@
 // Enhanced security for cookies, sessions, and CSRF protection
 
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth/custom-auth';
+import { verifyToken } from '@/lib/auth/tokens'
 // Removed NextAuth - using custom auth
 
 export interface SecurityConfig {
@@ -188,7 +188,7 @@ export class SecurityMiddleware {
   }> {
     try {
       const token = request.cookies.get('auth-token')?.value;
-      const decodedToken = token ? verifyToken(token) : null;
+      const decodedToken = token ? await verifyToken(token) : null;
 
       if (!decodedToken) {
         return { isValid: false, error: 'No valid session found' };

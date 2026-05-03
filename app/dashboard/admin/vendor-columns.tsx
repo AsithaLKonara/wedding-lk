@@ -73,7 +73,7 @@ export const columns: ColumnDef<Vendor>[] = [
     cell: ({ row }) => {
       const vendor = row.original
       return (
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-gray-400">
           {vendor?.location?.city || 'N/A'}, {vendor?.location?.province || 'N/A'}
         </div>
       )

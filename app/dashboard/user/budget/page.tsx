@@ -70,39 +70,39 @@ export default function BudgetPlannerPage() {
     dueDate: ''
   });
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     loadBudgetData();
   }, []);
 
-  const loadBudgetData = () => {
-    // TODO: Load from API
-    const mockData: BudgetItem[] = [
-      {
-        id: '1',
-        category: 'Venue',
-        name: 'Grand Ballroom',
-        estimatedCost: 400000,
-        actualCost: 420000,
-        paid: 210000,
-        status: 'booked',
-        notes: 'Deposit paid, balance due 30 days before',
-        vendor: 'Grand Hotel',
-        dueDate: '2024-06-15'
-      },
-      {
-        id: '2',
-        category: 'Catering',
-        name: 'Wedding Dinner',
-        estimatedCost: 250000,
-        actualCost: 0,
-        paid: 0,
-        status: 'planned',
-        notes: 'Need to finalize menu',
-        vendor: '',
-        dueDate: '2024-07-01'
+  const loadBudgetData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/dashboard/user/budget');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setBudgetItems(data.items.map((item: any) => ({
+            id: item._id,
+            category: item.category,
+            name: item.name,
+            estimatedCost: item.estimatedCost,
+            actualCost: item.actualCost,
+            paid: item.paid,
+            status: item.status,
+            notes: item.notes || '',
+            vendor: item.vendor || '',
+            dueDate: item.dueDate ? new Date(item.dueDate).toISOString().split('T')[0] : ''
+          })));
+          setTotalBudget(data.totalBudget);
+        }
       }
-    ];
-    setBudgetItems(mockData);
+    } catch (error) {
+      console.error('Error loading budget:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const calculateTotals = () => {
@@ -132,20 +132,20 @@ export default function BudgetPlannerPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'planned':
-        return <Badge variant="secondary">Planned</Badge>;
+        return <Badge variant="secondary" className="bg-gray-500/10 text-gray-400 border-gray-500/20">Planned</Badge>;
       case 'booked':
-        return <Badge className="bg-blue-100 text-blue-800">Booked</Badge>;
+        return <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20">Booked</Badge>;
       case 'paid':
-        return <Badge className="bg-green-100 text-green-800">Paid</Badge>;
+        return <Badge className="bg-green-500/10 text-green-400 border-green-500/20">Paid</Badge>;
       case 'completed':
-        return <Badge className="bg-purple-100 text-purple-800">Completed</Badge>;
+        return <Badge className="bg-purple-500/10 text-purple-400 border-purple-500/20">Completed</Badge>;
       default:
-        return <Badge variant="secondary">{status}</Badge>;
+        return <Badge variant="secondary" className="bg-gray-500/10 text-gray-400 border-gray-500/20">{status}</Badge>;
     }
   };
 
-  const handleSaveItem = () => {
-    if (!formData.category || !formData.name || formData.estimatedCost <= 0) {
+  const handleSaveItem = async () => {
+    if (!formData.category || !formData.name || formData.estimatedCost < 0) {
       toast({
         title: 'Validation Error',
         description: 'Please fill in all required fields.',
@@ -154,45 +154,41 @@ export default function BudgetPlannerPage() {
       return;
     }
 
-    if (editingItem) {
-      // Update existing item
-      setBudgetItems(prev => 
-        prev.map(item => 
-          item.id === editingItem.id 
-            ? { ...item, ...formData }
-            : item
-        )
-      );
-      toast({
-        title: 'Budget Item Updated',
-        description: 'Your budget item has been updated successfully.',
-      });
-    } else {
-      // Add new item
-      const newItem: BudgetItem = {
-        id: Date.now().toString(),
-        ...formData
-      };
-      setBudgetItems(prev => [...prev, newItem]);
-      toast({
-        title: 'Budget Item Added',
-        description: 'New budget item has been added successfully.',
-      });
-    }
+    try {
+      const method = editingItem ? 'PATCH' : 'POST';
+      const body = editingItem 
+        ? { id: editingItem.id, ...formData }
+        : formData;
 
-    setIsDialogOpen(false);
-    setEditingItem(null);
-    setFormData({
-      category: '',
-      name: '',
-      estimatedCost: 0,
-      actualCost: 0,
-      paid: 0,
-      status: 'planned',
-      notes: '',
-      vendor: '',
-      dueDate: ''
-    });
+      const response = await fetch('/api/dashboard/user/budget', {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      if (response.ok) {
+        loadBudgetData();
+        setIsDialogOpen(false);
+        setEditingItem(null);
+        setFormData({
+          category: '',
+          name: '',
+          estimatedCost: 0,
+          actualCost: 0,
+          paid: 0,
+          status: 'planned',
+          notes: '',
+          vendor: '',
+          dueDate: ''
+        });
+        toast({
+          title: editingItem ? 'Budget Item Updated' : 'Budget Item Added',
+          description: `Your budget item has been ${editingItem ? 'updated' : 'added'} successfully.`,
+        });
+      }
+    } catch (error) {
+      console.error('Error saving budget item:', error);
+    }
   };
 
   const handleEditItem = (item: BudgetItem) => {
@@ -211,12 +207,24 @@ export default function BudgetPlannerPage() {
     setIsDialogOpen(true);
   };
 
-  const handleDeleteItem = (id: string) => {
-    setBudgetItems(prev => prev.filter(item => item.id !== id));
-    toast({
-      title: 'Budget Item Deleted',
-      description: 'Budget item has been removed successfully.',
-    });
+  const handleDeleteItem = async (id: string) => {
+    try {
+      const response = await fetch('/api/dashboard/user/budget', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+
+      if (response.ok) {
+        loadBudgetData();
+        toast({
+          title: 'Budget Item Deleted',
+          description: 'Budget item has been removed successfully.',
+        });
+      }
+    } catch (error) {
+      console.error('Error deleting budget item:', error);
+    }
   };
 
   const totals = calculateTotals();
@@ -228,8 +236,8 @@ export default function BudgetPlannerPage() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Wedding Budget Planner</h1>
-          <p className="text-gray-600">Plan and track your wedding expenses</p>
+          <h1 className="text-3xl font-bold text-white">Wedding Budget Planner</h1>
+          <p className="text-gray-400">Plan and track your wedding expenses</p>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
@@ -364,10 +372,10 @@ export default function BudgetPlannerPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <Target className="h-8 w-8 text-blue-600" />
+              <Target className="h-8 w-8 text-blue-500" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Budget</p>
-                <p className="text-2xl font-bold text-gray-900">LKR {totalBudget.toLocaleString()}</p>
+                <p className="text-sm font-medium text-gray-400">Total Budget</p>
+                <p className="text-2xl font-bold text-white">LKR {totalBudget.toLocaleString()}</p>
               </div>
             </div>
           </CardContent>
@@ -376,10 +384,10 @@ export default function BudgetPlannerPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <Calculator className="h-8 w-8 text-green-600" />
+              <Calculator className="h-8 w-8 text-green-500" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Estimated Cost</p>
-                <p className="text-2xl font-bold text-gray-900">LKR {totals.estimated.toLocaleString()}</p>
+                <p className="text-sm font-medium text-gray-400">Estimated Cost</p>
+                <p className="text-2xl font-bold text-white">LKR {totals.estimated.toLocaleString()}</p>
               </div>
             </div>
           </CardContent>
@@ -388,10 +396,10 @@ export default function BudgetPlannerPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <DollarSign className="h-8 w-8 text-purple-600" />
+              <DollarSign className="h-8 w-8 text-purple-500" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Actual Cost</p>
-                <p className="text-2xl font-bold text-gray-900">LKR {totals.actual.toLocaleString()}</p>
+                <p className="text-sm font-medium text-gray-400">Actual Cost</p>
+                <p className="text-2xl font-bold text-white">LKR {totals.actual.toLocaleString()}</p>
               </div>
             </div>
           </CardContent>
@@ -400,10 +408,10 @@ export default function BudgetPlannerPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center">
-              <CheckCircle className="h-8 w-8 text-yellow-600" />
+              <CheckCircle className="h-8 w-8 text-yellow-500" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Amount Paid</p>
-                <p className="text-2xl font-bold text-gray-900">LKR {totals.paid.toLocaleString()}</p>
+                <p className="text-sm font-medium text-gray-400">Amount Paid</p>
+                <p className="text-2xl font-bold text-white">LKR {totals.paid.toLocaleString()}</p>
               </div>
             </div>
           </CardContent>
@@ -425,7 +433,7 @@ export default function BudgetPlannerPage() {
               <span>{budgetUtilization.toFixed(1)}%</span>
             </div>
             <Progress value={budgetUtilization} className="h-2" />
-            <div className="flex justify-between text-sm text-gray-600">
+            <div className="flex justify-between text-sm text-gray-400">
               <span>LKR {totals.actual.toLocaleString()} used</span>
               <span>LKR {(totalBudget - totals.actual).toLocaleString()} remaining</span>
             </div>
@@ -456,7 +464,7 @@ export default function BudgetPlannerPage() {
                     </div>
                     <div className="text-right">
                       <div className="font-medium">LKR {totals.estimated.toLocaleString()}</div>
-                      <div className="text-sm text-gray-600">{percentage.toFixed(1)}%</div>
+                      <div className="text-sm text-gray-400">{percentage.toFixed(1)}%</div>
                     </div>
                   </div>
                   <Progress value={percentage} className="h-2" />
@@ -479,8 +487,8 @@ export default function BudgetPlannerPage() {
           {budgetItems.length === 0 ? (
             <div className="text-center py-8">
               <Calculator className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No budget items yet</h3>
-              <p className="text-gray-600 mb-4">
+              <h3 className="text-lg font-medium text-white mb-2">No budget items yet</h3>
+              <p className="text-gray-400 mb-4">
                 Start planning your wedding budget by adding your first item.
               </p>
               <Button onClick={() => setIsDialogOpen(true)}>
@@ -491,15 +499,15 @@ export default function BudgetPlannerPage() {
           ) : (
             <div className="space-y-4">
               {budgetItems.map((item) => (
-                <div key={item.id} className="border rounded-lg p-4">
+                <div key={item.id} className="border border-white/5 rounded-lg p-4 hover:bg-white/5 transition-colors">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center space-x-3">
                       <span className="text-lg">
                         {defaultCategories.find(c => c.name === item.category)?.icon}
                       </span>
                       <div>
-                        <h3 className="font-medium text-gray-900">{item.name}</h3>
-                        <p className="text-sm text-gray-600">{item.category}</p>
+                        <h3 className="font-medium text-white">{item.name}</h3>
+                        <p className="text-sm text-gray-400">{item.category}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -522,25 +530,25 @@ export default function BudgetPlannerPage() {
                   </div>
                   <div className="grid grid-cols-3 gap-4 text-sm">
                     <div>
-                      <span className="text-gray-600">Estimated:</span>
+                      <span className="text-gray-400">Estimated:</span>
                       <div className="font-medium">LKR {item.estimatedCost.toLocaleString()}</div>
                     </div>
                     <div>
-                      <span className="text-gray-600">Actual:</span>
+                      <span className="text-gray-400">Actual:</span>
                       <div className="font-medium">LKR {item.actualCost.toLocaleString()}</div>
                     </div>
                     <div>
-                      <span className="text-gray-600">Paid:</span>
+                      <span className="text-gray-400">Paid:</span>
                       <div className="font-medium">LKR {item.paid.toLocaleString()}</div>
                     </div>
                   </div>
                   {item.vendor && (
-                    <div className="mt-2 text-sm text-gray-600">
+                    <div className="mt-2 text-sm text-gray-400">
                       <span className="font-medium">Vendor:</span> {item.vendor}
                     </div>
                   )}
                   {item.notes && (
-                    <div className="mt-2 text-sm text-gray-600">
+                    <div className="mt-2 text-sm text-gray-400">
                       <span className="font-medium">Notes:</span> {item.notes}
                     </div>
                   )}

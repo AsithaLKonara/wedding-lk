@@ -6,7 +6,7 @@ import { Venue } from "@/lib/models/venue"
 import { Booking } from "@/lib/models/booking"
 import { Payment } from "@/lib/models"
 import { Review } from "@/lib/models/review"
-import { Middleware } from "@/lib/rbac";
+import { Middleware } from "@/lib/rbac/server";
 
 async function handler(request: NextRequest) {
   try {
