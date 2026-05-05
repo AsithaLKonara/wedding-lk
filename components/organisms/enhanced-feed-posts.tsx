@@ -29,6 +29,8 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { CommentSection } from './comment-section';
+import { useAuth } from '@/lib/hooks/use-auth';
+import { useRouter } from 'next/navigation';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -132,6 +134,8 @@ interface EnhancedFeedPostsProps {
 }
 
 export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeedPostsProps) {
+  const { user } = useAuth();
+  const router = useRouter();
   const [posts, setPosts] = useState<EnhancedPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [interactingPost, setInteractingPost] = useState<string | null>(null);
@@ -174,6 +178,16 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
   };
 
   const handleInteraction = async (postId: string, action: string, reactionType?: string) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to react, share, or save posts.",
+        variant: "destructive"
+      });
+      router.push('/auth/signin');
+      return;
+    }
+
     if (interactingPost) return;
     
     setInteractingPost(postId);
@@ -529,7 +543,18 @@ export function EnhancedFeedPosts({ activeFilter, onFilterChange }: EnhancedFeed
                     variant="ghost"
                     size="sm"
                     className="h-10 px-4 rounded-xl font-bold text-gray-400 hover:text-white hover:bg-white/5 transition-all"
-                    onClick={() => setCommentPostId(post._id)}
+                    onClick={() => {
+                      if (!user) {
+                        toast({
+                          title: "Authentication Required",
+                          description: "Please sign in to view or write comments.",
+                          variant: "destructive"
+                        });
+                        router.push('/auth/signin');
+                        return;
+                      }
+                      setCommentPostId(post._id);
+                    }}
                   >
                     <MessageCircle className="h-5 w-5 mr-2" />
                     COMMENT

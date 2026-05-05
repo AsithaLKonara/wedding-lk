@@ -10,6 +10,9 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/lib/hooks/use-auth";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Plus, 
   Camera, 
@@ -27,33 +30,49 @@ import {
 } from "lucide-react";
 
 export default function EnhancedFeedPage() {
+  const { user } = useAuth();
+  const router = useRouter();
+  const { toast } = useToast();
   const [activeFilter, setActiveFilter] = useState("all");
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [showCreateGroup, setShowCreateGroup] = useState(false);
+
+  const gateAction = (actionLabel: string, actionFn: () => void) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: `Please sign in to perform actions like ${actionLabel.toLowerCase()}.`,
+        variant: "destructive"
+      });
+      router.push('/auth/signin');
+      return;
+    }
+    actionFn();
+  };
 
   const quickActions = [
     {
       icon: <Camera className="h-5 w-5" />,
       label: "Photo",
-      action: () => setShowCreatePost(true),
+      action: () => gateAction("posting photos", () => setShowCreatePost(true)),
       color: "bg-pink-500"
     },
     {
       icon: <Video className="h-5 w-5" />,
       label: "Video",
-      action: () => setShowCreatePost(true),
+      action: () => gateAction("posting videos", () => setShowCreatePost(true)),
       color: "bg-purple-500"
     },
     {
       icon: <FileText className="h-5 w-5" />,
       label: "Story",
-      action: () => setShowCreatePost(true),
+      action: () => gateAction("posting stories", () => setShowCreatePost(true)),
       color: "bg-blue-500"
     },
     {
       icon: <Users className="h-5 w-5" />,
       label: "Group",
-      action: () => setShowCreateGroup(true),
+      action: () => gateAction("creating groups", () => setShowCreateGroup(true)),
       color: "bg-green-500"
     }
   ];
@@ -150,7 +169,7 @@ export default function EnhancedFeedPage() {
                       <Button 
                         variant="ghost" 
                         className="flex-1 justify-start text-muted-foreground font-medium h-12 bg-muted/30 rounded-2xl border border-border/50 hover:bg-muted/50 transition-all"
-                        onClick={() => setShowCreatePost(true)}
+                        onClick={() => gateAction("creating updates", () => setShowCreatePost(true))}
                       >
                         What's your dream wedding update?
                       </Button>
