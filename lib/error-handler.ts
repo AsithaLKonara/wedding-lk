@@ -84,11 +84,13 @@ class ErrorHandler {
 
     // Handle console errors
     const originalConsoleError = console.error;
+    (console as any)._originalError = originalConsoleError;
+    
     console.error = (...args) => {
       originalConsoleError.apply(console, args);
       
       // Log significant console errors
-      if (args.length > 0 && typeof args[0] === 'string' && args[0].includes('Error')) {
+      if (args.length > 0 && typeof args[0] === 'string' && args[0].toLowerCase().includes('error')) {
         this.logError({
           errorId: `console_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
           message: args.join(' '),
@@ -109,7 +111,12 @@ class ErrorHandler {
     this.userId = userId;
   }
 
+  private isLogging = false;
+
   async logError(errorData: Omit<ErrorLog, 'sessionId' | 'userId'>) {
+    if (this.isLogging) return;
+    this.isLogging = true;
+
     const fullErrorData: ErrorLog = {
       ...errorData,
       sessionId: this.sessionId,
@@ -125,7 +132,12 @@ class ErrorHandler {
         body: JSON.stringify(fullErrorData),
       });
     } catch (logError) {
-      console.error('Failed to log error to service:', logError);
+      // Don't use console.error here to avoid recursion
+      // Just use the original console if available
+      const originalError = (console as any)._originalError || console.error;
+      originalError('Failed to log error to service:', logError);
+    } finally {
+      this.isLogging = false;
     }
   }
 

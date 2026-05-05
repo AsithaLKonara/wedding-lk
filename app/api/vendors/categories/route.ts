@@ -19,11 +19,13 @@ export async function GET(_request: NextRequest) {
     const featuredCategories = categories.slice(0, 5);
 
     // Get all categories for filter dropdown
-    const allCategories = categories.map(cat => ({
-      value: cat._id,
-      label: cat._id.charAt(0).toUpperCase() + cat._id.slice(1),
-      count: cat.count
-    }));
+    const allCategories = categories
+      .filter(cat => cat._id) // Filter out null/undefined categories
+      .map(cat => ({
+        value: cat._id,
+        label: cat._id ? (cat._id.charAt(0).toUpperCase() + cat._id.slice(1)) : 'Uncategorized',
+        count: cat.count
+      }));
 
     const response = {
       success: true,

@@ -3,7 +3,6 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import { errorHandler } from '@/lib/error-handler';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 

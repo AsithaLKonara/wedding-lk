@@ -1,7 +1,7 @@
 // Enhanced AI Search Service for WeddingLK
 // Real LLM integration with intelligent wedding planning
 
-import OpenAI from 'openai';
+import { groq, GROQ_MODEL } from './groq';
 import { connectDB } from './db';
 import { Venue } from './models/venue';
 import { Vendor } from './models/vendor';
@@ -9,9 +9,7 @@ import { Package } from './models/package';
 import { enhancedCacheManager } from './enhanced-cache-manager';
 import { escapeRegExp } from './utils/regex-utils';
 
-const openai = process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'test-key-for-build' ? new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-}) : null;
+// Groq client is now managed in lib/groq.ts
 
 export interface WeddingContext {
   budget: number;
@@ -149,24 +147,24 @@ export class EnhancedAISearchService {
     }
   }
 
-  // Generate AI response using OpenAI
+  // Generate AI response using Groq
   private async generateAIResponse(query: string, context: WeddingContext): Promise<string> {
     const prompt = this.buildWeddingPrompt(query, context);
     
-    if (!openai) {
-      console.warn('OpenAI API key not configured, using local AI response');
+    if (!groq) {
+      console.warn('Groq API key not configured, using local AI response');
       return this.generateLocalAIResponse(query, context);
     }
     
     try {
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4",
+      const completion = await groq.chat.completions.create({
+        model: GROQ_MODEL,
         messages: [
           {
             role: "system",
-            content: `You are WeddingLK, an expert wedding planning AI specialized in Sri Lankan weddings. 
-            You understand local customs, traditions, venues, and vendors. Provide detailed, culturally 
-            appropriate advice for wedding planning in Sri Lanka.`
+            content: `You are WeddingLK AI, an expert wedding planning assistant specialized in Sri Lankan weddings. 
+            You understand local customs (Poruwa ceremony, Kandyan traditions), venues, and vendors. Provide detailed, culturally 
+            appropriate advice for wedding planning in Sri Lanka. Be helpful, professional, and insightful.`
           },
           {
             role: "user",
@@ -179,11 +177,12 @@ export class EnhancedAISearchService {
 
       return completion.choices[0]?.message?.content || 'No response generated';
     } catch (error) {
-      console.error('OpenAI API error:', error);
+      console.error('Groq API error:', error);
       // Fallback to local AI response
       return this.generateLocalAIResponse(query, context);
     }
   }
+
 
   // Build comprehensive wedding planning prompt
   private buildWeddingPrompt(query: string, context: WeddingContext): string {

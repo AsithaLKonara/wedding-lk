@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit, Save, Eye, Upload, Calendar, Clock, Users, DollarSign, Settings, Image, Video, MapPin } from 'lucide-react';
+import { Plus, Trash2, Edit, Save, Eye, Upload, Calendar, Clock, Users, DollarSign, Settings, Image, Video, MapPin, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -322,6 +322,53 @@ export function ServicePackageBuilder({ vendorId, onSave, initialData }: Service
     }));
   };
 
+  const generateWithAI = async () => {
+    if (!packageData.category) {
+      toast({
+        title: 'Error',
+        description: 'Please select a category first',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await fetch('/api/ai/generate-package', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          category: packageData.category,
+          targetPrice: packageData.basePrice,
+          vendorType: packageData.category
+        })
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setPackageData(prev => ({
+          ...prev,
+          ...data.data,
+          // Merge logic: keep some existing fields if needed, but AI provides the rest
+          services: data.data.services.map((s: any) => ({ ...s, totalPrice: s.quantity * s.unitPrice })),
+        }));
+        toast({
+          title: 'Success',
+          description: 'Package generated with AI!'
+        });
+      }
+    } catch (error) {
+      console.error('AI generation error:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to generate package with AI',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const savePackage = async () => {
     try {
       setLoading(true);
@@ -358,11 +405,22 @@ export function ServicePackageBuilder({ vendorId, onSave, initialData }: Service
 
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Service Package Builder</h1>
-        <p className="text-gray-600">
-          Create and customize your service packages for customers
-        </p>
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Service Package Builder</h1>
+          <p className="text-gray-600">
+            Create and customize your service packages for customers
+          </p>
+        </div>
+        <Button 
+          variant="outline" 
+          onClick={generateWithAI}
+          disabled={loading}
+          className="border-purple-200 hover:bg-purple-50 text-purple-600 flex items-center gap-2"
+        >
+          <Sparkles className="h-4 w-4" />
+          Generate with AI
+        </Button>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">

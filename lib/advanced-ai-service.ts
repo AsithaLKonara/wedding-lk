@@ -1,7 +1,7 @@
 // Advanced AI Service for WeddingLK
 // Provides intelligent AI-powered features for wedding planning
 
-import OpenAI from 'openai';
+import { groq, GROQ_MODEL } from './groq';
 import { connectDB } from './db';
 import { User, Vendor, Venue, Booking, Review } from './models';
 import { advancedCache } from './advanced-cache-service';
@@ -31,27 +31,24 @@ interface PredictiveInsights {
 }
 
 class AdvancedAIService {
-  private openai: OpenAI | null = null
   private isEnabled: boolean = false
 
   constructor() {
-    if (process.env.OPENAI_API_KEY) {
-      this.openai = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-      })
+    if (groq) {
       this.isEnabled = true
     }
   }
 
+
   // Advanced Sentiment Analysis
   async analyzeSentiment(text: string): Promise<AIAnalysisResult> {
-    if (!this.isEnabled || !this.openai) {
+    if (!this.isEnabled || !groq) {
       return this.fallbackSentimentAnalysis(text)
     }
 
     try {
-      const response = await this.openai.chat.completions.create({
-        model: "gpt-4",
+      const response = await groq.chat.completions.create({
+        model: GROQ_MODEL,
         messages: [
           {
             role: "system",
@@ -71,20 +68,20 @@ class AdvancedAIService {
       // Parse the AI response and extract structured data
       return this.parseSentimentAnalysis(analysis)
     } catch (error) {
-      console.error('OpenAI sentiment analysis failed:', error)
+      console.error('Groq sentiment analysis failed:', error)
       return this.fallbackSentimentAnalysis(text)
     }
   }
 
   // Advanced Content Generation
   async generateContent(prompt: string, context: any): Promise<ContentGenerationResult> {
-    if (!this.isEnabled || !this.openai) {
+    if (!this.isEnabled || !groq) {
       return this.fallbackContentGeneration(prompt, context)
     }
 
     try {
-      const response = await this.openai.chat.completions.create({
-        model: "gpt-4",
+      const response = await groq.chat.completions.create({
+        model: GROQ_MODEL,
         messages: [
           {
             role: "system",
@@ -109,20 +106,20 @@ class AdvancedAIService {
         suggestions: this.generateSuggestions(content)
       }
     } catch (error) {
-      console.error('OpenAI content generation failed:', error)
+      console.error('Groq content generation failed:', error)
       return this.fallbackContentGeneration(prompt, context)
     }
   }
 
   // Predictive Analytics
   async generatePredictiveInsights(dataType: string, historicalData: any[]): Promise<PredictiveInsights> {
-    if (!this.isEnabled || !this.openai) {
+    if (!this.isEnabled || !groq) {
       return this.fallbackPredictiveInsights(dataType, historicalData)
     }
 
     try {
-      const response = await this.openai.chat.completions.create({
-        model: "gpt-4",
+      const response = await groq.chat.completions.create({
+        model: GROQ_MODEL,
         messages: [
           {
             role: "system",
@@ -141,20 +138,20 @@ class AdvancedAIService {
       
       return this.parsePredictiveInsights(analysis)
     } catch (error) {
-      console.error('OpenAI predictive analysis failed:', error)
+      console.error('Groq predictive analysis failed:', error)
       return this.fallbackPredictiveInsights(dataType, historicalData)
     }
   }
 
   // Advanced Search with Semantic Understanding
   async semanticSearch(query: string, context: string = ''): Promise<any[]> {
-    if (!this.isEnabled || !this.openai) {
+    if (!this.isEnabled || !groq) {
       return this.fallbackSemanticSearch(query, context)
     }
 
     try {
-      const response = await this.openai.chat.completions.create({
-        model: "gpt-4",
+      const response = await groq.chat.completions.create({
+        model: GROQ_MODEL,
         messages: [
           {
             role: "system",
@@ -174,7 +171,7 @@ class AdvancedAIService {
       // Use the optimized query for database search
       return await this.performDatabaseSearch(optimizedQuery)
     } catch (error) {
-      console.error('OpenAI semantic search failed:', error)
+      console.error('Groq semantic search failed:', error)
       return this.fallbackSemanticSearch(query, context)
     }
   }
@@ -189,12 +186,12 @@ class AdvancedAIService {
       const userBookings = await Booking.find({ userId }).populate('vendorId venueId')
       const userReviews = await Review.find({ userId })
 
-      if (!this.isEnabled || !this.openai) {
+      if (!this.isEnabled || !groq) {
         return this.fallbackRecommendations(user, userBookings, userReviews)
       }
 
-      const response = await this.openai.chat.completions.create({
-        model: "gpt-4",
+      const response = await groq.chat.completions.create({
+        model: GROQ_MODEL,
         messages: [
           {
             role: "system",
@@ -213,7 +210,7 @@ class AdvancedAIService {
       
       return this.parseRecommendations(recommendations)
     } catch (error) {
-      console.error('AI recommendations failed:', error)
+      console.error('Groq recommendations failed:', error)
       return this.fallbackRecommendations(null, [], [])
     }
   }

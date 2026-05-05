@@ -8,7 +8,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   // Enable standalone output for Docker
-  output: 'standalone',
+  // output: 'standalone',
   // Experimental features disabled for stability
   experimental: {
     optimizeCss: true,

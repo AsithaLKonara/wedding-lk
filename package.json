@@ -120,6 +120,7 @@
     "embla-carousel-react": "8.5.1",
     "framer-motion": "latest",
     "gcp-metadata": "latest",
+    "groq-sdk": "^1.1.2",
     "input-otp": "1.4.1",
     "ioredis": "^5.7.0",
     "jose": "^6.2.3",

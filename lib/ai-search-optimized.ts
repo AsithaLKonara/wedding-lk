@@ -1,3 +1,4 @@
+import { groq, GROQ_MODEL } from './groq';
 import { connectDB } from './db';
 import { Vendor } from './models/vendor';
 import { Venue } from './models/venue';
@@ -37,44 +38,44 @@ interface SearchResult {
 export class OptimizedAISearch {
   
   /**
-   * Extract search parameters from natural language query
+   * Extract search parameters from natural language query using Groq AI
    */
-  private extractSearchParams(query: string): SearchParams {
-    const params: Partial<SearchParams> = {
+  private async extractSearchParams(query: string): Promise<SearchParams> {
+    const defaultParams: SearchParams = {
       query,
       limit: 10
     };
-    
-    // Business type extraction
-    const businessTypes = ['photography', 'catering', 'decoration', 'music', 'transport', 'beauty', 'flowers'];
-    for (const type of businessTypes) {
-      if (query.toLowerCase().includes(type)) {
-        params.businessType = type;
-        break;
-      }
+
+    if (!groq) return defaultParams;
+
+    try {
+      const response = await groq.chat.completions.create({
+        model: GROQ_MODEL,
+        messages: [
+          {
+            role: "system",
+            content: `Extract wedding search parameters from the user's query. Return a JSON object with:
+            - businessType (one of: photography, catering, decoration, music, transport, beauty, flowers, venue)
+            - location (city name)
+            - priceRange (object with min and max numbers in LKR)
+            - rating (minimum rating, number 1-5)
+            
+            Query: "${query}"
+            JSON Result:`
+          }
+        ],
+        response_format: { type: "json_object" },
+        temperature: 0.1,
+      });
+
+      const aiParams = JSON.parse(response.choices[0]?.message?.content || "{}");
+      return { ...defaultParams, ...aiParams };
+    } catch (error) {
+      console.error('Groq extraction error:', error);
+      return defaultParams;
     }
-    
-    // Location extraction (simple pattern matching)
-    const locationPattern = /(in|at|near|around)\s+([a-zA-Z\s]+)/i;
-    const locationMatch = query.match(locationPattern);
-    if (locationMatch) {
-      params.location = locationMatch[2].trim();
-    }
-    
-    // Price indicators
-    if (query.toLowerCase().includes('budget') || query.toLowerCase().includes('cheap')) {
-      params.priceRange = { min: 0, max: 50000 };
-    } else if (query.toLowerCase().includes('premium') || query.toLowerCase().includes('luxury')) {
-      params.priceRange = { min: 100000, max: 1000000 };
-    }
-    
-    // Rating requirements
-    if (query.toLowerCase().includes('best') || query.toLowerCase().includes('top rated')) {
-      params.rating = 4.5;
-    }
-    
-    return params as SearchParams;
   }
+
   
   /**
    * Build optimized MongoDB aggregation pipeline
@@ -240,7 +241,7 @@ export class OptimizedAISearch {
       await connectDB();
       
       // Extract search parameters
-      const extractedParams = this.extractSearchParams(params.query);
+      const extractedParams = await this.extractSearchParams(params.query);
       
       // Build optimized pipelines
       const vendorPipeline = this.buildVendorPipeline({ ...params, ...extractedParams });

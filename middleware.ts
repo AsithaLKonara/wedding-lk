@@ -37,7 +37,8 @@ const PUBLIC_ROUTES = [
   '/api/dev/seed',
   '/api/home/featured-vendors',
   '/api/home/featured-venues',
-  '/api/home/testimonials'
+  '/api/home/testimonials',
+  '/manifest.json'
 ]
 
 export async function middleware(request: NextRequest) {
