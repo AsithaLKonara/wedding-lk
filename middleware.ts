@@ -29,6 +29,7 @@ const PUBLIC_ROUTES = [
   '/features',
   '/gallery',
   '/packages',
+  '/feed',
   '/api/auth/signin',
   '/api/auth/signup',
   '/api/auth/me',
