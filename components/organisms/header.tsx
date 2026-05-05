@@ -43,7 +43,12 @@ export function Header() {
                   <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
                 </div>
               ) : user ? (
-                <LogoutButton user={user} />
+                <div className="flex items-center space-x-2">
+                  <Button variant="outline" asChild className="border-purple-200 hover:bg-purple-50 dark:border-purple-900/30 dark:hover:bg-purple-950/20 font-semibold text-sm">
+                    <Link href="/dashboard">Dashboard</Link>
+                  </Button>
+                  <LogoutButton user={user} />
+                </div>
               ) : (
                 <>
                   <Button variant="ghost" asChild>
