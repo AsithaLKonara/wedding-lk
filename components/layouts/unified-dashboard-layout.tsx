@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react"
 import { useRouter, usePathname } from "next/navigation"
+import Link from "next/link"
 import type { AuthUser, NavigationItem, UserRole } from "@/lib/rbac"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -239,7 +240,7 @@ function UnifiedDashboardLayoutComponent({ children }: UnifiedDashboardLayoutPro
       >
         {/* Brand Logo */}
         <div className="h-20 flex items-center px-6 border-b border-white/5 flex-shrink-0">
-          <div className="flex items-center space-x-3">
+          <Link href="/" className="flex items-center space-x-3 cursor-pointer hover:opacity-85 transition-opacity">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
               <Zap className="w-6 h-6 text-white" />
             </div>
@@ -248,7 +249,7 @@ function UnifiedDashboardLayoutComponent({ children }: UnifiedDashboardLayoutPro
                 Wedding<span className="text-purple-500">LK</span>
               </span>
             )}
-          </div>
+          </Link>
         </div>
 
         {/* User Info - Premium Card Style */}
