@@ -210,6 +210,41 @@ export default function UnifiedDashboard() {
             { label: 'Profile Views', value: '1.2K', icon: Activity, trend: '+12%' }
           ]
         }
+      case 'user':
+        return {
+          title: 'Couple Dashboard',
+          description: 'Organize your dream wedding',
+          icon: Heart,
+          color: 'bg-rose-500/10 text-rose-500 border-rose-500/20',
+          stats: [
+            { 
+              label: 'Wedding Date', 
+              value: (stats?.overview as any)?.weddingDetails?.weddingDate 
+                ? new Date((stats.overview as any).weddingDetails.weddingDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+                : 'Not Set', 
+              icon: Clock, 
+              trend: (stats?.overview as any)?.weddingDetails?.theme || 'Style: Not Set' 
+            },
+            { 
+              label: 'Guests Count', 
+              value: (stats?.overview as any)?.weddingDetails?.guestCount ? `${(stats.overview as any).weddingDetails.guestCount} Guests` : '0 Guests', 
+              icon: Users, 
+              trend: 'Target Capacity' 
+            },
+            { 
+              label: 'Wedding Budget', 
+              value: (stats?.overview as any)?.weddingDetails?.budget ? `LKR ${(stats.overview as any).weddingDetails.budget.toLocaleString()}` : 'LKR 0', 
+              icon: DollarSign, 
+              trend: stats?.overview.totalRevenue ? `Spent: LKR ${stats.overview.totalRevenue.toLocaleString()}` : 'Budget Plan' 
+            },
+            { 
+              label: 'My Bookings', 
+              value: stats?.overview.totalBookings !== undefined ? `${stats.overview.totalBookings} Booking(s)` : '0 Bookings', 
+              icon: Calendar, 
+              trend: 'Vendor Schedule' 
+            }
+          ]
+        }
       default:
         return {
           title: 'Wedding Planner',
