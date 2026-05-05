@@ -91,6 +91,8 @@ export async function GET(request: NextRequest) {
         { $group: { _id: null, total: { $sum: '$totalPrice' } } }
       ])
 
+      const fullUser = await User.findById(user.id)
+
       stats.overview = {
         totalBookings: userBookings,
         totalRevenue: userSpent[0]?.total || 0,
@@ -99,8 +101,15 @@ export async function GET(request: NextRequest) {
         totalVendors: 0,
         averageRating: 0,
         conversionRate: 0,
-        growthRate: 0
-      }
+        growthRate: 0,
+        weddingDetails: fullUser?.weddingDetails || {
+          weddingDate: null,
+          venue: "",
+          guestCount: 0,
+          budget: 0,
+          theme: ""
+        }
+      } as any
     }
 
     // Performance stats (mock for now, would be real in production)
