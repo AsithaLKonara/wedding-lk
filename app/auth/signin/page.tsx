@@ -24,6 +24,13 @@ function SignInContent() {
     password: "",
   })
 
+  const fillCredentials = (email: string) => {
+    setFormData({
+      email,
+      password: "password123",
+    })
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -150,18 +157,34 @@ function SignInContent() {
 
         {/* Demo credentials info */}
         <div className="mt-8 p-4 rounded-xl bg-white/5 border border-white/10 text-center">
-          <p className="text-xs text-gray-500 uppercase tracking-widest font-bold mb-2">Demo Credentials</p>
-          <div className="grid grid-cols-2 gap-4 text-xs text-gray-400">
-            <div>
-              <p className="font-bold text-white">Admin</p>
-              <p>admin@weddinglk.com</p>
-            </div>
-            <div>
-              <p className="font-bold text-white">Vendor</p>
-              <p>vendor@example.com</p>
-            </div>
+          <p className="text-xs text-gray-500 uppercase tracking-widest font-bold mb-3">Demo Credentials</p>
+          <div className="grid grid-cols-3 gap-2 text-xs text-gray-400">
+            <button 
+              type="button"
+              onClick={() => fillCredentials("admin@weddinglk.com")}
+              className="p-2.5 rounded bg-white/5 hover:bg-white/10 hover:border-purple-500/50 hover:text-white border border-transparent transition-all text-center flex flex-col items-center justify-center cursor-pointer"
+            >
+              <p className="font-bold text-white text-xs">Admin</p>
+              <p className="truncate text-[10px] w-full max-w-[100px] mt-1 text-gray-500">admin@weddinglk.com</p>
+            </button>
+            <button 
+              type="button"
+              onClick={() => fillCredentials("vendor@example.com")}
+              className="p-2.5 rounded bg-white/5 hover:bg-white/10 hover:border-purple-500/50 hover:text-white border border-transparent transition-all text-center flex flex-col items-center justify-center cursor-pointer"
+            >
+              <p className="font-bold text-white text-xs">Vendor</p>
+              <p className="truncate text-[10px] w-full max-w-[100px] mt-1 text-gray-500">vendor@example.com</p>
+            </button>
+            <button 
+              type="button"
+              onClick={() => fillCredentials("couple@example.com")}
+              className="p-2.5 rounded bg-white/5 hover:bg-white/10 hover:border-purple-500/50 hover:text-white border border-transparent transition-all text-center flex flex-col items-center justify-center cursor-pointer"
+            >
+              <p className="font-bold text-white text-xs">Couple</p>
+              <p className="truncate text-[10px] w-full max-w-[100px] mt-1 text-gray-500">couple@example.com</p>
+            </button>
           </div>
-          <p className="text-[10px] text-gray-600 mt-2">Password: password123</p>
+          <p className="text-[10px] text-gray-500 mt-3">Password: password123 (Click on any role to autofill)</p>
         </div>
       </motion.div>
     </div>
