@@ -23,7 +23,8 @@ import {
   BarChart3,
   Clock,
   Zap,
-  Award
+  Award,
+  Heart
 } from "lucide-react"
 import Link from "next/link"
 
