@@ -221,26 +221,26 @@ export default function UnifiedDashboard() {
             { 
               label: 'Wedding Date', 
               value: (stats?.overview as any)?.weddingDetails?.weddingDate 
-                ? new Date((stats.overview as any).weddingDetails.weddingDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
+                ? new Date((stats?.overview as any).weddingDetails.weddingDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })
                 : 'Not Set', 
               icon: Clock, 
               trend: (stats?.overview as any)?.weddingDetails?.theme || 'Style: Not Set' 
             },
             { 
               label: 'Guests Count', 
-              value: (stats?.overview as any)?.weddingDetails?.guestCount ? `${(stats.overview as any).weddingDetails.guestCount} Guests` : '0 Guests', 
+              value: (stats?.overview as any)?.weddingDetails?.guestCount ? `${(stats?.overview as any).weddingDetails.guestCount} Guests` : '0 Guests', 
               icon: Users, 
               trend: 'Target Capacity' 
             },
             { 
               label: 'Wedding Budget', 
-              value: (stats?.overview as any)?.weddingDetails?.budget ? `LKR ${(stats.overview as any).weddingDetails.budget.toLocaleString()}` : 'LKR 0', 
+              value: (stats?.overview as any)?.weddingDetails?.budget ? `LKR ${(stats?.overview as any).weddingDetails.budget.toLocaleString()}` : 'LKR 0', 
               icon: DollarSign, 
-              trend: stats?.overview.totalRevenue ? `Spent: LKR ${stats.overview.totalRevenue.toLocaleString()}` : 'Budget Plan' 
+              trend: stats?.overview?.totalRevenue ? `Spent: LKR ${stats.overview.totalRevenue.toLocaleString()}` : 'Budget Plan' 
             },
             { 
               label: 'My Bookings', 
-              value: stats?.overview.totalBookings !== undefined ? `${stats.overview.totalBookings} Booking(s)` : '0 Bookings', 
+              value: stats?.overview?.totalBookings !== undefined ? `${stats.overview.totalBookings} Booking(s)` : '0 Bookings', 
               icon: Calendar, 
               trend: 'Vendor Schedule' 
             }

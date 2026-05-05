@@ -30,7 +30,6 @@ yarn-error.log*
 
 # local env files
 .env*.local
-.env
 
 # vercel
 .vercel
@@ -55,3 +54,4 @@ scripts/setup-vercel-env.js
 # Logs and reports
 *.log
 e2e-results.log
+config.bat
