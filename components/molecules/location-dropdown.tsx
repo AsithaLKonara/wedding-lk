@@ -89,8 +89,9 @@ export function LocationDropdown({ value, onChange, placeholder = "Select locati
                     <CommandItem
                       key={`${city}-${province}`}
                       value={`${city}, ${province}`}
-                      onSelect={(currentValue) => {
-                        onChange(currentValue === value ? "" : currentValue)
+                      onSelect={() => {
+                        const selectedVal = `${city}, ${province}`
+                        onChange(selectedVal === value ? "" : selectedVal)
                         setOpen(false)
                       }}
                       className="rounded-lg px-2 py-2 cursor-pointer hover:bg-muted"
