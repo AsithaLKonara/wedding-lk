@@ -323,8 +323,10 @@ export default function UnifiedDashboard() {
         <TabsList className="bg-white/5 border border-white/10 p-1 rounded-2xl h-14 w-fit">
           {[
             { id: 'overview', icon: LayoutDashboard, label: 'Overview' },
-            { id: 'analytics', icon: BarChart3, label: 'Analytics' },
-            { id: 'performance', icon: Activity, label: 'System Health' },
+            ...(userRole !== 'user' ? [
+              { id: 'analytics', icon: BarChart3, label: 'Analytics' },
+              { id: 'performance', icon: Activity, label: 'System Health' }
+            ] : []),
             { id: 'activity', icon: Clock, label: 'Activity Log' }
           ].map(tab => (
             <TabsTrigger 
@@ -373,30 +375,32 @@ export default function UnifiedDashboard() {
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <Card className="lg:col-span-2 bg-white/5 border-white/10">
-              <CardHeader>
-                <CardTitle className="text-white font-black uppercase tracking-widest text-sm">Real-time Performance</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="h-80 w-full bg-white/5 border border-white/5 rounded-2xl flex items-center justify-center">
-                  <p className="text-gray-600 font-black uppercase tracking-[0.2em] text-xs">Live Analytics Preview</p>
-                </div>
-              </CardContent>
-            </Card>
+          {userRole !== 'user' && (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <Card className="lg:col-span-2 bg-white/5 border-white/10">
+                <CardHeader>
+                  <CardTitle className="text-white font-black uppercase tracking-widest text-sm">Real-time Performance</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-80 w-full bg-white/5 border border-white/5 rounded-2xl flex items-center justify-center">
+                    <p className="text-gray-600 font-black uppercase tracking-[0.2em] text-xs">Live Analytics Preview</p>
+                  </div>
+                </CardContent>
+              </Card>
 
-            <Card className="bg-white/5 border-white/10">
-              <CardHeader>
-                <CardTitle className="text-white font-black uppercase tracking-widest text-sm">System Status</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <StatusItem label="API Gateway" status="Operational" color="emerald" />
-                <StatusItem label="Database" status="High Performance" color="emerald" />
-                <StatusItem label="Image Server" status="Active" color="emerald" />
-                <StatusItem label="AI Services" status="Online" color="emerald" />
-              </CardContent>
-            </Card>
-          </div>
+              <Card className="bg-white/5 border-white/10">
+                <CardHeader>
+                  <CardTitle className="text-white font-black uppercase tracking-widest text-sm">System Status</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <StatusItem label="API Gateway" status="Operational" color="emerald" />
+                  <StatusItem label="Database" status="High Performance" color="emerald" />
+                  <StatusItem label="Image Server" status="Active" color="emerald" />
+                  <StatusItem label="AI Services" status="Online" color="emerald" />
+                </CardContent>
+              </Card>
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="analytics" className="animate-in fade-in slide-in-from-bottom-4 duration-500">
