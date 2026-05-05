@@ -177,11 +177,11 @@ function SignInContent() {
             </button>
             <button 
               type="button"
-              onClick={() => fillCredentials("couple@example.com")}
+              onClick={() => fillCredentials("john.doe@email.com")}
               className="p-2.5 rounded bg-white/5 hover:bg-white/10 hover:border-purple-500/50 hover:text-white border border-transparent transition-all text-center flex flex-col items-center justify-center cursor-pointer"
             >
               <p className="font-bold text-white text-xs">Couple</p>
-              <p className="truncate text-[10px] w-full max-w-[100px] mt-1 text-gray-500">couple@example.com</p>
+              <p className="truncate text-[10px] w-full max-w-[100px] mt-1 text-gray-500">john.doe@email.com</p>
             </button>
           </div>
           <p className="text-[10px] text-gray-500 mt-3">Password: password123 (Click on any role to autofill)</p>
