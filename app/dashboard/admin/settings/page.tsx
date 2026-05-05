@@ -28,6 +28,8 @@ import {
   XCircle
 } from 'lucide-react';
 
+import { toast } from 'sonner';
+
 interface SystemSettings {
   general: {
     siteName: string;
@@ -135,10 +137,7 @@ export default function AdminSettingsPage() {
       }
       
       setHasChanges(false);
-      toast({
-        title: 'Settings Saved',
-        description: 'System configuration has been updated successfully.',
-      });
+      toast.success('System configuration has been updated successfully.');
     } catch (error) {
       console.error('Error saving settings:', error);
     } finally {
