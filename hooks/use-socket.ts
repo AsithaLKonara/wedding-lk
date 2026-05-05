@@ -100,39 +100,79 @@ export const useSocket = () => {
     });
 
     // Message events
-    socket.on('new-message', (message: Message) => {
+    const handleNewMessage = (message: any) => {
       console.log('💬 New message received:', message);
-      setMessages(prev => [...prev, message]);
-    });
+      // Map server message format to hook Message format if needed
+      const mappedMessage: Message = {
+        id: message.id || message.messageId || message._id || Date.now().toString(),
+        senderId: message.senderId || (typeof message.sender === 'object' ? message.sender._id : message.sender) || '',
+        receiverId: message.receiverId || message.recipientId || (typeof message.recipient === 'object' ? message.recipient._id : message.recipient) || '',
+        content: message.content || '',
+        timestamp: message.timestamp ? new Date(message.timestamp) : new Date(),
+        type: message.type || message.messageType || 'text'
+      };
+      setMessages(prev => {
+        // Prevent duplicate messages
+        if (prev.some(m => m.id === mappedMessage.id)) return prev;
+        return [...prev, mappedMessage];
+      });
+    };
 
-    socket.on('message-sent', (message: Message) => {
+    socket.on('new-message', handleNewMessage);
+    socket.on('new_message', handleNewMessage);
+
+    const handleMessageSent = (message: any) => {
       console.log('✅ Message sent successfully:', message);
-      // Update local message state if needed
-    });
+    };
+    socket.on('message-sent', handleMessageSent);
+    socket.on('message_sent', handleMessageSent);
 
     // Typing indicators
-    socket.on('typing-indicator', (data: TypingIndicator) => {
-      if (data.isTyping) {
-        setTypingUsers(prev => new Set(prev).add(data.senderId));
-      } else {
+    const handleTyping = (data: any) => {
+      const senderId = data.senderId || data.userId;
+      const isTyping = data.isTyping !== undefined ? data.isTyping : true;
+      if (senderId) {
         setTypingUsers(prev => {
           const newSet = new Set(prev);
-          newSet.delete(data.senderId);
+          if (isTyping) {
+            newSet.add(senderId);
+          } else {
+            newSet.delete(senderId);
+          }
           return newSet;
         });
       }
-    });
+    };
+    socket.on('typing-indicator', handleTyping);
+    socket.on('user_typing', handleTyping);
 
     // Notification events
-    socket.on('new-notification', (notification: Notification) => {
+    const handleNewNotification = (notification: any) => {
       console.log('🔔 New notification:', notification);
-      setNotifications(prev => [notification, ...prev]);
-    });
+      const mappedNotification: Notification = {
+        id: notification.id || notification._id || Date.now().toString(),
+        userId: notification.userId || notification.recipientId || '',
+        title: notification.title || 'New Notification',
+        message: notification.message || '',
+        type: notification.type || 'info',
+        timestamp: notification.timestamp ? new Date(notification.timestamp) : new Date(),
+        read: notification.read || notification.isRead || false,
+        data: notification.data
+      };
+      setNotifications(prev => {
+        if (prev.some(n => n.id === mappedNotification.id)) return prev;
+        return [mappedNotification, ...prev];
+      });
+    };
+    socket.on('new-notification', handleNewNotification);
+    socket.on('new_notification', handleNewNotification);
 
     // Read receipts
     socket.on('read-receipt', (data: { messageId: string; readBy: string }) => {
       console.log('📖 Read receipt:', data);
-      // Update message read status if needed
+    });
+    socket.on('notification_updated', (data: any) => {
+      console.log('🔔 Notification updated:', data);
     });
 
     // Error handling
@@ -175,41 +215,55 @@ export const useSocket = () => {
 
   // Send message
   const sendMessage = useCallback((message: Omit<Message, 'id' | 'timestamp'>) => {
-    if (socketRef.current && socketState.isAuthenticated) {
+    if (socketRef.current && socketState.isConnected) {
       const fullMessage: Message = {
         ...message,
         id: Date.now().toString(), // Temporary ID
         timestamp: new Date(),
       };
+      // Emit hyphenated format
       socketRef.current.emit('send-message', fullMessage);
+      // Emit underscore format
+      socketRef.current.emit('send_message', {
+        recipientId: message.receiverId,
+        content: message.content,
+        type: message.type
+      });
       return fullMessage;
     }
     return null;
-  }, [socketState.isAuthenticated]);
+  }, [socketState.isConnected]);
 
   // Send typing indicator
   const sendTypingIndicator = useCallback((receiverId: string, isTyping: boolean) => {
-    if (socketRef.current && socketState.isAuthenticated) {
+    if (socketRef.current && socketState.isConnected) {
+      // Emit hyphenated format
       socketRef.current.emit(isTyping ? 'typing-start' : 'typing-stop', {
         receiverId,
         senderId: user?.id || user?.email
       });
+      // Emit underscore format
+      socketRef.current.emit(isTyping ? 'typing_start' : 'typing_stop', {
+        recipientId: receiverId
+      });
     }
-  }, [socketState.isAuthenticated, user]);
+  }, [socketState.isConnected, user]);
 
   // Mark message as read
   const markMessageAsRead = useCallback((messageId: string) => {
-    if (socketRef.current && socketState.isAuthenticated) {
+    if (socketRef.current && socketState.isConnected) {
       socketRef.current.emit('mark-read', messageId);
+      socketRef.current.emit('mark_read', { messageId });
     }
-  }, [socketState.isAuthenticated]);
+  }, [socketState.isConnected]);
 
   // Mark notification as read
   const markNotificationAsRead = useCallback((notificationId: string) => {
-    if (socketRef.current && socketState.isAuthenticated) {
+    if (socketRef.current && socketState.isConnected) {
       socketRef.current.emit('notification-read', notificationId);
+      socketRef.current.emit('mark_notification_read', { notificationId });
     }
-  }, [socketState.isAuthenticated]);
+  }, [socketState.isConnected]);
 
   // Clear notifications
   const clearNotifications = useCallback(() => {
