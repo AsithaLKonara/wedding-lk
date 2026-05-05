@@ -36,13 +36,27 @@ class WebSocketServer {
       console.log(`🔌 New socket connection: ${socket.id}`)
 
       // Authentication middleware
-      socket.on('authenticate', async (data: { token: string }) => {
+      socket.on('authenticate', async (data: { token?: string; email?: string; userId?: string }) => {
         try {
           await connectDB()
           
-          // In a real implementation, verify JWT token
-          // For now, we'll use a simple user lookup
-          const user = await User.findOne({ email: data.token })
+          const emailOrId = data.token || data.email || data.userId
+          if (!emailOrId) {
+            socket.emit('authentication_error', { message: 'No credential provided' })
+            return
+          }
+
+          let user = null
+          if (emailOrId.includes('@')) {
+            user = await User.findOne({ email: emailOrId })
+          } else {
+            // Check if it's a valid MongoDB ObjectId or fallback to findOne
+            try {
+              user = await User.findById(emailOrId)
+            } catch (err) {
+              user = await User.findOne({ email: emailOrId })
+            }
+          }
           
           if (user) {
             const userData: AuthenticatedSocket = {
@@ -66,7 +80,7 @@ class WebSocketServer {
             
             console.log(`✅ User authenticated: ${user.email}`)
           } else {
-            socket.emit('authentication_error', { message: 'Invalid token' })
+            socket.emit('authentication_error', { message: 'Invalid credentials or user not found' })
           }
         } catch (error) {
           console.error('Authentication error:', error)
