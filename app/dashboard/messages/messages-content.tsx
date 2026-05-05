@@ -10,10 +10,10 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
 import { Search, MessageSquare, Send, Paperclip, Image as ImageIcon, Smile, MoreVertical } from "lucide-react"
 import Link from "next/link"
+import { useAuth } from "@/lib/hooks/use-auth"
 
 export default function MessagesContent() {
-  const [user, setUser] = useState(null);
-  const [status, setStatus] = useState('loading');
+  const { user, loading: authLoading } = useAuth()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [conversations, setConversations] = useState([
@@ -67,14 +67,14 @@ export default function MessagesContent() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (status === 'loading') {
+    if (authLoading) {
       setIsLoading(true)
-    } else if (status === 'unauthenticated') {
-      router.push('/login')
+    } else if (!user) {
+      router.push('/auth/signin')
     } else {
       setIsLoading(false)
     }
-  }, [status, router])
+  }, [user, authLoading, router])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -138,16 +138,16 @@ export default function MessagesContent() {
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md bg-white/5 border-white/10 text-white">
           <CardHeader>
             <CardTitle>Authentication Required</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Button asChild className="w-full">
-              <Link href="/login">Login to Messages</Link>
+            <Button asChild className="w-full bg-gradient-to-r from-rose-500 to-purple-600">
+              <Link href="/auth/signin">Login to Messages</Link>
             </Button>
-            <Button variant="outline" asChild className="w-full">
-              <Link href="/register">Create Account</Link>
+            <Button variant="outline" asChild className="w-full border-white/10 text-white hover:bg-white/5">
+              <Link href="/auth/signup">Create Account</Link>
             </Button>
           </CardContent>
         </Card>
